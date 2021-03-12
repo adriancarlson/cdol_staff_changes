@@ -58,10 +58,10 @@
                     <thead>
                         <tr>
                             <th data-pss-sort-fields="lastfirst|text">New Staff Name</th>
-                            <th  colspan="2" data-pss-sort-fields="stockemail|date">PS Account Created</th>
-                            <th  colspan="2" data-pss-sort-fields="guardianemail|text">AD Account Created</th>
-                            <th  colspan="2" data-pss-sort-fields="ppaddresses|text">PS LDAP Updated</th>
-                            <th  colspan="2" data-pss-sort-fields="scaddresses|text">PSL Account Created</th>
+                            <th colspan="2" data-pss-sort-fields="stockemail|date">PS Account Created</th>
+                            <th colspan="2" data-pss-sort-fields="guardianemail|text">AD Account Created</th>
+                            <th colspan="2" data-pss-sort-fields="ppaddresses|text">PS LDAP Updated</th>
+                            <th colspan="2" data-pss-sort-fields="scaddresses|text">PSL Account Created</th>
                         </tr>
                         <tr>
                             <th>&nbsp;</th>
@@ -119,12 +119,10 @@
 
                 </table>
             </div>
-                <div class="center">
-                    <a class="button" ng-click="copyEmails()">Copy</a><br>
-                    <textarea rows="9" cols="100" id="copyEmailBox"
-                        ng-bind="copyEmailBox | addComma | addSemi2:this"></textarea>
-                </div>
+            <div class="center">
+                <a class="button" ng-click="copyEmails()">Copy</a><br>
             </div>
+        </div>
         </div>
         <!-- end of content area -->
         ~[wc:admin_footer_css]
