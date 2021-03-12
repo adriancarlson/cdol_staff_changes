@@ -6,9 +6,10 @@
         ~[wc:commonscripts]
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
+        <script type="text/javascript" src="/cdol/scripts/cdol_staff_change.js"></script>
     </head>
 
-    <body>
+    <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl" ng-cloak>
         ~[wc:admin_header_css]
         Submit Staff Change
         ~[wc:admin_navigation_css]
@@ -25,11 +26,13 @@
                     </div>
                     <div>
                         <label>First Name</label>
-                        <input name="[U_CDOL_STAFF_CHANGES]first_name" type="text" value="">
+                        <input name="[U_CDOL_STAFF_CHANGES]first_name" type="text" value=""
+                            ng-model="newStaffFirstName">
                     </div>
                     <div>
                         <label>Middle Name</label>
-                        <input name="[U_CDOL_STAFF_CHANGES]middle_name" type="text" value="">
+                        <input name="[U_CDOL_STAFF_CHANGES]middle_name" type="text" value=""
+                            ng-model="newStaffLastName">
                     </div>
                     <div>
                         <label>Last Name</label>
@@ -82,7 +85,7 @@
                 </div>
                 <div>
                     <div>
-                        <label>Who is Replacing</label>
+                        <label>Who is {{newStaffFirstName}} {{newStaffLastName}} Replacing</label>
                         <select name="[U_CDOL_STAFF_CHANGES]replacing">
                             <option></option>
                             ~[tlist_sql;SELECT
