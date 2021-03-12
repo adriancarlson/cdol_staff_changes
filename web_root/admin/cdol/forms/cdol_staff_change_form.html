@@ -21,8 +21,8 @@
                 <div>
                     <div>
                         <label>Title</label>
-                        <select name="[U_CDOL_STAFF_CHANGES]title"
-                            id="selectSuffix">~[x:codesetoptions;codetype=Title;includeblank;value=~([U_CDOL_STAFF_CHANGES]title)]</select>
+                        <select name="[U_CDOL_STAFF_CHANGES]title" id="selectTitle"
+                            ng-model="newStaffTitle">~[x:codesetoptions;codetype=Title;includeblank;value=~([U_CDOL_STAFF_CHANGES]title)]</select>
                     </div>
                     <div>
                         <label>First Name</label>
@@ -31,12 +31,11 @@
                     </div>
                     <div>
                         <label>Middle Name</label>
-                        <input name="[U_CDOL_STAFF_CHANGES]middle_name" type="text" value=""
-                            ng-model="newStaffLastName">
+                        <input name="[U_CDOL_STAFF_CHANGES]middle_name" type="text" value="">
                     </div>
                     <div>
                         <label>Last Name</label>
-                        <input name="[U_CDOL_STAFF_CHANGES]last_name" type="text" value="">
+                        <input name="[U_CDOL_STAFF_CHANGES]last_name" type="text" value="" ng-model="newStaffLastName">
                     </div>
                 </div>
                 <div>
@@ -85,7 +84,9 @@
                 </div>
                 <div>
                     <div>
-                        <label>Who is {{newStaffFirstName}} {{newStaffLastName}} Replacing</label>
+                        <label>Who is <span
+                                ng-show="newStaffTitle =='' &&newStaffFirstName =='' && newStaffLastName ==''">{{newStaffTempName}}</span>
+                            {{newStaffTitle}} {{newStaffFirstName}} {{newStaffLastName}} Replacing?</label>
                         <select name="[U_CDOL_STAFF_CHANGES]replacing">
                             <option></option>
                             ~[tlist_sql;SELECT
@@ -111,6 +112,9 @@
                     <input type="hidden" name="[U_CDOL_STAFF_CHANGES]yearid" value="~(curyearid)" />
                     <input type="hidden" name="[U_CDOL_STAFF_CHANGES]who_submitted" value="~[x:userid]" />
                     <input type="hidden" name="[U_CDOL_STAFF_CHANGES]submission_date" value="~[short.date]" />
+                    <input type="hidden" name="title" value="{{ newStaffTitle }}" />
+                    <input type="hidden" name="fname" value="{{ newStaffFirstName }}" />
+                    <input type="hidden" name="lname" value="{{ newStaffLastName }}" />
                     <!--<input type="hidden" name="include" value="{{ tinclude }}" />-->
                     <!--<input type="hidden" name="from" value="~[x:useremail]" size=35>-->
                     <!--<input type="hidden" name="mailto" value="adrian-carlson@cdolinc.net" size=35>-->
