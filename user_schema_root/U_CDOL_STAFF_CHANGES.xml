@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<psExtension xmlns="http://www.powerschool.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.powerschool.com psextension.xsd">
+    <extensionname>U_CDOL_STAFF_CHANGES</extensionname>
+    <extendedTable type="standalone" dbTableName="U_CDOL_STAFF_CHANGES" childName="U_CDOL_STAFF_CHANGES" comment="table for tracking yearly staff changes">
+        <field name="schoolid" type="Integer" />
+        <field name="yearid" type="Integer" />
+        <field name="title" type="String" length="5" />
+        <field name="first_name" type="String" length="100" />
+        <field name="middle_name" type="String" length="100" />
+        <field name="last_name" type="String" length="100" />
+        <field name="preferred_name" type="String" length="100" />
+        <field name="gender" type="String" length="1" />
+        <field name="personal_email" type="String" length="100" />
+        <field name="staff_type" type="String" length="100" />
+        <field name="position" type="String" length="100" />
+        <field name="replacing" type="String" length="100" />
+        <field name="start_date" type="Date" />
+        <field name="submission_date" type="Date" />
+        <field name="who_submitted" type="Integer" />
+    </extendedTable>
+</psExtension>
