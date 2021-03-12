@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Email List</title>
+        <!-- required scripts -->
+        ~[wc:commonscripts]
+        <!-- Required style sheets: screen.css, and print.css -->
+        <link href="/images/css/screen.css" rel="stylesheet" media="screen">
+        <link href="/images/css/print.css" rel="stylesheet" media="print">
+
+        <style>
+            [ng\:cloak],
+            [ng-cloak],
+            [data-ng-cloak],
+            [x-ng-cloak],
+            .ng-cloak,
+            .x-ng-cloak {
+                display: none !important;
+            }
+
+            .checkTD {
+                border-right: 0 !important;
+            }
+
+            .mailTD {
+                border-left: 0 !important;
+            }
+        </style>
+    </head>
+
+    <body data-require-path="components/emaillist/emaillist" data-module-name="emailListApp"
+        ng-controller="emailListCtrl" ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)"
+        ng-stu-email-use-field="~[displaypref:emailListstuMailUseField]"
+        ng-stu-email-ext="~[displaypref:emailListstuMailAltExtensionGroup]"
+        ng-stu-email-table="~[displaypref:emailListstuMailAlttable]"
+        ng-stu-email-field="~[displaypref:emailListstuMailAltField]"
+        ng-stu-email-col="~[displayprefschool:emailListstuMailCol]"
+        ng-par-email-col="~[displayprefschool:emailListparMailCol]"
+        ng-portal-email-col="~[displayprefschool:emailListportalMailCol]"
+        ng-sc-email-col="~[displayprefschool:emailListscMailCol]"
+        ng-email-list-delimiter="~[displayprefschool:emailListDelimiter]">
+        ~[wc:admin_header_css]
+        <div id="breadcrumbs">
+            <!-- breadcrumb start --><a href="/admin/home.html" target="_top">Start Page</a> &gt; <a
+                href="/admin/reports/home.html">Reports</a> &gt; <a href="/admin/reports/runreports.html">Run
+                Reports</a> &gt;Email List
+            <!-- breadcrumb end -->
+        </div>
+        <!-- start of main menu and content -->
+        ~[wc:admin_navigation_css]
+        <!-- Start of Page -->
+        <h1>Email List</h1>
+        <!-- start of content area -->
+        <div class="box-round" ng-cloak class="ng-cloak">
+
+            <p class="center"><a
+                    href="/admin/home.html">~[text]psx.html.admin_studentlist.functions.current_student_selection,param:~[x:functionssetselection],param:~[x:studsinset][/text]</a>
+            </p>
+            <span class="center">
+                <h4>Select student, guardian and/or parent portal emails to copy, and scroll to the bottom</h4>
+            </span>
+
+            <div id=”emailListGrid” data-pss-grid-widget data-data="emailList" data-filtered-data="emailListFilt"
+                data-client-side-pagination="false">
+                <table class="grid">
+                    <thead>
+                        <tr>
+                            <th data-pss-sort-fields="lastfirst|text">Student Name</th>
+                            <th ng-if="stuEmailCol != 1" colspan="2" data-pss-sort-fields="stockemail|date">Student
+                                Email Addresses</th>
+                            <th ng-if="parEmailCol != 1" colspan="2" data-pss-sort-fields="guardianemail|text">Guardian
+                                Email Addresses</th>
+                            <th ng-if="portalEmailCol != 1" colspan="2" data-pss-sort-fields="ppaddresses|text">Parent
+                                Portal Email Addresses</th>
+                            <th ng-if="scEmailCol != 1" colspan="2" data-pss-sort-fields="scaddresses|text">Student
+                                Contact Addresses</th>
+                        </tr>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th ng-if="stuEmailCol != 1" colspan="2" class="center"><input type="checkbox"
+                                    ng-model="selectedStuAll" ng-click="checkStuAll()" title="Select/Deselect All"
+                                    id="selectedStuAll" />Select/Deselect All</th>
+
+                            <th ng-if="parEmailCol != 1" colspan="2" class="center"><input type="checkbox"
+                                    ng-model="selectedParAll" ng-click="checkParAll()" title="Select/Deselect All"
+                                    id="selectedParAll" />Select/Deselect All</th>
+
+                            <th ng-if="portalEmailCol != 1" colspan="2" class="center"><input type="checkbox"
+                                    ng-model="selectedPortalAll" ng-click="checkPortalAll()" title="Select/Deselect All"
+                                    id="selectedPortalAll" />Select/Deselect All</th>
+
+                            <th ng-if="scEmailCol != 1" colspan="2" class="center"><input type="checkbox"
+                                    ng-model="selectedScAll" ng-click="checkScAll()" title="Select/Deselect All"
+                                    id="selectedScAll" />Select/Deselect All</th>
+                        </tr>
+
+
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in emailListFilt">
+                            <td ng-bind="row.lastfirst"></td>
+
+                            <td ng-if="stuEmailCol != 1" class="checkTD stuchk"><input type="checkbox" value="1"
+                                    class="stuMailCol" ng-if="row.stockemail" data-data="{{row.stockemail}}"
+                                    ng-model="row.stuChk" ng-change="notifyStuMaster()" /></td>
+                            <td ng-if="stuEmailCol != 1" class="mailTD"><a ng-href="mailto:{{row.stockemail}}"
+                                    ng-bind="row.stockemail"></a></td>
+
+                            <td ng-if="parEmailCol != 1" class="checkTD"><input type="checkbox" value="1"
+                                    class="parMailCol" ng-if="row.guardianemail" data-data="{{row.guardianemail}}"
+                                    ng-model="row.parChk" value="0" ng-change="notifyParMaster()" /></td>
+                            <td ng-if="parEmailCol != 1" class="mailTD"><a ng-href="mailto:{{row.guardianemail}}"
+                                    ng-bind-html="row.guardianemail | breakCommaSemi"></a></td>
+
+                            <td ng-if="portalEmailCol != 1" class="checkTD"><input type="checkbox" value="1"
+                                    class="portalMailCol" ng-if="row.ppaddresses" data-data="{{row.ppaddresses}}"
+                                    ng-model="row.portalChk" ng-change="notifyPortalMaster()" /></td>
+                            <td ng-if="portalEmailCol != 1" class="mailTD"><a ng-href="mailto:{{row.ppaddresses}}"
+                                    ng-bind-html="row.ppaddresses | breakCommaSemi"></a></td>
+
+                            <td ng-if="scEmailCol != 1" class="checkTD"><input type="checkbox" value="1"
+                                    class="scMailCol" ng-if="row.scaddresses.scaddresses"
+                                    data-data="{{row.scaddresses.scaddresses}}" ng-model="row.scChk"
+                                    ng-change="notifyScMaster()" /></td>
+                            <td ng-if="scEmailCol != 1" class="mailTD"><a
+                                    ng-href="mailto:{{row.scaddresses.scaddresses | niceList | addSemi}}"
+                                    ng-bind="row.scaddresses.scaddresses | niceList"></a></td>
+
+                        </tr>
+                    </tbody>
+
+
+                </table>
+            </div>
+
+            <div id="copyDivDialog" class="center">
+                <div style="width:500px;margin-left:auto;margin-right:auto;" class="center">
+                    <p>Once you have selected the addresses, click the "Copy" button, and paste into the BCC (blind
+                        carbon copy) field of a new email.<br>This will prevent parents from seeing each others' email
+                        addresses, which should be kept confidential.</p>
+                </div>
+                <div class="center">
+                    <a class="button" ng-click="copyEmails()">Copy</a><br>
+                    <textarea rows="9" cols="100" id="copyEmailBox"
+                        ng-bind="copyEmailBox | addComma | addSemi2:this"></textarea>
+                </div>
+
+            </div>
+        </div>
+        <!-- end of content area -->
+        ~[wc:admin_footer_css]
+    </body>
+
+</html>
