@@ -1,0 +1,3 @@
+~[tlist_sql;
+SELECT count(U_CDOL_STAFF_CHANGES.id)
+FROM U_CDOL_STAFF_CHANGES;]~(cnt)[/tlist_sql]
