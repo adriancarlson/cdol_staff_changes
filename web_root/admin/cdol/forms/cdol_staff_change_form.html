@@ -13,27 +13,111 @@
         Submit Staff Change
         ~[wc:admin_navigation_css]
         <h1>Submit Staff Change</h1>
-        <div class="fluid-form">
-            <div>
+        <form action="cdol_staff_change_confirm.html" method="POST">
+            ~[DirectTable.Select:U_CDOL_STAFF_CHANGES;ID:-1]
+            <div id="feedback-message" class="feedback-alert">Please New Spell Staff Name Correctly!</div>
+            <div class="fluid-form">
                 <div>
-                    <label>First Name</label>
-                    <input type="text">
+                    <div>
+                        <label>Title</label>
+                        <select name="[U_CDOL_STAFF_CHANGES]title"
+                            id="selectSuffix">~[x:codesetoptions;codetype=Title;includeblank;value=~([U_CDOL_STAFF_CHANGES]title)]</select>
+                    </div>
+                    <div>
+                        <label>First Name</label>
+                        <input name="[U_CDOL_STAFF_CHANGES]first_name" type="text" value="">
+                    </div>
+                    <div>
+                        <label>Middle Name</label>
+                        <input name="[U_CDOL_STAFF_CHANGES]middle_name" type="text" value="">
+                    </div>
+                    <div>
+                        <label>Last Name</label>
+                        <input name="[U_CDOL_STAFF_CHANGES]last_name" type="text" value="">
+                    </div>
                 </div>
                 <div>
-                    <label>Last Name</label>
-                    <input type="text">
-                </div>
-            </div>
-            <div>
-                <div>
-                    <label>First Name</label>
-                    <input type="text">
+                    <div>
+                        <label>Preferred Name</label>
+                        <input name="[U_CDOL_STAFF_CHANGES]preferred_name" type="text" value="">
+                    </div>
                 </div>
                 <div>
-                    <label>Last Name</label>
-                    <input type="text">
+                    <div>
+                        <label>Gender</label>
+                        <select name="[U_CDOL_STAFF_CHANGES]gender"
+                            id="selectgender">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]preferred_name)]</select>
+                    </div>
                 </div>
-            </div>
+                <div>
+                    <div>
+                        <label>Personal Email</label>
+                        <input name="[U_CDOL_STAFF_CHANGES]personal_email" type="email" value=""
+                            placeholder="NewStaff@email.com">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label>Staff Type</label>
+                        <select name="[U_CDOL_STAFF_CHANGES]staff_type">
+                            <option></option>
+                            <option value="Teacher">
+                                Teacher
+                            </option>
+                            <option value="Administrator">Administrator</option>
+                            <option value="Staff">
+                                Staff
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Position</label>
+                        <input name="[U_CDOL_STAFF_CHANGES]position" type="text" value=""
+                            placeholder="Ex: 2nd Grade Teacher, or Principal" style="width: 300px;">
+                    </div>
+                    <div>
+                        <label>Start Date</label>
+                        <input name="[U_CDOL_STAFF_CHANGES]start_date" type="text" value="">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label>Who is Replacing</label>
+                        <select name="[U_CDOL_STAFF_CHANGES]replacing">
+                            <option></option>
+                            ~[tlist_sql;SELECT
+                            users.dcid,
+                            users.first_name,
+                            users.last_name
+                            FROM SCHOOLSTAFF
+                            inner join users
+                            on users.dcid = schoolstaff.users_dcid
+                            WHERE schoolstaff.schoolid = 150
+                            AND schoolstaff.status =1
+                            Order BY users.last_name , users.first_name]
+                            <option value="~(dcid)">~(first) ~(last)</option>
+                            [/tlist_sql]
+                            <option value="New">New Position</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="button-row"><input type="hidden" name="ac" value="prim" />
+                    <!--<input type="hidden" name="ac" value="mail">-->
+                    ~[submitbutton]
+                    <input type="hidden" name="[U_CDOL_STAFF_CHANGES]schoolid" value="~(curschoolid)" />
+                    <input type="hidden" name="[U_CDOL_STAFF_CHANGES]yearid" value="~(curyearid)" />
+                    <input type="hidden" name="[U_CDOL_STAFF_CHANGES]who_submitted" value="~[x:userid]" />
+                    <input type="hidden" name="[U_CDOL_STAFF_CHANGES]submission_date" value="~[short.date]" />
+                    <!--<input type="hidden" name="include" value="{{ tinclude }}" />-->
+                    <!--<input type="hidden" name="from" value="~[x:useremail]" size=35>-->
+                    <!--<input type="hidden" name="mailto" value="adrian-carlson@cdolinc.net" size=35>-->
+                    <!--<input type="hidden" name="subject"-->
+                    <!--    value="Elementary Transcript Questionnaire Submission from ~[x:username;firstlast] (~(schoolabbr)) | ~[x:useremail]"-->
+                    <!--    size=35>-->
+                    <!--<input type="hidden" name="body" id="message"-->
+                    <!--    value="~(schoolname) | Reporting Terms : {{ tterm }} | Q4 included : {{ tinclude }}">-->
+                </div>
+        </form>
         </div>
         ~[wc:admin_footer_css]
     </body>

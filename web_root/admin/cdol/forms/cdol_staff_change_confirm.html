@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Staff Change Confirm</title>
+        ~[wc:commonscripts]
+        <link href="/images/css/screen.css" rel="stylesheet" media="screen">
+        <link href="/images/css/print.css" rel="stylesheet" media="print">
+    </head>
+
+    <body>
+        ~[wc:admin_header_css]
+        Staff Change Confirm
+        ~[wc:admin_navigation_css]
+        <h1>Thank You!</h1>
+        <div class="feedback-info"><span class="underline">Thank You for your submission!</span> <br>
+            <span class="underline bold">Note:</span> Your New Staff Submission for
+            ~(gpv.[U_CDOL_STAFF_CHANGES]first_name) ~(gpv.[U_CDOL_STAFF_CHANGES]last_name)
+            has been sent to the Education Technology Office. We will be incontact once the account has been
+            created.
+        </div>
+        <div class="button-row"><a class="button" href="admin/cdol/forms/cdol_staff_change_form.html">Submit another
+                New Staff Record</a><a class="button" href="/admin/home.html">Exit</a>
+        </div>
+        ~[wc:admin_footer_css]
+    </body>
+
+</html>
