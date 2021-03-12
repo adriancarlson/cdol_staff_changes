@@ -17,5 +17,7 @@
         <field name="start_date" type="Date" />
         <field name="submission_date" type="Date" />
         <field name="who_submitted" type="Integer" />
+        <field name="ps_created" type="Boolean" />
+        <field name="ad_created" type="Boolean" />
     </extendedTable>
 </psExtension>

@@ -4,7 +4,7 @@
         $j.ajax({
             url: "/admin/cdol/newstaffcount.txt",
             success: function(result) {
-            $j("#left_nav_functions").append('<li><a href="/admin/cdol/forms/cdol_staff_change_list.html">New Staff Submissions ('+result+')</a></li>');
+            $j("#left_nav_functions").append('<li><a href="/admin/cdol/forms/cdol_staff_change_list.html">New Staff Submissions('+result+')</a></li>');
                 }
             })
         });

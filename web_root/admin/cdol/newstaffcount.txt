@@ -1,3 +1,7 @@
 ~[tlist_sql;
-SELECT count(U_CDOL_STAFF_CHANGES.id)
-FROM U_CDOL_STAFF_CHANGES;]~(cnt)[/tlist_sql]
+SELECT 
+    count(U_CDOL_STAFF_CHANGES.id)
+FROM U_CDOL_STAFF_CHANGES
+WHERE 
+    U_CDOL_STAFF_CHANGES.ps_created IN NOT NULL 
+    AND U_CDOL_STAFF_CHANGES.ad_created IN NOT NULL;]~(cnt)[/tlist_sql]
