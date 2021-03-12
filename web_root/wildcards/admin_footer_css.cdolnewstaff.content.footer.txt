@@ -7,7 +7,7 @@ $j(function(){
     $j('#btnHelpPlusCompliance').height(newHeight);
         //$j('#btnHelpPlusCompliance').css("height","130px");
         
-	$j('#btnHelpPlusCompliance').append('<div class="comphelppopupLines"><a href="/admin/pstips/home.html" id="btnComplianceHelp" title="CDOL Staff Changes" accesskey="?">CDOL Staff Changes</a></div>');
+	$j('#btnHelpPlusCompliance').append('<div class="comphelppopupLines"><a href="/admin/cdol/forms/cdol_staff_change_from.html" id="btnComplianceHelp" title="CDOL Staff Changes" accesskey="?">CDOL Staff Changes</a></div>');
 });	
 
 </script>
