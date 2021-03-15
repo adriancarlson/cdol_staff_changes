@@ -14,6 +14,8 @@ require(['angular', 'components/shared/index'], function (angular) {
 
 			$scope.getStaffResults = function () {
 				console.log('getStaffResults ran');
+				console.log($scope.curSchoolId);
+				console.log($scope.curYearId);
 			};
 		},
 	]);
