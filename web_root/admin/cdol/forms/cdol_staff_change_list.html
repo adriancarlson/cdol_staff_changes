@@ -2,120 +2,19 @@
 <html>
 
     <head>
-        <title>New Staff List</title>
-        <!-- required scripts -->
+        <title>Staff Change List</title>
         ~[wc:commonscripts]
-        <!-- Required style sheets: screen.css, and print.css -->
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
-
-        <style>
-            [ng\:cloak],
-            [ng-cloak],
-            [data-ng-cloak],
-            [x-ng-cloak],
-            .ng-cloak,
-            .x-ng-cloak {
-                display: none !important;
-            }
-
-            .checkTD {
-                border-right: 0 !important;
-            }
-
-            .mailTD {
-                border-left: 0 !important;
-            }
-        </style>
+        <script type="text/javascript" src="/admin/cdol/scripts/cdol_staff_change.js"></script>
     </head>
 
-    <body data-require-path="/admin/cdol/scripts/staffchangelist.js" data-module-name="staffChangeListApp"
-        ng-controller="staffChangeListCtrl" ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)">
+    <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl" ng-cloak>
         ~[wc:admin_header_css]
-        <div id="breadcrumbs">
-            <!-- breadcrumb start --><a href="/admin/home.html" target="_top">Start Page</a> &gt; <a
-                href="/admin/reports/home.html">Reports</a> &gt; New Staff List
-            <!-- breadcrumb end -->
-        </div>
-        <!-- start of main menu and content -->
+        Staff Change List ~(yearname)
         ~[wc:admin_navigation_css]
-        <!-- Start of Page -->
-        <h1>New Staff List</h1>
-        <!-- start of content area -->
-        <div class="box-round" ng-cloak class="ng-cloak">
-            <div id=”staffChangeListGrid” data-pss-grid-widget data-data="staffChangeList"
-                data-filtered-data="staffChangeListFilt" data-client-side-pagination="false">
-                <table class="grid">
-                    <thead>
-                        <tr>
-                            <th data-pss-sort-fields="lastfirst|text">New Staff Name</th>
-                            <th colspan="2" data-pss-sort-fields="stockemail|date">PS Account Created</th>
-                            <th colspan="2" data-pss-sort-fields="guardianemail|text">AD Account Created</th>
-                            <th colspan="2" data-pss-sort-fields="ppaddresses|text">PS LDAP Updated</th>
-                            <th colspan="2" data-pss-sort-fields="scaddresses|text">PSL Account Created</th>
-                        </tr>
-                        <tr>
-                            <th>&nbsp;</th>
-                            <th ng-if="stuEmailCol != 1" colspan="2" class="center"><input type="checkbox"
-                                    ng-model="selectedStuAll" ng-click="checkStuAll()" title="Select/Deselect All"
-                                    id="selectedStuAll" />Select/Deselect All</th>
-
-                            <th ng-if="parEmailCol != 1" colspan="2" class="center"><input type="checkbox"
-                                    ng-model="selectedParAll" ng-click="checkParAll()" title="Select/Deselect All"
-                                    id="selectedParAll" />Select/Deselect All</th>
-
-                            <th ng-if="portalEmailCol != 1" colspan="2" class="center"><input type="checkbox"
-                                    ng-model="selectedPortalAll" ng-click="checkPortalAll()" title="Select/Deselect All"
-                                    id="selectedPortalAll" />Select/Deselect All</th>
-
-                            <th ng-if="scEmailCol != 1" colspan="2" class="center"><input type="checkbox"
-                                    ng-model="selectedScAll" ng-click="checkScAll()" title="Select/Deselect All"
-                                    id="selectedScAll" />Select/Deselect All</th>
-                        </tr>
-
-
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="row in emailListFilt">
-                            <td ng-bind="row.lastfirst"></td>
-
-                            <td ng-if="stuEmailCol != 1" class="checkTD stuchk"><input type="checkbox" value="1"
-                                    class="stuMailCol" ng-if="row.stockemail" data-data="{{row.stockemail}}"
-                                    ng-model="row.stuChk" ng-change="notifyStuMaster()" /></td>
-                            <td ng-if="stuEmailCol != 1" class="mailTD"><a ng-href="mailto:{{row.stockemail}}"
-                                    ng-bind="row.stockemail"></a></td>
-
-                            <td ng-if="parEmailCol != 1" class="checkTD"><input type="checkbox" value="1"
-                                    class="parMailCol" ng-if="row.guardianemail" data-data="{{row.guardianemail}}"
-                                    ng-model="row.parChk" value="0" ng-change="notifyParMaster()" /></td>
-                            <td ng-if="parEmailCol != 1" class="mailTD"><a ng-href="mailto:{{row.guardianemail}}"
-                                    ng-bind-html="row.guardianemail | breakCommaSemi"></a></td>
-
-                            <td ng-if="portalEmailCol != 1" class="checkTD"><input type="checkbox" value="1"
-                                    class="portalMailCol" ng-if="row.ppaddresses" data-data="{{row.ppaddresses}}"
-                                    ng-model="row.portalChk" ng-change="notifyPortalMaster()" /></td>
-                            <td ng-if="portalEmailCol != 1" class="mailTD"><a ng-href="mailto:{{row.ppaddresses}}"
-                                    ng-bind-html="row.ppaddresses | breakCommaSemi"></a></td>
-
-                            <td ng-if="scEmailCol != 1" class="checkTD"><input type="checkbox" value="1"
-                                    class="scMailCol" ng-if="row.scaddresses.scaddresses"
-                                    data-data="{{row.scaddresses.scaddresses}}" ng-model="row.scChk"
-                                    ng-change="notifyScMaster()" /></td>
-                            <td ng-if="scEmailCol != 1" class="mailTD"><a
-                                    ng-href="mailto:{{row.scaddresses.scaddresses | niceList | addSemi}}"
-                                    ng-bind="row.scaddresses.scaddresses | niceList"></a></td>
-
-                        </tr>
-                    </tbody>
-
-                </table>
-            </div>
-            <div class="center">
-                <a class="button" ng-click="copyEmails()">Copy</a><br>
-            </div>
-        </div>
-        </div>
-        <!-- end of content area -->
+        <h1>Staff Change List ~(yearname)</h1>
+        <p>Test: {{newStaffTempName}}</p>
         ~[wc:admin_footer_css]
     </body>
 
