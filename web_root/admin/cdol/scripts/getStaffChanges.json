@@ -2,7 +2,8 @@
 ~[tlist_sql;
 	SELECT 
         U_CDOL_STAFF_CHANGES.id,
-		U_CDOL_STAFF_CHANGES.schoolid, 
+		U_CDOL_STAFF_CHANGES.schoolid,
+		SCHOOLS.NAME, 
 		U_CDOL_STAFF_CHANGES.yearid,
 		U_CDOL_STAFF_CHANGES.title, 
 		U_CDOL_STAFF_CHANGES.first_name, 
@@ -15,6 +16,7 @@
 		U_CDOL_STAFF_CHANGES.staff_type,
 		U_CDOL_STAFF_CHANGES.position,
 		U_CDOL_STAFF_CHANGES.replacing,
+		users.last_name ||', ' || users.first_name as replacedstaff,
 		U_CDOL_STAFF_CHANGES.start_date,
 		U_CDOL_STAFF_CHANGES.previous,
 		U_CDOL_STAFF_CHANGES.previous_employer,
@@ -24,6 +26,10 @@
 		U_CDOL_STAFF_CHANGES.ps_created,
 		U_CDOL_STAFF_CHANGES.ad_created
     FROM U_CDOL_STAFF_CHANGES
+	LEFT OUTER JOIN SCHOOLS ON 
+    U_CDOL_STAFF_CHANGES.schoolid = SCHOOLS.school_number
+    LEFT OUTER JOIN USERS ON
+    to_char(USERS.DCID) = to_char(U_CDOL_STAFF_CHANGES.replacing)
 	WHERE U_CDOL_STAFF_CHANGES.yearid = ~(gpv.curYearId)
 	~[if.is.a.school] AND U_CDOL_STAFF_CHANGES.schoolid=~(gpv.curSchoolId) [/if]
 	ORDER BY U_CDOL_STAFF_CHANGES.submission_date DESC, U_CDOL_STAFF_CHANGES.last_name
@@ -31,6 +37,7 @@
 	{
 		"staffid":"~(staffid)",
 		"schoolid":"~(schoolid)",
+		"schname":"~(schname;JSON)",
 		"yearid":"~(yearid)",
 		"title":"~(title;JSON)",
 		"first_name":"~(first_name;JSON)",
@@ -42,11 +49,13 @@
 		"personal_email":"~(personal_email;JSON)",
 		"staff_type":"~(staff_type;JSON)",
 		"position":"~(position;JSON)",
-		"start_date":"~(start_date)",
+		"replacingid":"~(replacingid)",
+		"replacedstaff":"~(replacedstaff;JSON)",
+		"start_date":"~(start_date;d)",
 		"previous":"~(previous;JSON)",
 		"previous_employer":"~(previous_employer;JSON)",
 		"previous_employer_other":"~(previous_employer_other;JSON)",
-		"submission_date":"~(submission_date)",
+		"submission_date":"~(submission_date;d)",
 		"who_submitted":"~(who_submitted;JSON)",
 		"ps_created":"~(ps_created;JSON)",
 		"ad_created":"~(ad_created;JSON)"
