@@ -9,6 +9,7 @@
         <field name="middle_name" type="String" length="100" />
         <field name="last_name" type="String" length="100" />
         <field name="preferred_name" type="String" length="100" />
+        <field name="maiden_name" type="String" length="100" />
         <field name="gender" type="String" length="1" />
         <field name="personal_email" type="String" length="100" />
         <field name="staff_type" type="String" length="100" />

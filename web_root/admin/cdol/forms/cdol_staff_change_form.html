@@ -40,15 +40,19 @@
                 </div>
                 <div>
                     <div>
-                        <label>Preferred Name</label>
-                        <input name="[U_CDOL_STAFF_CHANGES]preferred_name" type="text" value="">
+                        <label>Gender</label>
+                        <select name="[U_CDOL_STAFF_CHANGES]gender" id="selectgender"
+                            ng-model="newGender">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]preferred_name)]</select>
                     </div>
                 </div>
                 <div>
                     <div>
-                        <label>Gender</label>
-                        <select name="[U_CDOL_STAFF_CHANGES]gender"
-                            id="selectgender">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]preferred_name)]</select>
+                        <label>Preferred Name</label>
+                        <input name="[U_CDOL_STAFF_CHANGES]preferred_name" type="text" value="">
+                    </div>
+                    <div ng-show="newGender == F">
+                        <label>Maiden Name</label>
+                        <input name="[U_CDOL_STAFF_CHANGES]maiden_name" type="text" value="">
                     </div>
                 </div>
                 <div>
@@ -96,7 +100,7 @@
                             FROM SCHOOLSTAFF
                             inner join users
                             on users.dcid = schoolstaff.users_dcid
-                            WHERE schoolstaff.schoolid = 150
+                            WHERE schoolstaff.schoolid = ~(curschoolid)
                             AND schoolstaff.status =1
                             Order BY users.last_name , users.first_name]
                             <option value="~(dcid)">~(first) ~(last)</option>
