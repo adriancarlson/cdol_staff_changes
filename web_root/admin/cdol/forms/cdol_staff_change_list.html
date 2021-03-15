@@ -9,11 +9,11 @@
         <script type="text/javascript" src="/admin/cdol/scripts/cdol_staff_change.js"></script>
     </head>
 
-    <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl" ng-cloak>
+    <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl" ng-init="getStaffResults()" ng-cloak>
         ~[wc:admin_header_css]
-        Staff Change List ~(yearname)
+        Staff Change List
         ~[wc:admin_navigation_css]
-        <h1>Staff Change List ~(yearname)</h1>
+        <h1>Staff Change List</h1>
         <p>Test: {{newStaffTempName}}</p>
         ~[wc:admin_footer_css]
     </body>

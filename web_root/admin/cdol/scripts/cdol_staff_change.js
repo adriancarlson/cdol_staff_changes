@@ -6,6 +6,9 @@ require(['angular', 'components/shared/index'], function (angular) {
 		$scope.newStaffFirstName = '';
 		$scope.newStaffLastName = '';
 
+		$scope.getStaffResults = function () {
+			console.log('getStaffResults ran');
+		};
 	});
 	angular.bootstrap($j('#cdolStaffAppDiv'), ['cdolStaffApp']);
 });
