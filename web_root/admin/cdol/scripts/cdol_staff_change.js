@@ -15,7 +15,7 @@ require(['angular', 'components/shared/index'], function (angular) {
 			$scope.getStaffResults = function () {
 				loadingDialog();
 				$http({
-					url: '/admin/cdol/forms/getStaffChanges.json',
+					url: '/admin/cdol/scripts/getStaffChanges.json',
 					method: 'GET',
 					params: { curSchoolId: $scope.curSchoolId, curYearId: $scope.curYearId },
 				}).then(
