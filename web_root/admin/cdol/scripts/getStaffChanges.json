@@ -16,20 +16,23 @@
 		U_CDOL_STAFF_CHANGES.staff_type,
 		U_CDOL_STAFF_CHANGES.position,
 		U_CDOL_STAFF_CHANGES.replacing,
-		users.last_name ||', ' || users.first_name as replacedstaff,
+		replaced.last_name ||', ' || replaced.first_name as replacedstaff,
 		U_CDOL_STAFF_CHANGES.start_date,
 		U_CDOL_STAFF_CHANGES.previous,
 		U_CDOL_STAFF_CHANGES.previous_employer,
 		U_CDOL_STAFF_CHANGES.previous_employer_other,
 		U_CDOL_STAFF_CHANGES.submission_date,
 		U_CDOL_STAFF_CHANGES.who_submitted,
+		submitted.last_name ||', ' || submitted.first_name as submittedstaff,
 		U_CDOL_STAFF_CHANGES.ps_created,
 		U_CDOL_STAFF_CHANGES.ad_created
     FROM U_CDOL_STAFF_CHANGES
 	LEFT OUTER JOIN SCHOOLS ON 
     U_CDOL_STAFF_CHANGES.schoolid = SCHOOLS.school_number
-    LEFT OUTER JOIN USERS ON
-    to_char(USERS.DCID) = to_char(U_CDOL_STAFF_CHANGES.replacing)
+    LEFT OUTER JOIN USERS replaced ON
+    to_char(replaced.DCID) = to_char(U_CDOL_STAFF_CHANGES.replacing)
+    LEFT OUTER JOIN USERS submitted ON
+    to_char(submitted.DCID) = to_char(U_CDOL_STAFF_CHANGES.who_submitted)
 	WHERE U_CDOL_STAFF_CHANGES.yearid = ~(gpv.curYearId)
 	~[if.is.a.school] AND U_CDOL_STAFF_CHANGES.schoolid=~(gpv.curSchoolId) [/if]
 	ORDER BY U_CDOL_STAFF_CHANGES.submission_date DESC, U_CDOL_STAFF_CHANGES.last_name
@@ -57,6 +60,7 @@
 		"previous_employer_other":"~(previous_employer_other;JSON)",
 		"submission_date":"~(submission_date;d)",
 		"who_submitted":"~(who_submitted;JSON)",
+		"submittedstaff":"~(submittedstaff;JSON)",
 		"ps_created":"~(ps_created;JSON)",
 		"ad_created":"~(ad_created;JSON)"
 	},

@@ -65,9 +65,9 @@
                 <tbody>
                     <tr ng-repeat="staff in staffListFilt">
                         <td>{{staff.last_name}}, {{staff.first_name}}</td>
-                        <td>{{staff.schoolid}}</td>
+                        <td>{{staff.schname}}</td>
                         <td>{{staff.staff_type}}</td>
-                        <td>{{staff.who_submitted}}</td>
+                        <td>{{staff.submittedstaff}}</td>
                         <td>{{staff.submission_date}}</td>
                         <td class="checkTD stuchk"><input type="checkbox" value="1" class="stuMailCol"
                                 ng-if="staff.stockemail" data-data="{{staff.stockemail}}" ng-model="staff.stuChk"
