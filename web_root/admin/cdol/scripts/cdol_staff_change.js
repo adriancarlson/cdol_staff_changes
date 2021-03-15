@@ -9,6 +9,8 @@ require(['angular', 'components/shared/index'], function (angular) {
 			$scope.newStaffTitle = '';
 			$scope.newStaffFirstName = '';
 			$scope.newStaffLastName = '';
+			$scope.curSchoolId = $attrs.ngCurSchoolId;
+			$scope.curYearId = $attrs.ngCurYearId;
 
 			$scope.getStaffResults = function () {
 				console.log('getStaffResults ran');

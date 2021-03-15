@@ -2,19 +2,21 @@
 <html>
 
     <head>
-        <title>Staff Change List</title>
+        <title>New Staff Submissions</title>
         ~[wc:commonscripts]
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
         <script type="text/javascript" src="/admin/cdol/scripts/cdol_staff_change.js"></script>
     </head>
 
-    <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl" ng-init="getStaffResults()" ng-cloak>
+    <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl" ng-init="getStaffResults()" ng-cloak
+        ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)">
         ~[wc:admin_header_css]
-        Staff Change List
+        New Staff Submissions
         ~[wc:admin_navigation_css]
-        <h1>Staff Change List</h1>
-        <p>Test: {{newStaffTempName}}</p>
+        <h1>New Staff Submissions</h1>
+        <p>Cur School : {{curSchoolId}}</p>
+        <p>Cur Year : {{curYearId}}</p>
         ~[wc:admin_footer_css]
     </body>
 
