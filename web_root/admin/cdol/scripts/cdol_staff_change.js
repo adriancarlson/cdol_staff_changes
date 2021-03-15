@@ -13,9 +13,22 @@ require(['angular', 'components/shared/index'], function (angular) {
 			$scope.curYearId = $attrs.ngCurYearId;
 
 			$scope.getStaffResults = function () {
-				console.log('getStaffResults ran');
-				console.log($scope.curSchoolId);
-				console.log($scope.curYearId);
+				loadingDialog();
+				$http({
+					url: '/admin/cdol/forms/getStaffChanges.json',
+					method: 'GET',
+					params: { curSchoolId: $scope.curSchoolId, curYearId: $scope.curYearId },
+				}).then(
+					function successCallback(response) {
+						$scope.staffList = response.data;
+						$scope.staffList.pop();
+						closeLoading();
+					},
+					function errorCallback(response) {
+						alert('Error Loading Data');
+						closeLoading();
+					},
+				);
 			};
 		},
 	]);
