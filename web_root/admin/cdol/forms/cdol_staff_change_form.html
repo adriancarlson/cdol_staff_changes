@@ -53,7 +53,7 @@
                 </div>
                 <div>
                     <div>
-                        <label>Personal Email</label>
+                        <label>Personal Email (for communication in the summer and for trainings)</label>
                         <input name="[U_CDOL_STAFF_CHANGES]personal_email" type="email" value=""
                             placeholder="NewStaff@email.com">
                     </div>
@@ -103,6 +103,40 @@
                             [/tlist_sql]
                             <option value="New">New Position</option>
                         </select>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label>Has <span
+                                ng-show="newStaffTitle =='' &&newStaffFirstName =='' && newStaffLastName ==''">{{newStaffTempName}}</span>
+                            {{newStaffTitle}} {{newStaffFirstName}} {{newStaffLastName}} previously worked for
+                            ~(schoolname) or another Diocese of Lincoln School?</label>
+                        <select name="[U_CDOL_STAFF_CHANGES]previous" ng-model="previous">
+                            <option></option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div ng-show="previous === 1">
+                    <div>
+                        <label>Where was <span
+                                ng-show="newStaffTitle =='' &&newStaffFirstName =='' && newStaffLastName ==''">{{newStaffTempName}}</span>
+                            {{newStaffTitle}} {{newStaffFirstName}} {{newStaffLastName}} previously employed?</label>
+                        <select name="[U_CDOL_STAFF_CHANGES]previous_employer" ng-model="previous_employer">
+                            <option></option>
+                            ~[tlist_sql;SELECT SCHOOLS.School_number, SCHOOLS.name, SCHOOLS.SchoolCategoryCodesetID
+                            FROM SCHOOLS
+                            WHERE SCHOOLS.School_number NOT IN (888888,999999)
+                            ORDER BY schools.name;]
+                            <option value="~(schnum)">~(schname)</option>
+                            [/tlist_sql]
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div ng-show="previous_employer == Other">
+                        <label>Please type previous employer</label>
+                        <input name="[U_CDOL_STAFF_CHANGES]previous_employer_other" type="text" value="">
                     </div>
                 </div>
                 <div class="button-row"><input type="hidden" name="ac" value="prim" />

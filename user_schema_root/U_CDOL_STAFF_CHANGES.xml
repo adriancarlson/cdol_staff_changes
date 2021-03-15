@@ -15,6 +15,9 @@
         <field name="position" type="String" length="100" />
         <field name="replacing" type="String" length="100" />
         <field name="start_date" type="Date" />
+        <field name="previous" type="Boolean" />
+        <field name="previous_employer" type="String" length="100" />
+        <field name="previous_employer_other" type="String" length="100" />
         <field name="submission_date" type="Date" />
         <field name="who_submitted" type="Integer" />
         <field name="ps_created" type="Boolean" />
