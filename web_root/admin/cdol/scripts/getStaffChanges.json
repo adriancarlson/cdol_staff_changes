@@ -32,20 +32,20 @@
 		"schoolid":"~(schoolid)",
 		"yearid":"~(yearid)",
 		"title":"~(title;JSON)",
-		"first_name":"~(first_name;JSON)"
-		"middle_name":"~(middle_name;JSON)"
-		"preferred_name":"~(preferred_name;JSON)"
-		"gender":"~(gender;JSON)"
-		"personal_email":"~(personal_email;JSON)"
-		"staff_type":"~(staff_type;JSON)"
-		"position":"~(position;JSON)"
-		"start_date":"~(start_date)"
-		"previous":"~(previous;JSON)"
-		"previous_employer":"~(previous_employer;JSON)"
-		"previous_employer_other":"~(previous_employer_other;JSON)"
-		"submission_date":"~(submission_date)"
-		"who_submitted":"~(who_submitted;JSON)"
-		"ps_created":"~(ps_created;JSON)"
+		"first_name":"~(first_name;JSON)",
+		"middle_name":"~(middle_name;JSON)",
+		"preferred_name":"~(preferred_name;JSON)",
+		"gender":"~(gender;JSON)",
+		"personal_email":"~(personal_email;JSON)",
+		"staff_type":"~(staff_type;JSON)",
+		"position":"~(position;JSON)",
+		"start_date":"~(start_date)",
+		"previous":"~(previous;JSON)",
+		"previous_employer":"~(previous_employer;JSON)",
+		"previous_employer_other":"~(previous_employer_other;JSON)",
+		"submission_date":"~(submission_date)",
+		"who_submitted":"~(who_submitted;JSON)",
+		"ps_created":"~(ps_created;JSON)",
 		"ad_created":"~(ad_created;JSON)"
 	},
 [/tlist_sql]
