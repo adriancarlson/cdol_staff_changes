@@ -64,7 +64,8 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="staff in staffListFilt">
-                        <td>{{staff.last_name}}, {{staff.first_name}}</td>
+                        <td><a href="/admin/cdol/forms/cdol_staff_change_form.html?id={{staff.staffid}}">{{staff.last_name}},
+                                {{staff.first_name}}</a></td>
                         <td>{{staff.schname}}</td>
                         <td>{{staff.staff_type}}</td>
                         <td>{{staff.submittedstaff}}</td>
