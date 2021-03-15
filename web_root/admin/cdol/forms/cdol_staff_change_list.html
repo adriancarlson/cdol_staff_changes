@@ -7,6 +7,24 @@
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
         <script type="text/javascript" src="/admin/cdol/scripts/cdol_staff_change.js"></script>
+        <style>
+            [ng\:cloak],
+            [ng-cloak],
+            [data-ng-cloak],
+            [x-ng-cloak],
+            .ng-cloak,
+            .x-ng-cloak {
+                display: none !important;
+            }
+
+            .checkTD {
+                border-right: 0 !important;
+            }
+
+            .mailTD {
+                border-left: 0 !important;
+            }
+        </style>
     </head>
 
     <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl" ng-init="getStaffResults()" ng-cloak
@@ -15,7 +33,54 @@
         New Staff Submissions
         ~[wc:admin_navigation_css]
         <h1>New Staff Submissions</h1>
-        <p>Staff List : {{staffList}}</p>
+        <div id=”staffListGrid” data-pss-grid-widget data-data="staffList" data-filtered-data="staffListFilt"
+            data-client-side-pagination="true">
+            <table class="grid">
+                <thead>
+                    <tr>
+                        <th data-pss-sort-fields="last_name|text">Staff Name</th>
+                        <th data-pss-sort-fields="schoolid|number">School</th>
+                        <th data-pss-sort-fields="staff_type|text">Staff Type</th>
+                        <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
+                        <th data-pss-sort-fields="submission_date|date">Submitted date</th>
+                        <th colspan="2">PS Account Created</th>
+                        <th colspan="2">AD Account Created</th>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th colspan="2" class="center"><input type="checkbox" ng-model="selectedStuAll"
+                                ng-click="checkStuAll()" title="Select/Deselect All"
+                                id="selectedStuAll" />Select/Deselect All
+                        </th>
+                        <th colspan="2" class="center"><input type="checkbox" ng-model="selectedParAll"
+                                ng-click="checkParAll()" title="Select/Deselect All"
+                                id="selectedParAll" />Select/Deselect All
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="staff in staffListFilt">
+                        <td>{{staff.last_name}}, {{staff.first_name}}</td>
+                        <td>{{staff.schoolid}}</td>
+                        <td>{{staff.staff_type}}</td>
+                        <td>{{staff.who_submitted}}</td>
+                        <td>{{staff.submission_date}}</td>
+                        <td class="checkTD stuchk"><input type="checkbox" value="1" class="stuMailCol"
+                                ng-if="staff.stockemail" data-data="{{staff.stockemail}}" ng-model="staff.stuChk"
+                                ng-change="notifyStuMaster()" /></td>
+                        <td class="mailTD">{{staff.ps_created}}"</td>
+                        <td class="checkTD"><input type="checkbox" value="1" class="parMailCol"
+                                data-data="{{staff.ad_created}}" ng-model="staff.parChk" value="0"
+                                ng-change="notifyParMaster()" /></td>
+                        <td class="mailTD">{{staff.ad_created}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         ~[wc:admin_footer_css]
     </body>
 
