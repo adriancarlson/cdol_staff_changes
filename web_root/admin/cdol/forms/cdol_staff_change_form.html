@@ -7,6 +7,18 @@
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
         <script type="text/javascript" src="/admin/cdol/scripts/cdol_staff_change.js"></script>
+        <style>
+            .notation {
+                font-weight: normal;
+                font-style: italic;
+
+            }
+
+            .req::after {
+                content: " *";
+                color: red;
+            }
+        </style>
     </head>
 
     <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl" ng-cloak>
@@ -20,12 +32,12 @@
             <div class="fluid-form">
                 <div>
                     <div>
-                        <label>Title</label>
+                        <label class="req">Title</label>
                         <select name="[U_CDOL_STAFF_CHANGES]title" id="selectTitle"
                             ng-model="newStaffTitle">~[x:codesetoptions;codetype=Title;includeblank;value=~([U_CDOL_STAFF_CHANGES]title)]</select>
                     </div>
                     <div>
-                        <label>First Name</label>
+                        <label class="req">First Name</label>
                         <input name="[U_CDOL_STAFF_CHANGES]first_name" type="text" value=""
                             ng-model="newStaffFirstName">
                     </div>
@@ -34,13 +46,13 @@
                         <input name="[U_CDOL_STAFF_CHANGES]middle_name" type="text" value="">
                     </div>
                     <div>
-                        <label>Last Name</label>
+                        <label class="req">Last Name</label>
                         <input name="[U_CDOL_STAFF_CHANGES]last_name" type="text" value="" ng-model="newStaffLastName">
                     </div>
                 </div>
                 <div>
                     <div>
-                        <label>Gender</label>
+                        <label class="req">Gender</label>
                         <select name="[U_CDOL_STAFF_CHANGES]gender" id="selectgender"
                             ng-model="newGender">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]preferred_name)]</select>
                     </div>
@@ -57,14 +69,15 @@
                 </div>
                 <div>
                     <div>
-                        <label>Personal Email (for communication in the summer and for trainings)</label>
+                        <label>Personal Email <span class="notation">(for communication in the summer and for
+                                trainings)</span></label>
                         <input name="[U_CDOL_STAFF_CHANGES]personal_email" type="email" value=""
                             placeholder="NewStaff@email.com">
                     </div>
                 </div>
                 <div>
                     <div>
-                        <label>Staff Type</label>
+                        <label class="req">Staff Type</label>
                         <select name="[U_CDOL_STAFF_CHANGES]staff_type">
                             <option></option>
                             <option value="Teacher">
@@ -77,18 +90,18 @@
                         </select>
                     </div>
                     <div>
-                        <label>Position</label>
+                        <label class="req">Position</label>
                         <input name="[U_CDOL_STAFF_CHANGES]position" type="text" value=""
                             placeholder="Ex: 2nd Grade Teacher, or Principal" style="width: 300px;">
                     </div>
                     <div>
-                        <label>Start Date (can be aproximate)</label>
+                        <label>Start Date <span class="notation">(can be aproximate)</span></label>
                         <input name="[U_CDOL_STAFF_CHANGES]start_date" type="text" value="">
                     </div>
                 </div>
                 <div>
                     <div>
-                        <label>Who is <span
+                        <label class="req">Who is <span
                                 ng-show="newStaffTitle =='' &&newStaffFirstName =='' && newStaffLastName ==''">{{newStaffTempName}}</span>
                             {{newStaffTitle}} {{newStaffFirstName}} {{newStaffLastName}} Replacing?</label>
                         <select name="[U_CDOL_STAFF_CHANGES]replacing">
