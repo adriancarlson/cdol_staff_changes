@@ -50,7 +50,7 @@
                         <label>Preferred Name</label>
                         <input name="[U_CDOL_STAFF_CHANGES]preferred_name" type="text" value="">
                     </div>
-                    <div ng-show="newGender == F">
+                    <div ng-show="newGender === 'F' && (newStaffTitle ==='Mrs.' || newStaffTitle ==='Dr.')">
                         <label>Maiden Name</label>
                         <input name="[U_CDOL_STAFF_CHANGES]maiden_name" type="text" value="">
                     </div>
@@ -82,7 +82,7 @@
                             placeholder="Ex: 2nd Grade Teacher, or Principal" style="width: 300px;">
                     </div>
                     <div>
-                        <label>Start Date</label>
+                        <label>Start Date (can be aproximate)</label>
                         <input name="[U_CDOL_STAFF_CHANGES]start_date" type="text" value="">
                     </div>
                 </div>
@@ -115,14 +115,14 @@
                                 ng-show="newStaffTitle =='' &&newStaffFirstName =='' && newStaffLastName ==''">{{newStaffTempName}}</span>
                             {{newStaffTitle}} {{newStaffFirstName}} {{newStaffLastName}} previously worked for
                             ~(schoolname) or another Diocese of Lincoln School?</label>
-                        <select name="[U_CDOL_STAFF_CHANGES]previous" ng-model="previous">
+                        <select name="[U_CDOL_STAFF_CHANGES]previous" ng-model="newPrevious">
                             <option></option>
                             <option value="1">Yes</option>
                             <option value="0">No</option>
                         </select>
                     </div>
                 </div>
-                <div ng-show="previous === 1">
+                <div ng-show="newPrevious == 1">
                     <div>
                         <label>Where was <span
                                 ng-show="newStaffTitle =='' &&newStaffFirstName =='' && newStaffLastName ==''">{{newStaffTempName}}</span>
@@ -138,9 +138,14 @@
                             <option value="Other">Other</option>
                         </select>
                     </div>
-                    <div ng-show="previous_employer == Other">
+
+                </div>
+                <div ng-show="previous_employer === 'Other'">
+                    <div>
                         <label>Please type previous employer</label>
-                        <input name="[U_CDOL_STAFF_CHANGES]previous_employer_other" type="text" value="">
+                        <input name="[U_CDOL_STAFF_CHANGES]previous_employer_other" type="text" value=""
+                            style="width: 300px;">
+
                     </div>
                 </div>
                 <div class="button-row"><input type="hidden" name="ac" value="prim" />
