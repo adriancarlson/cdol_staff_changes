@@ -43,10 +43,10 @@
                         <th data-pss-sort-fields="staff_type|text">Staff Type</th>
                         <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
                         <th data-pss-sort-fields="submission_date|date">Submitted date</th>
-                        <th colspan="2">PS Account Created</th>
-                        <th colspan="2">AD Account Created</th>
+                        <th>PS Account Created</th>
+                        <th>AD Account Created</th>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <th>&nbsp;</th>
                         <th>&nbsp;</th>
                         <th>&nbsp;</th>
@@ -60,7 +60,7 @@
                                 ng-click="checkParAll()" title="Select/Deselect All"
                                 id="selectedParAll" />Select/Deselect All
                         </th>
-                    </tr>
+                    </tr> -->
                 </thead>
                 <tbody>
                     <tr ng-repeat="staff in staffListFilt">
@@ -69,14 +69,10 @@
                         <td>{{staff.staff_type}}</td>
                         <td>{{staff.submittedstaff}}</td>
                         <td>{{staff.submission_date}}</td>
-                        <td class="checkTD stuchk"><input type="checkbox" value="1" class="stuMailCol"
-                                ng-if="staff.stockemail" data-data="{{staff.stockemail}}" ng-model="staff.stuChk"
-                                ng-change="notifyStuMaster()" /></td>
-                        <td class="mailTD">{{staff.ps_created}}"</td>
-                        <td class="checkTD"><input type="checkbox" value="1" class="parMailCol"
-                                data-data="{{staff.ad_created}}" ng-model="staff.parChk" value="0"
-                                ng-change="notifyParMaster()" /></td>
-                        <td class="mailTD">{{staff.ad_created}}</td>
+                        <td><span ng-show="staff.ps_created === 0">&#10060;</span><span
+                                ng-show="staff.ps_created === 1">&#10004;</span></td>
+                        <td><span ng-show="staff.ad_created === 0">&#10060;</span><span
+                                ng-show="staff.ad_created === 1">&#10004;</span></td>
                     </tr>
                 </tbody>
             </table>
