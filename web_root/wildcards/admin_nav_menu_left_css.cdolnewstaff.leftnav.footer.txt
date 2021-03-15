@@ -1,6 +1,6 @@
 <script type="text/javascript">
 $j(document).ready(function(){
-	$j('ul#left_nav_functions').prev().before('<br>&nbsp;&nbsp;&nbsp;<a href="/admin/cdol/forms/cdol_staff_change_form.html" id="cdolStaffChanges" title="CDOL Staff Changes">Submit Staff Change</a>');
+	$j('ul#left_nav_functions').prev().before('<br>&nbsp;&nbsp;&nbsp;<a href="/admin/cdol/forms/cdol_staff_change_form.html?id=-1" id="cdolStaffChanges" title="CDOL Staff Changes">Submit Staff Change</a>');
 });
 
 </script>

@@ -27,7 +27,7 @@
         ~[wc:admin_navigation_css]
         <h1>Submit Staff Change</h1>
         <form action="cdol_staff_change_confirm.html" method="POST">
-            ~[DirectTable.Select:U_CDOL_STAFF_CHANGES;ID:-1]
+            ~[DirectTable.Select:U_CDOL_STAFF_CHANGES;ID:~(gpv.id)]
             <div id="feedback-message" class="feedback-alert">Please New Spell Staff Name Correctly!</div>
             <div class="fluid-form">
                 <div>
