@@ -146,7 +146,7 @@
                 <div>
                     <div>
                         <label>Next Available Staff ID:</label>
-                        ~[tlist_sql;sselect (max(to_number(teachers.teachernumber))+1)
+                        ~[tlist_sql;select (max(to_number(teachers.teachernumber))+1)
                         from teachers where
                         REGEXP_LIKE(teachers.teachernumber,CHR(94)||'\d+$')]
                         <input name="" mg-model="newStaffID" type="text" value="~(maxTeacherID;t)">[/tlist_sql]
