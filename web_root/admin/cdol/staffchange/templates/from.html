@@ -131,3 +131,16 @@
 
             </div>
         </div>
+        <div class="button-row"><input type="hidden" name="ac" value="prim" />
+            <!--<input type="hidden" name="ac" value="mail">-->
+            ~[submitbutton]
+            <input type="hidden" name="[U_CDOL_STAFF_CHANGES]schoolid" value="~(curschoolid)" />
+            <input type="hidden" name="[U_CDOL_STAFF_CHANGES]yearid" value="~(curyearid)" />
+            <input type="hidden" name="[U_CDOL_STAFF_CHANGES]who_submitted" value="~[x:userid]" />
+            <input type="hidden" name="[U_CDOL_STAFF_CHANGES]submission_date" value="~[short.date]" />
+            <input type="hidden" name="title" value="{{ newStaffTitle }}" />
+            <input type="hidden" name="fname" value="{{ newStaffFirstName }}" />
+            <input type="hidden" name="lname" value="{{ newStaffLastName }}" />
+        </div>
+</form>
+</div>

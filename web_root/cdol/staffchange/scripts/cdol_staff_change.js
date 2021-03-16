@@ -14,7 +14,7 @@ require(['angular', 'components/shared/index'], function (angular) {
 			$scope.pageStatus = 'submit';
 
 			// form directive
-			myApp.directive('changeDirective', function () {
+			myApp.directive('change', function () {
 				return {
 					restrict: 'E',
 					templateUrl: '/admin/cdol/staffchange/templates/cdol_staff_change_form.html',
@@ -22,7 +22,7 @@ require(['angular', 'components/shared/index'], function (angular) {
 				};
 			});
 			//confirm directive
-			myApp.directive('confirmDirective', function () {
+			myApp.directive('confirm', function () {
 				return {
 					restrict: 'E',
 					templateUrl: '/admin/cdol/staffchange/templates/cdol_staff_change_confirm.html',
@@ -30,7 +30,7 @@ require(['angular', 'components/shared/index'], function (angular) {
 				};
 			});
 			//edit directive
-			myApp.directive('editDirective', function () {
+			myApp.directive('edit', function () {
 				return {
 					restrict: 'E',
 					templateUrl: '/admin/cdol/staffchange/templates/cdol_staff_change_edit.html',
