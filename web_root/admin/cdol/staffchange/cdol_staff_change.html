@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Staff Change</title>
+        ~[wc:commonscripts]
+        <link href="/images/css/screen.css" rel="stylesheet" media="screen">
+        <link href="/images/css/print.css" rel="stylesheet" media="print">
+        <script type="text/javascript" src="/admin/cdol/staffchange/scripts/cdol_staff_change.js"></script>
+        <style>
+            .notation {
+                font-weight: normal;
+                font-style: italic;
+
+            }
+
+            .req::after {
+                content: " *";
+                color: red;
+            }
+        </style>
+    </head>
+
+    <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl" ng-cloak>
+        ~[wc:admin_header_css]
+        {{pageStatus}} Staff Change
+        ~[wc:admin_navigation_css]
+        <change-directive ng-show="pageStatus =='submit'"></change-directive>
+        <confirm-directive ng-show="pageStatus =='confirm'"></confirm-directive>
+        <edit-directive ng-show="pageStatus =='edit'"></edit-directive>
+        <div class="button-row"><input type="hidden" name="ac" value="prim" />
+            <!--<input type="hidden" name="ac" value="mail">-->
+            ~[submitbutton]
+            <input type="hidden" name="[U_CDOL_STAFF_CHANGES]schoolid" value="~(curschoolid)" />
+            <input type="hidden" name="[U_CDOL_STAFF_CHANGES]yearid" value="~(curyearid)" />
+            <input type="hidden" name="[U_CDOL_STAFF_CHANGES]who_submitted" value="~[x:userid]" />
+            <input type="hidden" name="[U_CDOL_STAFF_CHANGES]submission_date" value="~[short.date]" />
+            <input type="hidden" name="title" value="{{ newStaffTitle }}" />
+            <input type="hidden" name="fname" value="{{ newStaffFirstName }}" />
+            <input type="hidden" name="lname" value="{{ newStaffLastName }}" />
+            <!--<input type="hidden" name="include" value="{{ tinclude }}" />-->
+            <!--<input type="hidden" name="from" value="~[x:useremail]" size=35>-->
+            <!--<input type="hidden" name="mailto" value="adrian-carlson@cdolinc.net" size=35>-->
+            <!--<input type="hidden" name="subject"-->
+            <!--    value="Elementary Transcript Questionnaire Submission from ~[x:username;firstlast] (~(schoolabbr)) | ~[x:useremail]"-->
+            <!--    size=35>-->
+            <!--<input type="hidden" name="body" id="message"-->
+            <!--    value="~(schoolname) | Reporting Terms : {{ tterm }} | Q4 included : {{ tinclude }}">-->
+        </div>
+        </form>
+        </div>
+        ~[wc:admin_footer_css]
+    </body>
+
+</html>

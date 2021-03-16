@@ -1,0 +1,133 @@
+<h1>{{pageStatus}} Staff Change</h1>
+<form action="cdol_staff_change_confirm.html" method="POST">
+    ~[DirectTable.Select:U_CDOL_STAFF_CHANGES;ID:-1]
+    <div id="feedback-message" class="feedback-alert">Please Spell New Staff Name Correctly!</div>
+    <div class="fluid-form">
+        <div>
+            <div>
+                <label class="req">Title</label>
+                <select name="[U_CDOL_STAFF_CHANGES]title" id="selectTitle"
+                    ng-model="newStaffTitle">~[x:codesetoptions;codetype=Title;includeblank;value=~([U_CDOL_STAFF_CHANGES]title)]</select>
+            </div>
+            <div>
+                <label class="req">First Name</label>
+                <input name="[U_CDOL_STAFF_CHANGES]first_name" type="text" value="" ng-model="newStaffFirstName">
+            </div>
+            <div>
+                <label>Middle Name</label>
+                <input name="[U_CDOL_STAFF_CHANGES]middle_name" type="text" value="">
+            </div>
+            <div>
+                <label class="req">Last Name</label>
+                <input name="[U_CDOL_STAFF_CHANGES]last_name" type="text" value="" ng-model="newStaffLastName">
+            </div>
+        </div>
+        <div>
+            <div>
+                <label class="req">Gender</label>
+                <select name="[U_CDOL_STAFF_CHANGES]gender" id="selectgender"
+                    ng-model="newGender">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]preferred_name)]</select>
+            </div>
+        </div>
+        <div>
+            <div>
+                <label>Preferred Name</label>
+                <input name="[U_CDOL_STAFF_CHANGES]preferred_name" type="text" value="">
+            </div>
+            <div ng-show="newGender === 'F' && (newStaffTitle ==='Mrs.' || newStaffTitle ==='Dr.')">
+                <label>Maiden Name</label>
+                <input name="[U_CDOL_STAFF_CHANGES]maiden_name" type="text" value="">
+            </div>
+        </div>
+        <div>
+            <div>
+                <label>Personal Email <span class="notation">(for communication in the summer and for
+                        trainings)</span></label>
+                <input name="[U_CDOL_STAFF_CHANGES]personal_email" type="email" value=""
+                    placeholder="NewStaff@email.com">
+            </div>
+        </div>
+        <div>
+            <div>
+                <label class="req">Staff Type</label>
+                <select name="[U_CDOL_STAFF_CHANGES]staff_type">
+                    <option></option>
+                    <option value="Teacher">
+                        Teacher
+                    </option>
+                    <option value="Staff">
+                        Staff
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label class="req">Position</label>
+                <input name="[U_CDOL_STAFF_CHANGES]position" type="text" value=""
+                    placeholder="Ex: 2nd Grade Teacher, or Principal" style="width: 300px;">
+            </div>
+            <div>
+                <label>Start Date <span class="notation">(can be aproximate)</span></label>
+                <input name="[U_CDOL_STAFF_CHANGES]start_date" type="text" value="">
+            </div>
+        </div>
+        <div>
+            <div>
+                <label class="req">Who is <span
+                        ng-show="newStaffTitle =='' &&newStaffFirstName =='' && newStaffLastName ==''">{{newStaffTempName}}</span>
+                    {{newStaffTitle}} {{newStaffFirstName}} {{newStaffLastName}} Replacing?</label>
+                <select name="[U_CDOL_STAFF_CHANGES]replacing">
+                    <option></option>
+                    ~[tlist_sql;SELECT
+                    users.dcid,
+                    users.first_name,
+                    users.last_name
+                    FROM SCHOOLSTAFF
+                    inner join users
+                    on users.dcid = schoolstaff.users_dcid
+                    WHERE schoolstaff.schoolid = ~(curschoolid)
+                    AND schoolstaff.status =1
+                    Order BY users.last_name , users.first_name]
+                    <option value="~(dcid)">~(first) ~(last)</option>
+                    [/tlist_sql]
+                    <option value="New">New Position</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <div>
+                <label>Has <span
+                        ng-show="newStaffTitle =='' &&newStaffFirstName =='' && newStaffLastName ==''">{{newStaffTempName}}</span>
+                    {{newStaffTitle}} {{newStaffFirstName}} {{newStaffLastName}} previously worked for
+                    ~(schoolname) or another Diocese of Lincoln School?</label>
+                <select name="[U_CDOL_STAFF_CHANGES]previous" ng-model="newPrevious">
+                    <option></option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+        </div>
+        <div ng-show="newPrevious == 1">
+            <div>
+                <label>Where was <span
+                        ng-show="newStaffTitle =='' &&newStaffFirstName =='' && newStaffLastName ==''">{{newStaffTempName}}</span>
+                    {{newStaffTitle}} {{newStaffFirstName}} {{newStaffLastName}} previously employed?</label>
+                <select name="[U_CDOL_STAFF_CHANGES]previous_employer" ng-model="previous_employer">
+                    <option></option>
+                    ~[tlist_sql;SELECT SCHOOLS.School_number, SCHOOLS.name, SCHOOLS.SchoolCategoryCodesetID
+                    FROM SCHOOLS
+                    WHERE SCHOOLS.School_number NOT IN (888888,999999)
+                    ORDER BY schools.name;]
+                    <option value="~(schnum)">~(schname)</option>
+                    [/tlist_sql]
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+        </div>
+        <div ng-show="previous_employer === 'Other'">
+            <div>
+                <label>Please type previous employer</label>
+                <input name="[U_CDOL_STAFF_CHANGES]previous_employer_other" type="text" value="" style="width: 300px;">
+
+            </div>
+        </div>
