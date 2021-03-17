@@ -1,6 +1,6 @@
-require(['angular', 'components/shared/index'], function (angular) {
-	var myApp = angular.module('cdolStaffApp', ['powerSchoolModule']);
-	myApp.controller('cdolStaffAppCtrl', [
+define(['angular', 'components/shared/index'], function (angular) {
+	var cdolStaffApp = angular.module('cdolStaffApp', ['powerSchoolModule']);
+	cdolStaffApp.controller('cdolStaffAppCtrl', [
 		'$scope',
 		'$http',
 		'$attrs',
@@ -12,31 +12,6 @@ require(['angular', 'components/shared/index'], function (angular) {
 			$scope.curSchoolId = $attrs.ngCurSchoolId;
 			$scope.curYearId = $attrs.ngCurYearId;
 			$scope.pageStatus = 'Submit';
-
-			// form directive
-			myApp.directive('change', function () {
-				return {
-					restrict: 'E',
-					templateUrl: '/admin/cdol/staffchange/templates/form.html',
-					replace: true,
-				};
-			});
-			//confirm directive
-			myApp.directive('confirm', function () {
-				return {
-					restrict: 'E',
-					templateUrl: '/admin/cdol/staffchange/templates/confirm.html',
-					replace: true,
-				};
-			});
-			//edit directive
-			myApp.directive('edit', function () {
-				return {
-					restrict: 'E',
-					templateUrl: '/admin/cdol/staffchange/templates/edit.html',
-					replace: true,
-				};
-			});
 
 			// list page controller
 			$scope.getStaffResults = function () {
@@ -59,5 +34,15 @@ require(['angular', 'components/shared/index'], function (angular) {
 			};
 		},
 	]);
+
+	//form directive
+	cdolStaffApp.directive('formDirective', function () {
+		return {
+			restrict: 'E',
+			templateUrl: '/admin/cdol/staffchange/templates/form.html',
+						// replace: true,
+		};
+	});
+
 	angular.bootstrap($j('#cdolStaffAppDiv'), ['cdolStaffApp']);
 });

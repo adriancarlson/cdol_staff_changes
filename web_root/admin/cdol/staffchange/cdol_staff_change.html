@@ -6,7 +6,7 @@
         ~[wc:commonscripts]
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
-        <script type="text/javascript" src="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]"></script>
+        <!--<script type="text/javascript" src="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]"></script>-->
         <style>
             .notation {
                 font-weight: normal;
@@ -21,14 +21,14 @@
         </style>
     </head>
 
-    <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl" ng-cloak>
+    <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl"
+        data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]" data-module-name="cdolStaffApp"
+        ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)" ng-cloak>
         ~[wc:admin_header_css]
         {{pageStatus}} Staff Change
         ~[wc:admin_navigation_css]
         <h1>{{pageStatus}} Staff Change</h1>
-        <change></change>
-        <confirm ng-show="pageStatus =='Confirm'"></confirm>
-        <edit ng-show="pageStatus =='Edit'"></edit>
+        <form-directive></form-directive>
 
 
         ~[wc:admin_footer_css]
