@@ -23,7 +23,8 @@
 
     <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl"
         data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]" data-module-name="cdolStaffApp"
-        ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)" ng-status="~(gpv.status)" ng-cloak>
+        ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)" ng-status="~(gpv.status)"
+        ng-cur-user-id="~[x:userid]" ng-cur-date="~[short.date]" ng-cloak>
         ~[wc:admin_header_css]
         {{pageStatus}} Staff Change
         ~[wc:admin_navigation_css]
