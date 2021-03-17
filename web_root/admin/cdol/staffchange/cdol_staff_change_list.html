@@ -6,6 +6,7 @@
         ~[wc:commonscripts]
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
+        <script type="text/javascript" src="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]"></script>
         <style>
             [ng\:cloak],
             [ng-cloak],
@@ -26,9 +27,8 @@
         </style>
     </head>
 
-    <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl"
-        data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]" data-module-name="cdolStaffApp"
-        ng-init="getStaffResults()" ng-cloak ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)">
+    <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl" ng-init="getStaffResults()" ng-cloak
+        ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)">
         ~[wc:admin_header_css]
         New Staff Submissions
         ~[wc:admin_navigation_css]
