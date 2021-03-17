@@ -27,9 +27,9 @@
         ~[wc:admin_header_css]
         {{pageStatus}} Staff Change
         ~[wc:admin_navigation_css]
-        <form-directive></form-directive>
-        <edit-directive></edit-directive>
-        <confirm-directive></confirm-directive>
+        <form-directive ng-show="pageStatus =='Submit'"></form-directive>
+        <edit-directive ng-show="pageStatus =='Edit'"></edit-directive>
+        <confirm-directive ng-show="pageStatus =='Confirm'"></confirm-directive>
         ~[wc:admin_footer_css]
     </body>
 
