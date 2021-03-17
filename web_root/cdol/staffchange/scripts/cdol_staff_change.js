@@ -17,7 +17,7 @@ require(['angular', 'components/shared/index'], function (angular) {
 			cdolStaffApp.directive('change', function () {
 				return {
 					restrict: 'E',
-					templateUrl: '/admin/cdol/staffchange/templates/cdol_staff_change_form.html',
+					templateUrl: '/admin/cdol/staffchange/templates/form.html',
 					replace: true,
 				};
 			});
@@ -25,7 +25,7 @@ require(['angular', 'components/shared/index'], function (angular) {
 			cdolStaffApp.directive('confirm', function () {
 				return {
 					restrict: 'E',
-					templateUrl: '/admin/cdol/staffchange/templates/cdol_staff_change_confirm.html',
+					templateUrl: '/admin/cdol/staffchange/templates/confirm.html',
 					replace: true,
 				};
 			});
@@ -33,7 +33,7 @@ require(['angular', 'components/shared/index'], function (angular) {
 			cdolStaffApp.directive('edit', function () {
 				return {
 					restrict: 'E',
-					templateUrl: '/admin/cdol/staffchange/templates/cdol_staff_change_edit.html',
+					templateUrl: '/admin/cdol/staffchange/templates/edit.html',
 					replace: true,
 				};
 			});
