@@ -43,6 +43,22 @@ define(['angular', 'components/shared/index'], function (angular) {
 			// replace: true,
 		};
 	});
+	//edit directive
+	cdolStaffApp.directive('editDirective', function () {
+		return {
+			restrict: 'E',
+			templateUrl: '/admin/cdol/staffchange/templates/edit.html',
+			// replace: true,
+		};
+	});
+	//confirm directive
+	cdolStaffApp.directive('confirmDirective', function () {
+		return {
+			restrict: 'E',
+			templateUrl: '/admin/cdol/staffchange/templates/confirm.html',
+			// replace: true,
+		};
+	});
 
 	angular.bootstrap($j('#cdolStaffAppDiv'), ['cdolStaffApp']);
 });
