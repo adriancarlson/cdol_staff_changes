@@ -1,6 +1,6 @@
 require(['angular', 'components/shared/index'], function (angular) {
-	var myApp = angular.module('cdolStaffApp', ['powerSchoolModule']);
-	myApp.controller('cdolStaffAppCtrl', [
+	var cdolStaffApp = angular.module('cdolStaffApp', ['powerSchoolModule']);
+	cdolStaffApp.controller('cdolStaffAppCtrl', [
 		'$scope',
 		'$http',
 		'$attrs',
@@ -14,7 +14,7 @@ require(['angular', 'components/shared/index'], function (angular) {
 			$scope.pageStatus = 'Submit';
 
 			// form directive
-			myApp.directive('change', function () {
+			cdolStaffApp.directive('change', function () {
 				return {
 					restrict: 'E',
 					templateUrl: '/admin/cdol/staffchange/templates/cdol_staff_change_form.html',
@@ -22,7 +22,7 @@ require(['angular', 'components/shared/index'], function (angular) {
 				};
 			});
 			//confirm directive
-			myApp.directive('confirm', function () {
+			cdolStaffApp.directive('confirm', function () {
 				return {
 					restrict: 'E',
 					templateUrl: '/admin/cdol/staffchange/templates/cdol_staff_change_confirm.html',
@@ -30,7 +30,7 @@ require(['angular', 'components/shared/index'], function (angular) {
 				};
 			});
 			//edit directive
-			myApp.directive('edit', function () {
+			cdolStaffApp.directive('edit', function () {
 				return {
 					restrict: 'E',
 					templateUrl: '/admin/cdol/staffchange/templates/cdol_staff_change_edit.html',
