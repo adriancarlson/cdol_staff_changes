@@ -11,7 +11,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.newStaffLastName = '';
 			$scope.curSchoolId = $attrs.ngCurSchoolId;
 			$scope.curYearId = $attrs.ngCurYearId;
-			$scope.pageStatus = 'Submit';
+			$scope.pageStatus = $attrs.ngStatus;
 
 			// list page controller
 			$scope.getStaffResults = function () {
@@ -40,7 +40,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 		return {
 			restrict: 'E',
 			templateUrl: '/admin/cdol/staffchange/templates/form.html',
-						// replace: true,
+			// replace: true,
 		};
 	});
 
