@@ -11,7 +11,7 @@ require(['angular', 'components/shared/index'], function (angular) {
 			$scope.newStaffLastName = '';
 			$scope.curSchoolId = $attrs.ngCurSchoolId;
 			$scope.curYearId = $attrs.ngCurYearId;
-			$scope.pageStatus = 'submit';
+			$scope.pageStatus = 'Submit';
 
 			// form directive
 			myApp.directive('change', function () {
