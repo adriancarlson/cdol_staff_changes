@@ -72,7 +72,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 						for (var p in obj) str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
 						return str.join('&');
 					},
-					data: $scope.newStaff,
+					data: { iid: $scope.newStaff.iid, schoolid: $scope.newStaff.schoolid, yearid: $scope.newStaff.yearid, first_name: $scope.newStaff.first_name },
 				}).then(
 					function successCallback(response) {
 						closeLoading();
