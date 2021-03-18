@@ -66,7 +66,12 @@ define(['angular', 'components/shared/index'], function (angular) {
 				$http({
 					url: '/admin/cdol/staffchange/data/staffchangerec.html',
 					method: 'POST',
-					contentType: 'application/x-www-form-urlencoded',
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+					transformRequest: function (obj) {
+						var str = [];
+						for (var p in obj) str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+						return str.join('&');
+					},
 					data: $scope.newStaff,
 				}).then(
 					function successCallback(response) {
