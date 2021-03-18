@@ -38,6 +38,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 				who_submitted: $attrs.ngCurUserID,
 				ps_created: '',
 				ad_created: '',
+				ac: 'prim',
 			};
 
 			// ajax call to list records in staff U_CDOL_STAFF_CHANGES table
