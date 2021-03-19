@@ -61,6 +61,10 @@ define(['angular', 'components/shared/index'], function (angular) {
 				);
 			};
 
+			$scope.sendEmail = function () {
+				console.log('sendEmail Function Ran');
+			};
+
 			// submitting new staff change record
 			$scope.submitStaffChange = function () {
 				loadingDialog();
