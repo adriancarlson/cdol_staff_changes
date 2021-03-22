@@ -69,10 +69,9 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.getStaffResults = function () {
 				loadingDialog();
 				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $attrs.ngCurYearId }).then(function (staffChangeData) {
-					$scope.staffChangeData = staffChangeData;
+					$scope.staffList = staffChangeData;
 				});
 				closeLoading();
-				console.log($scope.staffChangeData);
 			};
 
 			$scope.sendEmail = function () {
