@@ -42,7 +42,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 				ac: 'prim',
 			};
 			// function to get PQ results
-			function getPowerQueryResults(endpoint, data) {
+			$scope.getPowerQueryResults = function (endpoint, data) {
 				var deferredResponse = $q.defer();
 				$http({
 					url: '/ws/schema/query/' + endpoint,
@@ -63,16 +63,16 @@ define(['angular', 'components/shared/index'], function (angular) {
 					},
 				);
 				return deferredResponse.promise;
-			}
+			};
 
 			// ajax call to list records in staff U_CDOL_STAFF_CHANGES table
 			$scope.getStaffResults = function () {
 				loadingDialog();
-				getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $attrs.ngCurYearId }).then(function (staffChangeData) {
-					console.log(staffChangeData);
-					$scope.activityList = staffChangeData;
+				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $attrs.ngCurYearId }).then(function (staffChangeData) {
+					$scope.staffChangeData = staffChangeData;
 				});
 				closeLoading();
+				console.log($scope.staffChangeData);
 			};
 
 			$scope.sendEmail = function () {
