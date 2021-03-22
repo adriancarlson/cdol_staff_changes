@@ -4,7 +4,8 @@ define(['angular', 'components/shared/index'], function (angular) {
 		'$scope',
 		'$http',
 		'$attrs',
-		function ($scope, $http, $attrs) {
+		'$q',
+		function ($scope, $http, $attrs, $q) {
 			$scope.newStaffTempName = 'the New Staff Member';
 			// $scope.newStaffTitle = '';
 			// $scope.newStaffFirstName = '';
