@@ -68,7 +68,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			// ajax call to list records in staff U_CDOL_STAFF_CHANGES table
 			$scope.getStaffResults = function () {
 				loadingDialog();
-				getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', { curSchoolId: $attrs.ngCurSchoolId, curYearId: $attrs.ngCurYearId }).then(function (staffChangeData) {
+				getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $attrs.ngCurYearId }).then(function (staffChangeData) {
 					console.log(staffChangeData);
 					$scope.activityList = staffChangeData;
 				});
