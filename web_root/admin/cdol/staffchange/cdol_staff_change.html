@@ -36,33 +36,10 @@
         {{pageStatus}} Staff Change
 
         ~[wc:admin_navigation_css]
-
-        <form action="/~[self.page]?status=Confirm" method="POST" id="updForm">
-            ~[DirectTable.Select:U_CDOL_STAFF_CHANGES;ID:-1]
-            <form-directive ng-show="pageStatus =='Submit'"></form-directive>
-            <edit-directive ng-show="pageStatus =='Edit'"></edit-directive>
-            <confirm-directive ng-show="pageStatus =='Confirm'"></confirm-directive>
-            <div>{{newStaff}}</div>
-            <div class="button-row"><input type="hidden" name="ac" value="prim" />
-                <!--<input type="hidden" name="ac" value="mail">-->
-                <button type="submit" id="btnSubmit" ng-click="sendEmail()" name="btnSubmit">Submit</button>
-                <input type="hidden" name="[U_CDOL_STAFF_CHANGES]schoolid" value="~(curschoolid)" />
-                <input type="hidden" name="[U_CDOL_STAFF_CHANGES]yearid" value="~(curyearid)" />
-                <input type="hidden" name="[U_CDOL_STAFF_CHANGES]who_submitted" value="~[x:userid]" />
-                <input type="hidden" name="[U_CDOL_STAFF_CHANGES]submission_date" value="~[short.date]" />
-                <!-- <input type="hidden" name="title" value="{{ newStaffTitle }}" />
-                <input type="hidden" name="fname" value="{{ newStaffFirstName }}" />
-                <input type="hidden" name="lname" value="{{ newStaffLastName }}" /> -->
-                <!--<input type="hidden" name="include" value="{{ tinclude }}" />-->
-                <!--<input type="hidden" name="from" value="~[x:useremail]" size=35>-->
-                <!--<input type="hidden" name="mailto" value="adrian-carlson@cdolinc.net" size=35>-->
-                <!--<input type="hidden" name="subject"-->
-                <!--    value="Elementary Transcript Questionnaire Submission from ~[x:username;firstlast] (~(schoolabbr)) | ~[x:useremail]"-->
-                <!--    size=35>-->
-                <!--<input type="hidden" name="body" id="message"-->
-                <!--    value="~(schoolname) | Reporting Terms : {{ tterm }} | Q4 included : {{ tinclude }}">-->
-            </div>
-        </form>
+        <form-directive ng-show="pageStatus =='Submit'"></form-directive>
+        <edit-directive ng-show="pageStatus =='Edit'"></edit-directive>
+        <confirm-directive ng-show="pageStatus =='Confirm'"></confirm-directive>
+        <div>{{newStaff}}</div>
         ~[wc:admin_footer_css]
     </body>
 

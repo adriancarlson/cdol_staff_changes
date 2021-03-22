@@ -17,7 +17,6 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.pageStatus = $attrs.ngStatus;
 
 			$scope.newStaff = {
-				iid: '-1',
 				schoolid: $attrs.ngCurSchoolId,
 				yearid: $attrs.ngCurYearId,
 				title: '',
@@ -39,7 +38,6 @@ define(['angular', 'components/shared/index'], function (angular) {
 				who_submitted: $attrs.ngCurUserID,
 				ps_created: '',
 				ad_created: '',
-				ac: 'prim',
 			};
 			//@param {string} dt (mm/dd/yyyy)
 			//@return {string} (yyyy-mm-dd)
@@ -99,28 +97,54 @@ define(['angular', 'components/shared/index'], function (angular) {
 			};
 
 			// submitting new staff change record
+			var newRecord = {
+				tables: {
+					U_CDOL_STAFF_CHANGES: {
+						schoolid: $scope.newStaff.schoolid,
+						yearid: $scope.newStaff.yearid,
+						title: $scope.newStaff.title,
+						first_name: $scope.newStaff.first_name,
+						middle_name: $scope.newStaff.middle_name,
+						last_name: $scope.newStaff.last_name,
+						preferred_name: $scope.newStaff.preferred_name,
+						maiden_name: $scope.newStaff.maiden_name,
+						gender: $scope.newStaff.gender,
+						personal_email: $scope.newStaff.personal_email,
+						staff_type: $scope.newStaff.staff_type,
+						position: $scope.newStaff.position,
+						replacing: $scope.newStaff.replacing,
+						start_date: formatDateForApi($scope.newStaff.start_date),
+						previous: $scope.newStaff.previous,
+						previous_employer: $scope.newStaff.previous_employer,
+						previous_employer_other: $scope.newStaff.previous_employer_other,
+						submission_date: formatDateForApi($scope.newStaff.submission_date),
+						who_submitted: $scope.newStaff.who_submitted,
+						ps_created: $scope.newStaff.ps_created,
+						ad_created: $scope.newStaff.ad_created,
+					},
+				},
+			};
+
 			$scope.submitStaffChange = function () {
 				loadingDialog();
 				$http({
-					url: '/admin/cdol/staffchange/data/staffchangerec.html',
+					url: '/ws/schema/table/U_CDOL_STAFF_CHANGES',
 					method: 'POST',
-					headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-					transformRequest: function (obj) {
-						var str = [];
-						for (var p in obj) str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
-						return str.join('&');
+					data: newRecord,
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
 					},
-					data: $scope.newStaff,
-				}).then(
-					function successCallback(response) {
+				}).then(function (response) {
+					if (response.data.result[0].status == 'SUCCESS') {
+						console.log(response);
 						closeLoading();
 						$scope.pageStatus = 'Confirm';
-					},
-					function errorCallback(response) {
-						alert('Error Loading Data');
+					} else {
+						psAlert({ message: 'There was an error submitting the record. Please contact The Ed Tech office', title: 'Staff Change Submission Error' });
 						closeLoading();
-					},
-				);
+					}
+				});
 			};
 		},
 	]);
