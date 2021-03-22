@@ -40,25 +40,38 @@ define(['angular', 'components/shared/index'], function (angular) {
 				ad_created: '',
 				ac: 'prim',
 			};
-
-			// ajax call to list records in staff U_CDOL_STAFF_CHANGES table
-			$scope.getStaffResults = function () {
-				loadingDialog();
+			// function to get PQ results
+			function getPowerQueryResults(endpoint, data) {
+				var deferredResponse = $q.defer();
 				$http({
-					url: '/admin/cdol/staffchange/data/getStaffChanges.json',
-					method: 'GET',
-					params: { curSchoolId: $attrs.ngCurSchoolId, curYearId: $attrs.ngCurYearId },
+					url: '/ws/schema/query/' + endpoint,
+					method: 'POST',
+					data: data || {},
+					params: { pagesize: 0 },
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
 				}).then(
 					function successCallback(response) {
-						$scope.staffList = response.data;
-						$scope.staffList.pop();
-						closeLoading();
+						deferredResponse.resolve(response.data.record || []);
 					},
 					function errorCallback(response) {
 						alert('Error Loading Data');
 						closeLoading();
 					},
 				);
+				return deferredResponse.promise;
+			}
+
+			// ajax call to list records in staff U_CDOL_STAFF_CHANGES table
+			$scope.getStaffResults = function () {
+				loadingDialog();
+				getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', { curSchoolId: $attrs.ngCurSchoolId, curYearId: $attrs.ngCurYearId }).then(function (staffChangeData) {
+					console.log(staffChangeData);
+					$scope.activityList = staffChangeData;
+				});
+				closeLoading();
 			};
 
 			$scope.sendEmail = function () {
