@@ -41,6 +41,26 @@ define(['angular', 'components/shared/index'], function (angular) {
 				ad_created: '',
 				ac: 'prim',
 			};
+			//@param {string} dt (mm/dd/yyyy)
+			//@return {string} (yyyy-mm-dd)
+			function formatDateForApi(dt) {
+				var dateParts = dt.split('/');
+				var m = dateParts[0];
+				var d = dateParts[1];
+				var y = dateParts[2];
+				return y + '-' + m + '-' + d;
+			}
+
+			//@param {string} dt (yyyy-dd-mm)
+			//@return {string} (mm/dd/yyyy)
+			function formatDateFromApi(dt) {
+				var dateParts = dt.split('-');
+				var y = dateParts[0];
+				var m = dateParts[1];
+				var d = dateParts[2];
+				return m + '/' + d + '/' + y;
+			}
+
 			// function to get PQ results
 			$scope.getPowerQueryResults = function (endpoint, data) {
 				var deferredResponse = $q.defer();
