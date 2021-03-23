@@ -97,36 +97,38 @@ define(['angular', 'components/shared/index'], function (angular) {
 			};
 
 			// submitting new staff change record
-			var newRecord = {
-				tables: {
-					U_CDOL_STAFF_CHANGES: {
-						schoolid: $scope.newStaff.schoolid,
-						yearid: $scope.newStaff.yearid,
-						title: $scope.newStaff.title,
-						first_name: $scope.newStaff.first_name,
-						middle_name: $scope.newStaff.middle_name,
-						last_name: $scope.newStaff.last_name,
-						preferred_name: $scope.newStaff.preferred_name,
-						maiden_name: $scope.newStaff.maiden_name,
-						gender: $scope.newStaff.gender,
-						personal_email: $scope.newStaff.personal_email,
-						staff_type: $scope.newStaff.staff_type,
-						position: $scope.newStaff.position,
-						replacing: $scope.newStaff.replacing,
-						start_date: formatDateForApi($scope.newStaff.start_date),
-						previous: $scope.newStaff.previous,
-						previous_employer: $scope.newStaff.previous_employer,
-						previous_employer_other: $scope.newStaff.previous_employer_other,
-						submission_date: formatDateForApi($scope.newStaff.submission_date),
-						who_submitted: $scope.newStaff.who_submitted,
-						ps_created: $scope.newStaff.ps_created,
-						ad_created: $scope.newStaff.ad_created,
-					},
-				},
-			};
 
 			$scope.submitStaffChange = function () {
 				loadingDialog();
+
+				var newRecord = {
+					tables: {
+						U_CDOL_STAFF_CHANGES: {
+							schoolid: $scope.newStaff.schoolid,
+							yearid: $scope.newStaff.yearid,
+							title: $scope.newStaff.title,
+							first_name: $scope.newStaff.first_name,
+							middle_name: $scope.newStaff.middle_name,
+							last_name: $scope.newStaff.last_name,
+							preferred_name: $scope.newStaff.preferred_name,
+							maiden_name: $scope.newStaff.maiden_name,
+							gender: $scope.newStaff.gender,
+							personal_email: $scope.newStaff.personal_email,
+							staff_type: $scope.newStaff.staff_type,
+							position: $scope.newStaff.position,
+							replacing: $scope.newStaff.replacing,
+							start_date: $scope.formatDateForApi($scope.newStaff.start_date),
+							previous: $scope.newStaff.previous,
+							previous_employer: $scope.newStaff.previous_employer,
+							previous_employer_other: $scope.newStaff.previous_employer_other,
+							submission_date: formatDateForApi($scope.newStaff.submission_date),
+							who_submitted: $scope.newStaff.who_submitted,
+							ps_created: $scope.newStaff.ps_created,
+							ad_created: $scope.newStaff.ad_created,
+						},
+					},
+				};
+
 				$http({
 					url: '/ws/schema/table/U_CDOL_STAFF_CHANGES',
 					method: 'POST',
@@ -155,6 +157,8 @@ define(['angular', 'components/shared/index'], function (angular) {
 			restrict: 'E',
 			templateUrl: '/admin/cdol/staffchange/templates/form.html',
 			// replace: true,
+			controller: ('formController', ['$scope', '$http', '$attrs', '$q', function ($scope, $http, $attrs, $q) {}]),
+			controllerAs: 'form',
 		};
 	});
 	//edit directive
