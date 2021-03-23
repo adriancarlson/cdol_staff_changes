@@ -121,7 +121,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 							previous: $scope.newStaff.previous,
 							previous_employer: $scope.newStaff.previous_employer,
 							previous_employer_other: $scope.newStaff.previous_employer_other,
-							submission_date: formatDateForApi($scope.newStaff.submission_date),
+							submission_date: $scope.formatDateForApi($scope.newStaff.submission_date),
 							who_submitted: $scope.newStaff.who_submitted,
 							ps_created: $scope.newStaff.ps_created,
 							ad_created: $scope.newStaff.ad_created,
