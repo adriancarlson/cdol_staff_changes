@@ -1,11 +1,12 @@
-define(['angular', 'components/shared/index'], function (angular) {
-	var cdolStaffApp = angular.module('cdolStaffApp', ['powerSchoolModule']);
+define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateService.js'], function (angular) {
+	var cdolStaffApp = angular.module('cdolStaffApp', ['powerSchoolModule', 'dateService']);
 	cdolStaffApp.controller('cdolStaffAppCtrl', [
 		'$scope',
 		'$http',
 		'$attrs',
 		'$q',
-		function ($scope, $http, $attrs, $q) {
+		'dateService',
+		function ($scope, $http, $attrs, $q, dateService) {
 			$scope.userContext = {
 				newStaffTempName: 'the New Staff Member',
 				pageStatus: $attrs.ngStatus,
@@ -33,12 +34,34 @@ define(['angular', 'components/shared/index'], function (angular) {
 				start_date: '',
 				previous_employer: '',
 				previous_employer_other: '',
-				submission_date: $scope.userContext.curDate,
+				submission_date: dateService.formatDateForApi($scope.userContext.curDate),
 				who_submitted: $scope.userContext.curUserId,
 				ps_created: '',
 				ad_created: '',
 			};
 
+			$scope.submitStaffChange = function () {
+				let newRecord = {
+					tables: {
+						U_CDOL_STAFF_CHANGES: $scope.newStaff,
+					},
+				};
+				$http({
+					url: '/ws/schema/table/U_CDOL_STAFF_CHANGES',
+					method: 'POST',
+					data: newRecord,
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+				}).then(function (response) {
+					if (response.data.result[0].status == 'SUCCESS') {
+						console.log(response.data.result[0].status);
+					} else {
+						console.log(response.data.result[0].status);
+					}
+				});
+			};
 			// function to get PQ results
 			$scope.getPowerQueryResults = function (endpoint, data) {
 				var deferredResponse = $q.defer();
@@ -73,6 +96,4 @@ define(['angular', 'components/shared/index'], function (angular) {
 			};
 		},
 	]);
-
-	angular.bootstrap($j('#cdolStaffAppDiv'), ['cdolStaffApp']);
 });
