@@ -25,6 +25,10 @@
                 content: " *";
                 color: red;
             }
+
+            #legend {
+                display: none;
+            }
         </style>
     </head>
 
@@ -38,7 +42,9 @@
         <!--New Staff Submit-->
         <div ng-show="userContext.pageStatus =='Submit'">
             <h1>{{userContext.pageStatus}} Staff Change</h1>
-            <div id="feedback-message" class="feedback-alert">Please New Spell Staff Name Correctly!</div>
+            <div id="feedback-message" class="feedback-alert">Please spell new staff name correctly! If new staff member
+                is going to be having a name change in the next 6 months for any reason please enter their anticipated
+                name.</div>
             <div class="fluid-form">
                 <div>
                     <div>
@@ -105,7 +111,8 @@
                     </div>
                     <div>
                         <label>Start Date <span class="notation">(can be aproximate)</span></label>
-                        <input name="" type="text" value="" class="psDateWidget" ng-model="newStaff.start_date">
+                        <input name="" type="text" value="" class="psDateWidget" ng-model="newStaff.start_date"
+                            ng-init="userContext.curDate">
                     </div>
                 </div>
                 <div>
@@ -169,11 +176,17 @@
                             ng-model="newStaff.previous_employer_other">
                     </div>
                 </div>
-                <div>{{newStaff}}</div>
+
                 <div class="button-row">
-                    <button id="upBtn" type="button" ng-click="submitStaffChange()">Submit Updates</button>
+                    <button id="canBtn" type="button" ng-show="subConfirm" ng-click="subConfirm = false">Cancel</button>
+                    <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="subConfirm"
+                        ng-click="submitStaffChange()">Confirm Submission</button>
+                    <button id="upBtn" type="button" ng-show="!subConfirm" ng-click="subConfirm = true">Submit</button>
                 </div>
+                <div>{{newStaff}}</div>
             </div>
+            <div style="float: right;" ng-show="subConfirm" class="feedback-alert">Please double check spelling prior to
+                submission. It is critical for accurate account creation.</div>
         </div>
         ~[wc:admin_footer_css]
     </body>

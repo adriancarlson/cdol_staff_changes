@@ -41,6 +41,8 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			};
 
 			$scope.submitStaffChange = function () {
+				$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
+
 				let newRecord = {
 					tables: {
 						U_CDOL_STAFF_CHANGES: $scope.newStaff,
