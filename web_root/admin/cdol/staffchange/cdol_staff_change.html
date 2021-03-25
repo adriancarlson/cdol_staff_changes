@@ -188,13 +188,24 @@
                     <input type="hidden" id="emailDate" name="[queue]date" value="~[short.date]">
                     <input type="hidden" id="emailTime" name="[queue]time" value="~[time]">
                     <input type="hidden" name="ac" value="prim">
-                    <div class="button-row">
+
+                    <div class="button-row" ng-show="userContext.pageStatus =='Submit'">
                         <button id="canBtn" type="button" ng-show="subConfirm"
                             ng-click="subConfirm = false">Cancel</button>
                         <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="subConfirm"
                             ng-click="submitStaffChange()">Confirm Submission</button>
-                        <button id="upBtn" type="button" ng-show="!subConfirm"
+                        <button id="subBtn" type="button" ng-show="!subConfirm"
                             ng-click="subConfirm = true">Submit</button>
+                    </div>
+                    <div ng-show="userContext.pageStatus =='Edit'" class="button-row">
+                        <button id="canBtn" type="button" ng-show="delUpdate"
+                            ng-click="delUpdate = false">Cancel</button>
+                        <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="delUpdate"
+                            ng-click="deleteStaffChange()">Confirm Deletion</button>
+                        <button id="delBtn" type="button" ng-show="!delUpdate" ng-click="delUpdate = true">Delete
+                            Submission</button>
+                        <button id="upBtn" type="button" ng-show="!delUpdate" ng-click="submitStaffUpdate()">Submit
+                            Update</button>
                     </div>
                     <div>{{newStaff}}</div>
                 </div>

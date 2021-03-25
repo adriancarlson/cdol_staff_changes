@@ -55,8 +55,14 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						},
 					}).then(
 						function mySuccess(response) {
-							console.log(response.data.tables.u_cdol_staff_changes);
 							$scope.newStaff = response.data.tables.u_cdol_staff_changes;
+							$scope.newStaff.start_date = dateService.formatDateFromApi($scope.newStaff.start_date);
+							if ($scope.newStaff.previous === 'true') {
+								$scope.newStaff.previous = 1;
+								Boolean($scope.newStaff.previous);
+							} else {
+								$scope.newStaff.previous = 0;
+							}
 						},
 						function myError(response) {
 							//Handle Error
