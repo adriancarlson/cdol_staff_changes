@@ -15,6 +15,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				curYearId: $attrs.ngCurYearId,
 				curDate: $attrs.ngCurDate,
 				curUserId: $attrs.ngCurUserId,
+				curStaffId: $attrs.ngStaffChangeId,
 			};
 
 			$scope.newStaff = {
@@ -41,11 +42,33 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				ad_created: '',
 			};
 
+			$scope.findStaffChange = function () {
+				if ($scope.userContext.curStaffId !== '') {
+					$scope.newStaff.id = $scope.userContext.curStaffId;
+					//get existing record
+					$http({
+						url: '/ws/schema/table/U_CDOL_STAFF_CHANGES/' + $scope.newStaff.id,
+						method: 'GET',
+						params: {
+							projection:
+								'id,schoolid,yearid,title,first_name,middle_name,last_name,preferred_name,gender,maiden_name,personal_email,staff_type,position,replacing,previous,start_date,previous_employer,previous_employer_other,submission_date,who_submitted,ps_created,ad_created',
+						},
+					}).then(
+						function mySuccess(response) {
+							console.log(response.data.tables.u_cdol_staff_changes);
+							$scope.newStaff = response.data.tables.u_cdol_staff_changes;
+						},
+						function myError(response) {
+							//Handle Error
+						},
+					);
+				}
+			};
+
 			$scope.submitStaffChange = function () {
 				$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
 				let redirectPath =
 					'/admin/cdol/staffchange/cdol_staff_change.html?status=Confirm&title=' + $scope.newStaff.title + '&fname=' + $scope.newStaff.first_name + '&lname=' + $scope.newStaff.last_name;
-				console.log(redirectPath);
 				let newRecord = {
 					tables: {
 						U_CDOL_STAFF_CHANGES: $scope.newStaff,

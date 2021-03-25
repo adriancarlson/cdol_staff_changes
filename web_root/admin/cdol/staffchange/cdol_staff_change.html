@@ -35,15 +35,16 @@
     <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl as mainController"
         data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]" data-module-name="cdolStaffApp"
         ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)" ng-status="~(gpv.status)"
-        ng-cur-user-id="~[x:userid]" ng-cur-date="~[short.date]" ng-cloak>
+        ng-cur-user-id="~[x:userid]" ng-cur-date="~[short.date]" ng-staff-change-id="~(gpv.id)"
+        ng-init="findStaffChange()" ng-cloak>
         ~[wc:admin_header_css]
         {{userContext.pageStatus}} Staff Change
         ~[wc:admin_navigation_css]
 
         <!--New Staff Submit-->
-        <div ng-show="userContext.pageStatus =='Submit'">
+        <div ng-show="userContext.pageStatus =='Submit' || userContext.pageStatus =='Edit'">
 
-            <h1>{{userContext.pageStatus}} Staff Change</h1>
+            <h1>{{userContext.pageStatus}} Staff Change {{userContext.curStaffId}}</h1>
             <div id="feedback-message" class="feedback-alert">Please spell new staff name correctly! If new staff member
                 is going to be having a name change in the next 6 months for any reason please enter their anticipated
                 name.</div>
