@@ -5,8 +5,9 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 		'$http',
 		'$attrs',
 		'$q',
+		'$window',
 		'dateService',
-		function ($scope, $http, $attrs, $q, dateService) {
+		function ($scope, $http, $attrs, $q, $window, dateService) {
 			$scope.userContext = {
 				newStaffTempName: 'the New Staff Member',
 				pageStatus: $attrs.ngStatus,
@@ -42,7 +43,9 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 
 			$scope.submitStaffChange = function () {
 				$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
-
+				let redirectPath =
+					'/admin/cdol/staffchange/cdol_staff_change.html?status=Confirm&title=' + $scope.newStaff.title + '&fname=' + $scope.newStaff.first_name + '&lname=' + $scope.newStaff.last_name;
+				console.log(redirectPath);
 				let newRecord = {
 					tables: {
 						U_CDOL_STAFF_CHANGES: $scope.newStaff,
@@ -63,6 +66,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						console.log(response.data.result[0].status);
 					}
 				});
+				$window.location.href = redirectPath;
 			};
 			// function to get PQ results
 			$scope.getPowerQueryResults = function (endpoint, data) {
