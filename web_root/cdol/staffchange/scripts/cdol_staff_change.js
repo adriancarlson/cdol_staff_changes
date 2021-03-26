@@ -57,12 +57,6 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						function mySuccess(response) {
 							$scope.newStaff = response.data.tables.u_cdol_staff_changes;
 							$scope.newStaff.start_date = dateService.formatDateFromApi($scope.newStaff.start_date);
-							if ($scope.newStaff.previous === 'true') {
-								$scope.newStaff.previous = 1;
-								Boolean($scope.newStaff.previous);
-							} else {
-								$scope.newStaff.previous = 0;
-							}
 						},
 						function myError(response) {
 							//Handle Error
@@ -96,6 +90,48 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					}
 				});
 				$window.location.href = redirectPath;
+			};
+
+			$scope.submitStaffUpdate = function () {
+				if ($scope.userContext.curStaffId !== '') {
+					$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
+					let redirectPath = '/admin/cdol/staffchange/cdol_staff_change_list.html';
+					let updateRecord = {
+						tables: {
+							U_CDOL_STAFF_CHANGES: $scope.newStaff,
+						},
+					};
+					$http({
+						url: '/ws/schema/table/U_CDOL_STAFF_CHANGES/' + $scope.userContext.curStaffId,
+						method: 'PUT',
+						data: updateRecord,
+						headers: {
+							Accept: 'application/json',
+							'Content-Type': 'application/json',
+						},
+					}).then(function (response) {
+						if (response.data.result[0].status == 'SUCCESS') {
+							console.log(response.data.result[0].status);
+						} else {
+							console.log(response.data.result[0].status);
+						}
+					});
+					$window.location.href = redirectPath;
+				}
+			};
+			$scope.deleteStaffChange = function () {
+				if ($scope.userContext.curStaffId !== '') {
+					let redirectPath = '/admin/cdol/staffchange/cdol_staff_change_list.html';
+					$http({
+						url: '/ws/schema/table/U_CDOL_STAFF_CHANGES/' + $scope.userContext.curStaffId,
+						method: 'DELETE',
+						headers: {
+							Accept: 'application/json',
+							'Content-Type': 'application/json',
+						},
+					});
+					$window.location.href = redirectPath;
+				}
 			};
 			// function to get PQ results
 			$scope.getPowerQueryResults = function (endpoint, data) {

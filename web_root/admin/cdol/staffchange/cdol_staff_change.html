@@ -38,14 +38,19 @@
         ng-cur-user-id="~[x:userid]" ng-cur-date="~[short.date]" ng-staff-change-id="~(gpv.id)"
         ng-init="findStaffChange()" ng-cloak>
         ~[wc:admin_header_css]
-        {{userContext.pageStatus}} Staff Change
+        <span ng-show="userContext.pageStatus =='Submit'"><a href="/admin/home.html"
+                target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; {{userContext.pageStatus}}
+            Staff Change</span>
+        <span ng-show="userContext.pageStatus =='Edit'"><a href="/admin/home.html"
+                target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; <a
+                href="/admin/cdol/staffchange/cdol_staff_change_list.html" target="_top">New Staff Submissions</a> &gt;
+            {{userContext.pageStatus}} Staff Change</span>
         ~[wc:admin_navigation_css]
-
         <!--New Staff Submit-->
         <div ng-show="userContext.pageStatus =='Submit' || userContext.pageStatus =='Edit'">
-
-            <h1>{{userContext.pageStatus}} Staff Change {{userContext.curStaffId}}</h1>
-            <div id="feedback-message" class="feedback-alert">Please spell new staff name correctly! If new staff member
+            <h1>{{userContext.pageStatus}} Staff Change</h1>
+            <div id="feedback-message" class="feedback-alert" ng-show="userContext.pageStatus =='Submit'">Please spell
+                new staff name correctly! If new staff member
                 is going to be having a name change in the next 6 months for any reason please enter their anticipated
                 name.</div>
             <form method="POST">
@@ -102,7 +107,6 @@
                                 <option value="Teacher">
                                     Teacher
                                 </option>
-                                <option value="Administrator">Administrator</option>
                                 <option value="Staff">
                                     Staff
                                 </option>
@@ -188,7 +192,6 @@
                     <input type="hidden" id="emailDate" name="[queue]date" value="~[short.date]">
                     <input type="hidden" id="emailTime" name="[queue]time" value="~[time]">
                     <input type="hidden" name="ac" value="prim">
-
                     <div class="button-row" ng-show="userContext.pageStatus =='Submit'">
                         <button id="canBtn" type="button" ng-show="subConfirm"
                             ng-click="subConfirm = false">Cancel</button>
@@ -202,12 +205,13 @@
                             ng-click="delUpdate = false">Cancel</button>
                         <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="delUpdate"
                             ng-click="deleteStaffChange()">Confirm Deletion</button>
+                        <a id="bkBtn" class="button" ng-show="!delUpdate"
+                            href="/admin/cdol/staffchange/cdol_staff_change_list.html">Back</a>
                         <button id="delBtn" type="button" ng-show="!delUpdate" ng-click="delUpdate = true">Delete
                             Submission</button>
                         <button id="upBtn" type="button" ng-show="!delUpdate" ng-click="submitStaffUpdate()">Submit
                             Update</button>
                     </div>
-                    <div>{{newStaff}}</div>
                 </div>
             </form>
             <div style="float: right;" ng-show="subConfirm" class="feedback-alert">Please double check spelling prior to
