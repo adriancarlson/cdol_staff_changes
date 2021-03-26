@@ -8,8 +8,9 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 		'$window',
 		'dateService',
 		function ($scope, $http, $attrs, $q, $window, dateService) {
+			// global variables passed in by gpvs assigned to attributes on the screen then passed in to angular by the $attrs and assigned to a global user context object.
 			$scope.userContext = {
-				newStaffTempName: 'the New Staff Member',
+				newStaffTempName: 'The New Staff Member',
 				pageStatus: $attrs.ngStatus,
 				curSchoolId: $attrs.ngCurSchoolId,
 				curYearId: $attrs.ngCurYearId,
@@ -18,6 +19,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				curStaffId: $attrs.ngStaffChangeId,
 			};
 
+			//initializing blank staff record for use in submissions
 			$scope.newStaff = {
 				schoolid: $scope.userContext.curSchoolId,
 				yearid: $scope.userContext.curYearId,
@@ -42,7 +44,9 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				ad_created: '',
 			};
 
+			//if on edit screen and passing an staff change id then this runs to pull the data for the current staff change record.
 			$scope.findStaffChange = function () {
+				loadingDialog();
 				if ($scope.userContext.curStaffId !== '') {
 					$scope.newStaff.id = $scope.userContext.curStaffId;
 					//get existing record
@@ -50,8 +54,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						url: '/ws/schema/table/U_CDOL_STAFF_CHANGES/' + $scope.newStaff.id,
 						method: 'GET',
 						params: {
-							projection:
-								'id,schoolid,yearid,title,first_name,middle_name,last_name,preferred_name,gender,maiden_name,personal_email,staff_type,position,replacing,previous,start_date,previous_employer,previous_employer_other,submission_date,who_submitted,ps_created,ad_created',
+							projection: '*',
 						},
 					}).then(
 						function mySuccess(response) {
@@ -59,12 +62,14 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 							$scope.newStaff.start_date = dateService.formatDateFromApi($scope.newStaff.start_date);
 						},
 						function myError(response) {
-							//Handle Error
+							psAlert({ message: 'Staff Change Data could not be loaded.', title: 'Error Loading Record' });
 						},
 					);
 				}
+				closeLoading();
 			};
 
+			//submitting New Staff change record
 			$scope.submitStaffChange = function () {
 				$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
 				let redirectPath =
@@ -84,14 +89,14 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					},
 				}).then(function (response) {
 					if (response.data.result[0].status == 'SUCCESS') {
-						console.log(response.data.result[0].status);
 					} else {
-						console.log(response.data.result[0].status);
+						psAlert({ message: 'There was an error submitting the record. Changes were not saved', title: 'Error Submitting Record' });
 					}
 				});
 				$window.location.href = redirectPath;
 			};
 
+			//updating staff record
 			$scope.submitStaffUpdate = function () {
 				if ($scope.userContext.curStaffId !== '') {
 					$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
@@ -111,14 +116,15 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						},
 					}).then(function (response) {
 						if (response.data.result[0].status == 'SUCCESS') {
-							console.log(response.data.result[0].status);
 						} else {
-							console.log(response.data.result[0].status);
+							psAlert({ message: 'There was an error updating the record. Changes were not saved', title: 'Error Updating Data' });
 						}
 					});
 					$window.location.href = redirectPath;
 				}
 			};
+
+			//Deleteing staff Record
 			$scope.deleteStaffChange = function () {
 				if ($scope.userContext.curStaffId !== '') {
 					let redirectPath = '/admin/cdol/staffchange/cdol_staff_change_list.html';
@@ -133,6 +139,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					$window.location.href = redirectPath;
 				}
 			};
+
 			// function to get PQ results
 			$scope.getPowerQueryResults = function (endpoint, data) {
 				var deferredResponse = $q.defer();
@@ -150,8 +157,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						deferredResponse.resolve(response.data.record || []);
 					},
 					function errorCallback(response) {
-						alert('Error Loading Data');
-						closeLoading();
+						psAlert({ message: 'There was an error loading the Staff Change Data', title: 'Error Loading Data' });
 					},
 				);
 				return deferredResponse.promise;
