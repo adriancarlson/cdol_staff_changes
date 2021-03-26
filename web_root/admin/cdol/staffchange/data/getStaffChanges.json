@@ -3,7 +3,10 @@
 	SELECT 
         U_CDOL_STAFF_CHANGES.id,
 		U_CDOL_STAFF_CHANGES.schoolid,
-		SCHOOLS.NAME, 
+		CASE 
+			WHEN U_CDOL_STAFF_CHANGES.schoolid = 0 THEN 'Diocesan Office' 
+        	ELSE SCHOOLS.NAME
+        END, 
 		U_CDOL_STAFF_CHANGES.yearid,
 		U_CDOL_STAFF_CHANGES.title, 
 		U_CDOL_STAFF_CHANGES.first_name, 
