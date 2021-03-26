@@ -19,6 +19,12 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				curStaffId: $attrs.ngStaffChangeId,
 			};
 
+			$scope.dupSearchParams = {
+				lastName: '',
+				maidenName: '',
+				firstNameSubString: '',
+			};
+
 			//initializing blank staff record for use in submissions
 			$scope.newStaff = {
 				schoolid: $scope.userContext.curSchoolId,
@@ -60,6 +66,17 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						function mySuccess(response) {
 							$scope.newStaff = response.data.tables.u_cdol_staff_changes;
 							$scope.newStaff.start_date = dateService.formatDateFromApi($scope.newStaff.start_date);
+							//setting up params for dup search
+							$scope.dupSearchParams.lastName = response.data.tables.u_cdol_staff_changes.last_name;
+							$scope.dupSearchParams.maidenName = response.data.tables.u_cdol_staff_changes.maiden_name;
+							$scope.dupSearchParams.firstNameSubString = response.data.tables.u_cdol_staff_changes.first_name.substring(0, 3);
+							$scope.dupSearchParams.lastName.toLowerCase();
+							if ($scope.dupSearchParams.maidenName === undefined) {
+								$scope.dupSearchParams.maidenName = $scope.dupSearchParams.lastName;
+							}
+							$scope.dupSearchParams.maidenName.toLowerCase();
+							$scope.dupSearchParams.firstNameSubString.toLowerCase();
+							$scope.searchForDups();
 						},
 						function myError(response) {
 							psAlert({ message: 'Staff Change Data could not be loaded.', title: 'Error Loading Record' });
@@ -67,6 +84,17 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					);
 				}
 				closeLoading();
+			};
+			$scope.searchForDups = function () {
+				$scope
+					.getPowerQueryResults('net.cdolinc.staffChanges.staff.duplicates', {
+						lastName: $scope.dupSearchParams.lastName,
+						maidenName: $scope.dupSearchParams.maidenName,
+						firstNameSubString: $scope.dupSearchParams.firstNameSubString,
+					})
+					.then(function (dupData) {
+						$scope.dupList = dupData;
+					});
 			};
 
 			//submitting New Staff change record
