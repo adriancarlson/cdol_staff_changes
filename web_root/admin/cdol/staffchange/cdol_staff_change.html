@@ -6,34 +6,11 @@
         ~[wc:commonscripts]
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
-        <style>
-            [ng\:cloak],
-            [ng-cloak],
-            [data-ng-cloak],
-            [x-ng-cloak],
-            .ng-cloak,
-            .x-ng-cloak {
-                display: none !important;
-            }
-
-            .notation {
-                font-weight: normal;
-                font-style: italic;
-            }
-
-            .req::after {
-                content: " *";
-                color: red;
-            }
-
-            #legend {
-                display: none;
-            }
-        </style>
+        <link href="/cdol/staffchange/scripts/cdol_staff_change.css?~[time]" rel="stylesheet">
     </head>
 
     <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl as mainController"
-        data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]111" data-module-name="cdolStaffApp"
+        data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]" data-module-name="cdolStaffApp"
         ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)" ng-status="~(gpv.status)"
         ng-cur-user-id="~[x:userid]" ng-cur-date="~[short.date]" ng-staff-change-id="~(gpv.id)"
         ng-init="findStaffChange()" ng-cloak>
@@ -50,7 +27,8 @@
             <h1>{{userContext.pageStatus}} Staff Change</h1>
             <!--dup table-->
             <div class="box-round" ng-show="userContext.pageStatus =='Edit'&& dupList.length >0" style="width:50%;">
-            <div id="feedback-message" class="feedback-error">Potential matches for&nbsp;{{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}}</div>
+                <div id="feedback-message" class="feedback-error">Potential matches for&nbsp;{{newStaff.title}}
+                    {{newStaff.first_name}} {{newStaff.last_name}}</div>
                 <table class="grid" style="font-size: 10pt;">
                     <thead>
                         <tr>
@@ -75,17 +53,17 @@
                 new staff name correctly! If new staff member
                 is going to be having a name change in the next 6 months for any reason please enter their anticipated
                 name.</div>
-            <form method="POST">
+            <form name="staffChangeForm" method="POST" novalidate>
                 <div class="fluid-form">
                     <div>
                         <div>
                             <label class="req">Title</label>
-                            <select name="" id="selectTitle"
-                                ng-model="newStaff.title">~[x:codesetoptions;codetype=Title;includeblank;value=~([U_CDOL_STAFF_CHANGES]title)]</select>
+                            <select name="" id="selectTitle" ng-model="newStaff.title"
+                                ng-required="true">~[x:codesetoptions;codetype=Title;includeblank;value=~([U_CDOL_STAFF_CHANGES]title)]</select>
                         </div>
                         <div>
                             <label class="req">First Name</label>
-                            <input name="" type="text" value="" ng-model="newStaff.first_name">
+                            <input name="" type="text" value="" ng-model="newStaff.first_name" ng-required="true">
                         </div>
                         <div>
                             <label>Middle Name</label>
@@ -93,14 +71,14 @@
                         </div>
                         <div>
                             <label class="req">Last Name</label>
-                            <input name="" type="text" value="" ng-model="newStaff.last_name">
+                            <input name="" type="text" value="" ng-model="newStaff.last_name" ng-required="true">
                         </div>
                     </div>
                     <div>
                         <div>
                             <label class="req">Gender</label>
-                            <select name="" id="selectgender"
-                                ng-model="newStaff.gender">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]preferred_name)]</select>
+                            <select name="" id="selectgender" ng-model="newStaff.gender"
+                                ng-required="true">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]preferred_name)]</select>
                         </div>
                     </div>
                     <div>
@@ -124,7 +102,7 @@
                     <div>
                         <div>
                             <label class="req">Staff Type</label>
-                            <select name="" ng-model="newStaff.staff_type">
+                            <select name="" ng-model="newStaff.staff_type" ng-required="true">
                                 <option></option>
                                 <option value="Teacher">
                                     Teacher
@@ -137,7 +115,7 @@
                         <div>
                             <label class="req">Position</label>
                             <input name="" type="text" value="" placeholder="Ex: 2nd Grade Teacher, or Principal"
-                                style="width: 300px;" ng-model="newStaff.position">
+                                style="width: 300px;" ng-model="newStaff.position" ng-required="true">
                         </div>
                         <div>
                             <label>Start Date <span class="notation">(can be aproximate)</span></label>
@@ -150,7 +128,7 @@
                             <label class="req">Who is <span
                                     ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
                                 {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} Replacing?</label>
-                            <select name="" ng-model="newStaff.replacing">
+                            <select name="" ng-model="newStaff.replacing" ng-required="true">
                                 <option></option>
                                 ~[tlist_sql;SELECT
                                 users.dcid,
@@ -217,14 +195,18 @@
                     <input type="hidden" id="emailTime" name="[queue]time" value="~[time]">
                     <input type="hidden" name="ac" value="prim">
                     <div class="button-row" ng-show="userContext.pageStatus =='Submit'">
+                        <span class="req-notation" ng-show="staffChangeForm.$invalid && staffChangeForm.$dirty">Please
+                            fill all required fields prior to submitting.</span>
                         <button id="canBtn" type="button" ng-show="subConfirm"
                             ng-click="subConfirm = false">Cancel</button>
                         <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="subConfirm"
                             ng-click="submitStaffChange()">Confirm Submission</button>
-                        <button id="subBtn" type="button" ng-show="!subConfirm"
-                            ng-click="subConfirm = true">Submit</button>
+                        <button id="subBtn" type="button" ng-show="!subConfirm" ng-click="subConfirm = true"
+                            ng-disabled="staffChangeForm.$invalid">Submit</button>
                     </div>
                     <div ng-show="userContext.pageStatus =='Edit'" class="button-row">
+                        <span class="req-notation" ng-show="staffChangeForm.$invalid && staffChangeForm.$dirty">Please
+                            fill all required fields prior to submitting.</span>
                         <button id="canBtn" type="button" ng-show="delUpdate"
                             ng-click="delUpdate = false">Cancel</button>
                         <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="delUpdate"
@@ -233,7 +215,8 @@
                             href="/admin/cdol/staffchange/cdol_staff_change_list.html">Back</a>
                         <button id="delBtn" type="button" ng-show="!delUpdate" ng-click="delUpdate = true">Delete
                             Submission</button>
-                        <button id="upBtn" type="button" ng-show="!delUpdate" ng-click="submitStaffUpdate()">Submit
+                        <button id="upBtn" type="button" ng-disabled="staffChangeForm.$invalid" ng-show="!delUpdate"
+                            ng-click="submitStaffUpdate()">Submit
                             Update</button>
                     </div>
                 </div>
