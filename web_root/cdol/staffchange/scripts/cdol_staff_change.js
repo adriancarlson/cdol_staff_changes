@@ -70,12 +70,10 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 							$scope.dupSearchParams.lastName = response.data.tables.u_cdol_staff_changes.last_name;
 							$scope.dupSearchParams.maidenName = response.data.tables.u_cdol_staff_changes.maiden_name;
 							$scope.dupSearchParams.firstNameSubString = response.data.tables.u_cdol_staff_changes.first_name.substring(0, 3);
-							$scope.dupSearchParams.lastName.toLowerCase();
+
 							if ($scope.dupSearchParams.maidenName === undefined) {
 								$scope.dupSearchParams.maidenName = $scope.dupSearchParams.lastName;
 							}
-							$scope.dupSearchParams.maidenName.toLowerCase();
-							$scope.dupSearchParams.firstNameSubString.toLowerCase();
 							$scope.searchForDups();
 						},
 						function myError(response) {
@@ -88,9 +86,9 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			$scope.searchForDups = function () {
 				$scope
 					.getPowerQueryResults('net.cdolinc.staffChanges.staff.duplicates', {
-						lastName: $scope.dupSearchParams.lastName,
-						maidenName: $scope.dupSearchParams.maidenName,
-						firstNameSubString: $scope.dupSearchParams.firstNameSubString,
+						lastName: $scope.dupSearchParams.lastName.toLowerCase(),
+						maidenName: $scope.dupSearchParams.maidenName.toLowerCase(),
+						firstNameSubString: $scope.dupSearchParams.firstNameSubString.toLowerCase(),
 					})
 					.then(function (dupData) {
 						$scope.dupList = dupData;

@@ -33,7 +33,7 @@
     </head>
 
     <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl as mainController"
-        data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]" data-module-name="cdolStaffApp"
+        data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]111" data-module-name="cdolStaffApp"
         ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)" ng-status="~(gpv.status)"
         ng-cur-user-id="~[x:userid]" ng-cur-date="~[short.date]" ng-staff-change-id="~(gpv.id)"
         ng-init="findStaffChange()" ng-cloak>
@@ -46,9 +46,31 @@
                 href="/admin/cdol/staffchange/cdol_staff_change_list.html" target="_top">New Staff Submissions</a> &gt;
             {{userContext.pageStatus}} Staff Change</span>
         ~[wc:admin_navigation_css]
-        <!--New Staff Submit-->
         <div ng-show="userContext.pageStatus =='Submit' || userContext.pageStatus =='Edit'">
             <h1>{{userContext.pageStatus}} Staff Change</h1>
+            <!--dup table-->
+            <div class="box-round" ng-show="userContext.pageStatus =='Edit'&& dupList.length >0" style="width:50%;">
+            <div id="feedback-message" class="feedback-error">Potential matches for&nbsp;{{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}}</div>
+                <table class="grid" style="font-size: 10pt;">
+                    <thead>
+                        <tr>
+                            <th>Potential Duplicate</th>
+                            <th>School</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="dup in dupList">
+                            <td><a href="/admin/faculty/edit.html?frn=005{{dup.dcid}}">{{dup.first_name}}
+                                    {{dup.last_name}}</td>
+                            <td>{{dup.name}} </a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="feedback-message" class="feedback-confirm"
+                ng-show="userContext.pageStatus =='Edit'&& dupList.length <=0">No potential duplicate staff records
+                found.</div>
+            <!--New Staff Submit-->
             <div id="feedback-message" class="feedback-alert" ng-show="userContext.pageStatus =='Submit'">Please spell
                 new staff name correctly! If new staff member
                 is going to be having a name change in the next 6 months for any reason please enter their anticipated
