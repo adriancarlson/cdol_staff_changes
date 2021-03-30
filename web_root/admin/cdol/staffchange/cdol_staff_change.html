@@ -209,13 +209,11 @@
                                     ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
                                 {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} previously worked for
                                 ~(schoolname) or another Diocese of Lincoln School?</label>
-                            <select name="" ng-show="userContext.pageStatus =='Submit'" ng-model="newStaff.previous">
+                            <select name="" ng-model="newStaff.previous">
                                 <option></option>
                                 <option value="1">Yes</option>
                                 <option value="0">No</option>
-                            </select><span ng-show="userContext.pageStatus =='Edit'"><span
-                                    ng-show="newStaff.previous == 1 || newStaff.previous == 'true'">&nbsp;Yes</span><span
-                                    ng-show="newStaff.previous == 0 || newStaff.previous == 'false'">&nbsp;No</span></span>
+                            </select>
                         </div>
                     </div>
                     <div ng-if="newStaff.previous == 1">
