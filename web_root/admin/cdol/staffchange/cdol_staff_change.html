@@ -39,8 +39,8 @@
                     <tbody>
                         <tr ng-repeat="dup in dupList">
                             <td><a href="/admin/faculty/edit.html?frn=005{{dup.dcid}}">{{dup.first_name}}
-                                    {{dup.last_name}}</td>
-                            <td>{{dup.name}} </a></td>
+                                    {{dup.last_name}}</a></td>
+                            <td>{{dup.name}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -288,24 +288,25 @@
                     </div>
                 </div>
             </form>
-            <!--Confirm-->
-            <div ng-show="userContext.pageStatus =='Confirm'">
-                <h1>Thank You!</h1>
-                <div class="feedback-confirm" style="width:700px"><span class="underline">Thank You for your
-                        submission!</span>
-                    <br>
-                    <span class="underline bold">Note:</span> Your New Staff Submission for
-                    ~(gpv.title) ~(gpv.fname) ~(gpv.lname)
-                    has been sent to the Education Technology Office. We will be in contact once the account has been
-                    created.
-                </div>
-                <div class="button-row" style="width:740px"><a class="button"
-                        href="cdol_staff_change.html?status=Submit">Submit
-                        another
-                        New Staff Record</a><a class="button" href="/admin/home.html">Exit</a>
-                </div>
+        </div>
+        <!--Confirm-->
+        <div ng-show="userContext.pageStatus =='Confirm'">
+            <h1>Thank You!</h1>
+            <div class="feedback-confirm" style="width:700px"><span class="underline">Thank You for your
+                    submission!</span>
+                <br>
+                <span class="underline bold">Note:</span> Your New Staff Submission for
+                ~(gpv.title) ~(gpv.fname) ~(gpv.lname)
+                has been sent to the Education Technology Office. We will be in contact once the account has been
+                created.
             </div>
-            ~[wc:admin_footer_css]
+            <div class="button-row" style="width:740px"><a class="button"
+                    href="cdol_staff_change.html?status=Submit">Submit
+                    another
+                    New Staff Record</a><a class="button" href="/admin/home.html">Exit</a>
+            </div>
+        </div>
+        ~[wc:admin_footer_css]
     </body>
 
 </html>
