@@ -23,5 +23,14 @@
         <field name="who_submitted" type="Integer" />
         <field name="ps_created" type="Boolean" />
         <field name="ad_created" type="Boolean" />
+        <field name="lms_created" type="Boolean" />
+        <field name="dob" type="Date" />
+        <field name="name_change" type="String" length="100" />
+        <field name="early_setup" type="String" length="5" />
+        <field name="deadline" type="Date" />
+        <field name="notes" type="Clob" />
+        <field name="fte" type="String" length="2" />
+        <field name="religion" type="String" length="1" />
+        <field name="religiousclergylay" type="String" length="1" />
     </extendedTable>
 </psExtension>
