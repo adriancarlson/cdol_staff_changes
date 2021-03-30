@@ -55,7 +55,7 @@
                 name.</div>
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="fluid-form">
-                    <h4>{{userContext.newStaffTempName}} Name</h4>
+                    <h4 style="margin-left: 10px;">{{userContext.newStaffTempName}} Name</h4>
                     <div>
                         <div>
                             <label class="req">Title</label>
@@ -261,6 +261,9 @@
                     <div class="button-row" ng-show="userContext.pageStatus =='Submit'">
                         <span class="req-notation" ng-show="staffChangeForm.$invalid && staffChangeForm.$dirty">Please
                             fill all required fields prior to submitting.</span>
+                        <span style="display:inline; padding: 4px 4px 4px 30px;" ng-show="subConfirm"
+                            class="feedback-alert">Please double check spelling prior to
+                            submission. It is critical for accurate account creation.</span>
                         <button id="canBtn" type="button" ng-show="subConfirm"
                             ng-click="subConfirm = false">Cancel</button>
                         <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="subConfirm"
@@ -285,27 +288,24 @@
                     </div>
                 </div>
             </form>
-            <div style="float: right;" ng-show="subConfirm" class="feedback-alert">Please double check spelling prior to
-                submission. It is critical for accurate account creation.</div>
-        </div>
-        <!--Confirm-->
-        <div ng-show="userContext.pageStatus =='Confirm'">
-            <h1>Thank You!</h1>
-            <div class="feedback-confirm" style="width:700px"><span class="underline">Thank You for your
-                    submission!</span>
-                <br>
-                <span class="underline bold">Note:</span> Your New Staff Submission for
-                ~(gpv.title) ~(gpv.fname) ~(gpv.lname)
-                has been sent to the Education Technology Office. We will be in contact once the account has been
-                created.
+            <!--Confirm-->
+            <div ng-show="userContext.pageStatus =='Confirm'">
+                <h1>Thank You!</h1>
+                <div class="feedback-confirm" style="width:700px"><span class="underline">Thank You for your
+                        submission!</span>
+                    <br>
+                    <span class="underline bold">Note:</span> Your New Staff Submission for
+                    ~(gpv.title) ~(gpv.fname) ~(gpv.lname)
+                    has been sent to the Education Technology Office. We will be in contact once the account has been
+                    created.
+                </div>
+                <div class="button-row" style="width:740px"><a class="button"
+                        href="cdol_staff_change.html?status=Submit">Submit
+                        another
+                        New Staff Record</a><a class="button" href="/admin/home.html">Exit</a>
+                </div>
             </div>
-            <div class="button-row" style="width:740px"><a class="button"
-                    href="cdol_staff_change.html?status=Submit">Submit
-                    another
-                    New Staff Record</a><a class="button" href="/admin/home.html">Exit</a>
-            </div>
-        </div>
-        ~[wc:admin_footer_css]
+            ~[wc:admin_footer_css]
     </body>
 
 </html>

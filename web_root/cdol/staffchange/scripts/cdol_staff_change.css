@@ -26,6 +26,7 @@ select {
 .req::after {
 	content: ' *';
 	color: red;
+	font-size: 13.5pt;
 }
 
 #legend {

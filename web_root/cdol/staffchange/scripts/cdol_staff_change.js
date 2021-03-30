@@ -56,7 +56,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				notes: '',
 				ps_created: '',
 				ad_created: '',
-				lsm_created: '',
+				lms_created: '',
 			};
 
 			//if on edit screen and passing an staff change id then this runs to pull the data for the current staff change record.
