@@ -152,8 +152,6 @@
                             </select>
 
                         </div>
-                    </div>
-                    <div>
                         <div>
                             <label>Anticipated Contract Start Date <span class="notation">(can be
                                     aproximate)</span></label>
@@ -177,7 +175,8 @@
                     <div ng-show="newStaff.early_setup =='Yes'">
                         <div>
                             <label>Requested Account Setup Deadline</label>
-                            <input name="" type="text" value="" class="psDateWidget" ng-model="newStaff.deadline">
+                            <input name="" type="text" value="" class="psDateWidget" ng-model="newStaff.deadline"
+                                ng-init="userContext.curDate">
                         </div>
                     </div>
                     <div>
@@ -187,6 +186,7 @@
                                 {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} Replacing?</label>
                             <select name="" ng-model="newStaff.replacing" ng-required="true">
                                 <option></option>
+                                <option value="New">--New Position--</option>
                                 ~[tlist_sql;SELECT
                                 users.dcid,
                                 users.first_name,
@@ -199,7 +199,7 @@
                                 Order BY users.last_name , users.first_name]
                                 <option value="~(dcid)">~(first) ~(last)</option>
                                 [/tlist_sql]
-                                <option value="New">New Position</option>
+
                             </select>
                         </div>
                     </div>
@@ -218,7 +218,7 @@
                                     ng-show="newStaff.previous == 0 || newStaff.previous == 'false'">&nbsp;No</span></span>
                         </div>
                     </div>
-                    <div ng-show="newStaff.previous == 1 || newStaff.previous == 'true'">
+                    <div ng-if="newStaff.previous == 'Yes'">
                         <div>
                             <label>Where was <span
                                     ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
@@ -236,7 +236,7 @@
                             </select>
                         </div>
                     </div>
-                    <div ng-show="newStaff.previous_employer === 'Other'">
+                    <div ng-if="newStaff.previous_employer === 'Other'">
                         <div>
                             <label>Please type previous employer</label>
                             <input name="" type="text" value="" style="width: 300px;"
