@@ -48,13 +48,108 @@
             <div id="feedback-message" class="feedback-confirm"
                 ng-show="userContext.pageStatus =='Edit'&& dupList.length <=0">No potential duplicate staff records
                 found.</div>
+            <!--Divergent path question-->
+            <div class="fluid-form" ng-hide="newStaff.name_change!=''">
+                <div>
+                    <div>
+                        <label>Are you adding a new staff or requesting a name change on an existing staff
+                            member?</label>
+                        <select name="" type="text" value="" ng-model="newStaff.name_change">
+                            <option></option>
+                            <option value="New Staff">New Staff</option>
+                            <option value="Name Change">Name Change</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!--Name change Submit -->
+            <form name="nameChangeForm" method="POST" novalidate>
+                <div class="fluid-form" ng-if="newStaff.name_change=='Name Change'">
+                    <div>
+                        <div>
+                            <label class="req">Who's name is changing?</label>
+                            <select name="" ng-model="newStaff.replacing" ng-required="true">
+                                <option></option>
+                                ~[tlist_sql;SELECT
+                                users.dcid,
+                                users.first_name,
+                                users.last_name
+                                FROM SCHOOLSTAFF
+                                inner join users
+                                on users.dcid = schoolstaff.users_dcid
+                                WHERE schoolstaff.schoolid = ~(curschoolid)
+                                AND schoolstaff.status =1
+                                Order BY users.last_name , users.first_name]
+                                <option value="~(dcid)">~(first) ~(last)</option>
+                                [/tlist_sql]
+                            </select>
+                        </div>
+                    </div>
+                    <div><label>Staff's New Name</label></div>
+                    <div>
+                        <div>
+                            <label class="req">Title</label>
+                            <select name="" id="selectTitle" ng-model="newStaff.title"
+                                ng-required="true">~[x:codesetoptions;codetype=Title;includeblank;value=~([U_CDOL_STAFF_CHANGES]title)]</select>
+                        </div>
+                        <div>
+                            <label class="req">First Name</label>
+                            <input name="" type="text" value="" ng-model="newStaff.first_name" ng-required="true">
+                        </div>
+                        <div>
+                            <label>Middle Name</label>
+                            <input name="" type="text" value="" ng-model="newStaff.middle_name">
+                        </div>
+                        <div>
+                            <label class="req">Last Name</label>
+                            <input name="" type="text" value="" ng-model="newStaff.last_name" ng-required="true">
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <label>Reason for Name Change?</label>
+                            <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
+                                ng-model="newStaff.notes"></textarea>
+                        </div>
+                    </div>
+                    <div class="button-row" ng-show="userContext.pageStatus =='Submit'">
+                        <span class="req-notation" ng-show="nameChangeForm.$invalid && nameChangeForm.$dirty">Please
+                            fill all required fields prior to submitting.</span>
+                        <span style="display:inline; padding: 4px 4px 4px 30px;" ng-show="subConfirm"
+                            class="feedback-alert">Please double check spelling prior to
+                            submission. It is critical for accurate account creation.</span>
+                        <button id="canBtn" type="button" ng-show="subConfirm"
+                            ng-click="subConfirm = false">Cancel</button>
+                        <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="subConfirm"
+                            ng-click="submitStaffChange()">Confirm Submission</button>
+                        <button id="subBtn" type="button" ng-show="!subConfirm" ng-click="subConfirm = true"
+                            ng-disabled="nameChangeForm.$invalid">Submit</button>
+                    </div>
+                    <div ng-show="userContext.pageStatus =='Edit'" class="button-row">
+                        <span class="req-notation" ng-show="nameChangeForm.$invalid && nameChangeForm.$dirty">Please
+                            fill all required fields prior to submitting.</span>
+                        <button id="canBtn" type="button" ng-show="delUpdate"
+                            ng-click="delUpdate = false">Cancel</button>
+                        <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="delUpdate"
+                            ng-click="deleteStaffChange()">Confirm Deletion</button>
+                        <a id="bkBtn" class="button" ng-show="!delUpdate"
+                            href="/admin/cdol/staffchange/cdol_staff_change_list.html">Back</a>
+                        <button id="delBtn" type="button" ng-show="!delUpdate" ng-click="delUpdate = true">Delete
+                            Submission</button>
+                        <button id="upBtn" type="button" ng-disabled="nameChangeForm.$invalid" ng-show="!delUpdate"
+                            ng-click="submitStaffUpdate()">Submit
+                            Update</button>
+                    </div>
+                </div>
+            </form>
             <!--New Staff Submit-->
-            <div id="feedback-message" class="feedback-alert" ng-show="userContext.pageStatus =='Submit'">Please spell
+            <div id="feedback-message" class="feedback-alert"
+                ng-show="userContext.pageStatus =='Submit' && newStaff.name_change=='New Staff'">Please spell
                 new staff name correctly! If new staff member
                 is going to be having a name change in the next 6 months for any reason please enter their anticipated
                 name.</div>
             <form name="staffChangeForm" method="POST" novalidate>
-                <div class="fluid-form">
+                <div class="fluid-form" ng-show="newStaff.name_change=='New Staff'">
                     <h4 style="margin-left: 10px;">{{userContext.newStaffTempName}} Name</h4>
                     <div>
                         <div>
@@ -150,7 +245,6 @@
                                 <option value="FT">FT - Full-time</option>
                                 <option value="PT">PT - Part-time</option>
                             </select>
-
                         </div>
                         <div>
                             <label>Anticipated Contract Start Date <span class="notation">(can be
@@ -165,7 +259,7 @@
                                     ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
                                 {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} need their accounts
                                 setup prior to Contract Start Date?</label>
-                            <select name="" type="text" value="" ng-model="newStaff.early_setup"></label>
+                            <select name="" type="text" value="" ng-model="newStaff.early_setup">
                                 <option></option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
@@ -199,7 +293,6 @@
                                 Order BY users.last_name , users.first_name]
                                 <option value="~(dcid)">~(first) ~(last)</option>
                                 [/tlist_sql]
-
                             </select>
                         </div>
                     </div>
