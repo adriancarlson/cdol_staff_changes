@@ -55,6 +55,7 @@
                 name.</div>
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="fluid-form">
+                    <h4>{{userContext.newStaffTempName}} Name</h4>
                     <div>
                         <div>
                             <label class="req">Title</label>
@@ -80,6 +81,10 @@
                             <select name="" id="selectgender" ng-model="newStaff.gender"
                                 ng-required="true">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]preferred_name)]</select>
                         </div>
+                        <div>
+                            <label>Date of Birth</label>
+                            <input name="" type="text" value="" class="psDateWidget" ng-model="newStaff.dob">
+                        </div>
                     </div>
                     <div>
                         <div>
@@ -94,7 +99,27 @@
                     </div>
                     <div>
                         <div>
-                            <label>Personal Email <span class="notation">(for communication durring account setup and summer
+                            <label>Religion</label>
+                            <select name="" type="text" value="" ng-model="newStaff.religion">
+                                <option></option>
+                                <option value="C">C - Catholic</option>
+                                <option value="N">N - Non-Catholic</option>
+                            </select>
+                        </div>
+                        <div style="margin-left:10px;">
+                            <label>Religious, clergy or lay</label>
+                            <select name="" type="text" value="" ng-model="newStaff.religiousclergylay">
+                                <option></option>
+                                <option value="R">R - Religious</option>
+                                <option value="C">C - Clergy</option>
+                                <option value="L" selected="">L - Lay</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <label>Personal Email <span class="notation">(for communication durring account setup and
+                                    summer
                                     trainings)</span></label>
                             <input name="" type="email" value="" placeholder="NewStaff@email.com"
                                 ng-model="newStaff.personal_email">
@@ -119,9 +144,40 @@
                                 style="width: 300px;" ng-model="newStaff.position" ng-required="true">
                         </div>
                         <div>
-                            <label>Start Date <span class="notation">(can be aproximate)</span></label>
+                            <label>FTE</label>
+                            <select name="" type="text" value="" ng-model="newStaff.fte">
+                                <option></option>
+                                <option value="FT">FT - Full-time</option>
+                                <option value="PT">PT - Part-time</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <label>Anticipated Contract Start Date <span class="notation">(can be
+                                    aproximate)</span></label>
                             <input name="" type="text" value="" class="psDateWidget" ng-model="newStaff.start_date"
                                 ng-init="userContext.curDate">
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <label>Will <span
+                                    ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
+                                {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} need their accounts
+                                setup prior to Contract Start Date?</label>
+                            <select name="" type="text" value="" ng-model="newStaff.early_setup"></label>
+                                <option></option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div ng-show="newStaff.early_setup =='Yes'">
+                        <div>
+                            <label>Requested Account Setup Deadline</label>
+                            <input name="" type="text" value="" class="psDateWidget" ng-model="newStaff.deadline">
                         </div>
                     </div>
                     <div>
@@ -155,8 +211,8 @@
                                 ~(schoolname) or another Diocese of Lincoln School?</label>
                             <select name="" ng-show="userContext.pageStatus =='Submit'" ng-model="newStaff.previous">
                                 <option></option>
-                                <option value="1">Yes</option>
-                                <option value="0">No</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
                             </select><span ng-show="userContext.pageStatus =='Edit'"><span
                                     ng-show="newStaff.previous == 1 || newStaff.previous == 'true'">&nbsp;Yes</span><span
                                     ng-show="newStaff.previous == 0 || newStaff.previous == 'false'">&nbsp;No</span></span>
@@ -185,6 +241,13 @@
                             <label>Please type previous employer</label>
                             <input name="" type="text" value="" style="width: 300px;"
                                 ng-model="newStaff.previous_employer_other">
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <label>Is there anything you would like added to this form to make it better?</label>
+                            <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
+                                ng-model="newStaff.notes"></textarea>
                         </div>
                     </div>
                     <input type="hidden" id="emailType" name="[queue]type" value="100">

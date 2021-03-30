@@ -75,6 +75,8 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						function mySuccess(response) {
 							$scope.newStaff = response.data.tables.u_cdol_staff_changes;
 							$scope.newStaff.start_date = dateService.formatDateFromApi($scope.newStaff.start_date);
+							$scope.newStaff.dob = dateService.formatDateFromApi($scope.newStaff.dob);
+							$scope.newStaff.deadline = dateService.formatDateFromApi($scope.newStaff.deadline);
 							//setting up params for dup search
 							$scope.dupSearchParams.lastName = response.data.tables.u_cdol_staff_changes.last_name;
 							$scope.dupSearchParams.maidenName = response.data.tables.u_cdol_staff_changes.maiden_name;
@@ -107,6 +109,8 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			//submitting New Staff change record
 			$scope.submitStaffChange = function () {
 				$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
+				$scope.newStaff.dob = dateService.formatDateForApi($scope.newStaff.dob);
+				$scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
 				let redirectPath =
 					'/admin/cdol/staffchange/cdol_staff_change.html?status=Confirm&title=' + $scope.newStaff.title + '&fname=' + $scope.newStaff.first_name + '&lname=' + $scope.newStaff.last_name;
 				let newRecord = {
@@ -135,6 +139,8 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			$scope.submitStaffUpdate = function () {
 				if ($scope.userContext.curStaffId !== '') {
 					$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
+					$scope.newStaff.dob = dateService.formatDateForApi($scope.newStaff.dob);
+					$scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
 					let redirectPath = '/admin/cdol/staffchange/cdol_staff_change_list.html';
 					let updateRecord = {
 						tables: {
