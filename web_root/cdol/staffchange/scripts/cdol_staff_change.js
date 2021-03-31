@@ -1,5 +1,5 @@
-define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateService.js'], function (angular) {
-	var cdolStaffApp = angular.module('cdolStaffApp', ['powerSchoolModule', 'dateService']);
+define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateService.js', '/cdol/scripts/checkboxService.js'], function (angular) {
+	var cdolStaffApp = angular.module('cdolStaffApp', ['powerSchoolModule', 'dateService', 'checkboxService']);
 	cdolStaffApp.controller('cdolStaffAppCtrl', [
 		'$scope',
 		'$http',
@@ -79,6 +79,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 							$scope.newStaff.start_date = dateService.formatDateFromApi($scope.newStaff.start_date);
 							$scope.newStaff.dob = dateService.formatDateFromApi($scope.newStaff.dob);
 							$scope.newStaff.deadline = dateService.formatDateFromApi($scope.newStaff.deadline);
+							$scope.newStaff.ps_created = checkboxService.formatChecksFromApi($scope.newStaff.ps_created);
 							//setting up params for dup search
 							$scope.dupSearchParams.lastName = response.data.tables.u_cdol_staff_changes.last_name;
 							$scope.dupSearchParams.maidenName = response.data.tables.u_cdol_staff_changes.maiden_name;
@@ -143,6 +144,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
 					$scope.newStaff.dob = dateService.formatDateForApi($scope.newStaff.dob);
 					$scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
+					$scope.newStaff.ps_created = checkboxService.formatChecksForApi($scope.newStaff.ps_created);
 					let redirectPath = '/admin/cdol/staffchange/cdol_staff_change_list.html';
 					let updateRecord = {
 						tables: {
