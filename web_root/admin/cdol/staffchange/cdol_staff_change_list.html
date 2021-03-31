@@ -35,18 +35,21 @@
         ~[wc:admin_navigation_css]
         <h1>New Staff Submissions</h1>
         <div id=”staffListGrid” data-pss-grid-widget data-data="staffList" data-filtered-data="staffListFilt"
-            data-client-side-pagination="false">
+            data-client-side-pagination="false" data-filter-constraint="no-filters">
             <table class="grid">
                 <thead>
                     <tr>
                         <th></th>
                         <th data-pss-sort-fields="last_name|text">Staff Name</th>
-                        <th data-pss-sort-fields="schoolid|number">School</th>
+                        <th data-pss-sort-fields="name_change|text">Type of Change</th>
+                        <th data-pss-sort-fields="schname|text">School</th>
                         <th data-pss-sort-fields="staff_type|text">Staff Type</th>
                         <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
-                        <th data-pss-sort-fields="submission_date|date">Submitted date</th>
+                        <th data-pss-sort-fields="submission_date|date, submission_time">Submission Date</th>
+                        <th data-pss-sort-fields="completion_date|date">Deadline</th>
                         <th>PS Account Created</th>
                         <th>AD Account Created</th>
+                        <th>LMS Account Created</th>
                     </tr>
                     <!-- <tr>
                         <th>&nbsp;</th>
@@ -69,14 +72,19 @@
                         <td>{{$index +1}}</td>
                         <td><a href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">
                                 {{staff.title}} {{staff.first_name}} {{staff.last_name}}</a></td>
+                        <td style="text-align:center;">{{staff.name_change}}</td>
                         <td>{{staff.schname}}</td>
                         <td>{{staff.staff_type}}</td>
                         <td>{{staff.submittedstaff}}</td>
-                        <td>{{staff.submission_date | date : 'shortDate'}}</td>
-                        <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
+                        <td style="text-align:center;">{{staff.submission_date | date : 'MM/dd/yyyy'}}
+                            {{staff.submission_time}}</td>
+                        <td style="text-align:center;">{{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                        <td style="text-align:center;"><span ng-show="staff.ps_created != 1">&#10060;</span><span
                                 ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
-                        <td><span ng-show="staff.ad_created != 1">&#10060;</span><span
+                        <td style="text-align:center;"><span ng-show="staff.ad_created != 1">&#10060;</span><span
                                 ng-show="staff.ad_created == 1">&#10004;&#65039;</span></td>
+                        <td style="text-align:center;"><span ng-show="staff.lms_created != 1">&#10060;</span><span
+                                ng-show="staff.lms_created == 1">&#10004;&#65039;</span></td>
                     </tr>
                 </tbody>
             </table>

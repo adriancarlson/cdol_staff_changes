@@ -32,5 +32,6 @@
         <field name="fte" type="String" length="2" />
         <field name="religion" type="String" length="1" />
         <field name="religiousclergylay" type="String" length="1" />
+        <field name="submission_time" type="String"  length="10"/>
     </extendedTable>
 </psExtension>

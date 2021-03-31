@@ -15,6 +15,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				curSchoolId: $attrs.ngCurSchoolId,
 				curYearId: $attrs.ngCurYearId,
 				curDate: $attrs.ngCurDate,
+				curTime: $attrs.ngCurTime,
 				curUserId: $attrs.ngCurUserId,
 				curStaffId: $attrs.ngStaffChangeId,
 			};
@@ -52,6 +53,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				previous_employer: '',
 				previous_employer_other: '',
 				submission_date: dateService.formatDateForApi($scope.userContext.curDate),
+				submission_time: $scope.userContext.curTime,
 				who_submitted: $scope.userContext.curUserId,
 				notes: '',
 				ps_created: '',
