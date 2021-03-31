@@ -82,7 +82,7 @@
                         <td style="text-align:center;">{{staff.submission_date | date : 'MM/dd/yyyy'}}
                             {{staff.submission_time}}</td>
                         <td style="text-align:center;"
-                            ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && staff.ps_created != 1 && staff.ad_created != 1 && staff.lms_created != 1}">
+                            ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || staff.ad_created != 1 || staff.lms_created != 1)}">
                             {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
                         <td style="text-align:center;"><span ng-show="staff.ps_created != 1">&#10060;</span><span
                                 ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>

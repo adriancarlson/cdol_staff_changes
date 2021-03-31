@@ -342,18 +342,36 @@
                         </div>
                     </div>
                     ~[if#distCheck.security.inrole=9]
-                    <div ng-show="userContext.pageStatus =='Edit'">
+                    <div style="background-color: #fff; border-top: 1px solid #eee;"
+                        ng-show="userContext.pageStatus =='Edit'">
                         <div>
-                            <label>PowerSchool Account Created?</label>
-                            <input type="checkbox" name="" ng-model="newStaff.ps_created">
-                        </div>
-                        <div>
-                            <label>Active Directory Account Created?</label>
-                            <input type="checkbox" name="" ng-model="newStaff.ad_created">
-                        </div>
-                        <div>
-                            <label>LMS Account Created?</label>
-                            <input type="checkbox" name="" ng-model="newStaff.lms_created">
+                            <table class="grid">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3">Account Creation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
+                                            <input type="checkbox" name=""
+                                                ng-model="newStaff.ps_created"><label>PowerSchool Account
+                                                Created?</label>
+                                        </td>
+                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
+                                            <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>Active
+                                                Directory
+                                                Created?</label>
+                                        </td>
+                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
+                                            <input type="checkbox" name="" ng-model="newStaff.lms_created"><label>LMS
+                                                Account
+                                                Created?</label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
                         </div>
                     </div>
                     [/if#distCheck]
