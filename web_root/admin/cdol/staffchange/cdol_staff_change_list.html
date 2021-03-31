@@ -6,6 +6,7 @@
         ~[wc:commonscripts]
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
+        <link href="/cdol/staffchange/scripts/cdol_staff_change.css?~[time]" rel="stylesheet">
         <style>
             [ng\:cloak],
             [ng-cloak],
@@ -28,7 +29,9 @@
 
     <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl"
         data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]" data-module-name="cdolStaffApp"
-        ng-init="getStaffResults()" ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)" ng-cloak>
+        ng-init="getStaffResults()" ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)"
+        ng-status="~(gpv.status)" ng-cur-user-id="~[x:userid]" ng-cur-date="~[date]" ng-cur-time="~[time]"
+        ng-staff-change-id="~(gpv.id)" ng-cloak>
         ~[wc:admin_header_css]
         <a href="/admin/home.html" target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; New Staff
         Submissions
@@ -78,7 +81,9 @@
                         <td>{{staff.submittedstaff}}</td>
                         <td style="text-align:center;">{{staff.submission_date | date : 'MM/dd/yyyy'}}
                             {{staff.submission_time}}</td>
-                        <td style="text-align:center;">{{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                        <td style="text-align:center;"
+                            ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && staff.ps_created != 1 && staff.ad_created != 1 && staff.lms_created != 1}">
+                            {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
                         <td style="text-align:center;"><span ng-show="staff.ps_created != 1">&#10060;</span><span
                                 ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
                         <td style="text-align:center;"><span ng-show="staff.ad_created != 1">&#10060;</span><span
