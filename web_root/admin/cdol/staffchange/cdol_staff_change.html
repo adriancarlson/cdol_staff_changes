@@ -341,6 +341,22 @@
                                 ng-model="newStaff.notes"></textarea>
                         </div>
                     </div>
+                    ~[if#distCheck.security.inrole=9]
+                    <div ng-show="userContext.pageStatus =='Edit'">
+                        <div>
+                            <label>PowerSchool Account Created?</label>
+                            <input type="checkbox" name="" ng-model="newStaff.ps_created">
+                        </div>
+                        <div>
+                            <label>Active Directory Account Created?</label>
+                            <input type="checkbox" name="" ng-model="newStaff.ad_created">
+                        </div>
+                        <div>
+                            <label>LMS Account Created?</label>
+                            <input type="checkbox" name="" ng-model="newStaff.lms_created">
+                        </div>
+                    </div>
+                    [/if#distCheck]
                     <input type="hidden" id="emailType" name="[queue]type" value="100">
                     <input type="hidden" id="emailFrom" name="[queue]tdata1" value="adrian-carlson@cdolinc.net">
                     <input type="hidden" id="emailTo" name="[queue]tdata2" value="ps-support@cdolinc.net">
