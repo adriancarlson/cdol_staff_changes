@@ -127,18 +127,49 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				$http({
 					url: '/ws/schema/table/U_CDOL_STAFF_CHANGES',
 					method: 'POST',
-					data: newRecord,
+					data: $scope.userContext,
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
 					},
 				}).then(function (response) {
 					if (response.data.result[0].status == 'SUCCESS') {
+						// email attempt
+						$j.ajax({
+							url: '/admin/cdol/staffchange/data/emailfields.html',
+							method: 'POST',
+							contentType: 'application/x-www-form-urlencoded',
+							data: $scope.userContext,
+							success: function (result) {
+								$j('#holdingDiv').append(result);
+							},
+							complete: function () {
+								var data = {
+									ac: 'prim',
+								};
+								$j('#holdingDiv')
+									.find('.fireaway')
+									.each(function () {
+										if ($j(this).attr('id') == 'hhpSta') {
+											$j(this).val('2');
+										}
+										data[$j(this).attr('name')] = $j(this).val();
+									});
+								$j.ajax({
+									method: 'POST',
+									data: data,
+									complete: function () {
+										$j('#holdingDiv').html('');
+										$j('#staffChangeForm').submit();
+									},
+								});
+							},
+						});
 					} else {
 						psAlert({ message: 'There was an error submitting the record. Changes were not saved', title: 'Error Submitting Record' });
 					}
 				});
-				$window.location.href = redirectPath;
+				// $window.location.href = redirectPath;
 			};
 
 			//updating staff record
