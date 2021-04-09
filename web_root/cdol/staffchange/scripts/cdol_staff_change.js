@@ -65,15 +65,6 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				lms_created: '',
 			};
 
-			$scope.emailData = {
-				curDate: $scope.userContext.CurDate,
-				curTime: $scope.userContext.CurTime,
-				emailFrom: $scope.userContext.curUserEmail,
-				emailTo: 'ps-support@cdolinc.net',
-				emailSubject: 'New Staff Submission from ' + $scope.userContext.curUserName + '(' + $scope.userContext.curUserSchoolAbbr + ') | ' + $scope.userContext.curUserEmail,
-				emailBody: $scope.newStaff,
-			};
-
 			//if on edit screen and passing an staff change id then this runs to pull the data for the current staff change record.
 			$scope.findStaffChange = function () {
 				loadingDialog();
@@ -129,6 +120,16 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
 				$scope.newStaff.dob = dateService.formatDateForApi($scope.newStaff.dob);
 				$scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
+
+				$scope.emailData = {
+					curDate: $scope.userContext.CurDate,
+					curTime: $scope.userContext.CurTime,
+					emailFrom: $scope.userContext.curUserEmail,
+					emailTo: 'ps-support@cdolinc.net',
+					emailSubject: $scope.newStaff.name_change + ' Submission from ' + $scope.userContext.curUserName + ' (' + $scope.userContext.curUserSchoolAbbr + ') | ' + $scope.userContext.curUserEmail,
+					emailBody: 'Name: ' + $scope.newStaff.title + ' ' + $scope.newStaff.first_name + ' ' + $scope.newStaff.last_name,
+				};
+
 				let redirectPath =
 					'/admin/cdol/staffchange/cdol_staff_change.html?status=Confirm&title=' + $scope.newStaff.title + '&fname=' + $scope.newStaff.first_name + '&lname=' + $scope.newStaff.last_name;
 				let newRecord = {
@@ -147,6 +148,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				}).then(function (response) {
 					if (response.data.result[0].status == 'SUCCESS') {
 						// ugly email jquery ajax call ... but it works.
+
 						$j.ajax({
 							url: '/admin/cdol/staffchange/data/emailfields.html',
 							method: 'POST',
@@ -161,6 +163,9 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 								};
 								$j('#holdingDiv')
 									.find('.fireaway')
+									.each(function () {
+										data[$j(this).attr('name')] = $j(this).val();
+									});
 								$j.ajax({
 									method: 'POST',
 									data: data,
@@ -175,7 +180,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						psAlert({ message: 'There was an error submitting the record. Changes were not saved', title: 'Error Submitting Record' });
 					}
 				});
-				// $window.location.href = redirectPath;
+				$window.location.href = redirectPath;
 			};
 
 			//updating staff record

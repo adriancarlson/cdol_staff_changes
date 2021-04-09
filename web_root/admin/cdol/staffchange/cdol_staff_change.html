@@ -13,8 +13,8 @@
         data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]" data-module-name="cdolStaffApp"
         ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)" ng-status="~(gpv.status)"
         ng-cur-user-id="~[x:userid]" ng-cur-date="~[date]" ng-cur-time="~[time]" ng-staff-change-id="~(gpv.id)"
-        ng-cur-user-name=" ~[x:username;firstlast]" ng-cur-user-email="~[x:useremail]" ng-cur-user-school-abbr="~(schoolabbr)"
-        ng-init="findStaffChange()" ng-cloak>
+        ng-cur-user-name=" ~[x:username;firstlast]" ng-cur-user-email="~[x:useremail]"
+        ng-cur-user-school-abbr="~(schoolabbr)" ng-init="findStaffChange()" ng-cloak>
         ~[wc:admin_header_css]
         <span ng-show="userContext.pageStatus =='Submit'"><a href="/admin/home.html"
                 target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; {{userContext.pageStatus}}
@@ -24,8 +24,10 @@
                 href="/admin/cdol/staffchange/cdol_staff_change_list.html" target="_top">New Staff Submissions</a> &gt;
             {{userContext.pageStatus}} Staff Change</span>
         ~[wc:admin_navigation_css]
+
         <div ng-show="userContext.pageStatus =='Submit' || userContext.pageStatus =='Edit'">
             <h1>{{userContext.pageStatus}} Staff Change</h1>
+
             <!--dup table-->
             <div class="box-round" ng-show="userContext.pageStatus =='Edit'&& dupList.length >0" style="width:50%;">
                 <div id="feedback-message" class="feedback-error">Potential matches for&nbsp;{{newStaff.title}}
@@ -412,7 +414,6 @@
                         </div>
                     </div>
                     [/if#distCheck]
-
                     <div id="holdingDiv" style="display: none;"></div>
 
                     <div class="button-row" ng-show="userContext.pageStatus =='Submit'">
