@@ -19,6 +19,9 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				curTime: $attrs.ngCurTime,
 				curUserId: $attrs.ngCurUserId,
 				curStaffId: $attrs.ngStaffChangeId,
+				curUserName: $attrs.ngCurUserName,
+				curUserEmail: $attrs.ngCurUserEmail,
+				curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr,
 			};
 
 			$scope.dupSearchParams = {
@@ -60,6 +63,15 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				ps_created: '',
 				ad_created: '',
 				lms_created: '',
+			};
+
+			$scope.emailData = {
+				curDate: $scope.userContext.CurDate,
+				curTime: $scope.userContext.CurTime,
+				emailFrom: $scope.userContext.curUserEmail,
+				emailTo: 'ps-support@cdolinc.net',
+				emailSubject: 'New Staff Submission from ' + $scope.userContext.curUserName + '(' + $scope.userContext.curUserSchoolAbbr + ') | ' + $scope.userContext.curUserEmail,
+				emailBody: $scope.newStaff,
 			};
 
 			//if on edit screen and passing an staff change id then this runs to pull the data for the current staff change record.
@@ -127,19 +139,19 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				$http({
 					url: '/ws/schema/table/U_CDOL_STAFF_CHANGES',
 					method: 'POST',
-					data: $scope.userContext,
+					data: newRecord,
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
 					},
 				}).then(function (response) {
 					if (response.data.result[0].status == 'SUCCESS') {
-						// email attempt
+						// ugly email jquery ajax call ... but it works.
 						$j.ajax({
 							url: '/admin/cdol/staffchange/data/emailfields.html',
 							method: 'POST',
 							contentType: 'application/x-www-form-urlencoded',
-							data: $scope.userContext,
+							data: $scope.emailData,
 							success: function (result) {
 								$j('#holdingDiv').append(result);
 							},
@@ -149,12 +161,6 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 								};
 								$j('#holdingDiv')
 									.find('.fireaway')
-									.each(function () {
-										if ($j(this).attr('id') == 'hhpSta') {
-											$j(this).val('2');
-										}
-										data[$j(this).attr('name')] = $j(this).val();
-									});
 								$j.ajax({
 									method: 'POST',
 									data: data,

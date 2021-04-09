@@ -13,6 +13,7 @@
         data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]" data-module-name="cdolStaffApp"
         ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)" ng-status="~(gpv.status)"
         ng-cur-user-id="~[x:userid]" ng-cur-date="~[date]" ng-cur-time="~[time]" ng-staff-change-id="~(gpv.id)"
+        ng-cur-user-name=" ~[x:username;firstlast]" ng-cur-user-email="~[x:useremail]" ng-cur-user-school-abbr="~(schoolabbr)"
         ng-init="findStaffChange()" ng-cloak>
         ~[wc:admin_header_css]
         <span ng-show="userContext.pageStatus =='Submit'"><a href="/admin/home.html"
@@ -411,14 +412,7 @@
                         </div>
                     </div>
                     [/if#distCheck]
-                    <!-- <input type="hidden" id="emailType" name="[queue]type" value="100">
-                    <input type="hidden" id="emailFrom" name="[queue]tdata1" value="adrian-carlson@cdolinc.net">
-                    <input type="hidden" id="emailTo" name="[queue]tdata2" value="ps-support@cdolinc.net">
-                    <input type="hidden" id="emailSubject" name="[queue]tdata3" value="Test">
-                    <input type="hidden" id="emailBody" name="[queue]tdata4" value="Test">
-                    <input type="hidden" id="emailDate" name="[queue]date" value="~[short.date]">
-                    <input type="hidden" id="emailTime" name="[queue]time" value="~[time]">
-                    <input type="hidden" name="ac" value="prim"> -->
+
                     <div id="holdingDiv" style="display: none;"></div>
 
                     <div class="button-row" ng-show="userContext.pageStatus =='Submit'">
