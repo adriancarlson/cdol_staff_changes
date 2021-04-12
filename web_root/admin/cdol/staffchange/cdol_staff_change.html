@@ -52,7 +52,7 @@
                 ng-show="userContext.pageStatus =='Edit'&& dupList.length <=0">No potential duplicate staff records
                 found.</div>
             <!--Divergent path question-->
-            <div class="fluid-form" ng-hide="newStaff.name_change!=''">
+            <div class="fluid-form">
                 <div>
                     <div>
                         <label>Are you adding a new staff or requesting a name change on an existing staff
@@ -147,7 +147,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                     [/if#distCheck]
@@ -264,12 +263,10 @@
                             <label class="req">Staff Type</label>
                             <select name="" ng-model="newStaff.staff_type" ng-required="true">
                                 <option></option>
-                                <option value="Teacher">
-                                    Teacher
-                                </option>
-                                <option value="Staff">
-                                    Staff
-                                </option>
+                                <option value="1">Teacher</option>
+                                <option value="2">Staff</option>
+                                <option value="3">Lunch Staff</option>
+                                <option value="4">Substitute</option>
                             </select>
                         </div>
                         <div>
@@ -396,6 +393,12 @@
                                             <input type="checkbox" name=""
                                                 ng-model="newStaff.ps_created"><label>PowerSchool Account
                                                 Created?</label>
+                                            <ul>
+                                                <li>Created account?</li>
+                                                <li>Assigned Security Group?</li>
+                                                <li>Assigned Email?</li>
+                                                <li>Linked LDAP?</li>
+                                            </ul>
                                         </td>
                                         <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
                                             <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>Active
@@ -406,16 +409,18 @@
                                             <input type="checkbox" name="" ng-model="newStaff.lms_created"><label>LMS
                                                 Account
                                                 Created?</label>
+                                            <ul>
+                                                <li>Imported from PS-SIS?</li>
+                                                <li>Matches O365 Login?</li>
+                                            </ul>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                     [/if#distCheck]
                     <div id="holdingDiv" style="display: none;"></div>
-
                     <div class="button-row" ng-show="userContext.pageStatus =='Submit'">
                         <span class="req-notation" ng-show="staffChangeForm.$invalid && staffChangeForm.$dirty">Please
                             fill all required fields prior to submitting.</span>

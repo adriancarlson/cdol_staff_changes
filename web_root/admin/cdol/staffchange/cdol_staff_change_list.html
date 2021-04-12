@@ -2,7 +2,7 @@
 <html>
 
     <head>
-        <title>New Staff Submissions</title>
+        <title>Staff Change Submissions</title>
         ~[wc:commonscripts]
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
@@ -24,6 +24,10 @@
             .mailTD {
                 border-left: 0 !important;
             }
+
+            td {
+                text-align: center;
+            }
         </style>
     </head>
 
@@ -36,7 +40,7 @@
         <a href="/admin/home.html" target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; New Staff
         Submissions
         ~[wc:admin_navigation_css]
-        <h1>New Staff Submissions</h1>
+        <h1>Staff Change Submissions</h1>
         <div id=”staffListGrid” data-pss-grid-widget data-data="staffList" data-filtered-data="staffListFilt"
             data-client-side-pagination="false" data-filter-constraint="no-filters">
             <table class="grid">
@@ -48,7 +52,8 @@
                         <th data-pss-sort-fields="schname|text">School</th>
                         <th data-pss-sort-fields="staff_type|text">Staff Type</th>
                         <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
-                        <th data-pss-sort-fields="submission_date|date, submission_time">Submission Date</th>
+                        <th data-pss-sort-fields="submission_date| submission_time, date"
+                            data-primary-sort="descending">Submission Date</th>
                         <th data-pss-sort-fields="completion_date|date">Deadline</th>
                         <th>PS Account Created</th>
                         <th>AD Account Created</th>
@@ -75,20 +80,20 @@
                         <td>{{$index +1}}</td>
                         <td><a href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">
                                 {{staff.title}} {{staff.first_name}} {{staff.last_name}}</a></td>
-                        <td style="text-align:center;">{{staff.name_change}}</td>
+                        <td>{{staff.name_change}}</td>
                         <td>{{staff.schname}}</td>
                         <td>{{staff.staff_type}}</td>
                         <td>{{staff.submittedstaff}}</td>
-                        <td style="text-align:center;">{{staff.submission_date | date : 'MM/dd/yyyy'}}
+                        <td>{{staff.submission_date | date : 'MM/dd/yyyy'}}
                             {{staff.submission_time}}</td>
-                        <td style="text-align:center;"
+                        <td
                             ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || staff.ad_created != 1 || staff.lms_created != 1)}">
                             {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                        <td style="text-align:center;"><span ng-show="staff.ps_created != 1">&#10060;</span><span
+                        <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
                                 ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
-                        <td style="text-align:center;"><span ng-show="staff.ad_created != 1">&#10060;</span><span
+                        <td><span ng-show="staff.ad_created != 1">&#10060;</span><span
                                 ng-show="staff.ad_created == 1">&#10004;&#65039;</span></td>
-                        <td style="text-align:center;"><span ng-show="staff.lms_created != 1">&#10060;</span><span
+                        <td><span ng-show="staff.lms_created != 1">&#10060;</span><span
                                 ng-show="staff.lms_created == 1">&#10004;&#65039;</span></td>
                     </tr>
                 </tbody>
