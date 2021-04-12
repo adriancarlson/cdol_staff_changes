@@ -133,16 +133,29 @@
                                             <input type="checkbox" name=""
                                                 ng-model="newStaff.ps_created"><label>PowerSchool Account
                                                 Updated?</label>
+                                            <ul>
+                                                <li>Created account?</li>
+                                                <li>Assigned Security Group?</li>
+                                                <li>Assigned Email?</li>
+                                                <li>Linked LDAP?</li>
+                                            </ul>
                                         </td>
                                         <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
-                                            <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>Active
-                                                Directory
-                                                Updated?</label>
+                                            <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>AD User
+                                                Account created?</label>
+                                            <ul>
+                                                <li>Exchange email mailbox created?</li>
+                                                <li>Office 365 licensed (incl. Teams) assigned?</li>
+                                            </ul>
                                         </td>
                                         <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
                                             <input type="checkbox" name="" ng-model="newStaff.lms_created"><label>LMS
                                                 Account
                                                 Updated?</label>
+                                            <ul>
+                                                <li>Imported from PS-SIS?</li>
+                                                <li>Matches O365 Login?</li>
+                                            </ul>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -401,9 +414,12 @@
                                             </ul>
                                         </td>
                                         <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
-                                            <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>Active
-                                                Directory
-                                                Created?</label>
+                                            <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>AD User
+                                                Account created?</label>
+                                            <ul>
+                                                <li>Exchange email mailbox created?</li>
+                                                <li>Office 365 licensed (incl. Teams) assigned?</li>
+                                            </ul>
                                         </td>
                                         <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
                                             <input type="checkbox" name="" ng-model="newStaff.lms_created"><label>LMS
