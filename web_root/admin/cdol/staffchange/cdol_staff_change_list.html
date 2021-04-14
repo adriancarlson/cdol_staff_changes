@@ -54,7 +54,8 @@
                         <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
                         <th data-pss-sort-fields="submission_time| submission_date, date"
                             data-primary-sort="descending">Submission Date</th>
-                        <th data-pss-sort-fields="completion_date|date">Deadline</th>
+                        <th data-pss-sort-fields="final_completion_date |date">Date Completed</th>
+                        <th data-pss-sort-fields="completion_time, date">Submission Date</th>
                         <th>PS Account Created</th>
                         <th>AD User Account Created</th>
                         <th>LMS Account Created</th>
@@ -89,6 +90,7 @@
                         <td
                             ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || staff.ad_created != 1 || staff.lms_created != 1)}">
                             {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                        <td>{{staff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
                         <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
                                 ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
                         <td><span ng-show="staff.ad_created != 1">&#10060;</span><span

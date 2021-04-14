@@ -325,7 +325,9 @@
                         <div>
                             <label class="req">Who is <span
                                     ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
-                                {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} Replacing?</label>
+                                {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} Replacing? <span
+                                    class="notation">(choose New Position or Other if replacing staff is not
+                                    listed)</span></label>
                             <select name="" ng-model="newStaff.replacing" ng-required="true">
                                 <option></option>
                                 <option value="New">--New Position--</option>
@@ -343,7 +345,17 @@
                                 Order BY users.last_name , users.first_name]
                                 <option value="~(dcid)">~(first) ~(last)</option>
                                 [/tlist_sql]
+                                <option value="Other">Other</option>
                             </select>
+                        </div>
+                    </div>
+                    <div ng-if="newStaff.replacing === 'Other'">
+                        <div>
+                            <label>Please type name of the staff member <span
+                                    ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
+                                {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} is replacing</label>
+                            <input name="" type="text" value="" style="width: 300px;"
+                                ng-model="newStaff.replacing_other">
                         </div>
                     </div>
                     <div>
