@@ -227,8 +227,8 @@
                         </div>
                         <div>
                             <label>Date of Birth <span class="notation">(please type in the date)</span></label>
-                            <input name="" type="text" value="" class="psDateWidget" data-minDate="01/01/1950"
-                                data-maxDate="01/01/2050" ng-model="newStaff.dob">
+                            <input name="" type="text" value="" maxlength="10" size="10" style="width:98px;"
+                                placeholder="MM/DD/YYYY" ng-model="newStaff.dob">
                         </div>
                     </div>
                     <div>
@@ -323,14 +323,15 @@
                     </div>
                     <div>
                         <div>
-                            <label class="req">Who is <span
+                            <label>Who is <span
                                     ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
                                 {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} Replacing? <span
-                                    class="notation">(choose New Position or Other if replacing staff is not
+                                    style="color: red;
+	font-size: 13.5pt;"> *</span><span class="notation">(choose Other if staff member being replaced is not
                                     listed)</span></label>
                             <select name="" ng-model="newStaff.replacing" ng-required="true">
                                 <option></option>
-                                <option value="New">--New Position--</option>
+
                                 ~[tlist_sql;SELECT
                                 users.dcid,
                                 users.first_name,
@@ -345,7 +346,8 @@
                                 Order BY users.last_name , users.first_name]
                                 <option value="~(dcid)">~(first) ~(last)</option>
                                 [/tlist_sql]
-                                <option value="Other">Other</option>
+                                <option value="New">-- New Position --</option>
+                                <option value="Other">-- Other --</option>
                             </select>
                         </div>
                     </div>
@@ -385,7 +387,7 @@
                                 ORDER BY schools.name;]
                                 <option value="~(schnum)">~(schname)</option>
                                 [/tlist_sql]
-                                <option value="Other">Other</option>
+                                <option value="Other">-- Other --</option>
                             </select>
                         </div>
                     </div>

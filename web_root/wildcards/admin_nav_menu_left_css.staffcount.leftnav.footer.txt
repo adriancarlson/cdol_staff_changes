@@ -1,4 +1,3 @@
- ~[if#distCheck.security.inrole=9]
 <script>
     $j(document).ready(function() {
         $j.ajax({
@@ -9,4 +8,4 @@
             })
         });
 </script>
-[/if#distCheck]
+

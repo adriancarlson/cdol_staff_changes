@@ -47,18 +47,18 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th data-pss-sort-fields="last_name|text">Staff Name</th>
+                        <th data-pss-sort-fields="last_name|text" class="nowrap">Staff Name</th>
                         <th data-pss-sort-fields="name_change|text">Type of Change</th>
                         <th data-pss-sort-fields="schname|text">School</th>
-                        <th data-pss-sort-fields="staff_type|text">Staff Type</th>
+                        <!--<th data-pss-sort-fields="staff_type|text">Staff Type</th>-->
                         <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
-                        <th data-pss-sort-fields="submission_time| submission_date, date"
-                            data-primary-sort="descending">Submission Date</th>
-                        <th data-pss-sort-fields="final_completion_date |date">Date Completed</th>
-                        <th data-pss-sort-fields="completion_time, date">Submission Date</th>
-                        <th>PS Account Created</th>
-                        <th>AD User Account Created</th>
-                        <th>LMS Account Created</th>
+                        <th data-pss-sort-fields="submission_date, submission_time">
+                            Submission Date</th>
+                        <th data-pss-sort-fields="final_completion_date | date">Deadline</th>
+                        <th>PS Created</th>
+                        <th>AD Created</th>
+                        <th>LMS Created</th>
+                        <th data-pss-sort-fields="completion_date | date" data-primary-sort="ascending">Completed</th>
                     </tr>
                     <!-- <tr>
                         <th>&nbsp;</th>
@@ -79,24 +79,24 @@
                 <tbody>
                     <tr ng-repeat="staff in staffListFilt">
                         <td>{{$index +1}}</td>
-                        <td><a href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">
-                                {{staff.title}} {{staff.first_name}} {{staff.last_name}}</a></td>
+                        <td><a href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.first_name}}
+                                {{staff.last_name}}</a></td>
                         <td>{{staff.name_change}}</td>
-                        <td>{{staff.schname}}</td>
-                        <td>{{staff.staff_type_desc}}</td>
+                        <td style="width:350px;">{{staff.schname}}</td>
+                        <!--<td>{{staff.staff_type_desc}}</td>-->
                         <td>{{staff.submittedstaff}}</td>
-                        <td>{{staff.submission_date | date : 'MM/dd/yyyy'}}
+                        <td style="width:175px;">{{staff.submission_date | date : 'MM/dd/yyyy'}}
                             {{staff.submission_time}}</td>
                         <td
                             ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || staff.ad_created != 1 || staff.lms_created != 1)}">
                             {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                        <td>{{staff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
                         <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
                                 ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
                         <td><span ng-show="staff.ad_created != 1">&#10060;</span><span
                                 ng-show="staff.ad_created == 1">&#10004;&#65039;</span></td>
                         <td><span ng-show="staff.lms_created != 1">&#10060;</span><span
                                 ng-show="staff.lms_created == 1">&#10004;&#65039;</span></td>
+                        <td>{{staff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
                     </tr>
                 </tbody>
             </table>
