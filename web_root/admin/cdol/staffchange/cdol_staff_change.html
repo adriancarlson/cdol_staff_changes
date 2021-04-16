@@ -55,16 +55,126 @@
             <div class="fluid-form">
                 <div>
                     <div>
-                        <label>Are you adding a new staff or requesting a name change on an existing staff
-                            member?</label>
+                        <label>Type of Staff Change</label>
                         <select name="" type="text" value="" ng-model="newStaff.name_change">
                             <option></option>
-                            <option value="New Staff">New Staff</option>
-                            <option value="Name Change">Name Change</option>
+                            <option value="New Staff">New Staff: new staff enting ~(schoolname)</option>
+                            <option value="Name Change">Name Change: change the name of an existing staff member
+                            </option>
+                            <option value="Transferring Staff">Transferring Staff: new staff transferring in from
+                                another Diocese of Lincoln School</option>
+                            <option value="Exiting Staff">Exiting Staff: staff not returning</option>
                         </select>
                     </div>
                 </div>
             </div>
+            <!--Exiting Submit -->
+            <form name="exitingForm" method="POST" novalidate>
+                <div class="fluid-form" ng-if="newStaff.name_change=='Exiting Staff'">
+                    <div>
+                        <div>
+                            <label class="req">Who is not returning?</label>
+                            <select name="" ng-model="newStaff.replacing" ng-required="true">
+                                <option></option>
+                                ~[tlist_sql;SELECT distinct
+                                users.dcid,
+                                users.first_name,
+                                users.last_name
+                                FROM SCHOOLSTAFF
+                                inner join users
+                                on users.dcid = schoolstaff.users_dcid
+                                WHERE schoolstaff.status =1
+                                ~[if.is.a.school]
+                                AND schoolstaff.schoolid = ~(curschoolid)
+                                [/if.is.a.school]
+                                Order BY users.last_name , users.first_name]
+                                <option value="~(dcid)">~(first) ~(last)</option>
+                                [/tlist_sql]
+                            </select>
+                        </div>
+                    </div>
+                    <div id="feedback-message" class="feedback-alert">All exiting staff accounts will be deactivated
+                        after June 1st. If the exiting staff member needs access to their accout after June 1st or needs
+                        to be deactivated sooner, please sepcify date below.</div>
+                    <div>
+                        <div>
+                            <label>Requested Deactivation Date<span class="notation">(please type in the
+                                    date)</span></label>
+                            <input name="" type="text" value="" maxlength="10" size="10" style="width:98px;"
+                                placeholder="MM/DD/YYYY" ng-model="newStaff.deadline">
+                        </div>
+                    </div>
+                    ~[if#distCheck.security.inrole=9]
+                    <div style="background-color: #fff; border-top: 1px solid #eee;"
+                        ng-show="userContext.pageStatus =='Edit'">
+                        <div>
+                            <table class="grid">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3">Account Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
+                                            <input type="checkbox" name=""
+                                                ng-model="newStaff.ps_created"><label>PowerSchool Account
+                                                Updated?</label>
+                                            <ul>
+                                                <li>User Name Updated?</li>
+                                                <li>Email Address Updated?</li>
+                                            </ul>
+                                        </td>
+                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
+                                            <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>AD User
+                                                Account created?</label>
+                                            <ul>
+                                                <li>Exchange email updated?</li>
+                                                <li>Office 365 updated?</li>
+                                            </ul>
+                                        </td>
+                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
+                                            <input type="checkbox" name="" ng-model="newStaff.lms_created"><label>LMS
+                                                Account
+                                                Updated?</label>
+                                            <ul>
+                                                <li>LMS name Updated?</li>
+                                                <li>Matches O365 Login?</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    [/if#distCheck]
+                    <div class="button-row" ng-show="userContext.pageStatus =='Submit'">
+                        <span class="req-notation" ng-show="exitingForm.$invalid && exitingForm.$dirty">Please
+                            fill all required fields prior to submitting.</span>
+                        <button id="canBtn" type="button" ng-show="subConfirm"
+                            ng-click="subConfirm = false">Cancel</button>
+                        <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="subConfirm"
+                            ng-click="submitStaffChange()">Confirm Submission</button>
+                        <button id="subBtn" type="button" ng-show="!subConfirm" ng-click="subConfirm = true"
+                            ng-disabled="exitingForm.$invalid">Submit</button>
+                    </div>
+                    <div ng-show="userContext.pageStatus =='Edit'" class="button-row">
+                        <span class="req-notation" ng-show="exitingForm.$invalid && exitingForm.$dirty">Please
+                            fill all required fields prior to submitting.</span>
+                        <button id="canBtn" type="button" ng-show="delUpdate"
+                            ng-click="delUpdate = false">Cancel</button>
+                        <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="delUpdate"
+                            ng-click="deleteStaffChange()">Confirm Deletion</button>
+                        <a id="bkBtn" class="button" ng-show="!delUpdate"
+                            href="/admin/cdol/staffchange/cdol_staff_change_list.html">Back</a>
+                        <button id="delBtn" type="button" ng-show="!delUpdate" ng-click="delUpdate = true">Delete
+                            Submission</button>
+                        <button id="upBtn" type="button" ng-disabled="exitingForm.$invalid" ng-show="!delUpdate"
+                            ng-click="submitStaffUpdate()">Submit
+                            Update</button>
+                    </div>
+                </div>
+            </form>
             <!--Name change Submit -->
             <form name="nameChangeForm" method="POST" novalidate>
                 <div class="fluid-form" ng-if="newStaff.name_change=='Name Change'">

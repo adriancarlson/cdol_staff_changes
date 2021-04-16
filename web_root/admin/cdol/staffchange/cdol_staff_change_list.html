@@ -41,6 +41,7 @@
         Submissions
         ~[wc:admin_navigation_css]
         <h1>Staff Change Submissions</h1>
+        <h2>Incoming Staff</h2>
         <div id=”staffListGrid” data-pss-grid-widget data-data="staffList" data-filtered-data="staffListFilt"
             data-client-side-pagination="false" data-filter-constraint="no-filters">
             <table class="grid">
@@ -82,6 +83,66 @@
                         <td><a href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.first_name}}
                                 {{staff.last_name}}</a></td>
                         <td>{{staff.name_change}}</td>
+                        <td style="width:350px;">{{staff.schname}}</td>
+                        <!--<td>{{staff.staff_type_desc}}</td>-->
+                        <td>{{staff.submittedstaff}}</td>
+                        <td style="width:175px;">{{staff.submission_date | date : 'MM/dd/yyyy'}}
+                            {{staff.submission_time}}</td>
+                        <td
+                            ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || staff.ad_created != 1 || staff.lms_created != 1)}">
+                            {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                        <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
+                                ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
+                        <td><span ng-show="staff.ad_created != 1">&#10060;</span><span
+                                ng-show="staff.ad_created == 1">&#10004;&#65039;</span></td>
+                        <td><span ng-show="staff.lms_created != 1">&#10060;</span><span
+                                ng-show="staff.lms_created == 1">&#10004;&#65039;</span></td>
+                        <td>{{staff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <h2>Exiting Staff</h2>
+        <div id=”staffListGrid” data-pss-grid-widget data-data="staffList" data-filtered-data="staffListFilt"
+            data-client-side-pagination="false" data-filter-constraint="no-filters">
+            <table class="grid">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th data-pss-sort-fields="replacing|text" class="nowrap">Staff Name</th>
+                        <th data-pss-sort-fields="schname|text">School</th>
+                        <!--<th data-pss-sort-fields="staff_type|text">Staff Type</th>-->
+                        <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
+                        <th data-pss-sort-fields="submission_date, submission_time">
+                            Submission Date</th>
+                        <th data-pss-sort-fields="final_completion_date | date">Deadline</th>
+                        <th>PS Created</th>
+                        <th>AD Created</th>
+                        <th>LMS Created</th>
+                        <th data-pss-sort-fields="completion_date | date" data-primary-sort="ascending">Completed</th>
+                    </tr>
+                    <!-- <tr>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th colspan="2" class="center"><input type="checkbox" ng-model="selectedStuAll"
+                                ng-click="checkStuAll()" title="Select/Deselect All"
+                                id="selectedStuAll" />Select/Deselect All
+                        </th>
+                        <th colspan="2" class="center"><input type="checkbox" ng-model="selectedParAll"
+                                ng-click="checkParAll()" title="Select/Deselect All"
+                                id="selectedParAll" />Select/Deselect All
+                        </th>
+                    </tr> -->
+                </thead>
+                <tbody>
+                    <tr ng-repeat="staff in staffListFilt">
+                        <td>{{$index +1}}</td>
+                        <td><a
+                                href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.replacing}}</a>
+                        </td>
                         <td style="width:350px;">{{staff.schname}}</td>
                         <!--<td>{{staff.staff_type_desc}}</td>-->
                         <td>{{staff.submittedstaff}}</td>
