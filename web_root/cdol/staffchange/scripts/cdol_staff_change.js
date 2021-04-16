@@ -130,8 +130,19 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					emailBody: 'Name: ' + $scope.newStaff.title + ' ' + $scope.newStaff.first_name + ' ' + $scope.newStaff.last_name,
 				};
 
+				let submessage = $scope.newStaff.name_change.substring(0, 1);
+
 				let redirectPath =
-					'/admin/cdol/staffchange/cdol_staff_change.html?status=Confirm&title=' + $scope.newStaff.title + '&fname=' + $scope.newStaff.first_name + '&lname=' + $scope.newStaff.last_name;
+					'/admin/cdol/staffchange/cdol_staff_change.html?status=Confirm&title=' +
+					$scope.newStaff.title +
+					'&fname=' +
+					$scope.newStaff.first_name +
+					'&lname=' +
+					$scope.newStaff.last_name +
+					'&substat=' +
+					$scope.newStaff.name_change +
+					'&submessage=' +
+					submessage;
 				let newRecord = {
 					tables: {
 						U_CDOL_STAFF_CHANGES: $scope.newStaff,

@@ -596,18 +596,20 @@
         <!--Confirm-->
         <div ng-show="userContext.pageStatus =='Confirm'">
             <h1>Thank You!</h1>
-            <div class="feedback-confirm" style="width:700px"><span class="underline">Thank You for your
-                    submission!</span>
+            <div class="feedback-confirm" style="width:700px"><b><u>Thank You for your submission!</u></b>
                 <br>
-                <span class="underline bold">Note:</span> Your New Staff Submission for
-                ~(gpv.title) ~(gpv.fname) ~(gpv.lname)
-                has been sent to the Education Technology Office. We will be in contact once the account has been
-                created.
+                ~[if.~(gpv.submessage)=E]
+                <p>Your ~(gpv.substat) Submission has been sent to the Education Technology Office. We will be in
+                    contact once the account will be deactivated June 1st unless specified otherwise.</p>
+                [else]
+                <p>Your ~(gpv.substat) Submission for ~(gpv.title) ~(gpv.fname) ~(gpv.lname) has been sent to the
+                    Education Technology Office. We will be in contact once the account has been created.</p>
+                [/if]
             </div>
             <div class="button-row" style="width:740px"><a class="button"
                     href="cdol_staff_change.html?status=Submit">Submit
-                    another
-                    New Staff Record</a><a class="button" href="/admin/home.html">Exit</a>
+                    Another
+                    Staff Change</a><a class="button" href="/admin/home.html">Exit</a>
             </div>
         </div>
         ~[wc:admin_footer_css]
