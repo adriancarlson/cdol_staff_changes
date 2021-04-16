@@ -37,12 +37,12 @@
         ng-status="~(gpv.status)" ng-cur-user-id="~[x:userid]" ng-cur-date="~[date]" ng-cur-time="~[time]"
         ng-staff-change-id="~(gpv.id)" ng-cloak>
         ~[wc:admin_header_css]
-        <a href="/admin/home.html" target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; New Staff
-        Submissions
+        <a href="/admin/home.html" target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; Staff
+        Change Submissions
         ~[wc:admin_navigation_css]
         <h1>Staff Change Submissions</h1>
         <h2>Incoming Staff</h2>
-        <div id=”staffListGrid” data-pss-grid-widget data-data="staffList" data-filtered-data="staffListFilt"
+        <div id="staffListGrid" data-pss-grid-widget data-data="staffList" data-filtered-data="staffListFilt"
             data-client-side-pagination="false" data-filter-constraint="no-filters">
             <table class="grid">
                 <thead>
@@ -103,13 +103,14 @@
             </table>
         </div>
         <h2>Exiting Staff</h2>
-        <div id=”removalstaffListGrid” data-pss-grid-widget data-data="removalStaffList" data-filtered-data="removalStaffList"
-            data-client-side-pagination="false" data-filter-constraint="no-filters">
+        <div id="removalstaffListGrid" data-pss-grid-widget data-data="removalStaffList"
+            data-filtered-data="removalStaffListFilt" data-client-side-pagination="false"
+            data-filter-constraint="no-filters">
             <table class="grid">
                 <thead>
                     <tr>
                         <th></th>
-                        <th data-pss-sort-fields="replacing|text" class="nowrap">Staff Name</th>
+                        <th data-pss-sort-fields="replacedstaff|text" class="nowrap">Staff Name</th>
                         <th data-pss-sort-fields="schname|text">School</th>
                         <!--<th data-pss-sort-fields="staff_type|text">Staff Type</th>-->
                         <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
@@ -138,10 +139,10 @@
                     </tr> -->
                 </thead>
                 <tbody>
-                    <tr ng-repeat="staff in removalStaffList">
+                    <tr ng-repeat="staff in removalStaffListFilt">
                         <td>{{$index +1}}</td>
                         <td><a
-                                href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.replacing}}</a>
+                                href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.replacedstaff}}</a>
                         </td>
                         <td style="width:350px;">{{staff.schname}}</td>
                         <!--<td>{{staff.staff_type_desc}}</td>-->

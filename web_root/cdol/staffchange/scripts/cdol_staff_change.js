@@ -119,8 +119,13 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			$scope.submitStaffChange = function () {
 				$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
 				$scope.newStaff.dob = dateService.formatDateForApi($scope.newStaff.dob);
-				$scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
 
+				if ($scope.newStaff.name_change == 'Exiting Staff' && $scope.newStaff.deadline == '') {
+					let accountChangeDate = '06/01/' + $scope.userContext.curDate.substring(6, 11);
+					console.log(accountChangeDate);
+					$scope.newStaff.deadline = accountChangeDate;
+				}
+				$scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
 				$scope.emailData = {
 					curDate: $scope.userContext.CurDate,
 					curTime: $scope.userContext.CurTime,
