@@ -103,7 +103,7 @@
             </table>
         </div>
         <h2>Exiting Staff</h2>
-        <div id=”staffListGrid” data-pss-grid-widget data-data="staffList" data-filtered-data="staffListFilt"
+        <div id=”removalstaffListGrid” data-pss-grid-widget data-data="removalStaffList" data-filtered-data="removalStaffList"
             data-client-side-pagination="false" data-filter-constraint="no-filters">
             <table class="grid">
                 <thead>
@@ -138,7 +138,7 @@
                     </tr> -->
                 </thead>
                 <tbody>
-                    <tr ng-repeat="staff in staffListFilt">
+                    <tr ng-repeat="staff in removalStaffList">
                         <td>{{$index +1}}</td>
                         <td><a
                                 href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.replacing}}</a>
