@@ -119,10 +119,8 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			$scope.submitStaffChange = function () {
 				$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
 				$scope.newStaff.dob = dateService.formatDateForApi($scope.newStaff.dob);
-
-				if ($scope.newStaff.name_change == 'Exiting Staff' && $scope.newStaff.deadline == '') {
-					let accountChangeDate = '06/01/' + $scope.userContext.curDate.substring(6, 11);
-					console.log(accountChangeDate);
+				let accountChangeDate = '06/01/' + $scope.userContext.curDate.substring(6, 11);
+				if (($scope.newStaff.name_change == 'Exiting Staff' || $scope.newStaff.name_change == 'Transferring Staff') && $scope.newStaff.deadline == '') {
 					$scope.newStaff.deadline = accountChangeDate;
 				}
 				$scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
@@ -153,6 +151,60 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						U_CDOL_STAFF_CHANGES: $scope.newStaff,
 					},
 				};
+				let exitingRecord = {
+					tables: {
+						U_CDOL_STAFF_CHANGES: {
+							schoolid: $scope.userContext.curSchoolId,
+							yearid: $scope.userContext.curYearId,
+							name_change: 'Exiting Staff',
+							title: '',
+							first_name: '',
+							middle_name: '',
+							last_name: '',
+							preferred_name: '',
+							gender: '',
+							dob: '',
+							maiden_name: '',
+							religion: '',
+							religiousclergylay: '',
+							personal_email: '',
+							staff_type: '',
+							position: '',
+							fte: '',
+							replacing: $scope.newStaff.replacing,
+							previous: '',
+							start_date: '',
+							early_setup: '',
+							deadline: dateService.formatDateForApi(accountChangeDate),
+							previous_employer: '',
+							previous_employer_other: '',
+							submission_date: dateService.formatDateForApi($scope.userContext.curDate),
+							submission_time: $scope.userContext.curTime,
+							who_submitted: $scope.userContext.curUserId,
+							notes: '',
+							ps_created: '',
+							ad_created: '',
+							lms_created: '',
+						},
+					},
+				};
+
+				if ($scope.newStaff.replacing != 'New' && $scope.newStaff.replacing != 'Other') {
+					$http({
+						url: '/ws/schema/table/U_CDOL_STAFF_CHANGES',
+						method: 'POST',
+						data: exitingRecord,
+						headers: {
+							Accept: 'application/json',
+							'Content-Type': 'application/json',
+						},
+					}).then(function (response) {
+						if (response.data.result[0].status == 'SUCCESS') {
+						} else {
+							psAlert({ message: 'There was an error submitting the exit record. Changes were not saved', title: 'Error Submitting Record' });
+						}
+					});
+				}
 				$http({
 					url: '/ws/schema/table/U_CDOL_STAFF_CHANGES',
 					method: 'POST',

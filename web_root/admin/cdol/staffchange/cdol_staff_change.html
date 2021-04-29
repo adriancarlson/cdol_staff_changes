@@ -151,7 +151,11 @@
                                 [/tlist_sql]
                                 <option value="New">-- New Position --</option>
                                 <option value="Other">-- Other --</option>
-                            </select>
+                            </select><span class="feedback-info"
+                                ng-show="newStaff.replacing !='New' && newStaff.replacing !='Other' && newStaff.replacing !=''"><b><u>Please
+                                        Note:</u></b> An exiting staff record will also be submitted for the replaced
+                                staff </span>
+
                         </div>
                     </div>
                     <div ng-if="newStaff.replacing === 'Other'">
@@ -240,11 +244,10 @@
                                         </td>
                                         <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
                                             <input type="checkbox" name="" ng-model="newStaff.lms_created"><label>LMS
-                                                Account
-                                                Created?</label>
+                                                Double Check?</label>
                                             <ul>
-                                                <li>Imported from PS-SIS?</li>
-                                                <li>Matches O365 Login?</li>
+                                                <li>Re-assign class ownership (if applicable)</li>
+                                                <li>CHeck UPN (if transfering to or from Pius)</li>
                                             </ul>
                                         </td>
                                     </tr>
@@ -368,11 +371,9 @@
                                         </td>
                                         <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
                                             <input type="checkbox" name="" ng-model="newStaff.lms_created"><label>LMS
-                                                Account
-                                                Updated?</label>
+                                                Double Check?</label>
                                             <ul>
-                                                <li>LMS name Updated?</li>
-                                                <li>Matches O365 Login?</li>
+                                                <li>Re-assign class ownership (if applicable)</li>
                                             </ul>
                                         </td>
                                     </tr>
