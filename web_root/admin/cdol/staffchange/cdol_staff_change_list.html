@@ -80,7 +80,8 @@
                 <tbody>
                     <tr ng-repeat="staff in staffListFilt">
                         <td>{{$index +1}}</td>
-                        <td><a href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.first_name}}
+                        <td><a href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.title}}
+                                {{staff.first_name}}
                                 {{staff.last_name}}</a></td>
                         <td>{{staff.name_change}}</td>
                         <td style="width:350px;">{{staff.schname}}</td>
@@ -117,9 +118,9 @@
                         <th data-pss-sort-fields="submission_date, submission_time">
                             Submission Date</th>
                         <th data-pss-sort-fields="final_completion_date | date">Deadline</th>
-                        <th>PS Created</th>
-                        <th>AD Created</th>
-                        <th>LMS Created</th>
+                        <th>PS Deactivated</th>
+                        <th>AD Deactivated</th>
+                        <th>LMS Deactivated</th>
                         <th data-pss-sort-fields="completion_date | date" data-primary-sort="ascending">Completed</th>
                     </tr>
                     <!-- <tr>
