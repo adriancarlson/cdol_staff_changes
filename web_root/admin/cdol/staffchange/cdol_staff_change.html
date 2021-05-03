@@ -10,7 +10,7 @@
     </head>
 
     <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl as mainController"
-        data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]1" data-module-name="cdolStaffApp"
+        data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]" data-module-name="cdolStaffApp"
         ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)" ng-status="~(gpv.status)"
         ng-cur-user-id="~[x:userid]" ng-cur-date="~[date]" ng-cur-time="~[time]" ng-staff-change-id="~(gpv.id)"
         ng-cur-user-name=" ~[x:username;firstlast]" ng-cur-user-email="~[x:useremail]"
@@ -119,7 +119,7 @@
                         </div>
                         <div>
                             <label>Anticipated Contract Start Date <span class="notation">(can be
-                                    aproximate)</span></label>
+                                    approximate)</span></label>
                             <input name="" type="text" value="" class="psDateWidget" ng-model="newStaff.start_date"
                                 ng-init="userContext.curDate">
                         </div>
@@ -193,7 +193,7 @@
                         </div>
                     </div>
                     <div id="feedback-message" class="feedback-alert">All staff accounts transfering from another
-                        Diocese of Lincoln School, will not be moved until some time after June 1st. If the tranfering
+                        Diocese of Lincoln School, will not be moved until some time after June 1st. If the transferring
                         staff member needs access to your school prior to then, please specify below. </div>
                     <div>
                         <div>
@@ -287,6 +287,10 @@
             <form name="exitingForm" method="POST" novalidate>
                 <div class="fluid-form" ng-if="newStaff.name_change=='Exiting Staff'">
                     <h4 style="margin-left: 10px;">{{newStaff.name_change}} Name</h4>
+                    <div id="feedback-message" class="feedback-alert">If the Exiting staff member is being replaced by a
+                        new staff member, please use the New Staff option on this form to submit the New Staff member
+                        first. That process will ask you who the New Staff member is replacing which also submits a
+                        Exiting Staff record for the Exiting Staff member.</div>
                     <div>
                         <div>
                             <label class="req">Who is not returning?</label>
@@ -309,10 +313,12 @@
                             </select>
                         </div>
                     </div>
-                    <div id="feedback-message" class="feedback-alert">All exiting staff accounts will be deactivated
-                        after June 1st. If the exiting staff member needs access to their accout after June 1st or needs
-                        to be deactivated sooner, please sepcify date below.</div>
-                    <div>
+                    <div id="feedback-message" class="feedback-alert" ng-show="newStaff.replacing !=''">All exiting
+                        staff accounts will be deactivated
+                        after June 1st. If the exiting staff member needs access to their account after June 1st or
+                        needs
+                        to be deactivated sooner, please specify date below.</div>
+                    <div ng-show="newStaff.replacing !=''">
                         <div>
                             <label>Requested Deactivation Date<span class="notation">(please type in the
                                     date)</span></label>
@@ -607,7 +613,7 @@
                     </div>
                     <div>
                         <div>
-                            <label>Personal Email <span class="notation">(for communication durring account setup and
+                            <label>Personal Email <span class="notation">(for communication during account setup and
                                     summer
                                     trainings)</span></label>
                             <input name="" type="email" value="" placeholder="NewStaff@email.com"
@@ -640,7 +646,7 @@
                         </div>
                         <div>
                             <label>Anticipated Contract Start Date <span class="notation">(can be
-                                    aproximate)</span></label>
+                                    approximate)</span></label>
                             <input name="" type="text" value="" class="psDateWidget" ng-model="newStaff.start_date"
                                 ng-init="userContext.curDate">
                         </div>
@@ -692,7 +698,10 @@
                                 [/tlist_sql]
                                 <option value="New">-- New Position --</option>
                                 <option value="Other">-- Other --</option>
-                            </select>
+                            </select><span class="feedback-info"
+                                ng-show="newStaff.replacing !='New' && newStaff.replacing !='Other' && newStaff.replacing !=''"><b><u>Please
+                                        Note:</u></b> An exiting staff record will also be submitted for the replaced
+                                staff </span>
                         </div>
                     </div>
                     <div ng-if="newStaff.replacing === 'Other'">

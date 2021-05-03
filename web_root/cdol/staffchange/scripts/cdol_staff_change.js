@@ -50,6 +50,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				position: '',
 				fte: '',
 				replacing: '',
+				replacing_other: '',
 				previous: '',
 				start_date: '',
 				early_setup: '',
@@ -63,6 +64,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				ps_created: '',
 				ad_created: '',
 				lms_created: '',
+				final_completion_date: '',
 			};
 
 			//if on edit screen and passing an staff change id then this runs to pull the data for the current staff change record.
@@ -185,6 +187,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 							ps_created: '',
 							ad_created: '',
 							lms_created: '',
+							final_completion_date: '',
 						},
 					},
 				};
@@ -260,6 +263,9 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					$scope.newStaff.ps_created = checkboxService.formatChecksForApi($scope.newStaff.ps_created);
 					$scope.newStaff.ad_created = checkboxService.formatChecksForApi($scope.newStaff.ad_created);
 					$scope.newStaff.lms_created = checkboxService.formatChecksForApi($scope.newStaff.lms_created);
+					if ($scope.newStaff.final_completion_date === undefined && $scope.newStaff.ps_created == 'true' && $scope.newStaff.ad_created == 'true' && $scope.newStaff.lms_created == 'true') {
+						$scope.newStaff.final_completion_date = dateService.formatDateForApi($scope.userContext.curDate);
+					}
 					let redirectPath = '/admin/cdol/staffchange/cdol_staff_change_list.html';
 					let updateRecord = {
 						tables: {
