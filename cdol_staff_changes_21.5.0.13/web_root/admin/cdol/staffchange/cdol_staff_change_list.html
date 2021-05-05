@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Staff Change Submissions</title>
+        ~[wc:commonscripts]
+        <link href="/images/css/screen.css" rel="stylesheet" media="screen">
+        <link href="/images/css/print.css" rel="stylesheet" media="print">
+        <link href="/cdol/staffchange/scripts/cdol_staff_change.css?~[time]" rel="stylesheet">
+        <style>
+            [ng\:cloak],
+            [ng-cloak],
+            [data-ng-cloak],
+            [x-ng-cloak],
+            .ng-cloak,
+            .x-ng-cloak {
+                display: none !important;
+            }
+
+            .checkTD {
+                border-right: 0 !important;
+            }
+
+            .mailTD {
+                border-left: 0 !important;
+            }
+
+            td {
+                text-align: center;
+            }
+        </style>
+    </head>
+
+    <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl"
+        data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]" data-module-name="cdolStaffApp"
+        ng-init="getStaffResults()" ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)"
+        ng-status="~(gpv.status)" ng-cur-user-id="~[x:userid]" ng-cur-date="~[date]" ng-cur-time="~[time]"
+        ng-staff-change-id="~(gpv.id)" ng-cloak>
+        ~[wc:admin_header_css]
+        <a href="/admin/home.html" target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; Staff
+        Change Submissions
+        ~[wc:admin_navigation_css]
+        <h1>Staff Change Submissions</h1>
+        <h2>Incoming Staff</h2>
+        <div id="staffListGrid" data-pss-grid-widget data-data="staffList" data-filtered-data="staffListFilt"
+            data-client-side-pagination="false" data-filter-constraint="no-filters">
+            <table class="grid">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th data-pss-sort-fields="last_name|text" class="nowrap">Staff Name</th>
+                        <th data-pss-sort-fields="name_change|text">Type of Change</th>
+                        <th data-pss-sort-fields="schname|text">School</th>
+                        <!--<th data-pss-sort-fields="staff_type|text">Staff Type</th>-->
+                        <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
+                        <th data-pss-sort-fields="submission_date, submission_time" data-primary-sort="descending">
+                            Submission Date</th>
+                        <th data-pss-sort-fields="completion_date | date">Deadline</th>
+                        <th>PS Created</th>
+                        <th>AD Created</th>
+                        <th>LMS Created</th>
+                        <th data-pss-sort-fields="final_completion_date | date">Completed</th>
+                    </tr>
+                    <!-- <tr>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th colspan="2" class="center"><input type="checkbox" ng-model="selectedStuAll"
+                                ng-click="checkStuAll()" title="Select/Deselect All"
+                                id="selectedStuAll" />Select/Deselect All
+                        </th>
+                        <th colspan="2" class="center"><input type="checkbox" ng-model="selectedParAll"
+                                ng-click="checkParAll()" title="Select/Deselect All"
+                                id="selectedParAll" />Select/Deselect All
+                        </th>
+                    </tr> -->
+                </thead>
+                <tbody>
+                    <tr ng-repeat="staff in staffListFilt">
+                        <td>{{$index +1}}</td>
+                        <td><a href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.title}}
+                                {{staff.first_name}}
+                                {{staff.last_name}}</a></td>
+                        <td>{{staff.name_change}}</td>
+                        <td style="width:350px;">{{staff.schname}}</td>
+                        <!--<td>{{staff.staff_type_desc}}</td>-->
+                        <td>{{staff.submittedstaff}}</td>
+                        <td style="width:175px;">{{staff.submission_date | date : 'MM/dd/yyyy'}}
+                            {{staff.submission_time}}</td>
+                        <td
+                            ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || staff.ad_created != 1 || staff.lms_created != 1)}">
+                            {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                        <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
+                                ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
+                        <td><span ng-show="staff.ad_created != 1">&#10060;</span><span
+                                ng-show="staff.ad_created == 1">&#10004;&#65039;</span></td>
+                        <td><span ng-show="staff.lms_created != 1">&#10060;</span><span
+                                ng-show="staff.lms_created == 1">&#10004;&#65039;</span></td>
+                        <td>{{staff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <h2>Exiting Staff</h2>
+        <div id="removalstaffListGrid" data-pss-grid-widget data-data="removalStaffList"
+            data-filtered-data="removalStaffListFilt" data-client-side-pagination="false"
+            data-filter-constraint="no-filters">
+            <table class="grid">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th data-pss-sort-fields="replacedstaff|text" class="nowrap">Staff Name</th>
+                        <th data-pss-sort-fields="schname|text">School</th>
+                        <!--<th data-pss-sort-fields="staff_type|text">Staff Type</th>-->
+                        <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
+                        <th data-pss-sort-fields="submission_date, submission_time" data-primary-sort="descending">
+                            Submission Date</th>
+                        <th data-pss-sort-fields="completion_date | date">Deadline</th>
+                        <th>PS Deactivated</th>
+                        <th>AD Deactivated</th>
+                        <th>LMS Double Check</th>
+                        <th data-pss-sort-fields="final_completion_date | date">Completed</th>
+                    </tr>
+                    <!-- <tr>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th colspan="2" class="center"><input type="checkbox" ng-model="selectedStuAll"
+                                ng-click="checkStuAll()" title="Select/Deselect All"
+                                id="selectedStuAll" />Select/Deselect All
+                        </th>
+                        <th colspan="2" class="center"><input type="checkbox" ng-model="selectedParAll"
+                                ng-click="checkParAll()" title="Select/Deselect All"
+                                id="selectedParAll" />Select/Deselect All
+                        </th>
+                    </tr> -->
+                </thead>
+                <tbody>
+                    <tr ng-repeat="staff in removalStaffListFilt">
+                        <td>{{$index +1}}</td>
+                        <td><a
+                                href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.replacedstaff}}</a>
+                        </td>
+                        <td style="width:350px;">{{staff.schname}}</td>
+                        <!--<td>{{staff.staff_type_desc}}</td>-->
+                        <td>{{staff.submittedstaff}}</td>
+                        <td style="width:175px;">{{staff.submission_date | date : 'MM/dd/yyyy'}}
+                            {{staff.submission_time}}</td>
+                        <td
+                            ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || staff.ad_created != 1 || staff.lms_created != 1)}">
+                            {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                        <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
+                                ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
+                        <td><span ng-show="staff.ad_created != 1">&#10060;</span><span
+                                ng-show="staff.ad_created == 1">&#10004;&#65039;</span></td>
+                        <td><span ng-show="staff.lms_created != 1">&#10060;</span><span
+                                ng-show="staff.lms_created == 1">&#10004;&#65039;</span></td>
+                        <td>{{staff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        ~[wc:admin_footer_css]
+    </body>
+
+</html>

@@ -1,0 +1,16 @@
+[
+~[tlist_sql;
+    SELECT DISTINCT
+    users.first_name,
+    users.last_name
+    FROM SCHOOLSTAFF
+    inner join users
+    on users.dcid = schoolstaff.users_dcid
+    WHERE users.dcid = '~(gpv.udcid)'
+;]
+    {
+        "first_name":"~(1;JSON)",
+        "last_name":"~(2;JSON)"
+    },
+[/tlist_sql]
+{}]
