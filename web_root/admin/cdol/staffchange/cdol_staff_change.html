@@ -148,10 +148,13 @@
                                 [/if.is.a.school]
                                 Order BY users.last_name , users.first_name]
                                 <option value="~(dcid)">~(first) ~(last)</option>
-                                [/tlist_sql]
+                                
                                 <option value="New">-- New Position --</option>
                                 <option value="Other">-- Other --</option>
-                            </select><span class="feedback-info"
+                            </select> 
+                            <input type="hidden" ng-model="exitingRecord.first_name" value="~(first)" />
+                            <input type="hidden" ng-model="exitingRecord.last_name" value="~(last)" />
+                            [/tlist_sql]<span class="feedback-info"
                                 ng-show="newStaff.replacing !='New' && newStaff.replacing !='Other' && newStaff.replacing !=''"><b><u>Please
                                         Note:</u></b> An exiting staff record will also be submitted for the replaced
                                 staff </span>

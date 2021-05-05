@@ -67,6 +67,41 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				final_completion_date: '',
 			};
 
+			$scope.exitingRecord = {
+				schoolid: $scope.userContext.curSchoolId,
+				yearid: $scope.userContext.curYearId,
+				name_change: 'Exiting Staff',
+				title: '',
+				first_name: '',
+				middle_name: '',
+				last_name: '',
+				preferred_name: '',
+				gender: '',
+				dob: '',
+				maiden_name: '',
+				religion: '',
+				religiousclergylay: '',
+				personal_email: '',
+				staff_type: '',
+				position: '',
+				fte: '',
+				replacing: $scope.newStaff.replacing,
+				previous: '',
+				start_date: '',
+				early_setup: '',
+				deadline: dateService.formatDateForApi(accountChangeDate),
+				previous_employer: '',
+				previous_employer_other: '',
+				submission_date: dateService.formatDateForApi($scope.userContext.curDate),
+				submission_time: $scope.userContext.curTime,
+				who_submitted: $scope.userContext.curUserId,
+				notes: '',
+				ps_created: '',
+				ad_created: '',
+				lms_created: '',
+				final_completion_date: '',
+			};
+
 			//if on edit screen and passing an staff change id then this runs to pull the data for the current staff change record.
 			$scope.findStaffChange = function () {
 				loadingDialog();
@@ -134,6 +169,14 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					emailSubject: $scope.newStaff.name_change + ' Submission from ' + $scope.userContext.curUserName + ' (' + $scope.userContext.curUserSchoolAbbr + ') | ' + $scope.userContext.curUserEmail,
 					emailBody: 'Name: ' + $scope.newStaff.title + ' ' + $scope.newStaff.first_name + ' ' + $scope.newStaff.last_name,
 				};
+				$scope.exitEmailData = {
+					curDate: $scope.userContext.CurDate,
+					curTime: $scope.userContext.CurTime,
+					emailFrom: $scope.userContext.curUserEmail,
+					emailTo: 'ps-support@cdolinc.net',
+					emailSubject: $scope.newStaff.name_change + ' Submission from ' + $scope.userContext.curUserName + ' (' + $scope.userContext.curUserSchoolAbbr + ') | ' + $scope.userContext.curUserEmail,
+					emailBody: 'Name: ' + $scope.exitingRecord.first_name + ' ' + $scope.exitingRecord.last_name,
+				};
 
 				let submessage = $scope.newStaff.name_change.substring(0, 1);
 
@@ -153,42 +196,10 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						U_CDOL_STAFF_CHANGES: $scope.newStaff,
 					},
 				};
+
 				let exitingRecord = {
 					tables: {
-						U_CDOL_STAFF_CHANGES: {
-							schoolid: $scope.userContext.curSchoolId,
-							yearid: $scope.userContext.curYearId,
-							name_change: 'Exiting Staff',
-							title: '',
-							first_name: '',
-							middle_name: '',
-							last_name: '',
-							preferred_name: '',
-							gender: '',
-							dob: '',
-							maiden_name: '',
-							religion: '',
-							religiousclergylay: '',
-							personal_email: '',
-							staff_type: '',
-							position: '',
-							fte: '',
-							replacing: $scope.newStaff.replacing,
-							previous: '',
-							start_date: '',
-							early_setup: '',
-							deadline: dateService.formatDateForApi(accountChangeDate),
-							previous_employer: '',
-							previous_employer_other: '',
-							submission_date: dateService.formatDateForApi($scope.userContext.curDate),
-							submission_time: $scope.userContext.curTime,
-							who_submitted: $scope.userContext.curUserId,
-							notes: '',
-							ps_created: '',
-							ad_created: '',
-							lms_created: '',
-							final_completion_date: '',
-						},
+						U_CDOL_STAFF_CHANGES: $scope.exitingRecord,
 					},
 				};
 
@@ -219,12 +230,16 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				}).then(function (response) {
 					if (response.data.result[0].status == 'SUCCESS') {
 						// ugly email jquery ajax call ... but it works.
-
+						if ($scope.newStaff.name_change == 'Exiting Staff') {
+							emailData = $scope.exitEmailData;
+						} else {
+							emailData = $scope.emailData;
+						}
 						$j.ajax({
 							url: '/admin/cdol/staffchange/data/emailfields.html',
 							method: 'POST',
 							contentType: 'application/x-www-form-urlencoded',
-							data: $scope.emailData,
+							data: emailData,
 							success: function (result) {
 								$j('#holdingDiv').append(result);
 							},
