@@ -183,14 +183,6 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					emailSubject: $scope.newStaff.name_change + ' Submission from ' + $scope.userContext.curUserName + ' (' + $scope.userContext.curUserSchoolAbbr + ') | ' + $scope.userContext.curUserEmail,
 					emailBody: 'Name: ' + $scope.newStaff.title + ' ' + $scope.newStaff.first_name + ' ' + $scope.newStaff.last_name,
 				};
-				$scope.exitEmailData = {
-					curDate: $scope.userContext.CurDate,
-					curTime: $scope.userContext.CurTime,
-					emailFrom: $scope.userContext.curUserEmail,
-					emailTo: 'ps-support@cdolinc.net',
-					emailSubject: 'Exiting Staff Submission from ' + $scope.userContext.curUserName + ' (' + $scope.userContext.curUserSchoolAbbr + ') | ' + $scope.userContext.curUserEmail,
-					emailBody: 'Name: ' + $scope.exitingRecord.first_name + ' ' + $scope.exitingRecord.last_name,
-				};
 
 				let submessage = $scope.newStaff.name_change.substring(0, 1);
 
@@ -227,33 +219,6 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						},
 					}).then(function (response) {
 						if (response.data.result[0].status == 'SUCCESS') {
-							// ugly email jquery ajax call ... but it works.
-							$j.ajax({
-								url: '/admin/cdol/staffchange/data/emailfields.html',
-								method: 'POST',
-								contentType: 'application/x-www-form-urlencoded',
-								data: $scope.exitEmailData,
-								success: function (result) {
-									$j('#exitholdingDiv').append(result);
-								},
-								complete: function () {
-									var data = {
-										ac: 'prim',
-									};
-									$j('#exitholdingDiv')
-										.find('.fireaway')
-										.each(function () {
-											data[$j(this).attr('name')] = $j(this).val();
-										});
-									$j.ajax({
-										method: 'POST',
-										data: data,
-										complete: function () {
-											$j('#exitholdingDiv').html('');
-										},
-									});
-								},
-							});
 						} else {
 							psAlert({ message: 'There was an error submitting the exit record. Changes were not saved', title: 'Error Submitting Record' });
 						}
@@ -269,16 +234,13 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					},
 				}).then(function (response) {
 					if (response.data.result[0].status == 'SUCCESS') {
-						let emailData = $scope.EmailData;
-						if ($scope.newStaff.name_change == 'Exiting Staff') {
-							emaildata = $scope.exitEmailData;
-						}
 						// ugly email jquery ajax call ... but it works.
+
 						$j.ajax({
 							url: '/admin/cdol/staffchange/data/emailfields.html',
 							method: 'POST',
 							contentType: 'application/x-www-form-urlencoded',
-							data: emailData,
+							data: $scope.emailData,
 							success: function (result) {
 								$j('#holdingDiv').append(result);
 							},
