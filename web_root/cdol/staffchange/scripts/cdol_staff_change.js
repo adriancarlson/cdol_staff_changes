@@ -192,7 +192,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					},
 				};
 
-				if ($scope.newStaff.replacing != 'New' && $scope.newStaff.replacing != 'Other') {
+				if ($scope.newStaff.replacing != 'New' && $scope.newStaff.replacing != 'Other' && $scope.newStaff.name_change != 'Exiting Staff') {
 					$http({
 						url: '/ws/schema/table/U_CDOL_STAFF_CHANGES',
 						method: 'POST',
