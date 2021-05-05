@@ -27,8 +27,6 @@
 
         <div ng-show="userContext.pageStatus =='Submit' || userContext.pageStatus =='Edit'">
             <h1>{{userContext.pageStatus}} Staff Change</h1>
-            <div>{{exitingRecord}}</div>
-
             <!--dup table-->
             <div class="box-round" ng-show="userContext.pageStatus =='Edit' && dupList.length >0" style="width:50%;">
                 <div id="feedback-message" class="feedback-error">Potential matches for&nbsp;{{newStaff.title}}
