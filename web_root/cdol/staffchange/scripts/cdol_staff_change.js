@@ -106,7 +106,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			$scope.getExistingStaff = function () {
 				$http({
 					url: '/admin/cdol/staffchange/data/getExistingStaff.json',
-					method: 'GET',
+					method: 'POST',
 					contentType: 'application/x-www-form-urlencoded',
 					data: { udcid: $scope.newStaff.replacing },
 				}).then(function (response) {
