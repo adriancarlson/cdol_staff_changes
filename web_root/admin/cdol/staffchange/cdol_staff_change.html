@@ -133,7 +133,8 @@
                                     style="color: red;
 	font-size: 13.5pt;"> *</span><span class="notation">(choose Other if staff member being replaced is not
                                     listed)</span></label>
-                            <select name="" ng-model="newStaff.replacing" ng-required="true" >
+                            <select name="" ng-model="newStaff.replacing" ng-required="true"
+                                ng-change="getExistingStaff()">
                                 <option></option>
 
                                 ~[tlist_sql;SELECT
@@ -154,8 +155,10 @@
                                 <option value="Other">-- Other --</option>
                             </select><span class="feedback-info"
                                 ng-show="newStaff.replacing !='New' && newStaff.replacing !='Other' && newStaff.replacing !=''"><b><u>Please
-                                        Note:</u></b> An exiting staff record will also be submitted for the replaced
-                                staff </span>
+                                        Note:</u></b> An exiting staff record will also be submitted for <span
+                                    ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the replaced
+                                    staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} when you click
+                                Submit</span>
 
                         </div>
                     </div>
@@ -194,8 +197,9 @@
                         </div>
                     </div>
                     <div id="feedback-message" class="feedback-alert">All staff accounts transfering from another
-                        Diocese of Lincoln School, will not be moved until some time after June 1st. If the transferring
-                        staff member needs access to your school prior to then, please specify below. </div>
+                        Diocese of Lincoln School, will not be moved until some time after June 1st.<br> If
+                        {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} needs access to your school
+                        prior to then, please specify below.</div>
                     <div>
                         <div>
                             <label>Requested Account Setup Deadline</label>
@@ -209,7 +213,7 @@
                             <b><u>Please Note:</u></b> personal files (i.e. Documents and pictures, music and videos)
                             should be moved by <span
                                 ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
-                            {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}}. Ed Tech is not
+                            {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}}.<br> Ed Tech is not
                             responsible for moving the files to the new server.
                         </div>
                     </div>
@@ -290,12 +294,13 @@
                     <h4 style="margin-left: 10px;">{{newStaff.name_change}} Name</h4>
                     <div id="feedback-message" class="feedback-alert">If the Exiting staff member is being replaced by a
                         new staff member, please use the New Staff option on this form to submit the New Staff member
-                        first. That process will ask you who the New Staff member is replacing which also submits a
-                        Exiting Staff record for the Exiting Staff member.</div>
+                        first.<br> That process will ask you who the New Staff member is replacing which also submits a
+                        Exiting Staff record for who they are replacing.</div>
                     <div>
                         <div>
                             <label class="req">Who is not returning?</label>
-                            <select name="" ng-model="newStaff.replacing" ng-required="true">
+                            <select name="" ng-model="newStaff.replacing" ng-required="true"
+                                ng-change="getExistingStaff()">
                                 <option></option>
                                 ~[tlist_sql;SELECT distinct
                                 users.dcid,
@@ -316,9 +321,10 @@
                     </div>
                     <div id="feedback-message" class="feedback-alert" ng-show="newStaff.replacing !=''">All exiting
                         staff accounts will be deactivated
-                        after June 1st. If the exiting staff member needs access to their account after June 1st or
-                        needs
-                        to be deactivated sooner, please specify date below.</div>
+                        after June 1st.<br> If <span
+                            ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the exiting
+                            staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} needs access to their
+                        account after June 1st or needs to be deactivated sooner, please specify date below.</div>
                     <div ng-show="newStaff.replacing !=''">
                         <div>
                             <label>Requested Deactivation Date<span class="notation">(please type in the
@@ -330,8 +336,12 @@
                     <div>
                         <div class="feedback-info">
                             <b><u>Please Note:</u></b> personal files (i.e. Documents and pictures, music and videos)
-                            should be removed by the exiting staff member. Ed Tech is not responsible for any files left
-                            after staff member's departure.
+                            should be removed by <span
+                                ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the exiting
+                                staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}.<br> Ed Tech is not
+                            responsible for any files left after <span
+                                ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the exiting
+                                staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}'s departure.
                         </div>
                     </div>
                     ~[if#distCheck.security.inrole=9]
@@ -422,7 +432,8 @@
                     <div>
                         <div>
                             <label class="req">Who's name is changing?</label>
-                            <select name="" ng-model="newStaff.replacing" ng-required="true">
+                            <select name="" ng-model="newStaff.replacing" ng-required="true"
+                                ng-change="getExistingStaff()">
                                 <option></option>
                                 ~[tlist_sql;SELECT distinct
                                 users.dcid,
@@ -546,7 +557,7 @@
             <div id="feedback-message" class="feedback-alert"
                 ng-show="userContext.pageStatus =='Submit' && newStaff.name_change=='New Staff'">Please spell
                 new staff name correctly! If new staff member
-                is going to be having a name change in the next 6 months for any reason please enter their anticipated
+                is going to have a name change in the next 6 months for any reason please enter their anticipated
                 name.</div>
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="fluid-form" ng-show="newStaff.name_change=='New Staff'">
@@ -680,7 +691,8 @@
                                     style="color: red;
 	font-size: 13.5pt;"> *</span><span class="notation">(choose Other if staff member being replaced is not
                                     listed)</span></label>
-                            <select name="" ng-model="newStaff.replacing" ng-required="true">
+                            <select name="" ng-model="newStaff.replacing" ng-required="true"
+                                ng-change="getExistingStaff()">
                                 <option></option>
 
                                 ~[tlist_sql;SELECT
@@ -701,8 +713,10 @@
                                 <option value="Other">-- Other --</option>
                             </select><span class="feedback-info"
                                 ng-show="newStaff.replacing !='New' && newStaff.replacing !='Other' && newStaff.replacing !=''"><b><u>Please
-                                        Note:</u></b> An exiting staff record will also be submitted for the replaced
-                                staff </span>
+                                        Note:</u></b> An exiting staff record will also be submitted for <span
+                                    ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the replaced
+                                    staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} when you click
+                                Submit</span>
                         </div>
                     </div>
                     <div ng-if="newStaff.replacing === 'Other'">
@@ -819,7 +833,6 @@
                             ng-click="submitStaffChange()">Confirm Submission</button>
                         <button id="subBtn" type="button" ng-show="!subConfirm" ng-click="subConfirm = true"
                             ng-disabled="staffChangeForm.$invalid">Submit</button>
-                        <button id="testBtn" type="button" ng-click="getExistingStaff()">Test Get Staff Record</button>
                     </div>
                     <div ng-show="userContext.pageStatus =='Edit'" class="button-row">
                         <span class="req-notation" ng-show="staffChangeForm.$invalid && staffChangeForm.$dirty">Please
