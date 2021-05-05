@@ -27,6 +27,7 @@
 
         <div ng-show="userContext.pageStatus =='Submit' || userContext.pageStatus =='Edit'">
             <h1>{{userContext.pageStatus}} Staff Change</h1>
+            <div>{{exitingRecord}}</div>
 
             <!--dup table-->
             <div class="box-round" ng-show="userContext.pageStatus =='Edit' && dupList.length >0" style="width:50%;">
@@ -148,13 +149,10 @@
                                 [/if.is.a.school]
                                 Order BY users.last_name , users.first_name]
                                 <option value="~(dcid)">~(first) ~(last)</option>
-                                
+                                [/tlist_sql]
                                 <option value="New">-- New Position --</option>
                                 <option value="Other">-- Other --</option>
-                            </select> 
-                            <input type="hidden" ng-model="exitingRecord.first_name" value="~(first)" />
-                            <input type="hidden" ng-model="exitingRecord.last_name" value="~(last)" />
-                            [/tlist_sql]<span class="feedback-info"
+                            </select><span class="feedback-info"
                                 ng-show="newStaff.replacing !='New' && newStaff.replacing !='Other' && newStaff.replacing !=''"><b><u>Please
                                         Note:</u></b> An exiting staff record will also be submitted for the replaced
                                 staff </span>
@@ -821,6 +819,7 @@
                             ng-click="submitStaffChange()">Confirm Submission</button>
                         <button id="subBtn" type="button" ng-show="!subConfirm" ng-click="subConfirm = true"
                             ng-disabled="staffChangeForm.$invalid">Submit</button>
+                        <button id="testBtn" type="button" ng-click="getExistingStaff()">Test Get Staff Record</button>
                     </div>
                     <div ng-show="userContext.pageStatus =='Edit'" class="button-row">
                         <span class="req-notation" ng-show="staffChangeForm.$invalid && staffChangeForm.$dirty">Please

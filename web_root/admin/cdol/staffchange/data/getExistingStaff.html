@@ -1,0 +1,9 @@
+~[tlist_sql;
+SELECT
+users.first_name,
+users.last_name
+FROM SCHOOLSTAFF
+inner join users
+on users.dcid = schoolstaff.users_dcid
+WHERE grade_level = ~(gpv.udcid)
+;]~(first_name),~(last_name)[/tlist_sql]
