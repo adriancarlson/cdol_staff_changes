@@ -1,6 +1,7 @@
 [
 ~[tlist_sql;
     SELECT DISTINCT
+    users.dcid,
     users.first_name,
     users.last_name
     FROM SCHOOLSTAFF
@@ -9,8 +10,9 @@
     WHERE users.dcid = '~(gpv.udcid)'
 ;]
     {
-        "first_name":"~(1;JSON)",
-        "last_name":"~(2;JSON)"
+        "udcid": ~(1),
+        "first_name":"~(2;JSON)",
+        "last_name":"~(3;JSON)"
     },
 [/tlist_sql]
 {}]
