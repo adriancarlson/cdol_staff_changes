@@ -113,7 +113,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					staffData.pop();
 					$scope.exitingRecord.first_name = staffData[0].first_name;
 					$scope.exitingRecord.last_name = staffData[0].last_name;
-					$scope.exitingRecord.replacing = staffData[0].udcid;
+					$scope.exitingRecord.replacing = staffData[0].udcid.toString();
 				});
 			};
 
