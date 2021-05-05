@@ -5,5 +5,5 @@ users.last_name
 FROM SCHOOLSTAFF
 inner join users
 on users.dcid = schoolstaff.users_dcid
-WHERE grade_level = ~(gpv.udcid)
+WHERE users.dcid = ~(gpv.udcid)
 ;]~(first_name),~(last_name)[/tlist_sql]
