@@ -105,11 +105,13 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 
 			$scope.getExistingStaff = function () {
 				$http({
-					url: '/admin/cdol/staffchange/data/getExistingStaff.html',
+					url: '/admin/cdol/staffchange/data/getExistingStaff.json',
 					method: 'GET',
-					params: { udcid: $scope.newStaff.replacing },
+					contentType: 'application/x-www-form-urlencoded',
+					data: { udcid: $scope.newStaff.replacing },
 				}).then(function (response) {
-					console.log(response.data);
+					staffData = JSON.parse(response);
+					console.log(staffData);
 				});
 			};
 

@@ -1,3 +1,5 @@
+{"master":{
+"staffdata":[
 ~[tlist_sql;
 SELECT
 users.first_name,
@@ -6,4 +8,6 @@ FROM SCHOOLSTAFF
 inner join users
 on users.dcid = schoolstaff.users_dcid
 WHERE users.dcid = ~(gpv.udcid)
-;]~(first_name),~(last_name)[/tlist_sql]
+;]{"first_name":"~(first_name)","last_name":"~(last_name)"},[/tlist_sql]{}
+]
+}}
