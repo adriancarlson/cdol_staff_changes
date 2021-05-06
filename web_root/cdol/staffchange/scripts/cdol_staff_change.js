@@ -176,13 +176,20 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					$scope.newStaff.deadline = $scope.userContext.accountChangeDate;
 				}
 				$scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
+
+				$scope.emailBody = $scope.newStaff.name_change + ' Name: ' + $scope.newStaff.title + ' ' + $scope.newStaff.first_name + ' ' + $scope.newStaff.last_name;
+
+				if ($scope.newStaff.name_change == 'Exiting Staff') {
+					$scope.emailBody = $scope.newStaff.name_change + ' Name: ' + $scope.exitingRecord.first_name + ' ' + $scope.exitingRecord.last_name;
+				}
+
 				$scope.emailData = {
 					curDate: $scope.userContext.CurDate,
 					curTime: $scope.userContext.CurTime,
 					emailFrom: $scope.userContext.curUserEmail,
 					emailTo: 'ps-support@cdolinc.net',
 					emailSubject: $scope.newStaff.name_change + ' Submission from ' + $scope.userContext.curUserName + ' (' + $scope.userContext.curUserSchoolAbbr + ') | ' + $scope.userContext.curUserEmail,
-					emailBody: 'Name: ' + $scope.newStaff.title + ' ' + $scope.newStaff.first_name + ' ' + $scope.newStaff.last_name,
+					emailBody: $scope.emailBody,
 				};
 
 				let submessage = $scope.newStaff.name_change.substring(0, 1);
@@ -198,6 +205,20 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					$scope.newStaff.name_change +
 					'&submessage=' +
 					submessage;
+
+				if ($scope.newStaff.name_change == 'Exiting Staff') {
+					redirectPath =
+						'/admin/cdol/staffchange/cdol_staff_change.html?status=Confirm&title= ' +
+						'&fname=' +
+						$scope.exitingRecord.first_name +
+						'&lname=' +
+						$scope.exitingRecord.last_name +
+						'&substat=' +
+						$scope.newStaff.name_change +
+						'&submessage=' +
+						submessage;
+				}
+
 				let newRecord = {
 					tables: {
 						U_CDOL_STAFF_CHANGES: $scope.newStaff,
