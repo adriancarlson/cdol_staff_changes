@@ -156,15 +156,23 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				closeLoading();
 			};
 			$scope.searchForDups = function () {
-				$scope
-					.getPowerQueryResults('net.cdolinc.staffChanges.staff.duplicates', {
-						lastName: $scope.dupSearchParams.lastName.toLowerCase(),
-						maidenName: $scope.dupSearchParams.maidenName.toLowerCase(),
-						firstNameSubString: $scope.dupSearchParams.firstNameSubString.toLowerCase(),
-					})
-					.then(function (dupData) {
-						$scope.dupList = dupData;
-					});
+				let lastName = $scope.dupSearchParams.lastName.toLowerCase();
+				let maidenName = $scope.dupSearchParams.maidenName.toLowerCase();
+				let firstNameSubString = $scope.dupSearchParams.firstNameSubString.toLowerCase();
+
+				$http({
+					url: '/admin/cdol/staffchange/data/getStaffDups.json',
+					method: 'GET',
+					params: {
+						lastName: lastName,
+						maidenName: maidenName,
+						firstNameSubString: firstNameSubString,
+					},
+				}).then(function (response) {
+					dupData = response.data;
+					dupData.pop();
+					$scope.dupList = dupData;
+				});
 			};
 
 			//submitting New Staff change record
