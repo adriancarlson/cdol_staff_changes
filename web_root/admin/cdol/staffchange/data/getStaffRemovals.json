@@ -1,0 +1,109 @@
+[
+~[tlist_sql;
+    SELECT 
+					U_CDOL_STAFF_CHANGES.id,
+					U_CDOL_STAFF_CHANGES.yearid,
+					U_CDOL_STAFF_CHANGES.schoolid,
+					CASE 
+						WHEN U_CDOL_STAFF_CHANGES.schoolid = 0 THEN 'Diocesan Office' 
+						ELSE SCHOOLS.NAME
+					END as schoolName, 
+					U_CDOL_STAFF_CHANGES.name_change,
+					U_CDOL_STAFF_CHANGES.title, 
+					U_CDOL_STAFF_CHANGES.first_name, 
+					U_CDOL_STAFF_CHANGES.middle_name, 
+					U_CDOL_STAFF_CHANGES.last_name,
+					U_CDOL_STAFF_CHANGES.preferred_name,
+					U_CDOL_STAFF_CHANGES.maiden_name,
+					U_CDOL_STAFF_CHANGES.gender,
+					U_CDOL_STAFF_CHANGES.dob,
+					U_CDOL_STAFF_CHANGES.religion,
+					U_CDOL_STAFF_CHANGES.religiousclergylay,
+					U_CDOL_STAFF_CHANGES.personal_email,
+					U_CDOL_STAFF_CHANGES.staff_type,
+					CASE 
+                        WHEN U_CDOL_STAFF_CHANGES.staff_type = 0 THEN 'Not Assigned'
+                        WHEN U_CDOL_STAFF_CHANGES.staff_type = 1 THEN 'Teacher'
+                        WHEN U_CDOL_STAFF_CHANGES.staff_type = 2 THEN 'Staff'
+                        WHEN U_CDOL_STAFF_CHANGES.staff_type = 3 THEN 'Lunch Staff'
+                        WHEN U_CDOL_STAFF_CHANGES.staff_type = 4 THEN 'Substitute'
+                        Else '' 
+                    END as staff_type_desc,
+					U_CDOL_STAFF_CHANGES.position, 
+					U_CDOL_STAFF_CHANGES.fte, 
+					U_CDOL_STAFF_CHANGES.replacing,
+					replaced.first_name || ' ' || replaced.last_name as replacedstaff,
+					U_CDOL_STAFF_CHANGES.start_date,
+					U_CDOL_STAFF_CHANGES.early_setup,
+					U_CDOL_STAFF_CHANGES.deadline,
+                    CASE WHEN U_CDOL_STAFF_CHANGES.deadline is NULL THEN U_CDOL_STAFF_CHANGES.start_date
+                    ELSE U_CDOL_STAFF_CHANGES.deadline 
+                    END as completion_date,
+					U_CDOL_STAFF_CHANGES.previous,
+					U_CDOL_STAFF_CHANGES.previous_employer,
+					U_CDOL_STAFF_CHANGES.previous_employer_other,
+					U_CDOL_STAFF_CHANGES.submission_date,
+					U_CDOL_STAFF_CHANGES.submission_time,
+					U_CDOL_STAFF_CHANGES.who_submitted,
+					submitted.first_name  || ' ' ||  submitted.last_name as submittedstaff,
+					U_CDOL_STAFF_CHANGES.final_completion_date,
+					U_CDOL_STAFF_CHANGES.ps_created,
+					U_CDOL_STAFF_CHANGES.ad_created,
+					U_CDOL_STAFF_CHANGES.lms_created,
+					U_CDOL_STAFF_CHANGES.notes
+				FROM U_CDOL_STAFF_CHANGES
+				LEFT OUTER JOIN SCHOOLS ON 
+				U_CDOL_STAFF_CHANGES.schoolid = SCHOOLS.school_number
+				LEFT OUTER JOIN USERS replaced ON
+				to_char(replaced.DCID) = to_char(U_CDOL_STAFF_CHANGES.replacing)
+				LEFT OUTER JOIN TEACHERS submitted ON
+				to_char(submitted.ID) = to_char(U_CDOL_STAFF_CHANGES.who_submitted)
+				WHERE U_CDOL_STAFF_CHANGES.yearid = (EXTRACT(YEAR FROM CURRENT_DATE)-1991)
+				AND (U_CDOL_STAFF_CHANGES.schoolid = '~(gpv.curSchoolID)'
+								or 
+							'~(gpv.curSchoolID)' = 0)
+				AND U_CDOL_STAFF_CHANGES.name_change = 'Exiting Staff'
+				ORDER BY U_CDOL_STAFF_CHANGES.submission_date DESC, U_CDOL_STAFF_CHANGES.last_name	
+;]
+    {
+        "staffid": ~(1),
+        "yearid":~(2),
+        "schoolid":~(3),
+        "schname":"~(4;JSON)",
+        "name_change":"~(5;JSON)",
+        "title":"~(6;JSON)",
+        "first_name":"~(7;JSON)",
+        "middle_name":"~(8;JSON)",
+        "last_name":"~(9;JSON)",
+        "preferred_name":"~(10;JSON)",
+        "maiden_name":"~(11;JSON)",
+        "gender":"~(12;JSON)",
+        "dob":"~(13;JSON)",
+        "religion":"~(14;JSON)",
+        "religiousclergylay":"~(15;JSON)",
+        "personal_email":"~(16;JSON)",
+        "staff_type":"~(17;JSON)",
+        "staff_type_desc":"~(18;JSON)",
+        "position":"~(19;JSON)",
+        "fte":"~(20;JSON)",
+        "replacingid":~(21),
+        "replacedstaff":"~(22;JSON)",
+        "start_date":"~(23;JSON)",
+        "early_setup":"~(24;JSON)",
+        "deadline":"~(25;JSON)",
+        "completion_date":"~(26;JSON)",
+        "previous":"~(27;JSON)",
+        "previous_employer":"~(28;JSON)",
+        "previous_employer_other":"~(29;JSON)",
+        "submission_date":"~(30;JSON)",
+        "submission_time":"~(31;JSON)",
+        "who_submitted":"~(32;JSON)",
+        "submittedstaff":"~(33;JSON)",
+        "final_completion_date":"~(34;JSON)",
+        "ps_created":"~(35;JSON)",
+        "ad_created":"~(36;JSON)",
+        "lms_created":"~(37;JSON)",
+        "notes":"~(38;JSON)"
+    },
+[/tlist_sql]
+{}]

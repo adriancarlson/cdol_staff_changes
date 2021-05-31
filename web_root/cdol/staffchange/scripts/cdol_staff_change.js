@@ -416,12 +416,38 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			// ajax call to list records in staff U_CDOL_STAFF_CHANGES table
 			$scope.getStaffResults = function () {
 				loadingDialog();
-				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $attrs.ngCurYearId }).then(function (staffChangeData) {
-					$scope.staffList = staffChangeData;
-				});
-				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.removals', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $attrs.ngCurYearId }).then(function (staffRemovalData) {
-					$scope.removalStaffList = staffRemovalData;
-				});
+
+				$scope.getStaffChanges = function () {
+					$http({
+						url: '/admin/cdol/staffchange/data/getStaffChanges.json',
+						method: 'GET',
+						params: { curSchoolID: $scope.userContext.curSchoolId },
+					}).then(function (response) {
+						staffChangesData = response.data;
+						staffChangesData.pop();
+						$scope.staffList = staffChangesData;
+					});
+				};
+
+				// $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $attrs.ngCurYearId }).then(function (staffChangeData) {
+				// 	$scope.staffList = staffChangeData;
+				// });
+
+				$scope.getStaffRemovals = function () {
+					$http({
+						url: '/admin/cdol/staffchange/data/getStaffRemovals.json',
+						method: 'GET',
+						params: { curSchoolID: $scope.userContext.curSchoolId },
+					}).then(function (response) {
+						staffRemovalsData = response.data;
+						staffRemovalsData.pop();
+						$scope.removalStaffList = staffRemovalsData;
+					});
+				};
+
+				// $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.removals', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $attrs.ngCurYearId }).then(function (staffRemovalData) {
+				// 	$scope.removalStaffList = staffRemovalData;
+				// });
 				$scope.userContext.curDate = dateService.formatDateForApi($scope.userContext.curDate);
 				closeLoading();
 			};
