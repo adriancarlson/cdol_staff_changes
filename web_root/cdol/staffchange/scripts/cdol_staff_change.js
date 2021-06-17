@@ -35,7 +35,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			//initializing blank staff record for use in submissions
 			$scope.newStaff = {
 				schoolid: $scope.userContext.curSchoolId,
-				yearid: $scope.userContext.adjustedYearId,
+				yearid: $scope.userContext.adjustedYearId.toString(),
 				name_change: '',
 				title: '',
 				first_name: '',
@@ -71,7 +71,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 
 			$scope.exitingRecord = {
 				schoolid: $scope.userContext.curSchoolId,
-				yearid: $scope.userContext.curYearId,
+				yearid: $scope.userContext.adjustedYearId.toString(),
 				name_change: 'Exiting Staff',
 				title: '',
 				first_name: '',
@@ -180,7 +180,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			$scope.submitStaffChange = function () {
 				$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
 				$scope.newStaff.dob = dateService.formatDateForApi($scope.newStaff.dob);
-				$scope.userContext.accountChangeDate = '06/01/' + $scope.userContext.curDate.substring(6, 11);
+				$scope.userContext.accountChangeDate = '06/15/' + $scope.userContext.curDate.substring(6, 11);
 				if (($scope.newStaff.name_change == 'Exiting Staff' || $scope.newStaff.name_change == 'Transferring Staff') && $scope.newStaff.deadline == '') {
 					$scope.newStaff.deadline = $scope.userContext.accountChangeDate;
 				}
