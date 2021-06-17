@@ -180,9 +180,27 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			$scope.submitStaffChange = function () {
 				$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
 				$scope.newStaff.dob = dateService.formatDateForApi($scope.newStaff.dob);
+
 				$scope.userContext.accountChangeDate = '06/15/' + $scope.userContext.curDate.substring(6, 11);
+				let todayDate = new Date();
+				Date.prototype.addDays = function (days) {
+					var date = new Date(this.valueOf());
+					date.setDate(date.getDate() + days);
+					return date;
+				};
+				let todayPlus10 = todayDate.addDays(10);
+				let month = todayPlus10.getMonth() + 1;
+				let day = todayPlus10.getDate();
+				let year = todayPlus10.getFullYear();
+				let fulltodayPlus10 = month + '/' + day + '/' + year;
+				let compareDate = new Date($scope.userContext.curDate.substring(6, 11), 05, 15);
+
 				if (($scope.newStaff.name_change == 'Exiting Staff' || $scope.newStaff.name_change == 'Transferring Staff') && $scope.newStaff.deadline == '') {
-					$scope.newStaff.deadline = $scope.userContext.accountChangeDate;
+					if (todayDate < compareDate) {
+						$scope.newStaff.deadline = $scope.userContext.accountChangeDate;
+					} else {
+						$scope.newStaff.deadline = fulltodayPlus10;
+					}
 				}
 				$scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
 
