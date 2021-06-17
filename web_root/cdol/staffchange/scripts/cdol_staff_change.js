@@ -23,7 +23,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				curUserEmail: $attrs.ngCurUserEmail,
 				curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr,
 				accountChangeDate: '',
-				adjustedYearID: new Date($attrs.ngCurDate).getFullYear() - 1991,
+				adjustedYearId: new Date($attrs.ngCurDate).getFullYear() - 1991,
 			};
 
 			$scope.dupSearchParams = {
@@ -35,7 +35,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			//initializing blank staff record for use in submissions
 			$scope.newStaff = {
 				schoolid: $scope.userContext.curSchoolId,
-				yearid: $scope.userContext.curYearId,
+				yearid: $scope.userContext.adjustedYearId,
 				name_change: '',
 				title: '',
 				first_name: '',
@@ -416,10 +416,10 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 
 			// ajax call to list records in staff U_CDOL_STAFF_CHANGES table
 			$scope.getStaffResults = function () {
-				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearID }).then(function (staffChangeData) {
+				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId }).then(function (staffChangeData) {
 					$scope.staffList = staffChangeData;
 				});
-				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.removals', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearID }).then(function (staffRemovalData) {
+				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.removals', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId }).then(function (staffRemovalData) {
 					$scope.removalStaffList = staffRemovalData;
 				});
 				$scope.userContext.curDate = dateService.formatDateForApi($scope.userContext.curDate);
