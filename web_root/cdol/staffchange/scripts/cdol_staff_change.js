@@ -416,6 +416,8 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			// ajax call to list records in staff U_CDOL_STAFF_CHANGES table
 			$scope.getStaffResults = function () {
 				loadingDialog();
+				let adjustedYearID = $attrs.ngCurDate.getFullYear();
+				console.log(adjustedYearID);
 				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $attrs.ngCurYearId }).then(function (staffChangeData) {
 					$scope.staffList = staffChangeData;
 				});
