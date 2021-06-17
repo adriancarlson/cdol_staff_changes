@@ -43,7 +43,7 @@
         <h1 style="margin-bottom: 5px;">Staff Change Submissions</h1>
         <label for="year-selector" style="padding-left: 25px; padding-right: 7px;">Year: </label>
 
-        <select id="year-selector" name="" ng-model="userContext.adjustedYearID" ng-change="getStaffResults()">
+        <select id="year-selector" name="" ng-model="userContext.adjustedYearId" ng-change="getStaffResults()">
             ~[tlist_sql;
             SELECT
             DISTINCT yearid,
@@ -51,7 +51,7 @@
             FROM
             u_cdol_staff_changes
             ORDER BY yearid ]
-            <option value="~(yrid)" ng-selected="~(yrid) === userContext.adjustedYearID">~(yearname)</option>
+            <option value="~(yrid)" ng-selected="~(yrid) === userContext.adjustedYearId">~(yearname)</option>
             [/tlist_sql]
         </select>
         <div class="tabs">
