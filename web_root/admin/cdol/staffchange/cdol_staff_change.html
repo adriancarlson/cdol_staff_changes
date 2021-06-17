@@ -198,7 +198,7 @@
                     </div>
                     <div id="feedback-message" class="feedback-alert" ng-show="userContext.pageStatus =='Submit'">All
                         staff accounts transfering from another
-                        Diocese of Lincoln School, will not be moved until some time after June 1st.<br> If
+                        Diocese of Lincoln School, will not be moved until some time after June 15th.<br> If
                         {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} needs access to your school
                         prior to then, please specify below.</div>
                     <div>
@@ -208,7 +208,13 @@
                                 ng-init="userContext.curDate">
                         </div>
                     </div>
-
+                    <div>
+                        <div>
+                            <label>Additional notes/details?</label>
+                            <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
+                                ng-model="newStaff.notes"></textarea>
+                        </div>
+                    </div>
                     <div>
                         <div class="feedback-info" ng-show="userContext.pageStatus =='Submit'">
                             <b><u>Please Note:</u></b> personal files (i.e. Documents and pictures, music and videos)
@@ -218,6 +224,7 @@
                             responsible for moving the files to the new server.
                         </div>
                     </div>
+
                     ~[if#distCheck.security.inrole=9]
                     <div style="background-color: #fff; border-top: 1px solid #eee;"
                         ng-show="userContext.pageStatus =='Edit'">
@@ -324,16 +331,23 @@
                     <div id="feedback-message" class="feedback-alert"
                         ng-show="newStaff.replacing !='' && userContext.pageStatus =='Submit'">All exiting
                         staff accounts will be deactivated
-                        after June 1st.<br> If <span
+                        after June 15th.<br> If <span
                             ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the exiting
                             staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} needs access to their
-                        account after June 1st or needs to be deactivated sooner, please specify date below.</div>
+                        account after June 15th or needs to be deactivated sooner, please specify date below.</div>
                     <div ng-show="newStaff.replacing !=''">
                         <div>
                             <label>Requested Deactivation Date<span class="notation">(please type in the
                                     date)</span></label>
                             <input name="" type="text" value="" maxlength="10" size="10" style="width:98px;"
                                 placeholder="MM/DD/YYYY" ng-model="newStaff.deadline">
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <label>Additional notes/details?</label>
+                            <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
+                                ng-model="newStaff.notes"></textarea>
                         </div>
                     </div>
                     <div>
@@ -477,7 +491,7 @@
                     </div>
                     <div>
                         <div>
-                            <label>Reason for Name Change?</label>
+                            <label>Reason for Name Change and/or additional notes/details on name change?</label>
                             <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
                                 ng-model="newStaff.notes"></textarea>
                         </div>
@@ -771,7 +785,8 @@
                     </div>
                     <div>
                         <div>
-                            <label>Is there anything you would like added to this form to make it better?</label>
+                            <label>Additional notes/details on staff submission or suggestions to make this form
+                                better:</label>
                             <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
                                 ng-model="newStaff.notes"></textarea>
                         </div>
@@ -864,7 +879,7 @@
                 ~[if.~(gpv.submessage)=E]
                 <p>Your ~(gpv.substat) Submission for ~(gpv.fname) ~(gpv.lname) has been sent to the Education
                     Technology Office. We will be in
-                    contact once the account is deactivated.<br> The account will be deactivated June 1st unless
+                    contact once the account is deactivated.<br> The account will be deactivated June 15th unless
                     specified otherwise.</p>
                 [else]
                 <p>Your ~(gpv.substat) Submission for ~(gpv.title) ~(gpv.fname) ~(gpv.lname) has been sent to the
