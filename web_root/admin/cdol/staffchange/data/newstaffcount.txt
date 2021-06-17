@@ -10,7 +10,5 @@ WHERE
         OR 
         (U_CDOL_STAFF_CHANGES.lms_created !=1 OR U_CDOL_STAFF_CHANGES.lms_created IS NULL)
     )
-AND 
-    U_CDOL_STAFF_CHANGES.yearid= (EXTRACT(YEAR FROM CURRENT_DATE)-1991)
-    ~[if.is.a.school] AND U_CDOL_STAFF_CHANGES.schoolid=~(curschoolid) [/if]
+        ~[if.is.a.school] AND U_CDOL_STAFF_CHANGES.schoolid=~(curschoolid) [/if]
 ;]~(cnt)[/tlist_sql]
