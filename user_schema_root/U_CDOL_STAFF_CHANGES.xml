@@ -35,5 +35,6 @@
         <field name="submission_time" type="String"  length="10"/>
         <field name="replacing_other" type="String" length="100" />
         <field name="final_completion_date" type="Date" />
+        <field name="old_name_placeholder" type="String" length="100" />
     </extendedTable>
 </psExtension>

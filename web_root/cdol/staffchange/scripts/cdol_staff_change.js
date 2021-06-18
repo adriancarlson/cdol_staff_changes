@@ -67,6 +67,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				ad_created: '',
 				lms_created: '',
 				final_completion_date: '',
+				old_name_placeholder: '',
 			};
 
 			$scope.exitingRecord = {
@@ -102,6 +103,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				ad_created: '',
 				lms_created: '',
 				final_completion_date: '',
+				old_name_placeholder: '',
 			};
 
 			$scope.getExistingStaff = function () {
@@ -115,6 +117,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					$scope.exitingRecord.first_name = staffData[0].first_name;
 					$scope.exitingRecord.last_name = staffData[0].last_name;
 					$scope.exitingRecord.replacing = staffData[0].udcid.toString();
+					$scope.exitingRecord.old_name_placeholder = staffData[0].first_name + ' ' + staffData[0].last_name;
 				});
 			};
 
