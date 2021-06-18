@@ -133,8 +133,9 @@
                                     style="color: red;
 	font-size: 13.5pt;"> *</span><span class="notation">(choose Other if staff member being replaced is not
                                     listed)</span></label>
-                            <select name="" ng-model="newStaff.replacing" ng-required="true"
-                                ng-change="getExistingStaff()">
+                            <select
+                                ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
+                                name="" ng-model="newStaff.replacing" ng-required="true" ng-change="getExistingStaff()">
                                 <option></option>
 
                                 ~[tlist_sql;SELECT
@@ -159,7 +160,9 @@
                                     ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the replaced
                                     staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} when you click
                                 Submit</span>
-
+                            <input
+                                ng-show="newStaff.replacing !='New' && newStaff.replacing !='Other' && userContext.pageStatus =='Edit'"
+                                name="" type="text" value="" ng-model="newStaff.old_name_placeholder">
                         </div>
                     </div>
                     <div ng-if="newStaff.replacing === 'Other'">
@@ -308,8 +311,8 @@
                     <div>
                         <div>
                             <label class="req">Who is not returning?</label>
-                            <select name="" ng-model="newStaff.replacing" ng-required="true"
-                                ng-change="getExistingStaff()">
+                            <select ng-show="userContext.pageStatus =='Submit'" name="" ng-model="newStaff.replacing"
+                                ng-required="true" ng-change="getExistingStaff()">
                                 <option></option>
                                 ~[tlist_sql;SELECT distinct
                                 users.dcid,
@@ -326,6 +329,8 @@
                                 <option value="~(dcid)">~(first) ~(last)</option>
                                 [/tlist_sql]
                             </select>
+                            <input ng-show="userContext.pageStatus =='Edit'" name="" type="text" value=""
+                                ng-model="newStaff.old_name_placeholder">
                         </div>
                     </div>
                     <div id="feedback-message" class="feedback-alert"
@@ -449,8 +454,8 @@
                     <div>
                         <div>
                             <label class="req">Who's name is changing?</label>
-                            <select name="" ng-model="newStaff.replacing" ng-required="true"
-                                ng-change="getExistingStaff()">
+                            <select ng-show="userContext.pageStatus =='Submit'" name="" ng-model="newStaff.replacing"
+                                ng-required="true" ng-change="getExistingStaff()">
                                 <option></option>
                                 ~[tlist_sql;SELECT distinct
                                 users.dcid,
@@ -467,6 +472,8 @@
                                 <option value="~(dcid)">~(first) ~(last)</option>
                                 [/tlist_sql]
                             </select>
+                            <input ng-show="userContext.pageStatus =='Edit'" name="" type="text" value=""
+                                ng-model="newStaff.old_name_placeholder">
                         </div>
                     </div>
                     <div><label>Staff's New Name</label></div>
@@ -708,8 +715,9 @@
                                     style="color: red;
 	font-size: 13.5pt;"> *</span><span class="notation">(choose Other if staff member being replaced is not
                                     listed)</span></label>
-                            <select name="" ng-model="newStaff.replacing" ng-required="true"
-                                ng-change="getExistingStaff()">
+                            <select
+                                ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
+                                name="" ng-model="newStaff.replacing" ng-required="true" ng-change="getExistingStaff()">
                                 <option></option>
 
                                 ~[tlist_sql;SELECT
@@ -734,6 +742,9 @@
                                     ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the replaced
                                     staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} when you click
                                 Submit</span>
+                            <input
+                                ng-show="newStaff.replacing !='New' && newStaff.replacing !='Other' && userContext.pageStatus =='Edit'"
+                                name="" type="text" value="" ng-model="newStaff.old_name_placeholder">
                         </div>
                     </div>
                     <div ng-if="newStaff.replacing === 'Other'">
