@@ -21,14 +21,16 @@
             Staff Change</span>
         <span ng-show="userContext.pageStatus =='Edit'"><a href="/admin/home.html"
                 target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; <a
-                href="/admin/cdol/staffchange/cdol_staff_change_list.html" target="_top">New Staff Submissions</a> &gt;
-            {{userContext.pageStatus}} Staff Change</span>
+                href="/admin/cdol/staffchange/cdol_staff_change_list.html" target="_top">Staff Submissions</a> &gt;
+            {{userContext.pageStatus}} Staff Change Submissions </span>
         ~[wc:admin_navigation_css]
 
         <div ng-show="userContext.pageStatus =='Submit' || userContext.pageStatus =='Edit'">
             <h1>{{userContext.pageStatus}} Staff Change</h1>
             <!--dup table-->
-            <div class="box-round" ng-show="userContext.pageStatus =='Edit' && dupList.length >0" style="width:50%;">
+            <div class="box-round"
+                ng-show="userContext.pageStatus =='Edit' && dupList.length >0 && newStaff.ps_created !=1"
+                style="width:50%;">
                 <div id="feedback-message" class="feedback-error">Potential matches for&nbsp;{{newStaff.title}}
                     {{newStaff.first_name}} {{newStaff.last_name}}</div>
                 <table class="grid" style="font-size: 10pt;">
