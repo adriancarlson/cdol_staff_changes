@@ -209,7 +209,11 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				$scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
 
 				if ($scope.newStaff.name_change != 'Exiting Staff') {
-					$scope.exitingRecord.deadline = dateService.formatDateForApi($scope.userContext.accountChangeDate);
+					if (todayDate < compareDate) {
+						$scope.exitingRecord.deadline = dateService.formatDateForApi($scope.userContext.accountChangeDate);
+					} else {
+						$scope.exitingRecord.deadline = dateService.formatDateForApi(fulltodayPlus10);
+					}
 				}
 
 				$scope.emailBody = $scope.newStaff.name_change + ' Name: ' + $scope.newStaff.title + ' ' + $scope.newStaff.first_name + ' ' + $scope.newStaff.last_name;
