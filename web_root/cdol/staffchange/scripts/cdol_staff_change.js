@@ -63,9 +63,11 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				submission_time: $scope.userContext.curTime,
 				who_submitted: $scope.userContext.curUserId,
 				notes: '',
+				suggestions: '',
 				ps_created: '',
 				ad_created: '',
 				lms_created: '',
+				o365_created: '',
 				final_completion_date: '',
 				old_name_placeholder: '',
 			};
@@ -99,9 +101,11 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				submission_time: $scope.userContext.curTime,
 				who_submitted: $scope.userContext.curUserId,
 				notes: '',
+				suggestions: '',
 				ps_created: '',
 				ad_created: '',
 				lms_created: '',
+				o365_created: '',
 				final_completion_date: '',
 				old_name_placeholder: '',
 			};
@@ -143,6 +147,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 							$scope.newStaff.ps_created = checkboxService.formatChecksFromApi($scope.newStaff.ps_created);
 							$scope.newStaff.ad_created = checkboxService.formatChecksFromApi($scope.newStaff.ad_created);
 							$scope.newStaff.lms_created = checkboxService.formatChecksFromApi($scope.newStaff.lms_created);
+							$scope.newStaff.o365_created = checkboxService.formatChecksFromApi($scope.newStaff.o365_created);
 							//setting up params for dup search
 							$scope.dupSearchParams.lastName = response.data.tables.u_cdol_staff_changes.last_name;
 							$scope.dupSearchParams.maidenName = response.data.tables.u_cdol_staff_changes.maiden_name;
@@ -374,8 +379,15 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					$scope.newStaff.ps_created = checkboxService.formatChecksForApi($scope.newStaff.ps_created);
 					$scope.newStaff.ad_created = checkboxService.formatChecksForApi($scope.newStaff.ad_created);
 					$scope.newStaff.lms_created = checkboxService.formatChecksForApi($scope.newStaff.lms_created);
+					$scope.newStaff.o365_created = checkboxService.formatChecksForApi($scope.newStaff.o365_created);
 					if ($scope.newStaff.name_change != 'Exiting Staff') {
-						if ($scope.newStaff.final_completion_date === undefined && $scope.newStaff.ps_created == 'true' && $scope.newStaff.ad_created == 'true' && $scope.newStaff.lms_created == 'true') {
+						if (
+							$scope.newStaff.final_completion_date === undefined &&
+							$scope.newStaff.ps_created == 'true' &&
+							$scope.newStaff.ad_created == 'true' &&
+							$scope.newStaff.o365_created == 'true' &&
+							$scope.newStaff.lms_created == 'true'
+						) {
 							$scope.newStaff.final_completion_date = dateService.formatDateForApi($scope.userContext.curDate);
 						}
 					} else {
