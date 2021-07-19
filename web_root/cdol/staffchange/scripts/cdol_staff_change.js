@@ -374,8 +374,14 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					$scope.newStaff.ps_created = checkboxService.formatChecksForApi($scope.newStaff.ps_created);
 					$scope.newStaff.ad_created = checkboxService.formatChecksForApi($scope.newStaff.ad_created);
 					$scope.newStaff.lms_created = checkboxService.formatChecksForApi($scope.newStaff.lms_created);
-					if ($scope.newStaff.final_completion_date === undefined && $scope.newStaff.ps_created == 'true' && $scope.newStaff.ad_created == 'true' && $scope.newStaff.lms_created == 'true') {
-						$scope.newStaff.final_completion_date = dateService.formatDateForApi($scope.userContext.curDate);
+					if ($scope.newStaff.name_change != 'Exiting Staff') {
+						if ($scope.newStaff.final_completion_date === undefined && $scope.newStaff.ps_created == 'true' && $scope.newStaff.ad_created == 'true' && $scope.newStaff.lms_created == 'true') {
+							$scope.newStaff.final_completion_date = dateService.formatDateForApi($scope.userContext.curDate);
+						}
+					} else {
+						if ($scope.newStaff.final_completion_date === undefined && $scope.newStaff.ps_created == 'true' && $scope.newStaff.ad_created == 'true') {
+							$scope.newStaff.final_completion_date = dateService.formatDateForApi($scope.userContext.curDate);
+						}
 					}
 					let redirectPath = '/admin/cdol/staffchange/cdol_staff_change_list.html';
 					let updateRecord = {
