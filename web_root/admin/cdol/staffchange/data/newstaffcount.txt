@@ -1,14 +1,7 @@
 ~[tlist_sql;
-SELECT 
-    count(U_CDOL_STAFF_CHANGES.id)
-FROM U_CDOL_STAFF_CHANGES
-WHERE 
-    (
-        (U_CDOL_STAFF_CHANGES.ps_created !=1 OR U_CDOL_STAFF_CHANGES.ps_created IS NULL)
-        OR 
-        (U_CDOL_STAFF_CHANGES.ad_created !=1 OR U_CDOL_STAFF_CHANGES.ad_created IS NULL)
-        OR 
-        (U_CDOL_STAFF_CHANGES.lms_created !=1 OR U_CDOL_STAFF_CHANGES.lms_created IS NULL)
-    )
-        ~[if.is.a.school] AND U_CDOL_STAFF_CHANGES.schoolid=~(curschoolid) [/if]
+SELECT count(id)
+FROM u_cdol_staff_changes
+WHERE final_completion_date is null
+and yearid = to_number(to_char(sysdate, 'YYYY') - 1991)
+~[if.is.a.school] AND U_CDOL_STAFF_CHANGES.schoolid=~(curschoolid) [/if]
 ;]~(cnt)[/tlist_sql]

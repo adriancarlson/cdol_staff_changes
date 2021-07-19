@@ -138,7 +138,7 @@
                                 <td style="width:175px;">{{staff.submission_date | date : 'MM/dd/yyyy'}}
                                     {{staff.submission_time}}</td>
                                 <td
-                                    ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || staff.ad_created != 1 || staff.lms_created != 1)}">
+                                    ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || staff.ad_created != 1)}">
                                     {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
                                 <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
                                         ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
