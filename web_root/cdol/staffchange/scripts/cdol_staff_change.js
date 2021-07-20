@@ -118,11 +118,13 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				}).then(function (response) {
 					staffData = response.data;
 					staffData.pop();
-					$scope.exitingRecord.first_name = staffData[0].first_name;
-					$scope.exitingRecord.last_name = staffData[0].last_name;
-					$scope.exitingRecord.replacing = staffData[0].udcid.toString();
-					$scope.exitingRecord.old_name_placeholder = staffData[0].first_name + ' ' + staffData[0].last_name;
-					$scope.newStaff.old_name_placeholder = staffData[0].first_name + ' ' + staffData[0].last_name;
+					if (staffData.length > 0) {
+						$scope.exitingRecord.first_name = staffData[0].first_name;
+						$scope.exitingRecord.last_name = staffData[0].last_name;
+						$scope.exitingRecord.replacing = staffData[0].udcid.toString();
+						$scope.exitingRecord.old_name_placeholder = staffData[0].first_name + ' ' + staffData[0].last_name;
+						$scope.newStaff.old_name_placeholder = staffData[0].first_name + ' ' + staffData[0].last_name;
+					}
 				});
 			};
 
