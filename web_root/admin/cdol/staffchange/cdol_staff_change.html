@@ -260,6 +260,8 @@
                                         <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
                                             <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>AD
                                                 Account Moved?</label>
+                                            <input type="checkbox" name="" ng-model="newStaff.ad_ignored"><label>Not
+                                                Applicable?</label>
                                             <ul>
                                                 <li>Groups and other fields changed reflecting the move?</li>
                                                 <li>E-mailbox moved to the new school?</li>
@@ -268,6 +270,8 @@
                                         <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
                                             <input type="checkbox" name="" ng-model="newStaff.o365_created"><label>O365
                                                 Account Verified?</label>
+                                            <input type="checkbox" name="" ng-model="newStaff.o365_ignored"><label>Not
+                                                Applicable</label>
                                             <ul>
                                                 <li>Verify Teams and Office 365 groups</li>
                                             </ul>
@@ -412,6 +416,8 @@
                                         <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
                                             <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>AD user
                                                 account disabled?</label>
+                                            <input type="checkbox" name="" ng-model="newStaff.ad_ignored"><label>Not
+                                                Applicable</label>
                                             <ul>
                                                 <li>Email account noted as "disabled"?
                                                     <ul>
@@ -548,6 +554,8 @@
                                         <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
                                             <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>AD User
                                                 Account created?</label>
+                                            <input type="checkbox" name="" ng-model="newStaff.ad_ignored"><label>Not
+                                                Applicable</label>
                                             <ul>
                                                 <li>Exchange email updated?</li>
                                             </ul>
@@ -556,6 +564,8 @@
                                             <input type="checkbox" name="" ng-model="newStaff.o365_created"><label>O365
                                                 User
                                                 Account updated?</label>
+                                            <input type="checkbox" name="" ng-model="newStaff.o365_ignored"><label>Not
+                                                Applicable</label>
                                             <ul>
                                                 <li>Office 365 updated?</li>
                                             </ul>
@@ -637,7 +647,7 @@
                         <div>
                             <label class="req">Gender</label>
                             <select name="" id="selectgender" ng-model="newStaff.gender"
-                                ng-required="true">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]preferred_name)]</select>
+                                ng-required="true">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]Gender)]</select>
                         </div>
                         <div>
                             <label>Date of Birth <span class="notation">(please type in the date)</span></label>
@@ -863,6 +873,8 @@
                                         <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
                                             <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>AD User
                                                 Account created?</label>
+                                            <input type="checkbox" name="" ng-model="newStaff.ad_ignored"><label>Not
+                                                Applicable</label>
                                             <ul>
                                                 <li>Exchange email mailbox created?</li>
                                             </ul>
@@ -871,6 +883,8 @@
                                             <input type="checkbox" name="" ng-model="newStaff.o365_created"><label>O365
                                                 User
                                                 Account created?</label>
+                                            <input type="checkbox" name="" ng-model="newStaff.o365_ignored"><label>Not
+                                                Applicable</label>
                                             <ul>
                                                 <li>Office 365 licensed (incl. Teams) assigned?</li>
                                             </ul>

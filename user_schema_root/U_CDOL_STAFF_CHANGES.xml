@@ -23,6 +23,7 @@
         <field name="who_submitted" type="Integer" />
         <field name="ps_created" type="Boolean" />
         <field name="ad_created" type="Boolean" />
+        <field name="ad_ignored" type="Boolean" />
         <field name="lms_created" type="Boolean" />
         <field name="dob" type="Date" />
         <field name="name_change" type="String" length="100" />
@@ -38,5 +39,6 @@
         <field name="old_name_placeholder" type="String" length="100" />
         <field name="suggestions" type="Clob" />
         <field name="o365_created" type="Boolean" />
+        <field name="o365_ignored" type="Boolean" />
     </extendedTable>
 </psExtension>
