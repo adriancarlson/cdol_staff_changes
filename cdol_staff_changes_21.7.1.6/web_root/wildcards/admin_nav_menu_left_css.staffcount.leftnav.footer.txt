@@ -1,0 +1,11 @@
+<script>
+    $j(document).ready(function() {
+        $j.ajax({
+            url: "/admin/cdol/staffchange/data/newstaffcount.txt",
+            success: function(result) {
+            $j("#left_nav_functions").append('<li><a href="/admin/cdol/staffchange/cdol_staff_change_list.html">Staff Change Submissions ('+result+')</a></li>');
+                }
+            })
+        });
+</script>
+

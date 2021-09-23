@@ -1,0 +1,36 @@
+[
+~[tlist_sql;
+    SELECT 
+        schoolstaff.dcid,               
+        teachers.first_name,
+        teachers.last_name,
+        CASE
+            WHEN schoolstaff.status = 1 
+            THEN 'Active'
+            ELSE
+                'Inactive'
+        END AS Status,
+        CASE
+            WHEN teachers.homeschoolid = 0 THEN
+                'Diocesan Office'
+            ELSE
+                schools.name
+        END AS schoolname
+    FROM schoolstaff 
+    INNER JOIN teachers ON schoolstaff.dcid = teachers.dcid
+    and schoolstaff.schoolid = teachers.homeschoolid
+    LEFT OUTER JOIN schools ON teachers.homeschoolid = schools.school_number
+    WHERE
+    (lower(teachers.last_name) LIKE '' || '~(gpv.lastName)' || '%'
+    OR lower(teachers.last_name) LIKE '' || '~(gpv.maidenName)' || '%')
+    AND lower(TRIM(SUBSTR(teachers.first_name,INSTR(teachers.first_name,'.')+1,LENGTH(teachers.first_name)+1-INSTR(teachers.first_name,' ')))) LIKE '' ||'~(gpv.firstNameSubString)' || '%'
+;]
+    {
+        "dcid": ~(1),
+        "first_name":"~(2;JSON)",
+        "last_name":"~(3;JSON)",
+        "status":"~(4;JSON)",
+        "school_name":"~(5;JSON)"
+    },
+[/tlist_sql]
+{}]

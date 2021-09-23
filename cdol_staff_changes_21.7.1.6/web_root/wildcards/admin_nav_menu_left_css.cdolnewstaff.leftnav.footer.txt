@@ -1,0 +1,6 @@
+<script type="text/javascript">
+$j(document).ready(function(){
+	$j('ul#left_nav_functions').prev().before('<br>&nbsp;&nbsp;&nbsp;<a href="/admin/cdol/staffchange/cdol_staff_change.html?status=Submit" id="cdolStaffChanges" title="CDOL Staff Changes">Submit Staff Change</a>');
+});
+
+</script>
