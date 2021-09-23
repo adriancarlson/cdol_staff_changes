@@ -75,8 +75,8 @@
                                     Submission Date</th>
                                 <th data-pss-sort-fields="completion_date | date">Deadline</th>
                                 <th data-pss-sort-fields="ps_created | number">PS Created</th>
-                                <th data-pss-sort-fields="ad_created | number">AD Created</th>
-                                <th data-pss-sort-fields="o365_created | number">O365 Created</th>
+                                <th data-pss-sort-fields="ad_created, ad_ignored | number">AD Created</th>
+                                <th data-pss-sort-fields="o365_created, o365_ignored | number">O365 Created</th>
                                 <th data-pss-sort-fields="lms_created | number">LMS Created</th>
                                 <th data-pss-sort-fields="final_completion_date | date">Completed</th>
                             </tr>
@@ -94,14 +94,20 @@
                                 <td style="width:175px;">{{staff.submission_date | date : 'MM/dd/yyyy'}}
                                     {{staff.submission_time}}</td>
                                 <td
-                                    ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || staff.ad_created != 1 || staff.lms_created != 1 || staff.o365_created != 1)}">
+                                    ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || (staff.ad_created != 1 && staff.ad_ignored != 1) || staff.lms_created != 1 || (staff.o365_created != 1 && staff.o365_ignored != 1))}">
                                     {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
                                 <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
                                         ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
-                                <td><span ng-show="staff.ad_created != 1">&#10060;</span><span
-                                        ng-show="staff.ad_created == 1">&#10004;&#65039;</span></td>
-                                <td><span ng-show="staff.o365_created != 1">&#10060;</span><span
-                                        ng-show="staff.o365_created == 1">&#10004;&#65039;</span></td>
+                                <td>
+                                    <span ng-show="staff.ad_created != 1 && staff.ad_ignored != 1">&#10060;</span>
+                                    <span
+                                        ng-show="staff.ad_created == 1 || staff.ad_ignored == 1">&#10004;&#65039;</span>
+                                </td>
+                                <td>
+                                    <span ng-show="staff.o365_created != 1 && staff.o365_ignored != 1">&#10060;</span>
+                                    <span
+                                        ng-show="staff.o365_created == 1 || staff.o365_ignored == 1">&#10004;&#65039;</span>
+                                </td>
                                 <td><span ng-show="staff.lms_created != 1">&#10060;</span><span
                                         ng-show="staff.lms_created == 1">&#10004;&#65039;</span></td>
                                 <td>{{staff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
@@ -141,12 +147,15 @@
                                 <td style="width:175px;">{{staff.submission_date | date : 'MM/dd/yyyy'}}
                                     {{staff.submission_time}}</td>
                                 <td
-                                    ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || staff.ad_created != 1)}">
+                                    ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || (staff.ad_created != 1 && staff.ad_ignored != 1))}">
                                     {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
                                 <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
                                         ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
-                                <td><span ng-show="staff.ad_created != 1">&#10060;</span><span
-                                        ng-show="staff.ad_created == 1">&#10004;&#65039;</span></td>
+                                <td>
+                                    <span ng-show="staff.ad_created != 1 && staff.ad_ignored != 1">&#10060;</span>
+                                    <span
+                                        ng-show="staff.ad_created == 1 || staff.ad_ignored == 1">&#10004;&#65039;</span>
+                                </td>
                                 <td>{{staff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
                             </tr>
                         </tbody>
