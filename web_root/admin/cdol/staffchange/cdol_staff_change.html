@@ -6,7 +6,7 @@
         ~[wc:commonscripts]
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
-        <link href="/cdol/staffchange/scripts/cdol_staff_change.css?~[time]" rel="stylesheet">
+        <link href="/cdol/staffchange/scripts/cdol_staff_change.css?~(f.currenttime)" rel="stylesheet">
     </head>
 
     <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl as mainController"
@@ -240,41 +240,65 @@
                     <div style="background-color: #fff; border-top: 1px solid #eee;"
                         ng-show="userContext.pageStatus =='Edit'">
                         <div>
-                            <table class="grid">
+                            <table class="grid dis-check-table">
                                 <thead>
                                     <tr>
-                                        <th colspan="4">Account Transfer</th>
+                                        <th colspan="6">Account Transfer</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
+                                        <td>
                                             <input type="checkbox" name=""
                                                 ng-model="newStaff.ps_created"><label>PowerSchool Account
                                                 Moved?</label>
+                                        </td>
+                                        <td class="rb-n">
+                                            <input type="checkbox" name="" ng-disabled="newStaff.ad_ignored === true"
+                                                ng-model="newStaff.ad_created"><label>AD
+                                                Account Moved?</label>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" name="" ng-disabled="newStaff.ad_created"
+                                                ng-model="newStaff.ad_ignored"><label class="text-muted">Not
+                                                Applicable</label>
+                                        </td>
+                                        <td class="rb-n">
+                                            <input type="checkbox" name="" ng-disabled="newStaff.o365_ignored === true"
+                                                ng-model="newStaff.o365_created"><label>O365
+                                                Account Verified?</label>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" style="margin-left: 20px;" name=""
+                                                ng-disabled="newStaff.o365_created"
+                                                ng-model="newStaff.o365_ignored"><label class="text-muted"
+                                                style="margin-right: 20px;">Not Applicable</label>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" name="" ng-model="newStaff.lms_created"><label>LMS
+                                                Double Check?</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
                                             <ul>
                                                 <li>New School added and Activated?</li>
                                                 <li>Old School Deactivated?</li>
                                             </ul>
                                         </td>
-                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
-                                            <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>AD
-                                                Account Moved?</label>
+                                        <td colspan="2">
+
                                             <ul>
                                                 <li>Groups and other fields changed reflecting the move?</li>
                                                 <li>E-mailbox moved to the new school?</li>
                                             </ul>
                                         </td>
-                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
-                                            <input type="checkbox" name="" ng-model="newStaff.o365_created"><label>O365
-                                                Account Verified?</label>
+                                        <td colspan="2">
                                             <ul>
                                                 <li>Verify Teams and Office 365 groups</li>
                                             </ul>
                                         </td>
-                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
-                                            <input type="checkbox" name="" ng-model="newStaff.lms_created"><label>LMS
-                                                Double Check?</label>
+                                        <td>
                                             <ul>
                                                 <li>Re-assign class ownership (if applicable)</li>
                                                 <li>CHeck UPN (if transfering to or from Pius)</li>
