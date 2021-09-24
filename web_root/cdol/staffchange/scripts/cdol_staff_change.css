@@ -38,11 +38,8 @@ select.ng-invalid.ng-touched {
 	border: 2px solid #ff897b;
 	border-radius: 4px;
 }
-/*.dis-check-table tbody tr td:first-child {*/
-/*    padding-bottom: 0px;*/
-/*}*/
+
 .dis-check-table tbody tr td {
-	background-color: #fff;
 	padding: 5px 0px 0px 10px;
 	border-top: none;
 	border-left: none;
@@ -56,4 +53,10 @@ select.ng-invalid.ng-touched {
 	opacity: 0.75;
 	font-style: oblique;
 	font-weight: 600;
+}
+.mr {
+	margin-right: 20px;
+}
+.ml {
+	margin-left: 20px;
 }

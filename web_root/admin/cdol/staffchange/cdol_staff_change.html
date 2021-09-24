@@ -269,10 +269,10 @@
                                                 Account Verified?</label>
                                         </td>
                                         <td>
-                                            <input type="checkbox" style="margin-left: 20px;" name=""
+                                            <input type="checkbox" class="ml" name=""
                                                 ng-disabled="newStaff.o365_created"
-                                                ng-model="newStaff.o365_ignored"><label class="text-muted"
-                                                style="margin-right: 20px;">Not Applicable</label>
+                                                ng-model="newStaff.o365_ignored"><label class="text-muted mr">Not
+                                                Applicable</label>
                                         </td>
                                         <td>
                                             <input type="checkbox" name="" ng-model="newStaff.lms_created"><label>LMS
@@ -864,10 +864,10 @@
                     <div style="background-color: #fff; border-top: 1px solid #eee;"
                         ng-show="userContext.pageStatus =='Edit'">
                         <div>
-                            <table class="grid">
+                            <table class="grid dis-check-table">
                                 <thead>
                                     <tr>
-                                        <th colspan="4">Account Creation</th>
+                                        <th colspan="6">Account Creation</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -876,6 +876,37 @@
                                             <input type="checkbox" name=""
                                                 ng-model="newStaff.ps_created"><label>PowerSchool Account
                                                 Created?</label>
+                                        </td>
+                                        <td class="rb-n">
+                                            <input type="checkbox" name="" ng-disabled="newStaff.ad_ignored === true"
+                                                ng-model="newStaff.ad_created"><label>AD User
+                                                Account created?</label>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="ml" name="" ng-disabled="newStaff.ad_created"
+                                                ng-model="newStaff.ad_ignored"><label class="text-muted mr">Not
+                                                Applicable</label>
+                                        </td>
+                                        <td class="rb-n">
+                                            <input type="checkbox" name="" ng-disabled="newStaff.o365_ignored === true"
+                                                ng-model="newStaff.o365_created"><label>O365
+                                                User
+                                                Account created?</label>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" class="ml" name=""
+                                                ng-disabled="newStaff.o365_created"
+                                                ng-model="newStaff.o365_ignored"><label class="text-muted mr">Not
+                                                Applicable</label>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" name="" ng-model="newStaff.lms_created"><label>LMS
+                                                Account
+                                                Created?</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
                                             <ul>
                                                 <li>Created account?</li>
                                                 <li>Assigned Security Group?</li>
@@ -884,25 +915,17 @@
                                                 <li>NCEA?</li>
                                             </ul>
                                         </td>
-                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
-                                            <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>AD User
-                                                Account created?</label>
+                                        <td colspan="2">
                                             <ul>
                                                 <li>Exchange email mailbox created?</li>
                                             </ul>
                                         </td>
-                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
-                                            <input type="checkbox" name="" ng-model="newStaff.o365_created"><label>O365
-                                                User
-                                                Account created?</label>
+                                        <td colspan="2">
                                             <ul>
                                                 <li>Office 365 licensed (incl. Teams) assigned?</li>
                                             </ul>
                                         </td>
-                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
-                                            <input type="checkbox" name="" ng-model="newStaff.lms_created"><label>LMS
-                                                Account
-                                                Created?</label>
+                                        <td>
                                             <ul>
                                                 <li>Imported from PS-SIS?</li>
                                                 <li>Matches O365 Login?</li>
