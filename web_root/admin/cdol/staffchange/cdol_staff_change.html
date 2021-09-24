@@ -10,10 +10,10 @@
     </head>
 
     <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl as mainController"
-        data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~[time]" data-module-name="cdolStaffApp"
-        ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)" ng-status="~(gpv.status)"
-        ng-cur-user-id="~[x:userid]" ng-cur-date="~[date]" ng-cur-time="~[time]" ng-staff-change-id="~(gpv.id)"
-        ng-cur-user-name=" ~[x:username;firstlast]" ng-cur-user-email="~[x:useremail]"
+        data-require-path="/cdol/staffchange/scripts/cdol_staff_change.js?~(f.currenttime)"
+        data-module-name="cdolStaffApp" ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)"
+        ng-status="~(gpv.status)" ng-cur-user-id="~[x:userid]" ng-cur-date="~[date]" ng-cur-time="~[time]"
+        ng-staff-change-id="~(gpv.id)" ng-cur-user-name=" ~[x:username;firstlast]" ng-cur-user-email="~[x:useremail]"
         ng-cur-user-school-abbr="~(schoolabbr)" ng-init="findStaffChange()" ng-cloak>
         ~[wc:admin_header_css]
         <span ng-show="userContext.pageStatus =='Submit'"><a href="/admin/home.html"
@@ -415,27 +415,39 @@
                     <div style="background-color: #fff; border-top: 1px solid #eee;"
                         ng-show="userContext.pageStatus =='Edit'">
                         <div>
-                            <table class="grid">
+                            <table class="grid dis-check-table">
                                 <thead>
                                     <tr>
-                                        <th colspan="4">Account Deactivated</th>
+                                        <th colspan="5">Account Deactivated</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
-                                            <input type="checkbox" name=""
-                                                ng-model="newStaff.ps_created"><label>PowerSchool Account
+                                        <td>
+                                            <input type="checkbox" name="" ng-model="newStaff.ps_created"><label
+                                                class="mr">PowerSchool Account
                                                 Deactivated?</label>
+                                        </td>
+                                        <td class="rb-n">
+                                            <input type="checkbox" name="" ng-disabled="newStaff.ad_ignored === true"
+                                                ng-model="newStaff.ad_created"><label>AD user
+                                                account disabled?</label>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" name="" ng-disabled="newStaff.ad_created"
+                                                ng-model="newStaff.ad_ignored"><label class="text-muted">Not
+                                                Applicable</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
                                             <ul>
                                                 <li>School(s) Deactivated?</li>
                                                 <li>Sign ins Deavtivated?</li>
                                                 <li>LDAP Diabled?</li>
                                             </ul>
                                         </td>
-                                        <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
-                                            <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>AD user
-                                                account disabled?</label>
+                                        <td colspan="2">
                                             <ul>
                                                 <li>Email account noted as "disabled"?
                                                     <ul>
@@ -450,7 +462,6 @@
                                                         <li>The account will be fully deleted six months later</li>
                                                     </ul>
                                                 </li>
-
                                             </ul>
                                         </td>
                                     </tr>

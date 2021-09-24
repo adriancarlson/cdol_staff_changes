@@ -406,6 +406,10 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						}
 					}
 					let redirectPath = '/admin/cdol/staffchange/cdol_staff_change_list.html';
+					if ($scope.newStaff.name_change == 'Exiting Staff') {
+						redirectPath = redirectPath + '#tabTwoContent';
+					}
+
 					let updateRecord = {
 						tables: {
 							U_CDOL_STAFF_CHANGES: $scope.newStaff,
@@ -433,6 +437,9 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			$scope.deleteStaffChange = function () {
 				if ($scope.userContext.curStaffId !== '') {
 					let redirectPath = '/admin/cdol/staffchange/cdol_staff_change_list.html';
+					if ($scope.newStaff.name_change == 'Exiting Staff') {
+						redirectPath = redirectPath + '#tabTwoContent';
+					}
 					$http({
 						url: '/ws/schema/table/U_CDOL_STAFF_CHANGES/' + $scope.userContext.curStaffId,
 						method: 'DELETE',
