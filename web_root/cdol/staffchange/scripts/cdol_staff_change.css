@@ -7,6 +7,17 @@
 	display: none !important;
 }
 
+.checkTD {
+	border-right: 0 !important;
+}
+
+.mailTD {
+	border-left: 0 !important;
+}
+#tabOneContent td,
+#tabTwoContent td {
+	text-align: center;
+}
 input,
 select {
 	border-radius: 4px;
