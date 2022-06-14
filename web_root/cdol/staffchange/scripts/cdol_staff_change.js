@@ -162,15 +162,18 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 							$scope.newStaff.lms_created = checkboxService.formatChecksFromApi($scope.newStaff.lms_created);
 							$scope.newStaff.o365_created = checkboxService.formatChecksFromApi($scope.newStaff.o365_created);
 							$scope.newStaff.o365_ignored = checkboxService.formatChecksFromApi($scope.newStaff.o365_ignored);
-							//setting up params for dup search
-							$scope.dupSearchParams.lastName = response.data.tables.u_cdol_staff_changes.last_name;
-							$scope.dupSearchParams.maidenName = response.data.tables.u_cdol_staff_changes.maiden_name;
-							$scope.dupSearchParams.firstNameSubString = response.data.tables.u_cdol_staff_changes.first_name.substring(0, 3);
 
-							if ($scope.dupSearchParams.maidenName === undefined) {
-								$scope.dupSearchParams.maidenName = $scope.dupSearchParams.lastName;
+							//setting up params for dup search
+							if (response.data.tables.u_cdol_staff_changes.last_name !== undefined || response.data.tables.u_cdol_staff_changes.first_name !== undefined) {
+								$scope.dupSearchParams.lastName = response.data.tables.u_cdol_staff_changes.last_name;
+								$scope.dupSearchParams.maidenName = response.data.tables.u_cdol_staff_changes.maiden_name;
+								$scope.dupSearchParams.firstNameSubString = response.data.tables.u_cdol_staff_changes.first_name.substring(0, 3);
+
+								if ($scope.dupSearchParams.maidenName === undefined) {
+									$scope.dupSearchParams.maidenName = $scope.dupSearchParams.lastName;
+								}
+								$scope.searchForDups();
 							}
-							$scope.searchForDups();
 						},
 						function myError(response) {
 							psAlert({ message: 'Staff Change Data could not be loaded.', title: 'Error Loading Record' });
@@ -488,6 +491,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				});
 				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.removals', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId }).then(function (staffRemovalData) {
 					$scope.removalStaffList = staffRemovalData;
+					console.log($scope.removalStaffList);
 				});
 				$scope.userContext.curDate = dateService.formatDateForApi($scope.userContext.curDate);
 				closeLoading();

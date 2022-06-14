@@ -118,7 +118,7 @@
                             <tr ng-repeat="staff in removalStaffListFilt">
                                 <td>{{$index +1}}</td>
                                 <td class="nowrap"><a
-                                        href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.replacedstaff}}</a>
+                                        href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.replacedstaff}} {{staff.replaced_other}}</a>
                                 </td>
                                 <td class="nowrap">{{staff.schname}}</td>
                                 <td class="nowrap">{{staff.submittedstaff}}</td>
