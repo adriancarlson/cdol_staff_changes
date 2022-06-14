@@ -241,7 +241,11 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				$scope.emailBody = $scope.newStaff.name_change + ' Name: ' + $scope.newStaff.title + ' ' + $scope.newStaff.first_name + ' ' + $scope.newStaff.last_name;
 
 				if ($scope.newStaff.name_change == 'Exiting Staff') {
-					$scope.emailBody = $scope.newStaff.name_change + ' Name: ' + $scope.exitingRecord.first_name + ' ' + $scope.exitingRecord.last_name;
+					if ($scope.exitingRecord.first_name == '' || $scope.exitingRecord.last_name == '') {
+						$scope.emailBody = $scope.newStaff.name_change + ' Name: ' + $scope.newStaff.replacing_other;
+					} else {
+						$scope.emailBody = $scope.newStaff.name_change + ' Name: ' + $scope.exitingRecord.first_name + ' ' + $scope.exitingRecord.last_name;
+					}
 				}
 
 				$scope.emailData = {
