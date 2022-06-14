@@ -114,7 +114,13 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				old_name_placeholder: '',
 			};
 
-			$scope.getExistingStaff = function () {
+			$scope.getExistingStaff = function (optVal) {
+				if (optVal == 'Other') {
+					$scope.newStaff.old_name_placeholder = '';
+					$scope.exitingRecord.old_name_placeholder = '';
+					$scope.exitingRecord.first_name = '';
+					$scope.exitingRecord.last_name = '';
+				}
 				$http({
 					url: '/admin/cdol/staffchange/data/getExistingStaff.json',
 					method: 'GET',

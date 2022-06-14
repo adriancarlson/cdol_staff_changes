@@ -137,7 +137,7 @@
                                     listed)</span></label>
                             <select
                                 ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
-                                name="" ng-model="newStaff.replacing" ng-required="true" ng-change="getExistingStaff()">
+                                name="" ng-model="newStaff.replacing" ng-required="true" ng-change="getExistingStaff(newStaff.replacing)">
                                 <option></option>
 
                                 ~[tlist_sql;SELECT
@@ -349,10 +349,11 @@
                     <div>
                         <div>
                             <label class="req">Who is not returning?</label>
-                            <select ng-show="userContext.pageStatus =='Submit'" name="" ng-model="newStaff.replacing"
-                                ng-required="true" ng-change="getExistingStaff()">
+                            <select
+                                ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
+                                name="" ng-model="newStaff.replacing" ng-required="true" ng-change="getExistingStaff(newStaff.replacing)">
                                 <option></option>
-                                ~[tlist_sql;SELECT distinct
+                                ~[tlist_sql;SELECT
                                 users.dcid,
                                 users.first_name,
                                 users.last_name
@@ -366,18 +367,26 @@
                                 Order BY users.last_name , users.first_name]
                                 <option value="~(dcid)">~(first) ~(last)</option>
                                 [/tlist_sql]
+                                <option value="Other">-- Other --</option>
                             </select>
                             <input ng-show="userContext.pageStatus =='Edit'" name="" type="text" value=""
                                 ng-model="newStaff.old_name_placeholder">
                         </div>
                     </div>
+                    <div ng-if="newStaff.replacing === 'Other' && userContext.pageStatus !='Edit'">
+                        <div>
+                            <label>Please type name of the exiting staff member</label>
+                            <input name="" type="text" value="" style="width: 300px;"
+                                ng-model="newStaff.replacing_other">
+                        </div>
+                    </div>
                     <div id="feedback-message" class="feedback-alert"
-                        ng-show="newStaff.replacing !='' && userContext.pageStatus =='Submit'">All exiting
+                        ng-show="newStaff.replacing !='' && userContext.pageStatus =='Submit'"><p>All exiting
                         staff accounts will be deactivated
                         after June 15th.<br> If <span
                             ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the exiting
-                            staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} needs access to their
-                        account after June 15th or needs to be deactivated sooner, please specify date below.</div>
+                            staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} needs access to their
+                        account after June 15th or needs to be deactivated sooner, please specify date below.</p></div>
                     <div ng-show="newStaff.replacing !=''">
                         <div>
                             <label>Requested Deactivation Date<span class="notation">(please type in the
@@ -386,7 +395,7 @@
                                 placeholder="MM/DD/YYYY" ng-model="newStaff.deadline">
                         </div>
                     </div>
-                    <div>
+                    <div> 
                         <div>
                             <label>Additional Notes/Details?</label>
                             <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
@@ -504,7 +513,7 @@
                         <div>
                             <label class="req">Who's name is changing?</label>
                             <select ng-show="userContext.pageStatus =='Submit'" name="" ng-model="newStaff.replacing"
-                                ng-required="true" ng-change="getExistingStaff()">
+                                ng-required="true" ng-change="getExistingStaff(newStaff.replacing)">
                                 <option></option>
                                 ~[tlist_sql;SELECT distinct
                                 users.dcid,
@@ -780,7 +789,7 @@
                                     listed)</span></label>
                             <select
                                 ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
-                                name="" ng-model="newStaff.replacing" ng-required="true" ng-change="getExistingStaff()">
+                                name="" ng-model="newStaff.replacing" ng-required="true" ng-change="getExistingStaff(newStaff.replacing)">
                                 <option></option>
 
                                 ~[tlist_sql;SELECT
