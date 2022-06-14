@@ -351,7 +351,8 @@
                             <label class="req">Who is not returning?</label>
                             <select
                                 ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
-                                name="" ng-model="newStaff.replacing" ng-required="true" ng-change="getExistingStaff(newStaff.replacing)">
+                                name="" ng-model="newStaff.replacing" ng-required="true"
+                                ng-change="getExistingStaff(newStaff.replacing)">
                                 <option></option>
                                 ~[tlist_sql;SELECT
                                 users.dcid,
@@ -369,8 +370,8 @@
                                 [/tlist_sql]
                                 <option value="Other">-- Other --</option>
                             </select>
-                            <input ng-show="userContext.pageStatus =='Edit'&& newStaff.replacing != 'Other'" name="" type="text" value=""
-                                ng-model="newStaff.old_name_placeholder">
+                            <input ng-show="userContext.pageStatus =='Edit'&& newStaff.replacing != 'Other'" name=""
+                                type="text" value="" ng-model="newStaff.old_name_placeholder">
                         </div>
                     </div>
                     <div ng-if="newStaff.replacing === 'Other'">
@@ -381,12 +382,15 @@
                         </div>
                     </div>
                     <div id="feedback-message" class="feedback-alert"
-                        ng-show="newStaff.replacing !='' && userContext.pageStatus =='Submit'"><p>All exiting
-                        staff accounts will be deactivated
-                        after June 15th.<br> If <span
-                            ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the exiting
-                            staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} needs access to their
-                        account after June 15th or needs to be deactivated sooner, please specify date below.</p></div>
+                        ng-show="newStaff.replacing !='' && userContext.pageStatus =='Submit'">
+                        <p>All exiting
+                            staff accounts will be deactivated
+                            after June 15th.<br> If <span
+                                ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the exiting
+                                staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} needs access to
+                            their
+                            account after June 15th or needs to be deactivated sooner, please specify date below.</p>
+                    </div>
                     <div ng-show="newStaff.replacing !=''">
                         <div>
                             <label>Requested Deactivation Date<span class="notation">(please type in the
@@ -395,7 +399,7 @@
                                 placeholder="MM/DD/YYYY" ng-model="newStaff.deadline">
                         </div>
                     </div>
-                    <div> 
+                    <div>
                         <div>
                             <label>Additional Notes/Details?</label>
                             <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
@@ -949,6 +953,15 @@
                                             <ul>
                                                 <li>Imported from PS-SIS?</li>
                                                 <li>Matches O365 Login?</li>
+                                                <li>If Tech Liasion or School Administrator
+                                                    <ul>
+                                                        <li>Setup permissions in Canvas as a sub-account administrator
+                                                        </li>
+                                                        <li>Setup account to be member of appropriate team or channel in
+                                                            MS Teams</li>
+                                                        <li>Add account membership to appropriate class in canvas</li>
+                                                    </ul>
+                                                </li>
                                             </ul>
                                         </td>
                                     </tr>
