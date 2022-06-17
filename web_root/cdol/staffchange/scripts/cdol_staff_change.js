@@ -497,6 +497,16 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					$scope.removalStaffList = staffRemovalData;
 					console.log($scope.removalStaffList);
 				});
+				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.transfer', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId }).then(function (staffTransferData) {
+					$scope.transferStaffList = staffTransferData;
+					console.log($scope.transferStaffList);
+				});
+				$scope
+					.getPowerQueryResults('net.cdolinc.staffChanges.staff.namechange', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId })
+					.then(function (staffNameChangeData) {
+						$scope.nameChangeStaffList = staffNameChangeData;
+						console.log($scope.nameChangeStaffList);
+					});
 				$scope.userContext.curDate = dateService.formatDateForApi($scope.userContext.curDate);
 				closeLoading();
 			};
