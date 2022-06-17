@@ -207,7 +207,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
 				$scope.newStaff.dob = dateService.formatDateForApi($scope.newStaff.dob);
 
-				$scope.userContext.accountChangeDate = '06/15/' + $scope.userContext.curDate.substring(6, 11);
+				$scope.userContext.accountChangeDate = '06/30/' + $scope.userContext.curDate.substring(6, 11);
 				let todayDate = new Date();
 				Date.prototype.addDays = function (days) {
 					var date = new Date(this.valueOf());
@@ -219,7 +219,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				let day = todayPlus10.getDate();
 				let year = todayPlus10.getFullYear();
 				let fulltodayPlus10 = month + '/' + day + '/' + year;
-				let compareDate = new Date($scope.userContext.curDate.substring(6, 11), 05, 15);
+				let compareDate = new Date($scope.userContext.curDate.substring(6, 11), 05, 30);
 
 				if (($scope.newStaff.name_change == 'Exiting Staff' || $scope.newStaff.name_change == 'Transferring Staff') && $scope.newStaff.deadline == '') {
 					if (todayDate < compareDate) {
@@ -490,10 +490,10 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 
 			// ajax call to list records in staff U_CDOL_STAFF_CHANGES table
 			$scope.getStaffResults = function () {
-				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId }).then(function (staffChangeData) {
+				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.new', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId }).then(function (staffChangeData) {
 					$scope.staffList = staffChangeData;
 				});
-				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.removals', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId }).then(function (staffRemovalData) {
+				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.exits', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId }).then(function (staffRemovalData) {
 					$scope.removalStaffList = staffRemovalData;
 					console.log($scope.removalStaffList);
 				});

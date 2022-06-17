@@ -202,7 +202,7 @@
                     </div>
                     <div id="feedback-message" class="feedback-alert" ng-show="userContext.pageStatus =='Submit'">All
                         staff accounts transfering from another
-                        Diocese of Lincoln School, will not be moved until some time after June 15th.<br> If
+                        Diocese of Lincoln School, will not be moved until some time after June 30th.<br> If
                         {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} needs access to your school
                         prior to then, please specify below.</div>
                     <div>
@@ -385,11 +385,11 @@
                         ng-show="newStaff.replacing !='' && userContext.pageStatus =='Submit'">
                         <p>All exiting
                             staff accounts will be deactivated
-                            after June 15th.<br> If <span
+                            after June 30th.<br> If <span
                                 ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the exiting
                                 staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} needs access to
                             their
-                            account after June 15th or needs to be deactivated sooner, please specify date below.</p>
+                            account after June 30th or needs to be deactivated sooner, please specify date below.</p>
                     </div>
                     <div ng-show="newStaff.replacing !=''">
                         <div>
@@ -1011,7 +1011,7 @@
                 ~[if.~(gpv.submessage)=E]
                 <p>Your ~(gpv.substat) Submission for ~(gpv.fname) ~(gpv.lname) has been sent to the Education
                     Technology Office. We will be in
-                    contact once the account is deactivated.<br> The account will be deactivated June 15th unless
+                    contact once the account is deactivated.<br> The account will be deactivated June 30th unless
                     specified otherwise.</p>
                 [else]
                 <p>Your ~(gpv.substat) Submission for ~(gpv.title) ~(gpv.fname) ~(gpv.lname) has been sent to the
