@@ -34,8 +34,10 @@
         </select>
         <div class="tabs">
             <ul>
-                <li><a href="#tabOneContent">Incoming Staff</a></li>
-                <li><a href="#tabTwoContent">Exiting Staff</a></li>
+                <li><a href="#tabOneContent">New Staff</a></li>
+                <li><a href="#tabTwoContent">Transfer Staff</a></li>
+                <li><a href="#tabThreeContent">Name Changes</a></li>
+                <li><a href="#tabFourContent">Exiting Staff</a></li>
             </ul>
             <div id="tabOneContent">
                 <div id="staffListGrid" data-pss-grid-widget data-data="staffList" data-filtered-data="staffListFilt"
@@ -95,8 +97,122 @@
                 </div>
             </div>
             <div id="tabTwoContent">
-                <div id="removalstaffListGrid" data-pss-grid-widget data-data="removalStaffList"
-                    data-filtered-data="removalStaffListFilt" data-client-side-pagination="false"
+                <div id="staffListGrid" data-pss-grid-widget data-data="staffList" data-filtered-data="staffListFilt"
+                    data-client-side-pagination="false" data-filter-constraint="no-filters">
+                    <table class="grid">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th data-pss-sort-fields="last_name|text" class="nowrap">Incoming Staff Name</th>
+                                <th data-pss-sort-fields="name_change|text">Change Type</th>
+                                <th data-pss-sort-fields="schname|text">School</th>
+                                <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
+                                <th data-pss-sort-fields="submission_date, submission_time"
+                                    data-primary-sort="descending">
+                                    Submission Date</th>
+                                <th data-pss-sort-fields="completion_date | date">Deadline</th>
+                                <th data-pss-sort-fields="ps_created | number">PS Created</th>
+                                <th data-pss-sort-fields="ad_created, ad_ignored | number">AD Created</th>
+                                <th data-pss-sort-fields="o365_created, o365_ignored | number">O365 Created</th>
+                                <th data-pss-sort-fields="lms_created | number">LMS Created</th>
+                                <th data-pss-sort-fields="final_completion_date | date">Completed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="staff in staffListFilt">
+                                <td>{{$index +1}}</td>
+                                <td class="nowrap"><a
+                                        href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.title}}
+                                        {{staff.first_name}}
+                                        {{staff.last_name}}</a></td>
+                                <td class="nowrap">{{staff.name_change}}</td>
+                                <td class="nowrap">{{staff.schname}}</td>
+                                <td class="nowrap">{{staff.submittedstaff}}</td>
+                                <td class="nowrap">{{staff.submission_date | date : 'MM/dd/yyyy'}}
+                                    {{staff.submission_time}}</td>
+                                <td
+                                    ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || (staff.ad_created != 1 && staff.ad_ignored != 1) || staff.lms_created != 1 || (staff.o365_created != 1 && staff.o365_ignored != 1))}">
+                                    {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                                <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
+                                        ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
+                                <td>
+                                    <span ng-show="staff.ad_created != 1 && staff.ad_ignored != 1">&#10060;</span>
+                                    <span
+                                        ng-show="staff.ad_created == 1 || staff.ad_ignored == 1">&#10004;&#65039;</span>
+                                </td>
+                                <td>
+                                    <span ng-show="staff.o365_created != 1 && staff.o365_ignored != 1">&#10060;</span>
+                                    <span
+                                        ng-show="staff.o365_created == 1 || staff.o365_ignored == 1">&#10004;&#65039;</span>
+                                </td>
+                                <td><span ng-show="staff.lms_created != 1">&#10060;</span><span
+                                        ng-show="staff.lms_created == 1">&#10004;&#65039;</span></td>
+                                <td>{{staff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="tabThreeContent">
+                <div id="transferStaffListGrid" data-pss-grid-widget data-data="transferStaffList" data-filtered-data="transferStaffListFilt"
+                    data-client-side-pagination="false" data-filter-constraint="no-filters">
+                    <table class="grid">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th data-pss-sort-fields="last_name|text" class="nowrap">Incoming Staff Name</th>
+                                <th data-pss-sort-fields="name_change|text">Change Type</th>
+                                <th data-pss-sort-fields="schname|text">School</th>
+                                <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
+                                <th data-pss-sort-fields="submission_date, submission_time"
+                                    data-primary-sort="descending">
+                                    Submission Date</th>
+                                <th data-pss-sort-fields="completion_date | date">Deadline</th>
+                                <th data-pss-sort-fields="ps_created | number">PS Created</th>
+                                <th data-pss-sort-fields="ad_created, ad_ignored | number">AD Created</th>
+                                <th data-pss-sort-fields="o365_created, o365_ignored | number">O365 Created</th>
+                                <th data-pss-sort-fields="lms_created | number">LMS Created</th>
+                                <th data-pss-sort-fields="final_completion_date | date">Completed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="staff in transferStaffListFilt">
+                                <td>{{$index +1}}</td>
+                                <td class="nowrap"><a
+                                        href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.title}}
+                                        {{staff.first_name}}
+                                        {{staff.last_name}}</a></td>
+                                <td class="nowrap">{{staff.name_change}}</td>
+                                <td class="nowrap">{{staff.schname}}</td>
+                                <td class="nowrap">{{staff.submittedstaff}}</td>
+                                <td class="nowrap">{{staff.submission_date | date : 'MM/dd/yyyy'}}
+                                    {{staff.submission_time}}</td>
+                                <td
+                                    ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || (staff.ad_created != 1 && staff.ad_ignored != 1) || staff.lms_created != 1 || (staff.o365_created != 1 && staff.o365_ignored != 1))}">
+                                    {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                                <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
+                                        ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
+                                <td>
+                                    <span ng-show="staff.ad_created != 1 && staff.ad_ignored != 1">&#10060;</span>
+                                    <span
+                                        ng-show="staff.ad_created == 1 || staff.ad_ignored == 1">&#10004;&#65039;</span>
+                                </td>
+                                <td>
+                                    <span ng-show="staff.o365_created != 1 && staff.o365_ignored != 1">&#10060;</span>
+                                    <span
+                                        ng-show="staff.o365_created == 1 || staff.o365_ignored == 1">&#10004;&#65039;</span>
+                                </td>
+                                <td><span ng-show="staff.lms_created != 1">&#10060;</span><span
+                                        ng-show="staff.lms_created == 1">&#10004;&#65039;</span></td>
+                                <td>{{staff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="tabFourContent">
+                <div id="nameChangeStaffListGrid" data-pss-grid-widget data-data="nameChangeStaffList"
+                    data-filtered-data="nameChangeStaffListFilt" data-client-side-pagination="false"
                     data-filter-constraint="no-filters">
                     <table class="grid">
                         <thead>
@@ -115,7 +231,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="staff in removalStaffListFilt">
+                            <tr ng-repeat="staff in nameChangeStaffListFilt">
                                 <td>{{$index +1}}</td>
                                 <td class="nowrap"><a
                                         href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.replacedstaff}} {{staff.replaced_other}}</a>
