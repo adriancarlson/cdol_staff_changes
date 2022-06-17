@@ -15,7 +15,9 @@
 	border-left: 0 !important;
 }
 #tabOneContent td,
-#tabTwoContent td {
+#tabTwoContent td,
+#tabThreeContent td,
+#tabFourContent td {
 	text-align: center;
 }
 input,
