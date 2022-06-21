@@ -189,11 +189,11 @@
                                 ORDER BY schools.name;]
                                 <option value="~(schnum)">~(schname)</option>
                                 [/tlist_sql]
-                                <option value="Other">-- Other --</option>
+                                <option value="-1">-- Other --</option>
                             </select>
                         </div>
                     </div>
-                    <div ng-if="newStaff.previous_employer === 'Other'">
+                    <div ng-if="newStaff.previous_employer === -1">
                         <div>
                             <label>Please type previous employer</label>
                             <input name="" type="text" value="" style="width: 300px;"
@@ -859,11 +859,11 @@
                                 ORDER BY schools.name;]
                                 <option value="~(schnum)">~(schname)</option>
                                 [/tlist_sql]
-                                <option value="Other">-- Other --</option>
+                                <option value="-1">-- Other --</option>
                             </select>
                         </div>
                     </div>
-                    <div ng-if="newStaff.previous_employer === 'Other'">
+                    <div ng-if="newStaff.previous_employer === -1">
                         <div>
                             <label>Please type previous employer</label>
                             <input name="" type="text" value="" style="width: 300px;"
