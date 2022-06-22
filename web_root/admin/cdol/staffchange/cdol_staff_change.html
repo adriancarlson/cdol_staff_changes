@@ -73,8 +73,10 @@
             </div>
             <!--transfer Submit-->
             <form name="staffTransferForm" method="POST" novalidate>
+
                 <div class="fluid-form" ng-show="newStaff.name_change=='Transferring Staff'">
                     <h4 style="margin-left: 10px;">{{newStaff.name_change}} Name</h4>
+
                     <div>
                         <div>
                             <label class="req">Title</label>
@@ -137,6 +139,7 @@
                                 ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
                                 name="" ng-model="newStaff.replacing" ng-required="true" ng-change="getExistingStaff()">
                                 <option></option>
+
                                 ~[tlist_sql;SELECT
                                 users.dcid,
                                 users.first_name,
@@ -186,11 +189,11 @@
                                 ORDER BY schools.name;]
                                 <option value="~(schnum)">~(schname)</option>
                                 [/tlist_sql]
-                                <option value="-1">-- Other --</option>
+                                <option value="Other">-- Other --</option>
                             </select>
                         </div>
                     </div>
-                    <div ng-if="newStaff.previous_employer == -1">
+                    <div ng-if="newStaff.previous_employer === 'Other'">
                         <div>
                             <label>Please type previous employer</label>
                             <input name="" type="text" value="" style="width: 300px;"
@@ -232,6 +235,7 @@
                             responsible for moving the files to the new server.
                         </div>
                     </div>
+
                     ~[if#distCheck.security.inrole=9]
                     <div style="background-color: #fff; border-top: 1px solid #eee;"
                         ng-show="userContext.pageStatus =='Edit'">
@@ -283,6 +287,7 @@
                                             </ul>
                                         </td>
                                         <td colspan="2">
+
                                             <ul>
                                                 <li>Groups and other fields changed reflecting the move?</li>
                                                 <li>E-mailbox moved to the new school?</li>
@@ -790,6 +795,7 @@
                                 ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
                                 name="" ng-model="newStaff.replacing" ng-required="true" ng-change="getExistingStaff()">
                                 <option></option>
+
                                 ~[tlist_sql;SELECT
                                 users.dcid,
                                 users.first_name,
@@ -853,11 +859,11 @@
                                 ORDER BY schools.name;]
                                 <option value="~(schnum)">~(schname)</option>
                                 [/tlist_sql]
-                                <option value="-1">-- Other --</option>
+                                <option value="Other">-- Other --</option>
                             </select>
                         </div>
                     </div>
-                    <div ng-if="newStaff.previous_employer == -1">
+                    <div ng-if="newStaff.previous_employer === 'Other'">
                         <div>
                             <label>Please type previous employer</label>
                             <input name="" type="text" value="" style="width: 300px;"
