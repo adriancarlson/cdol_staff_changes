@@ -24,6 +24,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr,
 				accountChangeDate: '',
 				adjustedYearId: new Date($attrs.ngCurDate).getFullYear() - 1991,
+				spinner: 0,
 			};
 
 			$scope.dupSearchParams = {
@@ -140,7 +141,6 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 
 			//if on edit screen and passing an staff change id then this runs to pull the data for the current staff change record.
 			$scope.findStaffChange = function () {
-				loadingDialog();
 				if ($scope.userContext.curStaffId !== '') {
 					$scope.newStaff.id = $scope.userContext.curStaffId;
 					//get existing record
@@ -485,30 +485,29 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						psAlert({ message: 'There was an error loading the Staff Change Data', title: 'Error Loading Data' });
 					},
 				);
+
 				return deferredResponse.promise;
 			};
 
 			// ajax call to list records in staff U_CDOL_STAFF_CHANGES table
 			$scope.getStaffResults = function () {
+				$scope.userContext.spinner = 1;
 				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.new', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId }).then(function (staffChangeData) {
 					$scope.staffList = staffChangeData;
 				});
 				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.exits', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId }).then(function (staffRemovalData) {
 					$scope.removalStaffList = staffRemovalData;
-					console.log($scope.removalStaffList);
 				});
 				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.transfer', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId }).then(function (staffTransferData) {
 					$scope.transferStaffList = staffTransferData;
-					console.log($scope.transferStaffList);
 				});
 				$scope
 					.getPowerQueryResults('net.cdolinc.staffChanges.staff.namechange', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId })
 					.then(function (staffNameChangeData) {
 						$scope.nameChangeStaffList = staffNameChangeData;
-						console.log($scope.nameChangeStaffList);
+						$scope.userContext.spinner = 0;
 					});
 				$scope.userContext.curDate = dateService.formatDateForApi($scope.userContext.curDate);
-				closeLoading();
 			};
 		},
 	]);
