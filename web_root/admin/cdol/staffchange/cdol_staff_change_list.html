@@ -21,7 +21,6 @@
         Change Submissions
         ~[wc:admin_navigation_css]
         <h1 style="margin-bottom: 5px;">Staff Change List</h1>
-
         <div class="container-fluid">
 
             <div class="row">
@@ -47,13 +46,16 @@
                         Staff Change</a><button ng-click="getStaffResults()">Reload List</button></div>
             </div>
         </div>
-
         <div class="tabs">
             <ul>
-                <li><a href="#tabOneContent">New Staff</a></li>
-                <li><a href="#tabTwoContent">Transferring Staff</a></li>
-                <li><a href="#tabThreeContent">Name Changes</a></li>
-                <li><a href="#tabFourContent">Exiting Staff</a></li>
+                <li><a href="#tabOneContent">New Staff <span class="badge text-bg-success ms-1">{{
+                            staffChangeCount.total_new_remaining }}</span></a></li>
+                <li><a href="#tabTwoContent">Transferring Staff <span class="badge text-bg-primary ms-1">{{
+                            staffChangeCount.total_transfer_remaining }}</span></a></li>
+                <li><a href="#tabThreeContent">Name Changes <span class="badge text-bg-warning ms-1">{{
+                            staffChangeCount.total_name_change_remaining }}</span></a></li>
+                <li><a href="#tabFourContent">Exiting Staff <span class="badge text-bg-secondary ms-1">{{
+                            staffChangeCount.total_exit_remaining }}</span></a></li>
             </ul>
             <div class="spinner-border text-primary ms-5" role="status" ng-if="userContext.spinner == 1">
             </div>
