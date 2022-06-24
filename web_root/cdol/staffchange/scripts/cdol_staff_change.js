@@ -493,7 +493,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			$scope.getStaffResults = function () {
 				$scope.userContext.spinner = 1;
 				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.counts', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId }).then(function (staffCountData) {
-					$scope.staffChangeCount = staffCountData;
+					$scope.staffChangeCount = staffCountData[0];
 				});
 				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.new', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId }).then(function (staffChangeData) {
 					$scope.staffList = staffChangeData;
