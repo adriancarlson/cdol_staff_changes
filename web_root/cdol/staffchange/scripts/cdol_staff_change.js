@@ -419,9 +419,15 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						}
 					}
 					let redirectPath = '/admin/cdol/staffchange/cdol_staff_change_list.html';
-					if ($scope.newStaff.name_change == 'Exiting Staff') {
-						redirectPath = redirectPath + '#tabTwoContent';
-					}
+					if ($scope.newStaff.name_change == 'Transferring Staff') {
+							redirectPath = redirectPath + '#tabTwoContent';
+						} else if ($scope.newStaff.name_change == 'Name Change') {
+							redirectPath = redirectPath + '#tabThreeContent';
+						} else if ($scope.newStaff.name_change == 'Exiting Staff') {
+							redirectPath = redirectPath + '#tabFourContent';
+						} else {
+							redirectPath = redirectPath;
+						}
 
 					let updateRecord = {
 						tables: {
