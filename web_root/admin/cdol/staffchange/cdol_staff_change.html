@@ -219,13 +219,13 @@
                                 ng-model="newStaff.notes"></textarea>
                         </div>
                     </div>
-                    <div>
-                        <div>
-                            <label>Suggestions to Make this Form/Process Better?</label>
-                            <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
-                                ng-model="newStaff.suggestions"></textarea>
-                        </div>
-                    </div>
+                    <!--<div>-->
+                    <!--    <div>-->
+                    <!--        <label>Suggestions to Make this Form/Process Better?</label>-->
+                    <!--        <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"-->
+                    <!--            ng-model="newStaff.suggestions"></textarea>-->
+                    <!--    </div>-->
+                    <!--</div>-->
                     <div>
                         <div class="feedback-info" ng-show="userContext.pageStatus =='Submit'">
                             <b><u>Please Note:</u></b> personal files (i.e. Documents and pictures, music and videos)
@@ -341,11 +341,16 @@
             <form name="exitingForm" method="POST" novalidate>
                 <div class="fluid-form" ng-if="newStaff.name_change=='Exiting Staff'">
                     <h4 style="margin-left: 10px;">{{newStaff.name_change}} Name</h4>
-                    <div id="feedback-message" class="feedback-alert" ng-show="userContext.pageStatus =='Submit'">If the
-                        Exiting staff member is being replaced by a
-                        new staff member, please use the New Staff option on this form to submit the New Staff member
-                        first.<br> That process will ask you who the New Staff member is replacing which also submits a
-                        Exiting Staff record for who they are replacing.</div>
+                    <div>
+                        <div id="feedback-message" class="feedback-alert" ng-show="userContext.pageStatus =='Submit'">If
+                            the
+                            Exiting staff member is being replaced by a
+                            new staff member, please use the New Staff option on this form to submit the New Staff
+                            member
+                            first.<br> That process will ask you who the New Staff member is replacing which also
+                            submits a
+                            Exiting Staff record for who they are replacing.</div>
+                    </div>
                     <div>
                         <div>
                             <label class="req">Who is not returning?</label>
@@ -381,22 +386,53 @@
                                 ng-model="newStaff.replacing_other">
                         </div>
                     </div>
-                    <div id="feedback-message" class="feedback-alert"
-                        ng-show="newStaff.replacing !='' && userContext.pageStatus =='Submit'">
-                        <p>All exiting
-                            staff accounts will be deactivated
-                            after June 30th.<br> If <span
-                                ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the exiting
-                                staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} needs access to
-                            their
-                            account after June 30th or needs to be deactivated sooner, please specify date below.</p>
-                    </div>
+
                     <div ng-show="newStaff.replacing !=''">
+                        <fieldset>
+                            <legend><span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the
+                                    exiting
+                                    staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}'s deactivation
+                                date</legend>
+                            <span><input type="radio" name="exitDateGroup" id="exirRdioc1"
+                                    ng-model="userContext.exitDateRadio" value="today" /><label for="rdioc1">Today
+                                    ({{userContext.curDate}})</label></span>
+                            <span><input type="radio" name="exitDateGroup" id="exirRdioc2"
+                                    ng-model="userContext.exitDateRadio" value="june30" /><label for="exirRdioc2">June
+                                    30th</label></span>
+                            <span><input type="radio" name="exitDateGroup" id="exirRdioc3"
+                                    ng-model="userContext.exitDateRadio" value="other" /><label
+                                    for="exirRdioc3">Specific Date</label></span>
+                            <span>
+                        </fieldset>
+                    </div>
+                    <div ng-show="userContext.exitDateRadio =='other'">
                         <div>
                             <label>Requested Deactivation Date<span class="notation">(please type in the
                                     date)</span></label>
                             <input name="" type="text" value="" maxlength="10" size="10" style="width:98px;"
                                 placeholder="MM/DD/YYYY" ng-model="newStaff.deadline">
+                        </div>
+                    </div>
+                    <div>
+                        <div id="feedback-message" class="feedback-alert"
+                            ng-show="newStaff.replacing !='' && userContext.pageStatus =='Submit'">
+                            <p><span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the exiting
+                                    staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}'s account will
+                                be deactivated shortly
+                                after <span
+                                    ng-show="userContext.exitDateRadio=='today' || userContext.exitDateRadio==''">{{userContext.curDate}}</span><span
+                                    ng-show="userContext.exitDateRadio=='june30'">June 30th</span><span
+                                    ng-show="userContext.exitDateRadio=='other'">{{newStaff.deadline}}</span>.<br> If
+                                <span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the
+                                    exiting
+                                    staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} needs access
+                                to
+                                their
+                                account after <span
+                                    ng-show="userContext.exitDateRadio=='today' || userContext.exitDateRadio==''">{{userContext.curDate}}</span><span
+                                    ng-show="userContext.exitDateRadio=='june30'">June 30th</span><span
+                                    ng-show="userContext.exitDateRadio=='other'">{{newStaff.deadline}}</span> or needs
+                                to be deactivated sooner, please modify the deactivation date.</p>
                         </div>
                     </div>
                     <div>
@@ -406,13 +442,13 @@
                                 ng-model="newStaff.notes"></textarea>
                         </div>
                     </div>
-                    <div>
-                        <div>
-                            <label>Suggestions to Make this Form/Process Better?</label>
-                            <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
-                                ng-model="newStaff.suggestions"></textarea>
-                        </div>
-                    </div>
+                    <!--<div>-->
+                    <!--    <div>-->
+                    <!--        <label>Suggestions to Make this Form/Process Better?</label>-->
+                    <!--        <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"-->
+                    <!--            ng-model="newStaff.suggestions"></textarea>-->
+                    <!--    </div>-->
+                    <!--</div>-->
                     <div>
                         <div class="feedback-info" ng-show="userContext.pageStatus =='Submit'">
                             <b><u>Please Note:</u></b> personal files (i.e. Documents and pictures, music and videos)
@@ -565,13 +601,13 @@
                                 ng-model="newStaff.notes"></textarea>
                         </div>
                     </div>
-                    <div>
-                        <div>
-                            <label>Suggestions to Make this Form/Process Better?</label>
-                            <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
-                                ng-model="newStaff.suggestions"></textarea>
-                        </div>
-                    </div>
+                    <!--<div>-->
+                    <!--    <div>-->
+                    <!--        <label>Suggestions to Make this Form/Process Better?</label>-->
+                    <!--        <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"-->
+                    <!--            ng-model="newStaff.suggestions"></textarea>-->
+                    <!--    </div>-->
+                    <!--</div>-->
                     ~[if#distCheck.security.inrole=9]
                     <div style="background-color: #fff; border-top: 1px solid #eee;"
                         ng-show="userContext.pageStatus =='Edit'">
@@ -877,13 +913,13 @@
                                 ng-model="newStaff.notes"></textarea>
                         </div>
                     </div>
-                    <div>
-                        <div>
-                            <label>Suggestions to Make this Form/Process Better?</label>
-                            <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
-                                ng-model="newStaff.suggestions"></textarea>
-                        </div>
-                    </div>
+                    <!--<div>-->
+                    <!--    <div>-->
+                    <!--        <label>Suggestions to Make this Form/Process Better?</label>-->
+                    <!--        <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"-->
+                    <!--            ng-model="newStaff.suggestions"></textarea>-->
+                    <!--    </div>-->
+                    <!--</div>-->
                     ~[if#distCheck.security.inrole=9]
                     <div style="background-color: #fff; border-top: 1px solid #eee;"
                         ng-show="userContext.pageStatus =='Edit'">

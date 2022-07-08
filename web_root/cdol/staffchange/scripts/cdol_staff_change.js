@@ -25,6 +25,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				accountChangeDate: '',
 				adjustedYearId: new Date($attrs.ngCurDate).getFullYear() - 1991,
 				spinner: 0,
+				exitDateRadio: '',
 			};
 
 			$scope.dupSearchParams = {
@@ -221,11 +222,19 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				let fulltodayPlus10 = month + '/' + day + '/' + year;
 				let compareDate = new Date($scope.userContext.curDate.substring(6, 11), 05, 30);
 
-				if (($scope.newStaff.name_change == 'Exiting Staff' || $scope.newStaff.name_change == 'Transferring Staff') && $scope.newStaff.deadline == '') {
-					if (todayDate < compareDate) {
+				const today = new Date();
+				const yyyy = today.getFullYear();
+				let mm = today.getMonth() + 1; // Months start at 0!
+				let dd = today.getDate();
+				if (dd < 10) dd = '0' + dd;
+				if (mm < 10) mm = '0' + mm;
+				todayFormated = mm + '/' + dd + '/' + yyyy;
+
+				if ($scope.newStaff.name_change == 'Exiting Staff' || $scope.newStaff.name_change == 'Transferring Staff') {
+					if ($scope.userContext.exitDateRadio == 'today' || $scope.userContext.exitDateRadio == '') {
+						$scope.newStaff.deadline = todayFormated;
+					} else if ($scope.userContext.exitDateRadio == 'june30') {
 						$scope.newStaff.deadline = $scope.userContext.accountChangeDate;
-					} else {
-						$scope.newStaff.deadline = fulltodayPlus10;
 					}
 				}
 				$scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
@@ -420,14 +429,14 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					}
 					let redirectPath = '/admin/cdol/staffchange/cdol_staff_change_list.html';
 					if ($scope.newStaff.name_change == 'Transferring Staff') {
-							redirectPath = redirectPath + '#tabTwoContent';
-						} else if ($scope.newStaff.name_change == 'Name Change') {
-							redirectPath = redirectPath + '#tabThreeContent';
-						} else if ($scope.newStaff.name_change == 'Exiting Staff') {
-							redirectPath = redirectPath + '#tabFourContent';
-						} else {
-							redirectPath = redirectPath;
-						}
+						redirectPath = redirectPath + '#tabTwoContent';
+					} else if ($scope.newStaff.name_change == 'Name Change') {
+						redirectPath = redirectPath + '#tabThreeContent';
+					} else if ($scope.newStaff.name_change == 'Exiting Staff') {
+						redirectPath = redirectPath + '#tabFourContent';
+					} else {
+						redirectPath = redirectPath;
+					}
 
 					let updateRecord = {
 						tables: {
