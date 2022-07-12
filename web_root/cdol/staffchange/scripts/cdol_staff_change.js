@@ -512,6 +512,14 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			// ajax call to list records in staff U_CDOL_STAFF_CHANGES table
 			$scope.getStaffResults = function () {
 				$scope.userContext.spinner = 1;
+				//updating count in submission link
+				$j.ajax({
+					url: '/admin/cdol/staffchange/data/newstaffcount.txt',
+					success: function (result) {
+						$j('#staffCounterLink').innerHTML("Staff Changes ('+result+')");
+					},
+				});
+
 				$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.counts', { curSchoolID: $attrs.ngCurSchoolId, curYearID: $scope.userContext.adjustedYearId }).then(function (staffCountData) {
 					$scope.staffChangeCount = staffCountData[0];
 				});
