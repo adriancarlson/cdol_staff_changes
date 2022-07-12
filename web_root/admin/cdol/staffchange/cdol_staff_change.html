@@ -340,10 +340,13 @@
             <!--Exiting Submit -->
             <form name="exitingForm" method="POST" novalidate>
                 <div>
-                    <div id="feedback-message" class="feedback-alert" ng-if="newStaff.name_change=='Exiting Staff'">If
+                    <div id="feedback-message" class="feedback-alert"
+                        ng-if="newStaff.name_change=='Exiting Staff' && userContext.pageStatus =='Submit'">If
                         the
                         Exiting staff member is being replaced by a
-                        new or transferring in staff member, please use the New Staff or Transfering Staff option above. <br> An Exiting Staff Record will be submitted when you choose who the New or Transfering Staff member is replacing.</div>
+                        new or transferring in staff member, please use the New Staff or Transfering Staff option above.
+                        <br> An Exiting Staff Record will be submitted when you choose who the New or Transfering Staff
+                        member is replacing.</div>
                 </div>
                 <div class="fluid-form" ng-if="newStaff.name_change=='Exiting Staff'">
                     <h4 style="margin-left: 10px;">{{newStaff.name_change}} Name</h4>
@@ -383,44 +386,51 @@
                         </div>
                     </div>
 
-                    <div ng-show="newStaff.replacing !=''">
+                    <div ng-show="newStaff.replacing !=''  && userContext.pageStatus =='Submit'">
                         <fieldset>
-                            <legend><span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the
-                                    exiting
-                                    staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}'s Deactivation
+                            <legend class="req"><span
+                                    ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">The
+                                    Exiting
+                                    Staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}'s Deactivation
                                 Date</legend>
                             <span><input type="radio" name="exitDateGroup" id="exirRdioc1"
-                                    ng-model="newStaff.exit_date_radio" value="today" /><label for="rdioc1">Today
+                                    ng-model="newStaff.exit_date_radio" value="today"
+                                    ng-required="!newStaff.exit_date_radio" /><label for="rdioc1">Today
                                     ({{userContext.curDate}})</label></span>
                             <span><input type="radio" name="exitDateGroup" id="exirRdioc2"
-                                    ng-model="newStaff.exit_date_radio" value="june30" /><label for="exirRdioc2">June
+                                    ng-model="newStaff.exit_date_radio" value="june30"
+                                    ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc2">June
                                     30th</label></span>
                             <span><input type="radio" name="exitDateGroup" id="exirRdioc3"
-                                    ng-model="newStaff.exit_date_radio" value="other" /><label
-                                    for="exirRdioc3">Specific Date</label></span>
+                                    ng-model="newStaff.exit_date_radio" value="other"
+                                    ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc3">Specific
+                                    Date</label></span>
                             <span>
                         </fieldset>
                     </div>
-                    <div  style="margin: 0 35px 35px;" ng-show="newStaff.exit_date_radio =='other'">
+                    <div style="margin: 0 35px 35px;"
+                        ng-if="newStaff.exit_date_radio =='other' || userContext.pageStatus =='Edit'">
                         <div>
-                            <label style="padding-left:0;">Requested Deactivation Date<span class="notation">(please type in the
+                            <label style="padding-left:0;">Requested Deactivation Date<span class="notation">(please
+                                    type in the
                                     date)</span></label>
                             <input name="" type="text" value="" maxlength="10" size="10" style="width:98px;"
-                                placeholder="MM/DD/YYYY" ng-model="newStaff.deadline">
+                                placeholder="MM/DD/YYYY" ng-model="newStaff.deadline" ng-required="true">
                         </div>
                     </div>
                     <div>
                         <div id="feedback-message" class="feedback-alert"
                             ng-show="newStaff.replacing !='' && userContext.pageStatus =='Submit'">
-                            <p><span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the exiting
-                                    staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}'s account will
+                            <p><span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">The Exiting
+                                    Staff {{newStaff.old_name_placeholder}}</span>{{exitingRecord.first_name}}
+                                {{exitingRecord.last_name}}'s account will
                                 be deactivated shortly
                                 after <span
                                     ng-show="newStaff.exit_date_radio=='today' || newStaff.exit_date_radio==''">{{userContext.curDate}}</span><span
                                     ng-show="newStaff.exit_date_radio=='june30'">June 30th</span><span
                                     ng-show="newStaff.exit_date_radio=='other'">{{newStaff.deadline}}</span>.They
-                                    will no longer be able to access PowerSchool, Canvas, Office 365, Teams, Email, or log
-                                    on to a device<br> If
+                                will no longer be able to access PowerSchool, Canvas, Office 365, Teams, Email, or log
+                                on to a device<br> If
                                 <span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the
                                     exiting
                                     staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} needs access
@@ -430,7 +440,8 @@
                                     ng-show="newStaff.exit_date_radio=='today' || newStaff.exit_date_radio==''">{{userContext.curDate}}</span><span
                                     ng-show="newStaff.exit_date_radio=='june30'">June 30th</span><span
                                     ng-show="newStaff.exit_date_radio=='other'">{{newStaff.deadline}}</span> or needs
-                                to be deactivated sooner, please modify the deactivation date.</p>
+                                to be deactivated sooner, please modify the deactivation date.
+                            </p>
                         </div>
                     </div>
                     <div>
@@ -449,13 +460,13 @@
                     <!--</div>-->
                     <div>
                         <div class="feedback-info" ng-show="userContext.pageStatus =='Submit'">
-                            <b><u>Please Note:</u></b> personal files (i.e. Documents and pictures, music and videos)
+                            <b><u>Please Note:</u></b> personal files (i.e. Documents, pictures, music and videos)
                             should be removed by <span
-                                ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the exiting
-                                staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}.<br> Ed Tech is not
+                                ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the Exiting
+                                Staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}.<br> Ed Tech is not
                             responsible for any files left after <span
-                                ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the exiting
-                                staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}'s departure.
+                                ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the Exiting
+                                Staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}'s departure.
                         </div>
                     </div>
                     ~[if#distCheck.security.inrole=9]

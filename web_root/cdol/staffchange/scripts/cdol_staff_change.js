@@ -232,9 +232,9 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				todayFormated = mm + '/' + dd + '/' + yyyy;
 
 				if ($scope.newStaff.name_change == 'Exiting Staff' || $scope.newStaff.name_change == 'Transferring Staff') {
-					if ($scope.exitingRecord.exit_date_radio == 'today' || $scope.exitingRecord.exit_date_radio == '') {
+					if ($scope.newStaff.exit_date_radio == 'today' || $scope.newStaff.exit_date_radio == '') {
 						$scope.newStaff.deadline = todayFormated;
-					} else if ($scope.exitingRecord.exit_date_radio == 'june30') {
+					} else if ($scope.newStaff.exit_date_radio == 'june30') {
 						$scope.newStaff.deadline = $scope.userContext.accountChangeDate;
 					}
 				}
@@ -466,8 +466,12 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			$scope.deleteStaffChange = function () {
 				if ($scope.userContext.curStaffId !== '') {
 					let redirectPath = '/admin/cdol/staffchange/cdol_staff_change_list.html';
-					if ($scope.newStaff.name_change == 'Exiting Staff') {
+					if ($scope.newStaff.name_change == 'Transferring Staff') {
 						redirectPath = redirectPath + '#tabTwoContent';
+					} else if ($scope.newStaff.name_change == 'Name Change') {
+						redirectPath = redirectPath + '#tabThreeContent';
+					} else if ($scope.newStaff.name_change == 'Exiting Staff') {
+						redirectPath = redirectPath + '#tabFourContent';
 					}
 					$http({
 						url: '/ws/schema/table/U_CDOL_STAFF_CHANGES/' + $scope.userContext.curStaffId,
