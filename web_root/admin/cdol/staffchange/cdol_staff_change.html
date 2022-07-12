@@ -339,18 +339,14 @@
             </form>
             <!--Exiting Submit -->
             <form name="exitingForm" method="POST" novalidate>
+                <div>
+                    <div id="feedback-message" class="feedback-alert" ng-if="newStaff.name_change=='Exiting Staff'">If
+                        the
+                        Exiting staff member is being replaced by a
+                        new or transferring in staff member, please use the New Staff or Transfering Staff option above. <br> An Exiting Staff Record will be submitted when you choose who the New or Transfering Staff member is replacing.</div>
+                </div>
                 <div class="fluid-form" ng-if="newStaff.name_change=='Exiting Staff'">
                     <h4 style="margin-left: 10px;">{{newStaff.name_change}} Name</h4>
-                    <div>
-                        <div id="feedback-message" class="feedback-alert" ng-show="userContext.pageStatus =='Submit'">If
-                            the
-                            Exiting staff member is being replaced by a
-                            new staff member, please use the New Staff option on this form to submit the New Staff
-                            member
-                            first.<br> That process will ask you who the New Staff member is replacing which also
-                            submits a
-                            Exiting Staff record for who they are replacing.</div>
-                    </div>
                     <div>
                         <div>
                             <label class="req">Who is not returning?</label>
@@ -391,23 +387,23 @@
                         <fieldset>
                             <legend><span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the
                                     exiting
-                                    staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}'s deactivation
-                                date</legend>
+                                    staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}'s Deactivation
+                                Date</legend>
                             <span><input type="radio" name="exitDateGroup" id="exirRdioc1"
-                                    ng-model="userContext.exitDateRadio" value="today" /><label for="rdioc1">Today
+                                    ng-model="exitingRecord.exit_date_radio" value="today" /><label for="rdioc1">Today
                                     ({{userContext.curDate}})</label></span>
                             <span><input type="radio" name="exitDateGroup" id="exirRdioc2"
-                                    ng-model="userContext.exitDateRadio" value="june30" /><label for="exirRdioc2">June
+                                    ng-model="exitingRecord.exit_date_radio" value="june30" /><label for="exirRdioc2">June
                                     30th</label></span>
                             <span><input type="radio" name="exitDateGroup" id="exirRdioc3"
-                                    ng-model="userContext.exitDateRadio" value="other" /><label
+                                    ng-model="exitingRecord.exit_date_radio" value="other" /><label
                                     for="exirRdioc3">Specific Date</label></span>
                             <span>
                         </fieldset>
                     </div>
-                    <div ng-show="userContext.exitDateRadio =='other'">
+                    <div  style="margin: 0 35px 35px;" ng-show="exitingRecord.exit_date_radio =='other'">
                         <div>
-                            <label>Requested Deactivation Date<span class="notation">(please type in the
+                            <label style="padding-left:0;">Requested Deactivation Date<span class="notation">(please type in the
                                     date)</span></label>
                             <input name="" type="text" value="" maxlength="10" size="10" style="width:98px;"
                                 placeholder="MM/DD/YYYY" ng-model="newStaff.deadline">
@@ -420,18 +416,20 @@
                                     staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}'s account will
                                 be deactivated shortly
                                 after <span
-                                    ng-show="userContext.exitDateRadio=='today' || userContext.exitDateRadio==''">{{userContext.curDate}}</span><span
-                                    ng-show="userContext.exitDateRadio=='june30'">June 30th</span><span
-                                    ng-show="userContext.exitDateRadio=='other'">{{newStaff.deadline}}</span>.<br> If
+                                    ng-show="exitingRecord.exit_date_radio=='today' || exitingRecord.exit_date_radio==''">{{userContext.curDate}}</span><span
+                                    ng-show="exitingRecord.exit_date_radio=='june30'">June 30th</span><span
+                                    ng-show="exitingRecord.exit_date_radio=='other'">{{newStaff.deadline}}</span>.They
+                                    will no longer be able to access PowerSchool, Canvas, Office 365, Teams, Email, or log
+                                    on to a device<br> If
                                 <span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the
                                     exiting
                                     staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} needs access
                                 to
                                 their
                                 account after <span
-                                    ng-show="userContext.exitDateRadio=='today' || userContext.exitDateRadio==''">{{userContext.curDate}}</span><span
-                                    ng-show="userContext.exitDateRadio=='june30'">June 30th</span><span
-                                    ng-show="userContext.exitDateRadio=='other'">{{newStaff.deadline}}</span> or needs
+                                    ng-show="exitingRecord.exit_date_radio=='today' || exitingRecord.exit_date_radio==''">{{userContext.curDate}}</span><span
+                                    ng-show="exitingRecord.exit_date_radio=='june30'">June 30th</span><span
+                                    ng-show="exitingRecord.exit_date_radio=='other'">{{newStaff.deadline}}</span> or needs
                                 to be deactivated sooner, please modify the deactivation date.</p>
                         </div>
                     </div>
