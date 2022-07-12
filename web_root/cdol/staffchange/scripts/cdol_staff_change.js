@@ -73,6 +73,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				o365_ignored: '',
 				final_completion_date: '',
 				old_name_placeholder: '',
+				exit_date_radio: '',
 			};
 
 			$scope.exitingRecord = {
@@ -231,9 +232,9 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				todayFormated = mm + '/' + dd + '/' + yyyy;
 
 				if ($scope.newStaff.name_change == 'Exiting Staff' || $scope.newStaff.name_change == 'Transferring Staff') {
-					if ($scope.exitingRecord.exit_date_radio== 'today' || $scope.exitingRecord.exit_date_radio== '') {
+					if ($scope.exitingRecord.exit_date_radio == 'today' || $scope.exitingRecord.exit_date_radio == '') {
 						$scope.newStaff.deadline = todayFormated;
-					} else if ($scope.exitingRecord.exit_date_radio== 'june30') {
+					} else if ($scope.exitingRecord.exit_date_radio == 'june30') {
 						$scope.newStaff.deadline = $scope.userContext.accountChangeDate;
 					}
 				}
