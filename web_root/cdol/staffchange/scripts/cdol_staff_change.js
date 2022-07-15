@@ -98,7 +98,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				previous: '',
 				start_date: '',
 				early_setup: '',
-				deadline: dateService.formatDateForApi($scope.userContext.accountChangeDate),
+				deadline: '',
 				previous_employer: '',
 				previous_employer_other: '',
 				submission_date: dateService.formatDateForApi($scope.userContext.curDate),
@@ -241,12 +241,13 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				$scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
 
 				if ($scope.newStaff.name_change != 'Exiting Staff') {
-					if (todayDate < compareDate) {
-						$scope.exitingRecord.deadline = dateService.formatDateForApi($scope.userContext.accountChangeDate);
-					} else {
-						$scope.exitingRecord.deadline = dateService.formatDateForApi(fulltodayPlus10);
+					if ($scope.newStaff.exit_date_radio == 'today' || $scope.newStaff.exit_date_radio == '') {
+						$scope.exitingRecord.deadline = todayFormated;
+					} else if ($scope.newStaff.exit_date_radio == 'june30') {
+						$scope.exitingRecord.deadline = $scope.userContext.accountChangeDate;
 					}
 				}
+				$scope.exitingRecord.deadline = dateService.formatDateForApi($scope.exitingRecord.deadline);
 
 				$scope.emailBody = $scope.newStaff.name_change + ' Name: ' + $scope.newStaff.title + ' ' + $scope.newStaff.first_name + ' ' + $scope.newStaff.last_name;
 
