@@ -559,7 +559,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 	});
 	cdolStaffApp.directive('transferStaff', function () {
 		return {
-			templateUrl: '/admin/cdol/staffchange/forms/transferring_staff.html',
+			templateUrl: '/admin/cdol/staffchange/forms/transfer_staff.html',
 		};
 	});
 	cdolStaffApp.directive('nameChange', function () {
@@ -569,7 +569,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 	});
 	cdolStaffApp.directive('exitStaff', function () {
 		return {
-			templateUrl: '/admin/cdol/staffchange/forms/new_staff.html',
+			templateUrl: '/admin/cdol/staffchange/forms/exit_staff.html',
 		};
 	});
 });
