@@ -41,5 +41,6 @@
         <field name="o365_created" type="Boolean" />
         <field name="o365_ignored" type="Boolean" />
         <field name="exit_date_radio" type="string" length="50"/>
+        <field name="exit_radio" type="string" length="50"/>
     </extendedTable>
 </psExtension>

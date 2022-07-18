@@ -11,8 +11,8 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 		function ($scope, $http, $attrs, $q, $window, dateService, checkboxService) {
 			// global variables passed in by gpvs assigned to attributes on the screen then passed in to angular by the $attrs and assigned to a global user context object.
 			$scope.userContext = {
-				newStaffTempName: 'the New Staff Member',
-				transferStaffTempName: 'the Transferring Staff Member',
+				newStaffTempName: 'The New Staff Member',
+				transferStaffTempName: 'The Transferring Staff Member',
 				pageStatus: $attrs.ngStatus,
 				curSchoolId: $attrs.ngCurSchoolId,
 				curYearId: $attrs.ngCurYearId,
