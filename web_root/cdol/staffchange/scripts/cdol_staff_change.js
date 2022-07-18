@@ -120,6 +120,10 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				exit_radio: '',
 			};
 
+			$scope.$watch('newStaff.notes', function (v) {
+				$scope.exitingRecord.notes = v;
+			});
+
 			$scope.getExistingStaff = function (optVal) {
 				if (optVal == 'Other') {
 					$scope.newStaff.old_name_placeholder = '';
@@ -240,6 +244,8 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					} else if ($scope.newStaff.exit_date_radio == 'june30') {
 						$scope.newStaff.deadline = $scope.userContext.accountChangeDate;
 					}
+
+					$scope.exitingRecord.notes = $scope.newStaff.notes;
 				}
 				$scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
 

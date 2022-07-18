@@ -191,108 +191,114 @@
                         </div>
                     </div>
                     <div>
-                        
+
                         <div>
                             <label class="req">Is <span
                                     ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.transferStaffTempName}}</span>
-                                {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} replacing another staff member who is leaving ~(schoolname)?</label>
-                            <span><input type="radio" name="exitGroup" id="exirRdioq1"
-                                    ng-model="newStaff.exit_radio" value="Yes"
-                                    ng-required="!newStaff.exit_radio" /><label for="rdioq1">Yes</label></span>
-                            <span><input type="radio" name="exitGroup" id="exirRdioq2"
-                                    ng-model="newStaff.exit_radio" value="No"
-                                    ng-required="!newStaff.exit_radio" /><label for="exirRdioq2">No</label></span>
+                                {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} replacing another
+                                staff member who is leaving ~(schoolname)?</label>
+                            <span><input type="radio" name="exitGroup" id="exirRdioq1" ng-model="newStaff.exit_radio"
+                                    value="Yes" ng-required="!newStaff.exit_radio" /><label
+                                    for="rdioq1">Yes</label></span>
+                            <span><input type="radio" name="exitGroup" id="exirRdioq2" ng-model="newStaff.exit_radio"
+                                    value="No" ng-required="!newStaff.exit_radio" /><label
+                                    for="exirRdioq2">No</label></span>
                         </div>
                     </div>
-                    <fieldset ng-if="newStaff.exit_radio =='Yes'" class="bg-secondary" >
+                    <fieldset ng-if="newStaff.exit_radio =='Yes'" class="bg-secondary">
                         <legend>Exiting Staff Information</legend>
-                    <div>
                         <div>
-                            <label>Who is <span
-                                    ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.transferStaffTempName}}</span>
-                                {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} Replacing? <span
-                                    style="color: red;
+                            <div>
+                                <label>Who is <span
+                                        ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.transferStaffTempName}}</span>
+                                    {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} Replacing? <span
+                                        style="color: red;
 	font-size: 13.5pt;"> *</span><br><span class="notation">(choose Other if staff member being replaced is not
-                                    listed)</span></label><br>
-                            <select style="margin-left: 10px;"
-                                ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
-                                name="" ng-model="newStaff.replacing" ng-required="true" ng-change="getExistingStaff()">
-                                <option></option>
-                                ~[tlist_sql;SELECT
-                                users.dcid,
-                                users.first_name,
-                                users.last_name
-                                FROM SCHOOLSTAFF
-                                inner join users
-                                on users.dcid = schoolstaff.users_dcid
-                                WHERE schoolstaff.status =1
-                                ~[if.is.a.school]
-                                AND schoolstaff.schoolid = ~(curschoolid)
-                                [/if.is.a.school]
-                                Order BY users.last_name , users.first_name]
-                                <option value="~(dcid)">~(first) ~(last)</option>
-                                [/tlist_sql]
-                                <option value="Other">-- Other --</option>
-                            </select><span class="feedback-info"
-                                ng-show="newStaff.replacing !='Other' && newStaff.replacing !=''&& userContext.pageStatus =='Submit'"><b><u>Please
-                                        Note:</u></b> An exiting staff record will also be submitted for <span
-                                    ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the replaced
-                                    staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} when you click
-                                Submit</span>
-                            <input ng-show="newStaff.replacing !='Other' && userContext.pageStatus =='Edit'" name=""
-                                type="text" value="" ng-model="newStaff.old_name_placeholder">
+                                        listed)</span></label><br>
+                                <select style="margin-left: 10px;"
+                                    ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
+                                    name="" ng-model="newStaff.replacing" ng-required="true"
+                                    ng-change="getExistingStaff()">
+                                    <option></option>
+                                    ~[tlist_sql;SELECT
+                                    users.dcid,
+                                    users.first_name,
+                                    users.last_name
+                                    FROM SCHOOLSTAFF
+                                    inner join users
+                                    on users.dcid = schoolstaff.users_dcid
+                                    WHERE schoolstaff.status =1
+                                    ~[if.is.a.school]
+                                    AND schoolstaff.schoolid = ~(curschoolid)
+                                    [/if.is.a.school]
+                                    Order BY users.last_name , users.first_name]
+                                    <option value="~(dcid)">~(first) ~(last)</option>
+                                    [/tlist_sql]
+                                    <option value="Other">-- Other --</option>
+                                </select><span class="feedback-info"
+                                    ng-show="newStaff.replacing !='Other' && newStaff.replacing !=''&& userContext.pageStatus =='Submit'"><b><u>Please
+                                            Note:</u></b> An exiting staff record will also be submitted for <span
+                                        ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the
+                                        replaced
+                                        staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} when you
+                                    click
+                                    Submit</span>
+                                <input ng-show="newStaff.replacing !='Other' && userContext.pageStatus =='Edit'" name=""
+                                    type="text" value="" ng-model="newStaff.old_name_placeholder">
+                            </div>
                         </div>
-                    </div>
-                    <div ng-if="newStaff.replacing === 'Other'">
-                        <div>
-                            <label>Please type name of the staff member <span
-                                    ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.transferStaffTempName}}</span>
-                                {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} is replacing</label><br>
-                            <input name="" type="text" value="" style="width: 300px; margin-left:10px;"
-                                ng-model="newStaff.replacing_other">
+                        <div ng-if="newStaff.replacing === 'Other'">
+                            <div>
+                                <label>Please type name of the staff member <span
+                                        ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.transferStaffTempName}}</span>
+                                    {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} is
+                                    replacing</label><br>
+                                <input name="" type="text" value="" style="width: 300px; margin-left:10px;"
+                                    ng-model="newStaff.replacing_other">
+                            </div>
                         </div>
-                    </div>
-                    <div ng-show="newStaff.replacing !=''  && userContext.pageStatus =='Submit'">
-                        <fieldset>
-                            <legend class="req"><span
-                                    ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">The Exiting
-                                    Staff {{newStaff.old_name_placeholder}}</span><span
-                                    ng-show="newStaff.replacing != 'Other'">{{exitingRecord.first_name}}
-                                    {{exitingRecord.last_name}}</span><span
-                                    ng-show="newStaff.replacing === 'Other'">{{newStaff.replacing_other}}</span>'s
-                                Deactivation
-                                Date</legend>
-                            <span><input type="radio" name="exitDateGroup" id="exirRdioc1"
-                                    ng-model="newStaff.exit_date_radio" value="today"
-                                    ng-required="!newStaff.exit_date_radio" /><label for="rdioc1">Today
-                                    ({{userContext.curDate}})</label></span>
-                            <span><input type="radio" name="exitDateGroup" id="exirRdioc2"
-                                    ng-model="newStaff.exit_date_radio" value="june30"
-                                    ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc2">June
-                                    30th</label></span>
-                            <span><input type="radio" name="exitDateGroup" id="exirRdioc3"
-                                    ng-model="newStaff.exit_date_radio" value="other"
-                                    ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc3">Specific
-                                    Date</label></span>
-                            <span>
-                        </fieldset>
-                    </div>
-                    <div style="margin: 0 35px 35px;"
-                        ng-if="(userContext.pageStatus =='Submit' && newStaff.exit_date_radio =='other') || (userContext.pageStatus =='Edit' && newStaff.name_change =='Exiting Staff')">
-                        <div>
-                            <label style="padding-left:0;">Requested Deactivation Date<span class="notation">(please
-                                    type in the
-                                    date)</span></label><br>
-                            <input name="" type="text" value="" maxlength="10" size="10" style="width:98px;"
-                                placeholder="MM/DD/YYYY" ng-model="exitingRecord.deadline" ng-required="true">
+                        <div ng-show="newStaff.replacing !=''  && userContext.pageStatus =='Submit'">
+                            <fieldset>
+                                <legend class="req"><span
+                                        ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">The
+                                        Exiting
+                                        Staff {{newStaff.old_name_placeholder}}</span><span
+                                        ng-show="newStaff.replacing != 'Other'">{{exitingRecord.first_name}}
+                                        {{exitingRecord.last_name}}</span><span
+                                        ng-show="newStaff.replacing === 'Other'">{{newStaff.replacing_other}}</span>'s
+                                    Deactivation
+                                    Date</legend>
+                                <span><input type="radio" name="exitDateGroup" id="exirRdioc1"
+                                        ng-model="newStaff.exit_date_radio" value="today"
+                                        ng-required="!newStaff.exit_date_radio" /><label for="rdioc1">Today
+                                        ({{userContext.curDate}})</label></span>
+                                <span><input type="radio" name="exitDateGroup" id="exirRdioc2"
+                                        ng-model="newStaff.exit_date_radio" value="june30"
+                                        ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc2">June
+                                        30th</label></span>
+                                <span><input type="radio" name="exitDateGroup" id="exirRdioc3"
+                                        ng-model="newStaff.exit_date_radio" value="other"
+                                        ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc3">Specific
+                                        Date</label></span>
+                                <span>
+                            </fieldset>
                         </div>
-                    </div>
+                        <div style="margin: 0 35px 35px;"
+                            ng-if="(userContext.pageStatus =='Submit' && newStaff.exit_date_radio =='other') || (userContext.pageStatus =='Edit' && newStaff.name_change =='Exiting Staff')">
+                            <div>
+                                <label style="padding-left:0;">Requested Deactivation Date<span class="notation">(please
+                                        type in the
+                                        date)</span></label><br>
+                                <input name="" type="text" value="" maxlength="10" size="10" style="width:98px;"
+                                    placeholder="MM/DD/YYYY" ng-model="exitingRecord.deadline" ng-required="true">
+                            </div>
+                        </div>
                     </fieldset>
                     <div>
                         <div>
                             <label>Additional Notes/Details?</label>
                             <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
-                                ng-model="newStaff.notes"></textarea>
+                                ng-model="newStaff.notes" ng-change="exitingRecord.notes=newStaff.notes"></textarea>
                         </div>
                     </div>
                     ~[if#distCheck.security.inrole=9]
@@ -927,124 +933,130 @@
                                     for="exirRdioq2">No</label></span>
                         </div>
                     </div>
-                    
+
                     <fieldset ng-if="newStaff.exit_radio =='Yes'">
                         <legend>Exiting Staff Information</legend>
-                    <div>
                         <div>
-                            <label>Who is <span
-                                    ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
-                                {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} Replacing? <span
-                                    style="color: red;
+                            <div>
+                                <label>Who is <span
+                                        ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
+                                    {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} Replacing? <span
+                                        style="color: red;
 	font-size: 13.5pt;"> *</span><br><span class="notation">(choose Other if staff member being replaced is not
-                                    listed)</span></label><br>
-                            <select style="margin-left: 10px;"
-                                ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
-                                name="" ng-model="newStaff.replacing" ng-required="true" ng-change="getExistingStaff()">
-                                <option></option>
+                                        listed)</span></label><br>
+                                <select style="margin-left: 10px;"
+                                    ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
+                                    name="" ng-model="newStaff.replacing" ng-required="true"
+                                    ng-change="getExistingStaff()">
+                                    <option></option>
 
-                                ~[tlist_sql;SELECT
-                                users.dcid,
-                                users.first_name,
-                                users.last_name
-                                FROM SCHOOLSTAFF
-                                inner join users
-                                on users.dcid = schoolstaff.users_dcid
-                                WHERE schoolstaff.status =1
-                                ~[if.is.a.school]
-                                AND schoolstaff.schoolid = ~(curschoolid)
-                                [/if.is.a.school]
-                                Order BY users.last_name , users.first_name]
-                                <option value="~(dcid)">~(first) ~(last)</option>
-                                [/tlist_sql]
-                                <option value="Other">-- Other --</option>
-                            </select><span class="feedback-info"
-                                ng-show="newStaff.replacing !='Other' && newStaff.replacing !=''&& userContext.pageStatus =='Submit'"><b><u>Please
-                                        Note:</u></b> An exiting staff record will also be submitted for <span
-                                    ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the replaced
-                                    staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} when you click
-                                Submit</span>
-                            <input ng-show="newStaff.replacing !='Other' && userContext.pageStatus =='Edit'" name=""
-                                type="text" value="" ng-model="newStaff.old_name_placeholder">
+                                    ~[tlist_sql;SELECT
+                                    users.dcid,
+                                    users.first_name,
+                                    users.last_name
+                                    FROM SCHOOLSTAFF
+                                    inner join users
+                                    on users.dcid = schoolstaff.users_dcid
+                                    WHERE schoolstaff.status =1
+                                    ~[if.is.a.school]
+                                    AND schoolstaff.schoolid = ~(curschoolid)
+                                    [/if.is.a.school]
+                                    Order BY users.last_name , users.first_name]
+                                    <option value="~(dcid)">~(first) ~(last)</option>
+                                    [/tlist_sql]
+                                    <option value="Other">-- Other --</option>
+                                </select><span class="feedback-info"
+                                    ng-show="newStaff.replacing !='Other' && newStaff.replacing !=''&& userContext.pageStatus =='Submit'"><b><u>Please
+                                            Note:</u></b> An exiting staff record will also be submitted for <span
+                                        ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the
+                                        replaced
+                                        staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} when you
+                                    click
+                                    Submit</span>
+                                <input ng-show="newStaff.replacing !='Other' && userContext.pageStatus =='Edit'" name=""
+                                    type="text" value="" ng-model="newStaff.old_name_placeholder">
+                            </div>
                         </div>
-                    </div>
-                    <div ng-if="newStaff.replacing === 'Other'">
-                        <div>
-                            <label>Please type name of the staff member <span
-                                    ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
-                                {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} is replacing</label><br>
-                            <input name="" type="text" value="" style="width: 300px; margin-left: 10px;"
-                                ng-model="newStaff.replacing_other">
+                        <div ng-if="newStaff.replacing === 'Other'">
+                            <div>
+                                <label>Please type name of the staff member <span
+                                        ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
+                                    {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} is
+                                    replacing</label><br>
+                                <input name="" type="text" value="" style="width: 300px; margin-left: 10px;"
+                                    ng-model="newStaff.replacing_other">
+                            </div>
                         </div>
-                    </div>
-                    <div ng-show="newStaff.replacing !=''  && userContext.pageStatus =='Submit'">
-                        <fieldset>
-                            <legend class="req"><span
-                                        ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">The
-                                        Exiting
-                                        Staff {{newStaff.old_name_placeholder}}</span><span
+                        <div ng-show="newStaff.replacing !=''  && userContext.pageStatus =='Submit'">
+                            <fieldset>
+                                <legend class="req"><span
+                                        ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">{{newStaff.old_name_placeholder}}</span><span
                                         ng-show="newStaff.replacing != 'Other'">{{exitingRecord.first_name}}
                                         {{exitingRecord.last_name}}</span><span
-                                        ng-show="newStaff.replacing === 'Other'">{{newStaff.replacing_other}}</span>'s Deactivation
-                                Date</legend>
-                            <span><input type="radio" name="exitDateGroup" id="exirRdioc1"
-                                    ng-model="newStaff.exit_date_radio" value="today"
-                                    ng-required="!newStaff.exit_date_radio" /><label for="rdioc1">Today
-                                    ({{userContext.curDate}})</label></span>
-                            <span><input type="radio" name="exitDateGroup" id="exirRdioc2"
-                                    ng-model="newStaff.exit_date_radio" value="june30"
-                                    ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc2">June
-                                    30th</label></span>
-                            <span><input type="radio" name="exitDateGroup" id="exirRdioc3"
-                                    ng-model="newStaff.exit_date_radio" value="other"
-                                    ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc3">Specific
-                                    Date</label></span>
-                            <span>
-                        </fieldset>
-                    </div>
-                    <div style="margin: 0 35px 35px;"
-                        ng-if="(userContext.pageStatus =='Submit' && newStaff.exit_date_radio =='other') || (userContext.pageStatus =='Edit' && newStaff.name_change =='Exiting Staff')">
+                                        ng-show="newStaff.replacing === 'Other'">{{newStaff.replacing_other}}</span>'s
+                                    Deactivation
+                                    Date</legend>
+                                <span><input type="radio" name="exitDateGroup" id="exirRdioc1"
+                                        ng-model="newStaff.exit_date_radio" value="today"
+                                        ng-required="!newStaff.exit_date_radio" /><label for="rdioc1">Today
+                                        ({{userContext.curDate}})</label></span>
+                                <span><input type="radio" name="exitDateGroup" id="exirRdioc2"
+                                        ng-model="newStaff.exit_date_radio" value="june30"
+                                        ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc2">June
+                                        30th</label></span>
+                                <span><input type="radio" name="exitDateGroup" id="exirRdioc3"
+                                        ng-model="newStaff.exit_date_radio" value="other"
+                                        ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc3">Specific
+                                        Date</label></span>
+                                <span>
+                            </fieldset>
+                        </div>
+                        <div style="margin: 0 35px 35px;"
+                            ng-if="(userContext.pageStatus =='Submit' && newStaff.exit_date_radio =='other') || (userContext.pageStatus =='Edit' && newStaff.name_change =='Exiting Staff')">
+                            <div>
+                                <label style="padding-left:0;">Requested Deactivation Date<span class="notation">(please
+                                        type in the
+                                        date)</span></label><br>
+                                <input name="" type="text" value="" maxlength="10" size="10" style="width:98px;"
+                                    placeholder="MM/DD/YYYY" ng-model="exitingRecord.deadline" ng-required="true">
+                            </div>
+                        </div>
                         <div>
-                            <label style="padding-left:0;">Requested Deactivation Date<span class="notation">(please
-                                    type in the
-                                    date)</span></label><br>
-                            <input name="" type="text" value="" maxlength="10" size="10" style="width:98px;"
-                                placeholder="MM/DD/YYYY" ng-model="exitingRecord.deadline" ng-required="true">
+                            <div id="feedback-message" class="feedback-alert"
+                                ng-show="newStaff.replacing !='' && userContext.pageStatus =='Submit'">
+                                <p><span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">The
+                                        Exiting
+                                        Staff {{newStaff.old_name_placeholder}}</span>{{exitingRecord.first_name}}
+                                    {{exitingRecord.last_name}}'s account will
+                                    be deactivated shortly
+                                    after <span
+                                        ng-show="newStaff.exit_date_radio=='today' || newStaff.exit_date_radio==''">{{userContext.curDate}}</span><span
+                                        ng-show="newStaff.exit_date_radio=='june30'">June 30th</span><span
+                                        ng-show="newStaff.exit_date_radio=='other'">{{exitingRecord.deadline}}</span>.They
+                                    will no longer be able to access PowerSchool, Canvas, Office 365, Teams, Email, or
+                                    log
+                                    on to a device<br> If
+                                    <span ng-show="newStaff.replacing ==''">the
+                                        exiting
+                                        staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} needs
+                                    access
+                                    to
+                                    their
+                                    account after <span
+                                        ng-show="newStaff.exit_date_radio=='today' || newStaff.exit_date_radio==''">{{userContext.curDate}}</span><span
+                                        ng-show="newStaff.exit_date_radio=='june30'">June 30th</span><span
+                                        ng-show="newStaff.exit_date_radio=='other'">{{exitingRecord.deadline}}</span> or
+                                    needs
+                                    to be deactivated sooner, please modify the deactivation date.
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <div id="feedback-message" class="feedback-alert"
-                            ng-show="newStaff.replacing !='' && userContext.pageStatus =='Submit'">
-                            <p><span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">The Exiting
-                                    Staff {{newStaff.old_name_placeholder}}</span>{{exitingRecord.first_name}}
-                                {{exitingRecord.last_name}}'s account will
-                                be deactivated shortly
-                                after <span
-                                    ng-show="newStaff.exit_date_radio=='today' || newStaff.exit_date_radio==''">{{userContext.curDate}}</span><span
-                                    ng-show="newStaff.exit_date_radio=='june30'">June 30th</span><span
-                                    ng-show="newStaff.exit_date_radio=='other'">{{exitingRecord.deadline}}</span>.They
-                                will no longer be able to access PowerSchool, Canvas, Office 365, Teams, Email, or log
-                                on to a device<br> If
-                                <span ng-show="newStaff.replacing ==''">the
-                                    exiting
-                                    staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} needs access
-                                to
-                                their
-                                account after <span
-                                    ng-show="newStaff.exit_date_radio=='today' || newStaff.exit_date_radio==''">{{userContext.curDate}}</span><span
-                                    ng-show="newStaff.exit_date_radio=='june30'">June 30th</span><span
-                                    ng-show="newStaff.exit_date_radio=='other'">{{exitingRecord.deadline}}</span> or
-                                needs
-                                to be deactivated sooner, please modify the deactivation date.
-                            </p>
-                        </div>
-                    </div>
                     </fieldset>
                     <div>
                         <div>
                             <label>Additional Notes/Details?</label>
                             <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
-                                ng-model="newStaff.notes"></textarea>
+                                ng-model="newStaff.notes" ng-change="exitingRecord.notes=newStaff.notes"></textarea>
                         </div>
                     </div>
                     ~[if#distCheck.security.inrole=9]
