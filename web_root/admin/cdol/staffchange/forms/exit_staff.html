@@ -1,7 +1,7 @@
 <form name="exitingForm" method="POST" novalidate>
     <div>
         <div id="feedback-message" class="feedback-alert"
-            ng-if="newStaff.name_change=='Exiting Staff' && userContext.pageStatus =='Submit'">If
+            ng-if="userContext.pageStatus =='Submit'">If
             the
             Exiting staff member is being replaced by a
             new or transferring in staff member, please use the New Staff or Transfering Staff option above.
@@ -9,7 +9,7 @@
             member is replacing.
         </div>
     </div>
-    <div class="fluid-form" ng-if="newStaff.name_change=='Exiting Staff'">
+    <div class="fluid-form">
         <h4 style="margin-left: 10px;">{{newStaff.name_change}} Name</h4>
         <div>
             <div>

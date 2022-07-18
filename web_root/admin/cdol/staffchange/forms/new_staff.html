@@ -1,10 +1,10 @@
 <div id="feedback-message" class="feedback-alert"
-                ng-show="userContext.pageStatus =='Submit' && newStaff.name_change=='New Staff'">Please spell
+                ng-show="userContext.pageStatus =='Submit'">Please spell
                 new staff name correctly! If new staff member
                 is going to have a name change in the next 6 months for any reason please enter their anticipated
                 name.</div>
             <form name="staffChangeForm" method="POST" novalidate>
-                <div class="fluid-form" ng-show="newStaff.name_change=='New Staff'">
+                <div class="fluid-form">
                     <h4 style="margin-left: 10px;">{{userContext.newStaffTempName}} Name</h4>
                     <div>
                         <div>
