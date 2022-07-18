@@ -140,11 +140,12 @@
                                     ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.transferStaffTempName}}</span>
                                 {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} need their account
                                 transferred prior to June 30th?</label>
-                            <select name="" type="text" value="" ng-model="newStaff.early_setup">
-                                <option></option>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                            </select>
+                            <span><input type="radio" name="earlySetupGroup" id="erlyRdio1"
+                                    ng-model="newStaff.early_setup" value="Yes" /><label
+                                    for="erlyRdio1">Yes</label></span>
+                            <span><input type="radio" name="earlySetupGroup" id="erlyRdio2"
+                                    ng-model="newStaff.early_setup" value="No" /><label
+                                    for="erlyRdio2">No</label></span>
                         </div>
                     </div>
                     <div ng-show="newStaff.early_setup =='Yes'">
@@ -191,7 +192,6 @@
                         </div>
                     </div>
                     <div>
-
                         <div>
                             <label class="req">Is <span
                                     ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.transferStaffTempName}}</span>
@@ -866,11 +866,12 @@
                                     ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
                                 {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} need their accounts
                                 setup prior to Contract Start Date?</label>
-                            <select name="" type="text" value="" ng-model="newStaff.early_setup">
-                                <option></option>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                            </select>
+                            <span><input type="radio" name="earlySetupGroup" id="erlyRdio1"
+                                    ng-model="newStaff.early_setup" value="Yes" /><label
+                                    for="erlyRdio1">Yes</label></span>
+                            <span><input type="radio" name="earlySetupGroup" id="erlyRdio2"
+                                    ng-model="newStaff.early_setup" value="No" /><label
+                                    for="erlyRdio2">No</label></span>
                         </div>
                     </div>
                     <div ng-show="newStaff.early_setup =='Yes'">
@@ -886,11 +887,11 @@
                                     ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
                                 {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} previously worked for
                                 ~(schoolname) or another Diocese of Lincoln School?</label>
-                            <select name="" ng-model="newStaff.previous">
-                                <option></option>
-                                <option value="1">Yes</option>
-                                <option value="0">No</option>
-                            </select>
+                            <span><input type="radio" name="prevSchoolGroup" id="prevSchRdio1"
+                                    ng-model="newStaff.previous" value="1" /><label
+                                    for="prevSchRdio1">Yes</label></span>
+                            <span><input type="radio" name="prevSchoolGroup" id="prevSchRdio2"
+                                    ng-model="newStaff.previous" value="0" /><label for="prevSchRdio2">No</label></span>
                         </div>
                     </div>
                     <div ng-if="newStaff.previous == 1">
@@ -919,7 +920,6 @@
                         </div>
                     </div>
                     <div>
-
                         <div>
                             <label class="req">Is <span
                                     ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.newStaffTempName}}</span>
@@ -933,7 +933,6 @@
                                     for="exirRdioq2">No</label></span>
                         </div>
                     </div>
-
                     <fieldset ng-if="newStaff.exit_radio =='Yes'">
                         <legend>Exiting Staff Information</legend>
                         <div>
@@ -949,7 +948,6 @@
                                     name="" ng-model="newStaff.replacing" ng-required="true"
                                     ng-change="getExistingStaff()">
                                     <option></option>
-
                                     ~[tlist_sql;SELECT
                                     users.dcid,
                                     users.first_name,
