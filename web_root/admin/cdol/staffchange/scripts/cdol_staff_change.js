@@ -526,7 +526,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				$j.ajax({
 					url: '/admin/cdol/staffchange/data/newstaffcount.txt',
 					success: function (result) {
-						$j('#staffCounterLink').innerHTML("Staff Changes ('+result+')");
+						$j('#staffCounterLink').innerHTML = "Staff Changes ('+result+')";
 					},
 				});
 
