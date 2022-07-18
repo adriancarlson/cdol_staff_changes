@@ -1,0 +1,210 @@
+<form name="exitingForm" method="POST" novalidate>
+    <div>
+        <div id="feedback-message" class="feedback-alert"
+            ng-if="newStaff.name_change=='Exiting Staff' && userContext.pageStatus =='Submit'">If
+            the
+            Exiting staff member is being replaced by a
+            new or transferring in staff member, please use the New Staff or Transfering Staff option above.
+            <br> An Exiting Staff Record will be submitted when you choose who the New or Transfering Staff
+            member is replacing.
+        </div>
+    </div>
+    <div class="fluid-form" ng-if="newStaff.name_change=='Exiting Staff'">
+        <h4 style="margin-left: 10px;">{{newStaff.name_change}} Name</h4>
+        <div>
+            <div>
+                <label class="req">Who is not returning?</label>
+                <select
+                    ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
+                    name="" ng-model="newStaff.replacing" ng-required="true"
+                    ng-change="getExistingStaff(newStaff.replacing)">
+                    <option></option>
+                    ~[tlist_sql;SELECT
+                    users.dcid,
+                    users.first_name,
+                    users.last_name
+                    FROM SCHOOLSTAFF
+                    inner join users
+                    on users.dcid = schoolstaff.users_dcid
+                    WHERE schoolstaff.status =1
+                    ~[if.is.a.school]
+                    AND schoolstaff.schoolid = ~(curschoolid)
+                    [/if.is.a.school]
+                    Order BY users.last_name , users.first_name]
+                    <option value="~(dcid)">~(first) ~(last)</option>
+                    [/tlist_sql]
+                    <option value="Other">-- Other --</option>
+                </select>
+                <input ng-show="userContext.pageStatus =='Edit'&& newStaff.replacing != 'Other'" name=""
+                    type="text" value="" ng-model="newStaff.old_name_placeholder">
+            </div>
+        </div>
+        <div ng-if="newStaff.replacing === 'Other'">
+            <div>
+                <label>Please type name of the exiting staff member</label>
+                <input name="" type="text" value="" style="width: 300px;"
+                    ng-model="newStaff.replacing_other">
+            </div>
+        </div>
+        <div ng-show="newStaff.replacing !=''  && userContext.pageStatus =='Submit'">
+            <fieldset>
+                <legend class="req"><span
+                        ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">The
+                        Exiting
+                        Staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}'s Deactivation
+                    Date</legend>
+                <span><input type="radio" name="exitDateGroup" id="exirRdioc1"
+                        ng-model="newStaff.exit_date_radio" value="today"
+                        ng-required="!newStaff.exit_date_radio" /><label for="rdioc1">Today
+                        ({{userContext.curDate}})</label></span>
+                <span><input type="radio" name="exitDateGroup" id="exirRdioc2"
+                        ng-model="newStaff.exit_date_radio" value="june30"
+                        ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc2">June
+                        30th</label></span>
+                <span><input type="radio" name="exitDateGroup" id="exirRdioc3"
+                        ng-model="newStaff.exit_date_radio" value="other"
+                        ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc3">Specific
+                        Date</label></span>
+                <span>
+            </fieldset>
+        </div>
+        <div style="margin: 0 35px 35px;"
+            ng-if="newStaff.exit_date_radio =='other' || userContext.pageStatus =='Edit'">
+            <div>
+                <label style="padding-left:0;">Requested Deactivation Date<span class="notation">(please
+                        type in the
+                        date)</span></label>
+                <input name="" type="text" value="" maxlength="10" size="10" style="width:98px;"
+                    placeholder="MM/DD/YYYY" ng-model="newStaff.deadline" ng-required="true">
+            </div>
+        </div>
+        <div>
+            <div id="feedback-message" class="feedback-alert"
+                ng-show="newStaff.replacing !='' && userContext.pageStatus =='Submit'">
+                <p><span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">The Exiting
+                        Staff {{newStaff.old_name_placeholder}}</span>{{exitingRecord.first_name}}
+                    {{exitingRecord.last_name}}'s account will
+                    be deactivated shortly
+                    after <span
+                        ng-show="newStaff.exit_date_radio=='today' || newStaff.exit_date_radio==''">{{userContext.curDate}}</span><span
+                        ng-show="newStaff.exit_date_radio=='june30'">June 30th</span><span
+                        ng-show="newStaff.exit_date_radio=='other'">{{newStaff.deadline}}</span>.They
+                    will no longer be able to access PowerSchool, Canvas, Office 365, Teams, Email, or log
+                    on to a device<br> If
+                    <span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the
+                        exiting
+                        staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} needs access
+                    to
+                    their
+                    account after <span
+                        ng-show="newStaff.exit_date_radio=='today' || newStaff.exit_date_radio==''">{{userContext.curDate}}</span><span
+                        ng-show="newStaff.exit_date_radio=='june30'">June 30th</span><span
+                        ng-show="newStaff.exit_date_radio=='other'">{{newStaff.deadline}}</span> or needs
+                    to be deactivated sooner, please modify the deactivation date.
+                </p>
+            </div>
+        </div>
+        <div>
+            <div>
+                <label>Additional Notes/Details?</label>
+                <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
+                    ng-model="newStaff.notes"></textarea>
+            </div>
+        </div>
+        <div>
+            <div class="feedback-info" ng-show="userContext.pageStatus =='Submit'">
+                <b><u>Please Note:</u></b> personal files (i.e. Documents, pictures, music and videos)
+                should be removed by <span
+                    ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the Exiting
+                    Staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}.<br> Ed Tech is not
+                responsible for any files left after <span
+                    ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the Exiting
+                    Staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}'s departure.
+            </div>
+        </div>
+        ~[if#distCheck.security.inrole=9]
+        <div style="background-color: #fff; border-top: 1px solid #eee;"
+            ng-show="userContext.pageStatus =='Edit'">
+            <div>
+                <table class="grid dis-check-table">
+                    <thead>
+                        <tr>
+                            <th colspan="5">Account Deactivated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="" ng-model="newStaff.ps_created"><label
+                                    class="mr">PowerSchool Account
+                                    Deactivated?</label>
+                            </td>
+                            <td class="rb-n">
+                                <input type="checkbox" name="" ng-disabled="newStaff.ad_ignored === true"
+                                    ng-model="newStaff.ad_created"><label>AD user
+                                    account disabled?</label>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="" ng-disabled="newStaff.ad_created"
+                                    ng-model="newStaff.ad_ignored"><label class="text-muted">Not
+                                    Applicable</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul>
+                                    <li>School(s) Deactivated?</li>
+                                    <li>Sign ins Deavtivated?</li>
+                                    <li>LDAP Diabled?</li>
+                                </ul>
+                            </td>
+                            <td colspan="2">
+                                <ul>
+                                    <li>Email account noted as "disabled"?
+                                        <ul>
+                                            <li>(which sends an autoreply that the user will not receive the
+                                                message)</li>
+                                            <li>Removed from distribution groups and "Office" field deleted
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>Office 365 login disabled with AD account?
+                                        <ul>
+                                            <li>The account will be fully deleted six months later</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        [/if#distCheck]
+        <div class="button-row" ng-show="userContext.pageStatus =='Submit'">
+            <span class="req-notation" ng-show="exitingForm.$invalid && exitingForm.$dirty">Please
+                fill all required fields prior to submitting.</span>
+            <button id="canBtn" type="button" ng-show="subConfirm"
+                ng-click="subConfirm = false">Cancel</button>
+            <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="subConfirm"
+                ng-click="submitStaffChange()">Confirm Submission</button>
+            <button id="subBtn" type="button" ng-show="!subConfirm" ng-click="subConfirm = true"
+                ng-disabled="exitingForm.$invalid">Submit</button>
+        </div>
+        <div ng-show="userContext.pageStatus =='Edit'" class="button-row">
+            <span class="req-notation" ng-show="exitingForm.$invalid && exitingForm.$dirty">Please
+                fill all required fields prior to submitting.</span>
+            <button id="canBtn" type="button" ng-show="delUpdate"
+                ng-click="delUpdate = false">Cancel</button>
+            <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="delUpdate"
+                ng-click="deleteStaffChange()">Confirm Deletion</button>
+            <a id="bkBtn" class="button" ng-show="!delUpdate"
+                href="/admin/cdol/staffchange/cdol_staff_change_list.html">Back</a>
+            <button id="delBtn" type="button" ng-show="!delUpdate" ng-click="delUpdate = true">Delete
+                Submission</button>
+            <button id="upBtn" type="button" ng-disabled="exitingForm.$invalid" ng-show="!delUpdate"
+                ng-click="submitStaffUpdate()">Submit
+                Update</button>
+        </div>
+    </div>
+</form>
