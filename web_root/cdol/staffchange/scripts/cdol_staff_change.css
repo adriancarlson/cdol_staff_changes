@@ -74,6 +74,7 @@ select.ng-invalid.ng-touched {
 	margin-left: 20px;
 }
 
-.fluid-form > div:not(.button-row):nth-of-type(odd):not(.button-row) {
+.fluid-form > div:not(.button-row):nth-of-type(odd):not(.button-row),
+fieldset > div:nth-of-type(odd):not(.button-row) {
 	background-color: initial;
 }

@@ -75,6 +75,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				final_completion_date: '',
 				old_name_placeholder: '',
 				exit_date_radio: '',
+				exit_radio: '',
 			};
 
 			$scope.exitingRecord = {
@@ -116,6 +117,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				final_completion_date: '',
 				old_name_placeholder: '',
 				exit_date_radio: '',
+				exit_radio: '',
 			};
 
 			$scope.getExistingStaff = function (optVal) {
