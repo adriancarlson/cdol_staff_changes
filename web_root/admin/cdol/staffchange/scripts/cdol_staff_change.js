@@ -572,4 +572,10 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			templateUrl: '/admin/cdol/staffchange/forms/exit_staff.html',
 		};
 	});
+
+	cdolStaffApp.directive('confirm', function () {
+		return {
+			templateUrl: '/admin/cdol/staffchange/forms/confirm.html',
+		};
+	});
 });

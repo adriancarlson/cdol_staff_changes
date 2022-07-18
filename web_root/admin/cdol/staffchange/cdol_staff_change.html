@@ -71,33 +71,13 @@
                     </div>
                 </div>
             </div>
-            <new-staff ng-show="newStaff.name_change=='New Staff'"></new-staff>
-            <transfer-staff ng-show="newStaff.name_change=='Transferring Staff'"></transfer-staff>
+            <new-staff ng-if="newStaff.name_change=='New Staff'"></new-staff>
+            <transfer-staff ng-if="newStaff.name_change=='Transferring Staff'"></transfer-staff>
             <name-change ng-if="newStaff.name_change=='Name Change'"></name-change>
             <exit-staff ng-if="newStaff.name_change=='Exiting Staff'"></exit-staff>
         </div>
-        <!--Confirm-->
-        <div ng-show="userContext.pageStatus =='Confirm'">
-            <h1>Thank You!</h1>
-            <div class="feedback-confirm" style="width:700px"><b><u>Thank You for your submission!</u></b>
-                <br>
-                ~[if.~(gpv.submessage)=E]
-                <p>Your ~(gpv.substat) Submission for ~(gpv.fname) ~(gpv.lname) has been sent to the Education
-                    Technology Office. We will be in
-                    contact once the account is deactivated.<br> The account will be deactivated June 30th unless
-                    specified otherwise.</p>
-                [else]
-                <p>Your ~(gpv.substat) Submission for ~(gpv.title) ~(gpv.fname) ~(gpv.lname) has been sent to the
-                    Education Technology Office. We will be in contact once the account has been created.</p>
-                [/if]
-            </div>
-            <div class="button-row" style="width:740px"><a class="button"
-                    href="cdol_staff_change.html?status=Submit">Submit
-                    Another
-                    Staff Change</a><a class="button" href="cdol_staff_change_list.html">View All Submissions</a><a
-                    class="button" href="/admin/home.html">Exit</a>
-            </div>
-        </div>
+        <confirm ng-if="userContext.pageStatus =='Confirm'"></confirm>
+
         ~[wc:admin_footer_css]
     </body>
 
