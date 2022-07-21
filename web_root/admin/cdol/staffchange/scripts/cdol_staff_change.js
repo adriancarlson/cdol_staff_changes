@@ -26,6 +26,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				accountChangeDate: '',
 				adjustedYearId: new Date($attrs.ngCurDate).getFullYear() - 1991,
 				spinner: 0,
+				isTodayBeforeJuly: true,
 			};
 
 			$scope.dupSearchParams = {
@@ -124,6 +125,13 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				$scope.exitingRecord.notes = v;
 			});
 
+			$scope.todayBeforeJuly = function () {
+				const firstDay = new Date('01/01/' + $scope.userContext.curDate.substring(6, 11)).getTime();
+				const lastDay = new Date('06/30/' + $scope.userContext.curDate.substring(6, 11)).getTime();
+				const today = new Date($scope.userContext.curDate).getTime();
+				$scope.userContext.isTodayBeforeJuly = today >= firstDay && today < lastDay;
+			};
+
 			$scope.getExistingStaff = function (optVal) {
 				if (optVal == 'Other') {
 					$scope.newStaff.old_name_placeholder = '';
@@ -150,6 +158,8 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 
 			//if on edit screen and passing an staff change id then this runs to pull the data for the current staff change record.
 			$scope.findStaffChange = function () {
+				$scope.todayBeforeJuly();
+
 				if ($scope.userContext.curStaffId !== '') {
 					$scope.newStaff.id = $scope.userContext.curStaffId;
 					//get existing record

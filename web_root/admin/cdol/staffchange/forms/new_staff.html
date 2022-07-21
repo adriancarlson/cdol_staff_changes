@@ -233,8 +233,9 @@
                     <span><input type="radio" name="exitDateGroup" id="exirRdioc1" ng-model="newStaff.exit_date_radio"
                             value="today" ng-required="!newStaff.exit_date_radio" /><label for="rdioc1">Today
                             ({{userContext.curDate}})</label></span>
-                    <span><input type="radio" name="exitDateGroup" id="exirRdioc2" ng-model="newStaff.exit_date_radio"
-                            value="june30" ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc2">June
+                    <span ng-if="userContext.isTodayBeforeJuly"><input type="radio" name="exitDateGroup" id="exirRdioc2"
+                            ng-model="newStaff.exit_date_radio" value="june30"
+                            ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc2">June
                             30th</label></span>
                     <span><input type="radio" name="exitDateGroup" id="exirRdioc3" ng-model="newStaff.exit_date_radio"
                             value="other" ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc3">Specific
