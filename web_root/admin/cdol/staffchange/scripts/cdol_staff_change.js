@@ -223,6 +223,22 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 
 			//submitting New Staff change record
 			$scope.submitStaffChange = function () {
+				//remove extra spaces from other fields and title case text inputs
+				if ($scope.newStaff.replacing == 'Other') {
+					$scope.newStaff.replacing_other = $scope.newStaff.replacing_other
+						.replace(/\s+/g, ' ')
+						.split(' ')
+						.map((w) => w[0].toUpperCase() + w.substring(1).toLowerCase())
+						.join(' ');
+				}
+				if ($scope.newStaff.previous_employer == 'Other') {
+					$scope.newStaff.previous_employer_other = $scope.newStaff.previous_employer_other
+						.replace(/\s+/g, ' ')
+						.split(' ')
+						.map((w) => w[0].toUpperCase() + w.substring(1).toLowerCase())
+						.join(' ');
+				}
+
 				$scope.newStaff.start_date = dateService.formatDateForApi($scope.newStaff.start_date);
 				$scope.newStaff.dob = dateService.formatDateForApi($scope.newStaff.dob);
 
