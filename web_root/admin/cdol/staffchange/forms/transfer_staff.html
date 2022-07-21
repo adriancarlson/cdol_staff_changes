@@ -1,4 +1,5 @@
 <form name="staffTransferForm" method="POST" novalidate>
+    <script type="text/javascript">initBehaviors();</script>
     <div class="fluid-form">
         <h4 style="margin-left: 10px;">{{newStaff.name_change}} Name</h4>
         <div>
@@ -47,8 +48,7 @@
             <div>
                 <label>Anticipated Contract Start Date <span class="notation">(can be
                         approximate)</span></label>
-                <input name="" type="text" value="" class="psDateWidget" ng-model="newStaff.start_date"
-                    ng-init="userContext.curDate">
+                <input type="text" class="psDateWidget" ng-model="newStaff.start_date">
             </div>
         </div>
         <div>
@@ -66,12 +66,10 @@
                         ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.transferStaffTempName}}</span>
                     {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} need their account
                     transferred prior to June 30th?</label>
-                <span><input type="radio" name="earlySetupGroup" id="erlyRdio1"
-                        ng-model="newStaff.early_setup" value="Yes" /><label
-                        for="erlyRdio1">Yes</label></span>
-                <span><input type="radio" name="earlySetupGroup" id="erlyRdio2"
-                        ng-model="newStaff.early_setup" value="No" /><label
-                        for="erlyRdio2">No</label></span>
+                <span><input type="radio" name="earlySetupGroup" id="erlyRdio1" ng-model="newStaff.early_setup"
+                        value="Yes" /><label for="erlyRdio1">Yes</label></span>
+                <span><input type="radio" name="earlySetupGroup" id="erlyRdio2" ng-model="newStaff.early_setup"
+                        value="No" /><label for="erlyRdio2">No</label></span>
             </div>
         </div>
         <div ng-show="newStaff.early_setup =='Yes'">
@@ -79,8 +77,7 @@
                 <label>Requested transfer date for <span
                         ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.transferStaffTempName}}</span>
                     {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}}</label>
-                <input name="" type="text" value="" class="psDateWidget" ng-model="newStaff.deadline"
-                    ng-init="userContext.curDate">
+                <input type="text" class="psDateWidget" ng-model="newStaff.deadline">
             </div>
         </div>
         <div>
@@ -104,8 +101,7 @@
         <div ng-if="newStaff.previous_employer === 'Other'">
             <div>
                 <label>Please type previous employer</label>
-                <input name="" type="text" value="" style="width: 300px;"
-                    ng-model="newStaff.previous_employer_other">
+                <input name="" type="text" value="" style="width: 300px;" ng-model="newStaff.previous_employer_other">
             </div>
         </div>
         <div>
@@ -123,12 +119,10 @@
                         ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.transferStaffTempName}}</span>
                     {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} replacing another
                     staff member who is leaving ~(schoolname)?</label>
-                <span><input type="radio" name="exitGroup" id="exirRdioq1" ng-model="newStaff.exit_radio"
-                        value="Yes" ng-required="!newStaff.exit_radio" /><label
-                        for="rdioq1">Yes</label></span>
-                <span><input type="radio" name="exitGroup" id="exirRdioq2" ng-model="newStaff.exit_radio"
-                        value="No" ng-required="!newStaff.exit_radio" /><label
-                        for="exirRdioq2">No</label></span>
+                <span><input type="radio" name="exitGroup" id="exirRdioq1" ng-model="newStaff.exit_radio" value="Yes"
+                        ng-required="!newStaff.exit_radio" /><label for="rdioq1">Yes</label></span>
+                <span><input type="radio" name="exitGroup" id="exirRdioq2" ng-model="newStaff.exit_radio" value="No"
+                        ng-required="!newStaff.exit_radio" /><label for="exirRdioq2">No</label></span>
             </div>
         </div>
         <fieldset ng-if="newStaff.exit_radio =='Yes'" class="bg-secondary">
@@ -137,14 +131,12 @@
                 <div>
                     <label>Who is <span
                             ng-show="newStaff.title =='' && newStaff.first_name =='' && newStaff.last_name ==''">{{userContext.transferStaffTempName}}</span>
-                        {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} Replacing? <span
-                            style="color: red;
+                        {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}} Replacing? <span style="color: red;
 font-size: 13.5pt;"> *</span><br><span class="notation">(choose Other if staff member being replaced is not
                             listed)</span></label><br>
                     <select style="margin-left: 10px;"
                         ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
-                        name="" ng-model="newStaff.replacing" ng-required="true"
-                        ng-change="getExistingStaff()">
+                        name="" ng-model="newStaff.replacing" ng-required="true" ng-change="getExistingStaff()">
                         <option></option>
                         ~[tlist_sql;SELECT
                         users.dcid,
@@ -169,8 +161,8 @@ font-size: 13.5pt;"> *</span><br><span class="notation">(choose Other if staff m
                             staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}} when you
                         click
                         Submit</span>
-                    <input ng-show="newStaff.replacing !='Other' && userContext.pageStatus =='Edit'" name=""
-                        type="text" value="" ng-model="newStaff.old_name_placeholder">
+                    <input ng-show="newStaff.replacing !='Other' && userContext.pageStatus =='Edit'" name="" type="text"
+                        value="" ng-model="newStaff.old_name_placeholder">
                 </div>
             </div>
             <div ng-if="newStaff.replacing === 'Other'">
@@ -194,17 +186,14 @@ font-size: 13.5pt;"> *</span><br><span class="notation">(choose Other if staff m
                             ng-show="newStaff.replacing === 'Other'">{{newStaff.replacing_other}}</span>'s
                         Deactivation
                         Date</legend>
-                    <span><input type="radio" name="exitDateGroup" id="exirRdioc1"
-                            ng-model="newStaff.exit_date_radio" value="today"
-                            ng-required="!newStaff.exit_date_radio" /><label for="rdioc1">Today
+                    <span><input type="radio" name="exitDateGroup" id="exirRdioc1" ng-model="newStaff.exit_date_radio"
+                            value="today" ng-required="!newStaff.exit_date_radio" /><label for="rdioc1">Today
                             ({{userContext.curDate}})</label></span>
-                    <span><input type="radio" name="exitDateGroup" id="exirRdioc2"
-                            ng-model="newStaff.exit_date_radio" value="june30"
-                            ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc2">June
+                    <span><input type="radio" name="exitDateGroup" id="exirRdioc2" ng-model="newStaff.exit_date_radio"
+                            value="june30" ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc2">June
                             30th</label></span>
-                    <span><input type="radio" name="exitDateGroup" id="exirRdioc3"
-                            ng-model="newStaff.exit_date_radio" value="other"
-                            ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc3">Specific
+                    <span><input type="radio" name="exitDateGroup" id="exirRdioc3" ng-model="newStaff.exit_date_radio"
+                            value="other" ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc3">Specific
                             Date</label></span>
                     <span>
                 </fieldset>
@@ -212,24 +201,23 @@ font-size: 13.5pt;"> *</span><br><span class="notation">(choose Other if staff m
             <div style="margin: 0 35px 35px;"
                 ng-if="(userContext.pageStatus =='Submit' && newStaff.exit_date_radio =='other') || (userContext.pageStatus =='Edit' && newStaff.name_change =='Exiting Staff')">
                 <div>
+                    <script type="text/javascript">initBehaviors();</script>
                     <label style="padding-left:0;">Requested Deactivation Date<span class="notation">(please
                             type in the
                             date)</span></label><br>
-                    <input name="" type="text" value="" maxlength="10" size="10" style="width:98px;"
-                        placeholder="MM/DD/YYYY" ng-model="exitingRecord.deadline" ng-required="true">
+                    <input type="text" class="psDateWidget" ng-model="exitingRecord.deadline" ng-required="true">
                 </div>
             </div>
         </fieldset>
         <div>
             <div>
                 <label>Additional Notes/Details?</label>
-                <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
-                    ng-model="newStaff.notes" ng-change="exitingRecord.notes=newStaff.notes"></textarea>
+                <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute" ng-model="newStaff.notes"
+                    ng-change="exitingRecord.notes=newStaff.notes"></textarea>
             </div>
         </div>
         ~[if#distCheck.security.inrole=9]
-        <div style="background-color: #fff; border-top: 1px solid #eee;"
-            ng-show="userContext.pageStatus =='Edit'">
+        <div style="background-color: #fff; border-top: 1px solid #eee;" ng-show="userContext.pageStatus =='Edit'">
             <div>
                 <table class="grid dis-check-table">
                     <thead>
@@ -240,8 +228,7 @@ font-size: 13.5pt;"> *</span><br><span class="notation">(choose Other if staff m
                     <tbody>
                         <tr>
                             <td>
-                                <input type="checkbox" name=""
-                                    ng-model="newStaff.ps_created"><label>PowerSchool Account
+                                <input type="checkbox" name="" ng-model="newStaff.ps_created"><label>PowerSchool Account
                                     Moved?</label>
                             </td>
                             <td class="rb-n">
@@ -260,8 +247,7 @@ font-size: 13.5pt;"> *</span><br><span class="notation">(choose Other if staff m
                                     Account Verified?</label>
                             </td>
                             <td>
-                                <input type="checkbox" class="ml" name=""
-                                    ng-disabled="newStaff.o365_created"
+                                <input type="checkbox" class="ml" name="" ng-disabled="newStaff.o365_created"
                                     ng-model="newStaff.o365_ignored"><label class="text-muted mr">Not
                                     Applicable</label>
                             </td>
@@ -301,22 +287,18 @@ font-size: 13.5pt;"> *</span><br><span class="notation">(choose Other if staff m
         </div>
         [/if#distCheck]
         <div class="button-row" ng-show="userContext.pageStatus =='Submit'">
-            <span class="req-notation"
-                ng-show="staffTransferForm.$invalid && staffTransferForm.$dirty">Please
+            <span class="req-notation" ng-show="staffTransferForm.$invalid && staffTransferForm.$dirty">Please
                 fill all required fields prior to submitting.</span>
-            <button id="canBtn" type="button" ng-show="subConfirm"
-                ng-click="subConfirm = false">Cancel</button>
+            <button id="canBtn" type="button" ng-show="subConfirm" ng-click="subConfirm = false">Cancel</button>
             <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="subConfirm"
                 ng-click="submitStaffChange()">Confirm Submission</button>
             <button id="subBtn" type="button" ng-show="!subConfirm" ng-click="subConfirm = true"
                 ng-disabled="staffTransferForm.$invalid">Submit</button>
         </div>
         <div ng-show="userContext.pageStatus =='Edit'" class="button-row">
-            <span class="req-notation"
-                ng-show="staffTransferForm.$invalid && staffTransferForm.$dirty">Please
+            <span class="req-notation" ng-show="staffTransferForm.$invalid && staffTransferForm.$dirty">Please
                 fill all required fields prior to submitting.</span>
-            <button id="canBtn" type="button" ng-show="delUpdate"
-                ng-click="delUpdate = false">Cancel</button>
+            <button id="canBtn" type="button" ng-show="delUpdate" ng-click="delUpdate = false">Cancel</button>
             <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="delUpdate"
                 ng-click="deleteStaffChange()">Confirm Deletion</button>
             <a id="bkBtn" class="button" ng-show="!delUpdate"

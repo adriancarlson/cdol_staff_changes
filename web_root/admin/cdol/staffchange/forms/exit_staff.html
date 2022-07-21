@@ -1,7 +1,6 @@
 <form name="exitingForm" method="POST" novalidate>
     <div>
-        <div id="feedback-message" class="feedback-alert"
-            ng-if="userContext.pageStatus =='Submit'">If
+        <div id="feedback-message" class="feedback-alert" ng-if="userContext.pageStatus =='Submit'">If
             the
             Exiting staff member is being replaced by a
             new or transferring in staff member, please use the New Staff or Transfering Staff option above.
@@ -35,47 +34,41 @@
                     [/tlist_sql]
                     <option value="Other">-- Other --</option>
                 </select>
-                <input ng-show="userContext.pageStatus =='Edit'&& newStaff.replacing != 'Other'" name=""
-                    type="text" value="" ng-model="newStaff.old_name_placeholder">
+                <input ng-show="userContext.pageStatus =='Edit'&& newStaff.replacing != 'Other'" name="" type="text"
+                    value="" ng-model="newStaff.old_name_placeholder">
             </div>
         </div>
         <div ng-if="newStaff.replacing === 'Other'">
             <div>
                 <label>Please type name of the exiting staff member</label>
-                <input name="" type="text" value="" style="width: 300px;"
-                    ng-model="newStaff.replacing_other">
+                <input name="" type="text" value="" style="width: 300px;" ng-model="newStaff.replacing_other">
             </div>
         </div>
         <div ng-show="newStaff.replacing !=''  && userContext.pageStatus =='Submit'">
             <fieldset>
-                <legend class="req"><span
-                        ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">The
+                <legend class="req"><span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">The
                         Exiting
                         Staff </span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}'s Deactivation
                     Date</legend>
-                <span><input type="radio" name="exitDateGroup" id="exirRdioc1"
-                        ng-model="newStaff.exit_date_radio" value="today"
-                        ng-required="!newStaff.exit_date_radio" /><label for="rdioc1">Today
+                <span><input type="radio" name="exitDateGroup" id="exirRdioc1" ng-model="newStaff.exit_date_radio"
+                        value="today" ng-required="!newStaff.exit_date_radio" /><label for="rdioc1">Today
                         ({{userContext.curDate}})</label></span>
-                <span><input type="radio" name="exitDateGroup" id="exirRdioc2"
-                        ng-model="newStaff.exit_date_radio" value="june30"
-                        ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc2">June
+                <span><input type="radio" name="exitDateGroup" id="exirRdioc2" ng-model="newStaff.exit_date_radio"
+                        value="june30" ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc2">June
                         30th</label></span>
-                <span><input type="radio" name="exitDateGroup" id="exirRdioc3"
-                        ng-model="newStaff.exit_date_radio" value="other"
-                        ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc3">Specific
+                <span><input type="radio" name="exitDateGroup" id="exirRdioc3" ng-model="newStaff.exit_date_radio"
+                        value="other" ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc3">Specific
                         Date</label></span>
                 <span>
             </fieldset>
         </div>
-        <div style="margin: 0 35px 35px;"
-            ng-if="newStaff.exit_date_radio =='other' || userContext.pageStatus =='Edit'">
+        <div style="margin: 0 35px 35px;" ng-if="newStaff.exit_date_radio =='other' || userContext.pageStatus =='Edit'">
             <div>
+                <script type="text/javascript">initBehaviors();</script>
                 <label style="padding-left:0;">Requested Deactivation Date<span class="notation">(please
                         type in the
                         date)</span></label>
-                <input name="" type="text" value="" maxlength="10" size="10" style="width:98px;"
-                    placeholder="MM/DD/YYYY" ng-model="newStaff.deadline" ng-required="true">
+                <input type="text" class="psDateWidget" ng-model="newStaff.deadline" ng-required="true">
             </div>
         </div>
         <div>
@@ -114,8 +107,8 @@
         <div>
             <div class="feedback-info" ng-show="userContext.pageStatus =='Submit'">
                 <b><u>Please Note:</u></b> personal files (i.e. Documents, pictures, music and videos)
-                should be removed by <span
-                    ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the Exiting
+                should be removed by <span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the
+                    Exiting
                     Staff</span>{{exitingRecord.first_name}} {{exitingRecord.last_name}}.<br> Ed Tech is not
                 responsible for any files left after <span
                     ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">the Exiting
@@ -123,8 +116,7 @@
             </div>
         </div>
         ~[if#distCheck.security.inrole=9]
-        <div style="background-color: #fff; border-top: 1px solid #eee;"
-            ng-show="userContext.pageStatus =='Edit'">
+        <div style="background-color: #fff; border-top: 1px solid #eee;" ng-show="userContext.pageStatus =='Edit'">
             <div>
                 <table class="grid dis-check-table">
                     <thead>
@@ -184,8 +176,7 @@
         <div class="button-row" ng-show="userContext.pageStatus =='Submit'">
             <span class="req-notation" ng-show="exitingForm.$invalid && exitingForm.$dirty">Please
                 fill all required fields prior to submitting.</span>
-            <button id="canBtn" type="button" ng-show="subConfirm"
-                ng-click="subConfirm = false">Cancel</button>
+            <button id="canBtn" type="button" ng-show="subConfirm" ng-click="subConfirm = false">Cancel</button>
             <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="subConfirm"
                 ng-click="submitStaffChange()">Confirm Submission</button>
             <button id="subBtn" type="button" ng-show="!subConfirm" ng-click="subConfirm = true"
@@ -194,8 +185,7 @@
         <div ng-show="userContext.pageStatus =='Edit'" class="button-row">
             <span class="req-notation" ng-show="exitingForm.$invalid && exitingForm.$dirty">Please
                 fill all required fields prior to submitting.</span>
-            <button id="canBtn" type="button" ng-show="delUpdate"
-                ng-click="delUpdate = false">Cancel</button>
+            <button id="canBtn" type="button" ng-show="delUpdate" ng-click="delUpdate = false">Cancel</button>
             <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="delUpdate"
                 ng-click="deleteStaffChange()">Confirm Deletion</button>
             <a id="bkBtn" class="button" ng-show="!delUpdate"
