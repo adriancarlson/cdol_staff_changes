@@ -231,6 +231,8 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						.split(' ')
 						.map((w) => w[0].toUpperCase() + w.substring(1).toLowerCase())
 						.join(' ');
+					$scope.exitingRecord.replacing_other = $scope.newStaff.replacing_other;
+					$scope.exitingRecord.old_name_placeholder = $scope.newStaff.replacing_other;
 				}
 				if ($scope.newStaff.previous_employer == 'Other') {
 					$scope.newStaff.previous_employer_other = $scope.newStaff.previous_employer_other
