@@ -14,7 +14,7 @@
             <div>
                 <label class="req">Who is not returning?</label>
                 <select
-                    ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
+                    ng-if="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
                     name="" ng-model="newStaff.replacing" ng-required="true"
                     ng-change="getExistingStaff(newStaff.replacing)">
                     <option></option>
