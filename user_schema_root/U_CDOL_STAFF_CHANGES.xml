@@ -42,5 +42,9 @@
         <field name="o365_ignored" type="Boolean" />
         <field name="exit_date_radio" type="string" length="50"/>
         <field name="exit_radio" type="string" length="50"/>
+        <field name="position_radio" type="string" length="50"/>
+        <field name="leaving_radio" type="string" length="50"/>
+        <field name="previous_position" type="Clob"/>
+        <field name="new_position" type="Clob"/>
     </extendedTable>
 </psExtension>
