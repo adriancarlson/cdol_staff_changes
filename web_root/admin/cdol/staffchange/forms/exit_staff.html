@@ -44,7 +44,7 @@
                 <input name="" type="text" value="" style="width: 300px;" ng-model="newStaff.replacing_other">
             </div>
         </div>
-        <div ng-show="newStaff.replacing !=''  && userContext.pageStatus =='Submit'">
+        <div ng-if="newStaff.replacing !=''  && userContext.pageStatus =='Submit'">
             <fieldset>
                 <legend class="req"><span ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">The
                         Exiting
