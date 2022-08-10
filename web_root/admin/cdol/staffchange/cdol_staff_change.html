@@ -61,18 +61,23 @@
                         <label>Type of Staff Change</label>
                         <select name="" type="text" value="" ng-model="newStaff.name_change">
                             <option></option>
-                            <option value="New Staff">New Staff: Staff new to the Diocese of Lincoln </option>
-                            <option value="Transferring Staff">Transferring Staff: Staff transferring into ~(schoolname)
-                                from another Diocese of Lincoln School</option>
-                            <option value="Name Change">Name Change: change the name of an existing staff member
+                            <option value="New Staff">New Staff: Staff <strong>New</strong> to the Diocese of Lincoln
                             </option>
-                            <option value="Exiting Staff">Exiting Staff: staff not returning</option>
+                            <option value="Transferring Staff">Transferring Staff: Staff Transfer into ~(schoolname)
+                                from Another Diocese of Lincoln School</option>
+                            <option value="Position Change">Position/Job Change: Staff Member Changing Position/Job
+                                within ~(schoolname)
+                            </option>
+                            <option value="Name Change">Name Change: Change the Legal Name of a Current Staff Member
+                            </option>
+                            <option value="Exiting Staff">Exiting Staff: Staff not Returning to ~(schoolname)</option>
                         </select>
                     </div>
                 </div>
             </div>
             <new-staff ng-if="newStaff.name_change=='New Staff'"></new-staff>
             <transfer-staff ng-if="newStaff.name_change=='Transferring Staff'"></transfer-staff>
+            <position-change ng-if="newStaff.name_change=='Position Change'"></position-change>
             <name-change ng-if="newStaff.name_change=='Name Change'"></name-change>
             <exit-staff ng-if="newStaff.name_change=='Exiting Staff'"></exit-staff>
         </div>

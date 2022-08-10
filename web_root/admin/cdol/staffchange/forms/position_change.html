@@ -1,0 +1,129 @@
+<form name="positionChangeForm" method="POST" novalidate>
+    <div>
+        <div id="feedback-message" class="feedback-alert" ng-if="userContext.pageStatus =='Submit'">If
+            the
+            Exiting staff member is being replaced by a
+            new or transferring in staff member, please use the New Staff or Transfering Staff option above.
+            <br> An Exiting Staff Record will be submitted when you choose who the New or Transfering Staff
+            member is replacing.
+        </div>
+    </div>
+    <div class="fluid-form">
+        <h4 style="margin-left: 10px;">{{newStaff.name_change}} Name</h4>
+        <div>
+            <div>
+                <label class="req">Who is changing positions?</label>
+                <select
+                    ng-if="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
+                    name="" ng-model="newStaff.replacing" ng-required="true"
+                    ng-change="getExistingStaff(newStaff.replacing)">
+                    <option></option>
+                    ~[tlist_sql;SELECT
+                    users.dcid,
+                    users.first_name,
+                    users.last_name
+                    FROM SCHOOLSTAFF
+                    inner join users
+                    on users.dcid = schoolstaff.users_dcid
+                    WHERE schoolstaff.status =1
+                    ~[if.is.a.school]
+                    AND schoolstaff.schoolid = ~(curschoolid)
+                    [/if.is.a.school]
+                    Order BY users.last_name , users.first_name]
+                    <option value="~(dcid)">~(first) ~(last)</option>
+                    [/tlist_sql]
+                    <!-- <option value="Other">-- Other --</option> -->
+                </select>
+                <!-- <input ng-show="userContext.pageStatus =='Edit'&& newStaff.replacing != 'Other'" name="" type="text"
+                    value="" ng-model="newStaff.old_name_placeholder"> -->
+            </div>
+        </div>
+        <!-- <div ng-if="newStaff.replacing === 'Other'">
+            <div>
+                <label>Please type name of the exiting staff member</label>
+                <input name="" type="text" value="" style="width: 300px;" ng-model="newStaff.replacing_other">
+            </div>
+        </div> -->
+        <div>
+            <label>Previous Position/Job</label>
+            <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
+                ng-model="newStaff.previous_position"></textarea>
+        </div>
+        <div>
+            <label>New Position/Job</label>
+            <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
+                ng-model="newStaff.new_position"></textarea>
+        </div>
+        <div>
+            <div>
+                <label>Additional Notes/Details?</label>
+                <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
+                    ng-model="newStaff.notes"></textarea>
+            </div>
+        </div>
+        ~[if#distCheck.security.inrole=9]
+        <div style="background-color: #fff; border-top: 1px solid #eee;" ng-show="userContext.pageStatus =='Edit'">
+            <div>
+                <table class="grid">
+                    <thead>
+                        <tr>
+                            <th colspan="4">Account Update</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
+                                <input type="checkbox" name="" ng-model="newStaff.ps_created"><label>PowerSchool Account
+                                    Changes?</label>
+                                <ul>
+                                    <li>Security Roles Changes?</li>
+                                    <li>Security Group Changes?</li>
+                                    <li>CDOL Staff Role Changes?</li>
+                                </ul>
+                            </td>
+                            <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
+                                <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>AD User
+                                    Account created?</label>
+                                <ul>
+                                    <li>Exchange email updated?</li>
+                                </ul>
+                            </td>
+                            <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
+                                <input type="checkbox" name="" ng-model="newStaff.o365_created"><label>O365
+                                    User
+                                    Account updated?</label>
+                                <ul>
+                                    <li>Office 365 updated?</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        [/if#distCheck]
+        <div class="button-row" ng-show="userContext.pageStatus =='Submit'">
+            <span class="req-notation" ng-show="positionChangeForm.$invalid && positionChangeForm.$dirty">Please
+                fill all required fields prior to submitting.</span>
+            <button id="canBtn" type="button" ng-show="subConfirm" ng-click="subConfirm = false">Cancel</button>
+            <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="subConfirm"
+                ng-click="submitStaffChange()">Confirm Submission</button>
+            <button id="subBtn" type="button" ng-show="!subConfirm" ng-click="subConfirm = true"
+                ng-disabled="positionChangeForm.$invalid">Submit</button>
+        </div>
+        <div ng-show="userContext.pageStatus =='Edit'" class="button-row">
+            <span class="req-notation" ng-show="positionChangeForm.$invalid && positionChangeForm.$dirty">Please
+                fill all required fields prior to submitting.</span>
+            <button id="canBtn" type="button" ng-show="delUpdate" ng-click="delUpdate = false">Cancel</button>
+            <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="delUpdate"
+                ng-click="deleteStaffChange()">Confirm Deletion</button>
+            <a id="bkBtn" class="button" ng-show="!delUpdate"
+                href="/admin/cdol/staffchange/cdol_staff_change_list.html">Back</a>
+            <button id="delBtn" type="button" ng-show="!delUpdate" ng-click="delUpdate = true">Delete
+                Submission</button>
+            <button id="upBtn" type="button" ng-disabled="positionChangeForm.$invalid" ng-show="!delUpdate"
+                ng-click="submitStaffUpdate()">Submit
+                Update</button>
+        </div>
+    </div>
+</form>
