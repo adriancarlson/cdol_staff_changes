@@ -1,15 +1,6 @@
 <form name="positionChangeForm" method="POST" novalidate>
-    <div>
-        <div id="feedback-message" class="feedback-alert" ng-if="userContext.pageStatus =='Submit'">If
-            the
-            Exiting staff member is being replaced by a
-            new or transferring in staff member, please use the New Staff or Transfering Staff option above.
-            <br> An Exiting Staff Record will be submitted when you choose who the New or Transfering Staff
-            member is replacing.
-        </div>
-    </div>
     <div class="fluid-form">
-        <h4 style="margin-left: 10px;">{{newStaff.name_change}} Name</h4>
+        <h4 style="margin-left: 10px;">{{newStaff.name_change}}</h4>
         <div>
             <div>
                 <label class="req">Who is changing positions?</label>
@@ -32,31 +23,76 @@
                     Order BY users.last_name , users.first_name]
                     <option value="~(dcid)">~(first) ~(last)</option>
                     [/tlist_sql]
-                    <!-- <option value="Other">-- Other --</option> -->
+                    <option value="Other">-- Other --</option>
                 </select>
-                <!-- <input ng-show="userContext.pageStatus =='Edit'&& newStaff.replacing != 'Other'" name="" type="text"
-                    value="" ng-model="newStaff.old_name_placeholder"> -->
+                <input ng-show="userContext.pageStatus =='Edit'&& newStaff.replacing != 'Other'" name="" type="text"
+                    value="" ng-model="newStaff.old_name_placeholder">
             </div>
         </div>
-        <!-- <div ng-if="newStaff.replacing === 'Other'">
+        <div ng-if="newStaff.replacing === 'Other'">
             <div>
-                <label>Please type name of the exiting staff member</label>
+                <label>Please type name of the staff member changing positions</label>
                 <input name="" type="text" value="" style="width: 300px;" ng-model="newStaff.replacing_other">
             </div>
-        </div> -->
-        <div>
-            <label>Previous Position/Job</label>
-            <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
-                ng-model="newStaff.previous_position"></textarea>
         </div>
-        <div>
-            <label>New Position/Job</label>
-            <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
-                ng-model="newStaff.new_position"></textarea>
-        </div>
+        <fieldset>
+            <legend>Position/Job Change Information</legend>
+
+            <div>
+                <div>
+                    <label>Previous Position/Job:</label>
+                    <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
+                        ng-model="newStaff.previous_position"></textarea>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label>New Position/Job:</label>
+                    <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
+                        ng-model="newStaff.new_position"></textarea>
+                </div>
+            </div>
+            <div>
+                <fieldset>
+                    <legend class="req"><span
+                            ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">{{newStaff.old_name_placeholder}}</span><span
+                            ng-show="newStaff.replacing != 'Other'">{{exitingRecord.first_name}}
+                            {{exitingRecord.last_name}}</span><span
+                            ng-show="newStaff.replacing === 'Other'">{{newStaff.replacing_other}}</span>'s
+                        Deactivation
+                        Date</legend>
+                    <div>
+                        <span><input type="radio" name="exitDateGroup" id="exirRdioc1"
+                                ng-model="newStaff.exit_date_radio" value="today"
+                                ng-required="!newStaff.exit_date_radio" /><label for="rdioc1">Today
+                                ({{userContext.curDate}})</label></span>
+                        <span ng-if="userContext.isTodayBeforeJuly"><input type="radio" name="exitDateGroup"
+                                id="exirRdioc2" ng-model="newStaff.exit_date_radio" value="june30"
+                                ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc2">June
+                                30th</label></span>
+                        <span><input type="radio" name="exitDateGroup" id="exirRdioc3"
+                                ng-model="newStaff.exit_date_radio" value="other"
+                                ng-required="!newStaff.exit_date_radio" /><label for="exirRdioc3">Specific
+                                Date</label></span>
+                        <span>
+                    </div>
+                    <div style="margin: 0 35px 35px;"
+                        ng-if="(userContext.pageStatus =='Submit' && newStaff.exit_date_radio =='other') || (userContext.pageStatus =='Edit' && newStaff.name_change =='Exiting Staff')">
+                        <div>
+                            <script type="text/javascript">initBehaviors();</script>
+                            <label style="padding-left:0;">Requested Deactivation Date<span class="notation"><br>(please
+                                    type in the
+                                    date)</span></label><br>
+                            <input type="text" class="psDateWidget" ng-model="exitingRecord.deadline"
+                                ng-required="true">
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </fieldset>
         <div>
             <div>
-                <label>Additional Notes/Details?</label>
+                <label>Reason for Job/Position Change and/or Additional Notes/Details?</label>
                 <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
                     ng-model="newStaff.notes"></textarea>
             </div>
