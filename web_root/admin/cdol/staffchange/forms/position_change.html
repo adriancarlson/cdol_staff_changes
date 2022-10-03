@@ -35,32 +35,25 @@
                 <input name="" type="text" value="" style="width: 300px;" ng-model="newStaff.replacing_other">
             </div>
         </div>
-        <fieldset>
+        <fieldset ng-if="newStaff.replacing !== ''">
             <legend>Position/Job Change Information</legend>
-
             <div>
                 <div>
-                    <label>Previous Position/Job:</label>
+                    <label>Previous Position/Job:</label><br>
                     <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
                         ng-model="newStaff.previous_position"></textarea>
                 </div>
             </div>
             <div>
                 <div>
-                    <label>New Position/Job:</label>
+                    <label>New Position/Job:</label><br>
                     <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
                         ng-model="newStaff.new_position"></textarea>
                 </div>
             </div>
             <div>
                 <fieldset>
-                    <legend class="req"><span
-                            ng-show="exitingRecord.first_name =='' && exitingRecord.last_name ==''">{{newStaff.old_name_placeholder}}</span><span
-                            ng-show="newStaff.replacing != 'Other'">{{exitingRecord.first_name}}
-                            {{exitingRecord.last_name}}</span><span
-                            ng-show="newStaff.replacing === 'Other'">{{newStaff.replacing_other}}</span>'s
-                        Deactivation
-                        Date</legend>
+                    <legend class="req">Date of Position/Job Change</legend>
                     <div>
                         <span><input type="radio" name="exitDateGroup" id="exirRdioc1"
                                 ng-model="newStaff.exit_date_radio" value="today"
@@ -80,9 +73,7 @@
                         ng-if="(userContext.pageStatus =='Submit' && newStaff.exit_date_radio =='other') || (userContext.pageStatus =='Edit' && newStaff.name_change =='Exiting Staff')">
                         <div>
                             <script type="text/javascript">initBehaviors();</script>
-                            <label style="padding-left:0;">Requested Deactivation Date<span class="notation"><br>(please
-                                    type in the
-                                    date)</span></label><br>
+                            <label style="padding-left:0;">Date of Position/Job Change</label><br>
                             <input type="text" class="psDateWidget" ng-model="exitingRecord.deadline"
                                 ng-required="true">
                         </div>
