@@ -591,6 +591,12 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			templateUrl: '/admin/cdol/staffchange/forms/transfer_staff.html',
 		};
 	});
+
+	cdolStaffApp.directive('positionChange', function () {
+		return {
+			templateUrl: '/admin/cdol/staffchange/forms/position_change.html',
+		};
+	});
 	cdolStaffApp.directive('nameChange', function () {
 		return {
 			templateUrl: '/admin/cdol/staffchange/forms/name_change.html',
