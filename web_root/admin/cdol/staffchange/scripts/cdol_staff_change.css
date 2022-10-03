@@ -17,7 +17,8 @@
 #tabOneContent td,
 #tabTwoContent td,
 #tabThreeContent td,
-#tabFourContent td {
+#tabFourContent td,
+#tabFiveContent td {
 	text-align: center;
 }
 input,

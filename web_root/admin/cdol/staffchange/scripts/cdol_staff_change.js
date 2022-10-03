@@ -267,7 +267,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				if (mm < 10) mm = '0' + mm;
 				todayFormated = mm + '/' + dd + '/' + yyyy;
 
-				if ($scope.newStaff.name_change == 'Exiting Staff' || $scope.newStaff.name_change == 'Transferring Staff') {
+				if ($scope.newStaff.name_change == 'Exiting Staff' || $scope.newStaff.name_change == 'Transferring Staff' ) {
 					if ($scope.newStaff.exit_date_radio == 'today' || $scope.newStaff.exit_date_radio == '') {
 						$scope.newStaff.deadline = todayFormated;
 					} else if ($scope.newStaff.exit_date_radio == 'june30') {

@@ -12,22 +12,22 @@
     </head>
 
     <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl"
-        data-require-path="/scripts/cdol_staff_change/cdol_staff_change_list.js?~(f.currenttime)"
-        data-module-name="cdolStaffListApp" ng-cur-year-id="~(curyearid)" ng-cur-date="~[date]" ng-cloak>
-
+        data-require-path="/admin/cdol/staffchange/scripts/cdol_staff_change.js?~(f.currenttime)"
+        data-module-name="cdolStaffApp" ng-init="getStaffResults()" ng-cur-school-id="~(curschoolid)"
+        ng-cur-year-id="~(curyearid)" ng-status="~(gpv.status)" ng-cur-user-id="~[x:userid]" ng-cur-date="~[date]"
+        ng-cur-time="~[time]" ng-staff-change-id="~(gpv.id)" ng-cloak>
         ~[wc:admin_header_css]
-
         <a href="/admin/home.html" target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; Staff
         Changes
         ~[wc:admin_navigation_css]
-
         <h1 style="margin-bottom: 5px;">Staff Changes</h1>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-auto me-auto"><label for="year-selector"
                         style="padding-left: 25px; padding-right: 7px;">Year: </label>
 
-                    <select id="year-selector" name="" ng-model="userContext.adjustedYearId" ng-change="loadingData()">
+                    <select id="year-selector" name="" ng-model="userContext.adjustedYearId"
+                        ng-change="getStaffResults()">
                         ~[tlist_sql;
                         SELECT
                         DISTINCT yearid,
@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-auto me-2"><a class="button" href="cdol_staff_change.html?status=Submit">Submit
                         a
-                        Staff Change</a><button ng-click="loadingData()">Reload List</button></div>
+                        Staff Change</a><button ng-click="getStaffResults()">Reload List</button></div>
             </div>
         </div>
         <div class="tabs">
@@ -51,11 +51,9 @@
                             staffChangeCount.total_new_remaining }}</span></a></li>
                 <li><a href="#tabTwoContent">Transferring Staff <span class="badge text-bg-primary ms-1">{{
                             staffChangeCount.total_transfer_remaining }}</span></a></li>
-                <li><a href="#tabThreeContent">Job/Position Changes <span class="badge text-bg-info ms-1">{{
+                <li><a href="#tabThreeContent">Name Changes <span class="badge text-bg-warning ms-1">{{
                             staffChangeCount.total_name_change_remaining }}</span></a></li>
-                <li><a href="#tabFourContent">Name Changes <span class="badge text-bg-warning ms-1">{{
-                            staffChangeCount.total_name_change_remaining }}</span></a></li>
-                <li><a href="#tabFiveContent">Exiting Staff <span class="badge text-bg-secondary ms-1">{{
+                <li><a href="#tabFourContent">Exiting Staff <span class="badge text-bg-secondary ms-1">{{
                             staffChangeCount.total_exit_remaining }}</span></a></li>
             </ul>
             <div class="spinner-border text-primary ms-5" role="status" ng-if="userContext.spinner == 1">
