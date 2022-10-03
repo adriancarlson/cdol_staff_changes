@@ -2,7 +2,6 @@ define(['angular', 'components/shared/index'], function (angular) {
 	var cdolStaffListApp = angular.module('cdolStaffListMod', ['powerSchoolModule']);
 
 	cdolStaffListApp.controller('cdolStaffListCtrl', function ($scope, $http, $attrs, $q) {
-		$scope.spinnerActive = true;
 		$scope.staffChangeCount = 0;
 		$scope.newStaffList = [];
 		$scope.transferStaffList = [];
@@ -15,7 +14,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 		$scope.adjustedYearId = new Date($attrs.ngCurDate).getFullYear() - 1991;
 
 		// function to get PQ results
-		$scope.getPowerQueryResults = function (endpoint, data) {
+		$scope.getPowerQueryResults = (endpoint, data) => {
 			var deferredResponse = $q.defer();
 			$http({
 				url: '/ws/schema/query/' + endpoint,
@@ -27,10 +26,10 @@ define(['angular', 'components/shared/index'], function (angular) {
 					'Content-Type': 'application/json',
 				},
 			}).then(
-				function successCallback(response) {
-					deferredResponse.resolve(response.data.record || []);
+				(res) => {
+					deferredResponse.resolve(res.data.record || []);
 				},
-				function errorCallback(response) {
+				(res) => {
 					psAlert({ message: 'There was an error loading the Staff Change Data', title: 'Error Loading Data' });
 				},
 			);
@@ -38,18 +37,42 @@ define(['angular', 'components/shared/index'], function (angular) {
 			return deferredResponse.promise;
 		};
 
-		$scope.loadData = function () {
+		$scope.loadData = async () => {
 			loadingDialog();
+			// updating left nav count
 			$j.ajax({
 				url: '/admin/cdol/staffchange/data/newstaffcount.txt',
-				success: function (result) {
+				success: (result) => {
 					$j('#staffCounterLink').innerHTML = "Staff Changes ('+result+')";
 				},
 			});
 
-			$scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.counts', { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId }).then((staffCountData) => {
-				$scope.staffChangeCount = staffCountData[0];
-			});
+			const pqData = { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId };
+
+			// getting counts
+			const countRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.counts', pqData);
+			$scope.staffChangeCount = countRes[0];
+
+			// getting new staff
+			const newStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.new', pqData);
+			$scope.newStaffList = newStaffRes;
+
+			// getting transfer staff
+			const transferStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.transfer', pqData);
+			$scope.transferStaffList = transferStaffRes;
+
+			// getting job change staff
+			// 			const jobChangeRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.jobchange', pqData);
+			// 			$scope.jobChangeList = jobChangeRes;
+
+			// getting name change staff
+			const nameChangeRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.namechange', pqData);
+			$scope.nameChangeList = nameChangeRes;
+
+			// getting exiting staff
+			const exitStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.exits', pqData);
+			$scope.exitStaffList = exitStaffRes;
+
 			closeLoading();
 		};
 
