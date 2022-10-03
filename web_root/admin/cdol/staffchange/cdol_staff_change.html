@@ -80,8 +80,10 @@
             <position-change ng-if="newStaff.name_change=='Position Change'"></position-change>
             <name-change ng-if="newStaff.name_change=='Name Change'"></name-change>
             <exit-staff ng-if="newStaff.name_change=='Exiting Staff'"></exit-staff>
+            <input type="hidden" name="ac" value="prim" />
         </div>
         <confirm ng-if="userContext.pageStatus =='Confirm'"></confirm>
+
 
         ~[wc:admin_footer_css]
     </body>

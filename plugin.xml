@@ -1,15 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://plugin.powerschool.pearson.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" description="Submitting Tracking Staff Changes" name="CDOL Staff Changes" version="22.8.1" xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd">
-<autoinstall required="true">
-		<autoredeploy />
-	</autoinstall>
+<?xml version="1.0" encoding="UTF-8"?><plugin xmlns="http://plugin.powerschool.pearson.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" description="Submitting Tracking Staff Changes" name="CDOL Staff Changes" version="22.8.4" xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd">
 <publisher name="Adrian Carlson">
-    <contact email="adrian-carlson@cdolinc.net"/>
+<contact email="adrian-carlson@cdolinc.net"/>
 </publisher>
 <access_request>
 		<cdn_request>
-			<cdn name="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" />
-            <cdn name="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" />
+			<cdn name="https://cdn.jsdelivr.net" />
+			<cdn name="https://*.jsdelivr.net" />
 		</cdn_request>
 	</access_request>
+
 </plugin>
