@@ -138,42 +138,101 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="staff in transferStaffListFilt">
+                                <tr ng-repeat="transferringStaff in transferStaffListFilt">
                                     <td>{{$index +1}}</td>
                                     <td class="nowrap"><a
-                                            href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.title}}
-                                            {{staff.first_name}}
-                                            {{staff.last_name}}</a></td>
-                                    <td class="nowrap">{{staff.schname}}</td>
-                                    <td class="nowrap">{{staff.previous_combined}}</td>
-                                    <td class="nowrap">{{staff.submittedstaff}}</td>
-                                    <td class="nowrap">{{staff.submission_date | date : 'MM/dd/yyyy'}}
-                                        {{staff.submission_time}}</td>
+                                            href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{transferringStaff.staffid}}">{{transferringStaff.title}}
+                                            {{transferringStaff.first_name}}
+                                            {{transferringStaff.last_name}}</a></td>
+                                    <td class="nowrap">{{transferringStaff.schname}}</td>
+                                    <td class="nowrap">{{transferringStaff.previous_combined}}</td>
+                                    <td class="nowrap">{{transferringStaff.submittedstaff}}</td>
+                                    <td class="nowrap">{{transferringStaff.submission_date | date : 'MM/dd/yyyy'}}
+                                        {{transferringStaff.submission_time}}</td>
                                     <td
-                                        ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || (staff.ad_created != 1 && staff.ad_ignored != 1) || staff.lms_created != 1 || (staff.o365_created != 1 && staff.o365_ignored != 1))}">
-                                        {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                                    <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
-                                            ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
+                                        ng-class="{'req-notation': (transferringStaff.completion_date  < curDate) && (transferringStaff.ps_created != 1  || (transferringStaff.ad_created != 1 && transferringStaff.ad_ignored != 1) || transferringStaff.lms_created != 1 || (transferringStaff.o365_created != 1 && transferringStaff.o365_ignored != 1))}">
+                                        {{transferringStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                                    <td><span ng-show="transferringStaff.ps_created != 1">&#10060;</span><span
+                                            ng-show="transferringStaff.ps_created == 1">&#10004;&#65039;</span></td>
                                     <td>
-                                        <span ng-show="staff.ad_created != 1 && staff.ad_ignored != 1">&#10060;</span>
                                         <span
-                                            ng-show="staff.ad_created == 1 || staff.ad_ignored == 1">&#10004;&#65039;</span>
+                                            ng-show="transferringStaff.ad_created != 1 && transferringStaff.ad_ignored != 1">&#10060;</span>
+                                        <span
+                                            ng-show="transferringStaff.ad_created == 1 || transferringStaff.ad_ignored == 1">&#10004;&#65039;</span>
                                     </td>
                                     <td>
                                         <span
-                                            ng-show="staff.o365_created != 1 && staff.o365_ignored != 1">&#10060;</span>
+                                            ng-show="transferringStaff.o365_created != 1 && transferringStaff.o365_ignored != 1">&#10060;</span>
                                         <span
-                                            ng-show="staff.o365_created == 1 || staff.o365_ignored == 1">&#10004;&#65039;</span>
+                                            ng-show="transferringStaff.o365_created == 1 || transferringStaff.o365_ignored == 1">&#10004;&#65039;</span>
                                     </td>
-                                    <td><span ng-show="staff.lms_created != 1">&#10060;</span><span
-                                            ng-show="staff.lms_created == 1">&#10004;&#65039;</span></td>
-                                    <td>{{staff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                                    <td><span ng-show="transferringStaff.lms_created != 1">&#10060;</span><span
+                                            ng-show="transferringStaff.lms_created == 1">&#10004;&#65039;</span></td>
+                                    <td>{{transferringStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div id="tabThreeContent">
+                <div id="jobChangeStaffListGrid" data-pss-grid-widget data-data="jobChangeStaffList"
+                    data-filtered-data="jobChangeStaffListFilt" data-client-side-pagination="false"
+                    data-filter-constraint="no-filters">
+                    <table class="grid">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th data-pss-sort-fields="last_name|text" class="nowrap">New Staff Name</th>
+                                <th data-pss-sort-fields="last_name|text" class="nowrap">Previous Staff Name</th>
+                                <th data-pss-sort-fields="schname|text">School</th>
+                                <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
+                                <th data-pss-sort-fields="submission_date, submission_time"
+                                    data-primary-sort="descending">
+                                    Submission Date</th>
+                                <th data-pss-sort-fields="completion_date | date">Deadline</th>
+                                <th data-pss-sort-fields="ps_created | number">PS Created</th>
+                                <th data-pss-sort-fields="ad_created, ad_ignored | number">AD Created</th>
+                                <th data-pss-sort-fields="o365_created, o365_ignored | number">O365 Created</th>
+                                <th data-pss-sort-fields="lms_created | number">LMS Created</th>
+                                <th data-pss-sort-fields="final_completion_date | date">Completed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="jobChange in jobChangeStaffListFilt">
+                                <td>{{$index +1}}</td>
+                                <td class="nowrap"><a
+                                        href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{jobChange.staffid}}">{{jobChange.title}}
+                                        {{jobChange.first_name}}
+                                        {{jobChange.last_name}}</a></td>
+                                <td class="nowrap">{{jobChange.replacedstaff}}</td>
+                                <td class="nowrap">{{jobChange.schname}}</td>
+                                <td class="nowrap">{{jobChange.submittedstaff}}</td>
+                                <td class="nowrap">{{jobChange.submission_date | date : 'MM/dd/yyyy'}}
+                                    {{jobChange.submission_time}}</td>
+                                <td
+                                    ng-class="{'req-notation': (jobChange.completion_date  < curDate) && (jobChange.ps_created != 1  || (jobChange.ad_created != 1 && jobChange.ad_ignored != 1) || jobChange.lms_created != 1 || (jobChange.o365_created != 1 && jobChange.o365_ignored != 1))}">
+                                    {{jobChange.completion_date | date : 'MM/dd/yyyy'}}</td>
+                                <td><span ng-show="jobChange.ps_created != 1">&#10060;</span><span
+                                        ng-show="jobChange.ps_created == 1">&#10004;&#65039;</span></td>
+                                <td>
+                                    <span
+                                        ng-show="jobChange.ad_created != 1 && jobChange.ad_ignored != 1">&#10060;</span>
+                                    <span
+                                        ng-show="jobChange.ad_created == 1 || jobChange.ad_ignored == 1">&#10004;&#65039;</span>
+                                </td>
+                                <td>
+                                    <span
+                                        ng-show="jobChange.o365_created != 1 && jobChange.o365_ignored != 1">&#10060;</span>
+                                    <span
+                                        ng-show="jobChange.o365_created == 1 || jobChange.o365_ignored == 1">&#10004;&#65039;</span>
+                                </td>
+                                <td><span ng-show="jobChange.lms_created != 1">&#10060;</span><span
+                                        ng-show="jobChange.lms_created == 1">&#10004;&#65039;</span></td>
+                                <td>{{jobChange.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="tabFourContent">
                     <div id="nameChangeStaffListGrid" data-pss-grid-widget data-data="nameChangeStaffList"
                         data-filtered-data="nameChangeStaffListFilt" data-client-side-pagination="false"
                         data-filter-constraint="no-filters">
@@ -197,44 +256,44 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="staff in nameChangeStaffListFilt">
+                                <tr ng-repeat="nameChange in nameChangeStaffListFilt">
                                     <td>{{$index +1}}</td>
                                     <td class="nowrap"><a
-                                            href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.title}}
-                                            {{staff.first_name}}
-                                            {{staff.last_name}}</a></td>
-                                    <td class="nowrap">{{staff.replacedstaff}}</td>
-                                    <td class="nowrap">{{staff.schname}}</td>
-                                    <td class="nowrap">{{staff.submittedstaff}}</td>
-                                    <td class="nowrap">{{staff.submission_date | date : 'MM/dd/yyyy'}}
-                                        {{staff.submission_time}}</td>
+                                            href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{nameChange.staffid}}">{{nameChange.title}}
+                                            {{nameChange.first_name}}
+                                            {{nameChange.last_name}}</a></td>
+                                    <td class="nowrap">{{nameChange.replacedstaff}}</td>
+                                    <td class="nowrap">{{nameChange.schname}}</td>
+                                    <td class="nowrap">{{nameChange.submittedstaff}}</td>
+                                    <td class="nowrap">{{nameChange.submission_date | date : 'MM/dd/yyyy'}}
+                                        {{nameChange.submission_time}}</td>
                                     <td
-                                        ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || (staff.ad_created != 1 && staff.ad_ignored != 1) || staff.lms_created != 1 || (staff.o365_created != 1 && staff.o365_ignored != 1))}">
-                                        {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                                    <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
-                                            ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
+                                        ng-class="{'req-notation': (nameChange.completion_date  < curDate) && (nameChange.ps_created != 1  || (nameChange.ad_created != 1 && nameChange.ad_ignored != 1) || nameChange.lms_created != 1 || (nameChange.o365_created != 1 && nameChange.o365_ignored != 1))}">
+                                        {{nameChange.completion_date | date : 'MM/dd/yyyy'}}</td>
+                                    <td><span ng-show="nameChange.ps_created != 1">&#10060;</span><span
+                                            ng-show="nameChange.ps_created == 1">&#10004;&#65039;</span></td>
                                     <td>
-                                        <span ng-show="staff.ad_created != 1 && staff.ad_ignored != 1">&#10060;</span>
+                                        <span ng-show="nameChange.ad_created != 1 && nameChange.ad_ignored != 1">&#10060;</span>
                                         <span
-                                            ng-show="staff.ad_created == 1 || staff.ad_ignored == 1">&#10004;&#65039;</span>
+                                            ng-show="nameChange.ad_created == 1 || nameChange.ad_ignored == 1">&#10004;&#65039;</span>
                                     </td>
                                     <td>
                                         <span
-                                            ng-show="staff.o365_created != 1 && staff.o365_ignored != 1">&#10060;</span>
+                                            ng-show="nameChange.o365_created != 1 && nameChange.o365_ignored != 1">&#10060;</span>
                                         <span
-                                            ng-show="staff.o365_created == 1 || staff.o365_ignored == 1">&#10004;&#65039;</span>
+                                            ng-show="nameChange.o365_created == 1 || nameChange.o365_ignored == 1">&#10004;&#65039;</span>
                                     </td>
-                                    <td><span ng-show="staff.lms_created != 1">&#10060;</span><span
-                                            ng-show="staff.lms_created == 1">&#10004;&#65039;</span></td>
-                                    <td>{{staff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                                    <td><span ng-show="nameChange.lms_created != 1">&#10060;</span><span
+                                            ng-show="nameChange.lms_created == 1">&#10004;&#65039;</span></td>
+                                    <td>{{nameChange.final_completion_date | date : 'MM/dd/yyyy'}}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div id="tabFourContent">
-                    <div id="removalStaffListGrid" data-pss-grid-widget data-data="removalStaffList"
-                        data-filtered-data="removalStaffListFilt" data-client-side-pagination="false"
+                <div id="tabFiveContent">
+                    <div id="exitStaffListGrid" data-pss-grid-widget data-data="exitStaffList"
+                        data-filtered-data="exitStaffListFilt" data-client-side-pagination="false"
                         data-filter-constraint="no-filters">
                         <table class="grid">
                             <thead>
@@ -253,27 +312,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="staff in removalStaffListFilt">
+                                <tr ng-repeat="exitStaff in exitStaffListFilt">
                                     <td>{{$index +1}}</td>
                                     <td class="nowrap"><a
-                                            href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.replacedstaff}}
-                                            {{staff.replaced_other}}</a>
+                                            href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{exitStaff.staffid}}">{{exitStaff.replacedstaff}}
+                                            {{exitStaff.replaced_other}}</a>
                                     </td>
-                                    <td class="nowrap">{{staff.schname}}</td>
-                                    <td class="nowrap">{{staff.submittedstaff}}</td>
-                                    <td class="nowrap">{{staff.submission_date | date : 'MM/dd/yyyy'}}
-                                        {{staff.submission_time}}</td>
+                                    <td class="nowrap">{{exitStaff.schname}}</td>
+                                    <td class="nowrap">{{exitStaff.submittedstaff}}</td>
+                                    <td class="nowrap">{{exitStaff.submission_date | date : 'MM/dd/yyyy'}}
+                                        {{exitStaff.submission_time}}</td>
                                     <td
-                                        ng-class="{'req-notation': (staff.completion_date  < userContext.curDate) && (staff.ps_created != 1  || (staff.ad_created != 1 && staff.ad_ignored != 1))}">
-                                        {{staff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                                    <td><span ng-show="staff.ps_created != 1">&#10060;</span><span
-                                            ng-show="staff.ps_created == 1">&#10004;&#65039;</span></td>
+                                        ng-class="{'req-notation': (exitStaff.completion_date  < curDate) && (exitStaff.ps_created != 1  || (exitStaff.ad_created != 1 && exitStaff.ad_ignored != 1))}">
+                                        {{exitStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                                    <td><span ng-show="exitStaff.ps_created != 1">&#10060;</span><span
+                                            ng-show="exitStaff.ps_created == 1">&#10004;&#65039;</span></td>
                                     <td>
-                                        <span ng-show="staff.ad_created != 1 && staff.ad_ignored != 1">&#10060;</span>
+                                        <span ng-show="exitStaff.ad_created != 1 && exitStaff.ad_ignored != 1">&#10060;</span>
                                         <span
-                                            ng-show="staff.ad_created == 1 || staff.ad_ignored == 1">&#10004;&#65039;</span>
+                                            ng-show="exitStaff.ad_created == 1 || exitStaff.ad_ignored == 1">&#10004;&#65039;</span>
                                     </td>
-                                    <td>{{staff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                                    <td>{{exitStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
                                 </tr>
                             </tbody>
                         </table>

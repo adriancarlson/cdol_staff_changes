@@ -54,23 +54,39 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.staffChangeCount = countRes[0];
 
 			// getting new staff
-			const newStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.new', pqData);
+			const newStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.new', { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId, changeType: 'New Staff' });
 			$scope.newStaffList = newStaffRes;
 
 			// getting transfer staff
-			const transferStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.transfer', pqData);
+			const transferStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.transfer', {
+				curSchoolID: $scope.curSchoolId,
+				curYearID: $scope.adjustedYearId,
+				changeType: 'Transferring Staff',
+			});
 			$scope.transferStaffList = transferStaffRes;
 
 			// getting job change staff
-			// 			const jobChangeRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.jobchange', pqData);
-			// 			$scope.jobChangeList = jobChangeRes;
+			const jobChangeRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.jobchange', {
+				curSchoolID: $scope.curSchoolId,
+				curYearID: $scope.adjustedYearId,
+				changeType: 'Job Change',
+			});
+			$scope.jobChangeList = jobChangeRes;
 
 			// getting name change staff
-			const nameChangeRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.namechange', pqData);
+			const nameChangeRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.namechange', {
+				curSchoolID: $scope.curSchoolId,
+				curYearID: $scope.adjustedYearId,
+				changeType: 'Name Change',
+			});
 			$scope.nameChangeList = nameChangeRes;
 
 			// getting exiting staff
-			const exitStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.exits', pqData);
+			const exitStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.exits', {
+				curSchoolID: $scope.curSchoolId,
+				curYearID: $scope.adjustedYearId,
+				changeType: 'Exiting Staff',
+			});
 			$scope.exitStaffList = exitStaffRes;
 
 			closeLoading();
