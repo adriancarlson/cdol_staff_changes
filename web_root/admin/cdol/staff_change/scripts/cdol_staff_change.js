@@ -267,7 +267,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				if (mm < 10) mm = '0' + mm;
 				todayFormated = mm + '/' + dd + '/' + yyyy;
 
-				if ($scope.newStaff.name_change == 'Exiting Staff' || $scope.newStaff.name_change == 'Transferring Staff' ) {
+				if ($scope.newStaff.name_change == 'Exiting Staff' || $scope.newStaff.name_change == 'Transferring Staff') {
 					if ($scope.newStaff.exit_date_radio == 'today' || $scope.newStaff.exit_date_radio == '') {
 						$scope.newStaff.deadline = todayFormated;
 					} else if ($scope.newStaff.exit_date_radio == 'june30') {
@@ -583,34 +583,34 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 	]);
 	cdolStaffApp.directive('newStaff', function () {
 		return {
-			templateUrl: '/admin/cdol/staff_change/forms/new_staff.html',
+			templateUrl: '/admin/cdol/staff_change/directives/forms/new_staff.html',
 		};
 	});
 	cdolStaffApp.directive('transferStaff', function () {
 		return {
-			templateUrl: '/admin/cdol/staff_change/forms/transfer_staff.html',
+			templateUrl: '/admin/cdol/staff_change/directives/forms/transfer_staff.html',
 		};
 	});
 
 	cdolStaffApp.directive('jobChange', function () {
 		return {
-			templateUrl: '/admin/cdol/staff_change/forms/job_change.html',
+			templateUrl: '/admin/cdol/staff_change/directives/forms/job_change.html',
 		};
 	});
 	cdolStaffApp.directive('nameChange', function () {
 		return {
-			templateUrl: '/admin/cdol/staff_change/forms/name_change.html',
+			templateUrl: '/admin/cdol/staff_change/directives/forms/name_change.html',
 		};
 	});
 	cdolStaffApp.directive('exitStaff', function () {
 		return {
-			templateUrl: '/admin/cdol/staff_change/forms/exit_staff.html',
+			templateUrl: '/admin/cdol/staff_change/directives/forms/exit_staff.html',
 		};
 	});
 
 	cdolStaffApp.directive('confirm', function () {
 		return {
-			templateUrl: '/admin/cdol/staff_change/forms/confirm.html',
+			templateUrl: '/admin/cdol/staff_change/directives/forms/confirm.html',
 		};
 	});
 });

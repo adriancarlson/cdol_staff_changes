@@ -94,5 +94,33 @@ define(['angular', 'components/shared/index'], function (angular) {
 
 		// fire the function to load the data
 		$scope.loadData();
+
+		cdolStaffListApp.directive('newStaffList', function () {
+			return {
+				templateUrl: '/admin/cdol/staff_change/directives/tabs/new_staff_list.html',
+			};
+		});
+		cdolStaffListApp.directive('transferStaffList', function () {
+			return {
+				templateUrl: '/admin/cdol/staff_change/directives/tabs/transfer_staff_list.html',
+			};
+		});
+	
+		cdolStaffListApp.directive('jobChangeList', function () {
+			return {
+				templateUrl: '/admin/cdol/staff_change/directives/tabs/job_change_list.html',
+			};
+		});
+		cdolStaffListApp.directive('nameChangeList', function () {
+			return {
+				templateUrl: '/admin/cdol/staff_change/directives/tabs/name_change_list.html',
+			};
+		});
+		cdolStaffListApp.directive('exitStaffList', function () {
+			return {
+				templateUrl: '/admin/cdol/staff_change/directives/tabs/exit_staff_list.html',
+			};
+		});
+	
 	});
 });
