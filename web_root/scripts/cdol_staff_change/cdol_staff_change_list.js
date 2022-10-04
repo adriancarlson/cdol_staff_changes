@@ -15,19 +15,13 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 
 		$scope.loadData = async () => {
 			loadingDialog();
-			// updating left nav count
-			$j.ajax({
-				url: '/admin/cdol/staff_change/data/newstaffcount.txt',
-				success: (result) => {
-					$j('#staffCounterLink').innerHTML = "Staff Changes ('+result+')";
-				},
-			});
 
 			const pqData = { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId };
 
 			// getting counts
 			const countRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.counts', pqData);
 			$scope.staffChangeCount = countRes[0];
+			$j('#staffCounterLink').innerHTML = "Staff Changes ('+$scope.staffChangeCount.total_remaining+')";
 
 			// getting new staff
 			const newStaffRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId, changeType: 'New Staff' });
