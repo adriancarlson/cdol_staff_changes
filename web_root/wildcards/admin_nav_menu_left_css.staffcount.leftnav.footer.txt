@@ -3,7 +3,7 @@
         $j.ajax({
             url: "/admin/cdol/staff_change/data/newstaffcount.txt",
             success: function(result) {
-            $j("#cdolStaffChanges").after('<br>&nbsp;&nbsp;&nbsp;<a href="/admin/cdol/staff_change/cdol_staff_change_list.html">Staff Changes ('+result+')</a>');
+            $j("#cdol-staff-changes").after('<br>&nbsp;&nbsp;&nbsp;<a href="/admin/cdol/staff_change/cdol_staff_change_list.html" id="cdol-staff-count">Staff Changes ('+result+')</a>');
                 }
             })
         });
