@@ -54,11 +54,11 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.staffChangeCount = countRes[0];
 
 			// getting new staff
-			const newStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.new', { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId, changeType: 'New Staff' });
+			const newStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId, changeType: 'New Staff' });
 			$scope.newStaffList = newStaffRes;
 
 			// getting transfer staff
-			const transferStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.transfer', {
+			const transferStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', {
 				curSchoolID: $scope.curSchoolId,
 				curYearID: $scope.adjustedYearId,
 				changeType: 'Transferring Staff',
@@ -66,7 +66,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.transferStaffList = transferStaffRes;
 
 			// getting job change staff
-			const jobChangeRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.jobchange', {
+			const jobChangeRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', {
 				curSchoolID: $scope.curSchoolId,
 				curYearID: $scope.adjustedYearId,
 				changeType: 'Job Change',
@@ -74,7 +74,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.jobChangeList = jobChangeRes;
 
 			// getting name change staff
-			const nameChangeRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.namechange', {
+			const nameChangeRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', {
 				curSchoolID: $scope.curSchoolId,
 				curYearID: $scope.adjustedYearId,
 				changeType: 'Name Change',
@@ -82,7 +82,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.nameChangeList = nameChangeRes;
 
 			// getting exiting staff
-			const exitStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.exits', {
+			const exitStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', {
 				curSchoolID: $scope.curSchoolId,
 				curYearID: $scope.adjustedYearId,
 				changeType: 'Exiting Staff',
