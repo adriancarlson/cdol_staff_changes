@@ -1,8 +1,8 @@
 define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.js'], function (angular) {
 	var cdolStaffListApp = angular.module('cdolStaffListMod', ['powerSchoolModule', 'pqModule']);
 
-	cdolStaffListApp.controller('cdolStaffListCtrl', function ($scope, $http, $attrs, pqService) {
-		$scope.staffChangeCount = 0;
+	cdolStaffListApp.controller('cdolStaffListCtrl', function ($scope, $attrs, pqService) {
+		$scope.staffChangeCounts = [];
 		$scope.newStaffList = [];
 		$scope.transferStaffList = [];
 		$scope.jobChangeList = [];
@@ -13,15 +13,15 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 		$scope.curDate = $attrs.ngCurDate;
 		$scope.adjustedYearId = new Date($attrs.ngCurDate).getFullYear() - 1991;
 
-		$scope.loadData = async () => {
+		$scope.loadData = async (changeType) => {
 			loadingDialog();
+			console.log(changeType);
 
 			const pqData = { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId };
 
 			// getting counts
 			const countRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.counts', pqData);
-			$scope.staffChangeCount = countRes[0];
-			$j('#cdol-staff-count').innerHTML = "Staff Changes ('+$scope.staffChangeCount.total_remaining+')";
+			$scope.staffChangeCounts = countRes[0];
 
 			// getting new staff
 			const newStaffRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId, changeType: 'New Staff' });
@@ -59,11 +59,13 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 			});
 			$scope.exitStaffList = exitStaffRes;
 
+			$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`);
+
 			closeLoading();
 		};
 
 		// fire the function to load the data
-		$scope.loadData();
+		$scope.loadData('New Staff');
 	});
 	cdolStaffListApp.directive('newStaffList', () => ({ templateUrl: '/admin/cdol/staff_change/directives/tabs/new_staff_list.html' }));
 	cdolStaffListApp.directive('transferStaffList', () => ({ templateUrl: '/admin/cdol/staff_change/directives/tabs/transfer_staff_list.html' }));
