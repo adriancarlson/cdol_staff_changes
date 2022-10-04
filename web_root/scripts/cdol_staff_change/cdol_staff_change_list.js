@@ -1,7 +1,7 @@
-define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.js'], function (angular) {
-	var cdolStaffListApp = angular.module('cdolStaffListMod', ['powerSchoolModule', 'pqModule']);
+define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.js', '/scripts/cdol/services/camelService.js'], function (angular) {
+	var cdolStaffListApp = angular.module('cdolStaffListMod', ['powerSchoolModule', 'pqModule', 'camelModule']);
 
-	cdolStaffListApp.controller('cdolStaffListCtrl', function ($scope, $attrs, pqService) {
+	cdolStaffListApp.controller('cdolStaffListCtrl', function ($scope, $attrs, pqService, camelService) {
 		$scope.staffChangeCounts = [];
 		$scope.newStaffList = [];
 		$scope.transferStaffList = [];
@@ -12,8 +12,6 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 		$scope.curYearId = $attrs.ngCurYearId;
 		$scope.curDate = $attrs.ngCurDate;
 		$scope.adjustedYearId = new Date($attrs.ngCurDate).getFullYear() - 1991;
-
-		console.log('new staff length', $scope.newStaffList.length);
 
 		$scope.loadData = async (changeType) => {
 			loadingDialog();
@@ -27,12 +25,14 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 			// adding new new change type key/value pair for PQ call to staff list
 			pqData.changeType = changeType;
 
+			// camelize change type
+			const camelChangeType = camelService.camelize(changeType);
+			console.log(camelChangeType);
+
 			// getting staff List
-			const staffList = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', pqData);
+			const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', pqData);
 
-			$scope.newStaffList = staffList;
-
-			console.log('new staff length after PQ Ran', $scope.newStaffList.length);
+			$scope.newStaffList = res;
 			// // getting transfer staff
 			// const transferStaffRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
 			// 	curSchoolID: $scope.curSchoolId,
