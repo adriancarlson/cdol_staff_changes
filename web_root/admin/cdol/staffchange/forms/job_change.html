@@ -1,9 +1,9 @@
-<form name="positionChangeForm" method="POST" novalidate>
+<form name="jobChangeForm" method="POST" novalidate>
     <div class="fluid-form">
         <h4 style="margin-left: 10px;">{{newStaff.name_change}}</h4>
         <div>
             <div>
-                <label class="req">Who is changing positions?</label>
+                <label class="req">Who is changing Job/positions?</label>
                 <select
                     ng-if="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && (newStaff.replacing =='New' || newStaff.replacing =='Other'))"
                     name="" ng-model="newStaff.replacing" ng-required="true"

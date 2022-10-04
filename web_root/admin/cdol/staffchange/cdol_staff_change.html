@@ -65,7 +65,7 @@
                             </option>
                             <option value="Transferring Staff">Transferring Staff: Staff Transfer into ~(schoolname)
                                 from Another Diocese of Lincoln School</option>
-                            <option value="Position Change">Position/Job Change: Staff Member Changing Position/Job
+                            <option value="Job Change">Position/Job Change: Staff Member Changing Position/Job
                                 within ~(schoolname)
                             </option>
                             <option value="Name Change">Name Change: Change the Legal Name of a Current Staff Member
@@ -77,7 +77,7 @@
             </div>
             <new-staff ng-if="newStaff.name_change=='New Staff'"></new-staff>
             <transfer-staff ng-if="newStaff.name_change=='Transferring Staff'"></transfer-staff>
-            <position-change ng-if="newStaff.name_change=='Position Change'"></position-change>
+            <job-change ng-if="newStaff.name_change=='Job Change'"></job-change>
             <name-change ng-if="newStaff.name_change=='Name Change'"></name-change>
             <exit-staff ng-if="newStaff.name_change=='Exiting Staff'"></exit-staff>
             <input type="hidden" name="ac" value="prim" />
