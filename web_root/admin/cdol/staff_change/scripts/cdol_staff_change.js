@@ -581,36 +581,10 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			};
 		},
 	]);
-	cdolStaffApp.directive('newStaff', function () {
-		return {
-			templateUrl: '/admin/cdol/staff_change/directives/forms/new_staff.html',
-		};
-	});
-	cdolStaffApp.directive('transferStaff', function () {
-		return {
-			templateUrl: '/admin/cdol/staff_change/directives/forms/transfer_staff.html',
-		};
-	});
-
-	cdolStaffApp.directive('jobChange', function () {
-		return {
-			templateUrl: '/admin/cdol/staff_change/directives/forms/job_change.html',
-		};
-	});
-	cdolStaffApp.directive('nameChange', function () {
-		return {
-			templateUrl: '/admin/cdol/staff_change/directives/forms/name_change.html',
-		};
-	});
-	cdolStaffApp.directive('exitStaff', function () {
-		return {
-			templateUrl: '/admin/cdol/staff_change/directives/forms/exit_staff.html',
-		};
-	});
-
-	cdolStaffApp.directive('confirm', function () {
-		return {
-			templateUrl: '/admin/cdol/staff_change/directives/forms/confirm.html',
-		};
-	});
+	cdolStaffApp.directive('newStaff', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/new_staff.html' }));
+	cdolStaffApp.directive('transferStaff', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/transfer_staff.html' }));
+	cdolStaffApp.directive('jobChange', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/job_change.html' }));
+	cdolStaffApp.directive('nameChange', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/name_change.html' }));
+	cdolStaffApp.directive('exitStaff', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/exit_staff.html' }));
+	cdolStaffApp.directive('confirm', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/confirm.html' }));
 });
