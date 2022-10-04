@@ -32,6 +32,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 
 			$scope.newStaffList = staffList;
 
+			console.log('new staff length after PQ Ran', $scope.newStaffList.length);
 			// // getting transfer staff
 			// const transferStaffRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
 			// 	curSchoolID: $scope.curSchoolId,
