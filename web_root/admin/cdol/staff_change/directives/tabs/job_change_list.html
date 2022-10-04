@@ -1,0 +1,52 @@
+<div id="jobChangeStaffListGrid" data-pss-grid-widget data-data="jobChangeStaffList"
+    data-filtered-data="jobChangeStaffListFilt" data-client-side-pagination="false" data-filter-constraint="no-filters">
+    <table class="grid">
+        <thead>
+            <tr>
+                <th></th>
+                <th data-pss-sort-fields="last_name|text" class="nowrap">New Staff Name</th>
+                <th data-pss-sort-fields="last_name|text" class="nowrap">Previous Staff Name</th>
+                <th data-pss-sort-fields="schname|text">School</th>
+                <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
+                <th data-pss-sort-fields="submission_date, submission_time" data-primary-sort="descending">
+                    Submission Date</th>
+                <th data-pss-sort-fields="completion_date | date">Deadline</th>
+                <th data-pss-sort-fields="ps_created | number">PS Created</th>
+                <th data-pss-sort-fields="ad_created, ad_ignored | number">AD Created</th>
+                <th data-pss-sort-fields="o365_created, o365_ignored | number">O365 Created</th>
+                <th data-pss-sort-fields="lms_created | number">LMS Created</th>
+                <th data-pss-sort-fields="final_completion_date | date">Completed</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="jobChange in jobChangeStaffListFilt">
+                <td>{{$index +1}}</td>
+                <td class="nowrap"><a
+                        href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{jobChange.staffid}}">{{jobChange.title}}
+                        {{jobChange.first_name}}
+                        {{jobChange.last_name}}</a></td>
+                <td class="nowrap">{{jobChange.replacedstaff}}</td>
+                <td class="nowrap">{{jobChange.schname}}</td>
+                <td class="nowrap">{{jobChange.submittedstaff}}</td>
+                <td class="nowrap">{{jobChange.submission_date | date : 'MM/dd/yyyy'}}
+                    {{jobChange.submission_time}}</td>
+                <td
+                    ng-class="{'req-notation': (jobChange.completion_date  < curDate) && (jobChange.ps_created != 1  || (jobChange.ad_created != 1 && jobChange.ad_ignored != 1) || jobChange.lms_created != 1 || (jobChange.o365_created != 1 && jobChange.o365_ignored != 1))}">
+                    {{jobChange.completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td><span ng-show="jobChange.ps_created != 1">&#10060;</span><span
+                        ng-show="jobChange.ps_created == 1">&#10004;&#65039;</span></td>
+                <td>
+                    <span ng-show="jobChange.ad_created != 1 && jobChange.ad_ignored != 1">&#10060;</span>
+                    <span ng-show="jobChange.ad_created == 1 || jobChange.ad_ignored == 1">&#10004;&#65039;</span>
+                </td>
+                <td>
+                    <span ng-show="jobChange.o365_created != 1 && jobChange.o365_ignored != 1">&#10060;</span>
+                    <span ng-show="jobChange.o365_created == 1 || jobChange.o365_ignored == 1">&#10004;&#65039;</span>
+                </td>
+                <td><span ng-show="jobChange.lms_created != 1">&#10060;</span><span
+                        ng-show="jobChange.lms_created == 1">&#10004;&#65039;</span></td>
+                <td>{{jobChange.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
