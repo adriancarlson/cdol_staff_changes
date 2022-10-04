@@ -1,4 +1,4 @@
-define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateService.js', '/cdol/scripts/checkboxService.js'], function (angular) {
+define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateService.js', '/scripts/cdol/services/checkboxService.js'], function (angular) {
 	var cdolStaffApp = angular.module('cdolStaffApp', ['powerSchoolModule', 'dateService', 'checkboxModule']);
 	cdolStaffApp.controller('cdolStaffAppCtrl', [
 		'$scope',

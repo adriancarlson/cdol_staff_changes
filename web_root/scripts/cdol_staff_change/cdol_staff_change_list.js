@@ -1,7 +1,7 @@
-define(['angular', 'components/shared/index'], function (angular) {
-	var cdolStaffListApp = angular.module('cdolStaffListMod', ['powerSchoolModule']);
+define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.js'], function (angular) {
+	var cdolStaffListApp = angular.module('cdolStaffListMod', ['powerSchoolModule', 'pqModule']);
 
-	cdolStaffListApp.controller('cdolStaffListCtrl', function ($scope, $http, $attrs, $q) {
+	cdolStaffListApp.controller('cdolStaffListCtrl', function ($scope, $http, $attrs, pqService) {
 		$scope.staffChangeCount = 0;
 		$scope.newStaffList = [];
 		$scope.transferStaffList = [];
@@ -12,30 +12,6 @@ define(['angular', 'components/shared/index'], function (angular) {
 		$scope.curYearId = $attrs.ngCurYearId;
 		$scope.curDate = $attrs.ngCurDate;
 		$scope.adjustedYearId = new Date($attrs.ngCurDate).getFullYear() - 1991;
-
-		// function to get PQ results
-		$scope.getPowerQueryResults = (endpoint, data) => {
-			var deferredResponse = $q.defer();
-			$http({
-				url: '/ws/schema/query/' + endpoint,
-				method: 'POST',
-				data: data || {},
-				params: { pagesize: 0 },
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-				},
-			}).then(
-				(res) => {
-					deferredResponse.resolve(res.data.record || []);
-				},
-				(res) => {
-					psAlert({ message: 'There was an error loading the Staff Change Data', title: 'Error Loading Data' });
-				},
-			);
-
-			return deferredResponse.promise;
-		};
 
 		$scope.loadData = async () => {
 			loadingDialog();
@@ -50,15 +26,15 @@ define(['angular', 'components/shared/index'], function (angular) {
 			const pqData = { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId };
 
 			// getting counts
-			const countRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.counts', pqData);
+			const countRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.counts', pqData);
 			$scope.staffChangeCount = countRes[0];
 
 			// getting new staff
-			const newStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId, changeType: 'New Staff' });
+			const newStaffRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId, changeType: 'New Staff' });
 			$scope.newStaffList = newStaffRes;
 
 			// getting transfer staff
-			const transferStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', {
+			const transferStaffRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
 				curSchoolID: $scope.curSchoolId,
 				curYearID: $scope.adjustedYearId,
 				changeType: 'Transferring Staff',
@@ -66,7 +42,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.transferStaffList = transferStaffRes;
 
 			// getting job change staff
-			const jobChangeRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', {
+			const jobChangeRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
 				curSchoolID: $scope.curSchoolId,
 				curYearID: $scope.adjustedYearId,
 				changeType: 'Job Change',
@@ -74,7 +50,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.jobChangeList = jobChangeRes;
 
 			// getting name change staff
-			const nameChangeRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', {
+			const nameChangeRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
 				curSchoolID: $scope.curSchoolId,
 				curYearID: $scope.adjustedYearId,
 				changeType: 'Name Change',
@@ -82,7 +58,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			$scope.nameChangeList = nameChangeRes;
 
 			// getting exiting staff
-			const exitStaffRes = await $scope.getPowerQueryResults('net.cdolinc.staffChanges.staff.changes', {
+			const exitStaffRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
 				curSchoolID: $scope.curSchoolId,
 				curYearID: $scope.adjustedYearId,
 				changeType: 'Exiting Staff',
