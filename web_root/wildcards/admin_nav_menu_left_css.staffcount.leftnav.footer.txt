@@ -1,9 +1,9 @@
 <script>
     $j(document).ready(function() {
         $j.ajax({
-            url: "/admin/cdol/staffchange/data/newstaffcount.txt",
+            url: "/admin/cdol/staff_change/data/newstaffcount.txt",
             success: function(result) {
-            $j("#cdolStaffChanges").after('<br>&nbsp;&nbsp;&nbsp;<a href="/admin/cdol/staffchange/cdol_staff_change_list.html">Staff Changes ('+result+')</a>');
+            $j("#cdolStaffChanges").after('<br>&nbsp;&nbsp;&nbsp;<a href="/admin/cdol/staff_change/cdol_staff_change_list.html">Staff Changes ('+result+')</a>');
                 }
             })
         });

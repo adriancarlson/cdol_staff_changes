@@ -41,7 +41,7 @@ define(['angular', 'components/shared/index'], function (angular) {
 			loadingDialog();
 			// updating left nav count
 			$j.ajax({
-				url: '/admin/cdol/staffchange/data/newstaffcount.txt',
+				url: '/admin/cdol/staff_change/data/newstaffcount.txt',
 				success: (result) => {
 					$j('#staffCounterLink').innerHTML = "Staff Changes ('+result+')";
 				},

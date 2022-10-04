@@ -12,7 +12,7 @@
     </head>
 
     <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl"
-        data-require-path="/admin/cdol/staffchange/scripts/cdol_staff_change.js?~(f.currenttime)"
+        data-require-path="/admin/cdol/staff_change/scripts/cdol_staff_change.js?~(f.currenttime)"
         data-module-name="cdolStaffApp" ng-init="getStaffResults()" ng-cur-school-id="~(curschoolid)"
         ng-cur-year-id="~(curyearid)" ng-status="~(gpv.status)" ng-cur-user-id="~[x:userid]" ng-cur-date="~[date]"
         ng-cur-time="~[time]" ng-staff-change-id="~(gpv.id)" ng-cloak>
@@ -83,7 +83,7 @@
                             <tr ng-repeat="staff in staffListFilt">
                                 <td>{{$index +1}}</td>
                                 <td class="nowrap"><a
-                                        href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.title}}
+                                        href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.title}}
                                         {{staff.first_name}}
                                         {{staff.last_name}}</a></td>
                                 <td class="nowrap">{{staff.schname}}</td>
@@ -140,7 +140,7 @@
                             <tr ng-repeat="staff in transferStaffListFilt">
                                 <td>{{$index +1}}</td>
                                 <td class="nowrap"><a
-                                        href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.title}}
+                                        href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.title}}
                                         {{staff.first_name}}
                                         {{staff.last_name}}</a></td>
                                 <td class="nowrap">{{staff.schname}}</td>
@@ -198,7 +198,7 @@
                             <tr ng-repeat="staff in nameChangeStaffListFilt">
                                 <td>{{$index +1}}</td>
                                 <td class="nowrap"><a
-                                        href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.title}}
+                                        href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.title}}
                                         {{staff.first_name}}
                                         {{staff.last_name}}</a></td>
                                 <td class="nowrap">{{staff.replacedstaff}}</td>
@@ -253,7 +253,7 @@
                             <tr ng-repeat="staff in removalStaffListFilt">
                                 <td>{{$index +1}}</td>
                                 <td class="nowrap"><a
-                                        href="/admin/cdol/staffchange/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.replacedstaff}}
+                                        href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{staff.staffid}}">{{staff.replacedstaff}}
                                         {{staff.replaced_other}}</a>
                                 </td>
                                 <td class="nowrap">{{staff.schname}}</td>

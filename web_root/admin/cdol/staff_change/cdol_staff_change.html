@@ -10,7 +10,7 @@
     </head>
 
     <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl as mainController"
-        data-require-path="/admin/cdol/staffchange/scripts/cdol_staff_change.js?~(f.currenttime)"
+        data-require-path="/admin/cdol/staff_change/scripts/cdol_staff_change.js?~(f.currenttime)"
         data-module-name="cdolStaffApp" ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)"
         ng-status="~(gpv.status)" ng-cur-user-id="~[x:userid]" ng-cur-date="~[date]" ng-cur-time="~[time]"
         ng-staff-change-id="~(gpv.id)" ng-cur-user-name=" ~[x:username;firstlast]" ng-cur-user-email="~[x:useremail]"
@@ -21,7 +21,7 @@
             Staff Change</span>
         <span ng-show="userContext.pageStatus =='Edit'"><a href="/admin/home.html"
                 target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; <a
-                href="/admin/cdol/staffchange/cdol_staff_change_list.html" target="_top">Staff Submissions</a> &gt;
+                href="/admin/cdol/staff_change/cdol_staff_change_list.html" target="_top">Staff Submissions</a> &gt;
             {{userContext.pageStatus}} Staff Change Submissions </span>
         ~[wc:admin_navigation_css]
 

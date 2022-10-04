@@ -141,7 +141,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 					$scope.exitingRecord.last_name = '';
 				}
 				$http({
-					url: '/admin/cdol/staffchange/data/getExistingStaff.json',
+					url: '/admin/cdol/staff_change/data/getExistingStaff.json',
 					method: 'GET',
 					params: { udcid: $scope.newStaff.replacing },
 				}).then(function (response) {
@@ -208,7 +208,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				let firstNameSubString = $scope.dupSearchParams.firstNameSubString.toLowerCase();
 
 				$http({
-					url: '/admin/cdol/staffchange/data/getStaffDups.json',
+					url: '/admin/cdol/staff_change/data/getStaffDups.json',
 					method: 'GET',
 					params: {
 						lastName: lastName,
@@ -309,7 +309,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				let submessage = $scope.newStaff.name_change.substring(0, 1);
 
 				let redirectPath =
-					'/admin/cdol/staffchange/cdol_staff_change.html?status=Confirm&title=' +
+					'/admin/cdol/staff_change/cdol_staff_change.html?status=Confirm&title=' +
 					$scope.newStaff.title +
 					'&fname=' +
 					$scope.newStaff.first_name +
@@ -322,7 +322,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 
 				if ($scope.newStaff.name_change == 'Exiting Staff') {
 					redirectPath =
-						'/admin/cdol/staffchange/cdol_staff_change.html?status=Confirm&title= ' +
+						'/admin/cdol/staff_change/cdol_staff_change.html?status=Confirm&title= ' +
 						'&fname=' +
 						$scope.exitingRecord.first_name +
 						'&lname=' +
@@ -357,7 +357,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						if (response.data.result[0].status == 'SUCCESS') {
 							//email for exitingstaff record.
 							$j.ajax({
-								url: '/admin/cdol/staffchange/data/emailfields.html',
+								url: '/admin/cdol/staff_change/data/emailfields.html',
 								method: 'POST',
 								contentType: 'application/x-www-form-urlencoded',
 								data: {
@@ -407,7 +407,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 						// ugly email jquery ajax call ... but it works.
 
 						$j.ajax({
-							url: '/admin/cdol/staffchange/data/emailfields.html',
+							url: '/admin/cdol/staff_change/data/emailfields.html',
 							method: 'POST',
 							contentType: 'application/x-www-form-urlencoded',
 							data: $scope.emailData,
@@ -467,7 +467,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 							$scope.newStaff.final_completion_date = dateService.formatDateForApi($scope.userContext.curDate);
 						}
 					}
-					let redirectPath = '/admin/cdol/staffchange/cdol_staff_change_list.html';
+					let redirectPath = '/admin/cdol/staff_change/cdol_staff_change_list.html';
 					if ($scope.newStaff.name_change == 'Transferring Staff') {
 						redirectPath = redirectPath + '#tabTwoContent';
 					} else if ($scope.newStaff.name_change == 'Name Change') {
@@ -504,7 +504,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 			//Deleteing staff Record
 			$scope.deleteStaffChange = function () {
 				if ($scope.userContext.curStaffId !== '') {
-					let redirectPath = '/admin/cdol/staffchange/cdol_staff_change_list.html';
+					let redirectPath = '/admin/cdol/staff_change/cdol_staff_change_list.html';
 					if ($scope.newStaff.name_change == 'Transferring Staff') {
 						redirectPath = redirectPath + '#tabTwoContent';
 					} else if ($scope.newStaff.name_change == 'Name Change') {
@@ -553,7 +553,7 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 				$scope.userContext.spinner = 1;
 				//updating count in submission link
 				$j.ajax({
-					url: '/admin/cdol/staffchange/data/newstaffcount.txt',
+					url: '/admin/cdol/staff_change/data/newstaffcount.txt',
 					success: function (result) {
 						$j('#staffCounterLink').innerHTML = "Staff Changes ('+result+')";
 					},
@@ -583,34 +583,34 @@ define(['angular', 'components/shared/index', '/mbaReportCreator/scripts/dateSer
 	]);
 	cdolStaffApp.directive('newStaff', function () {
 		return {
-			templateUrl: '/admin/cdol/staffchange/forms/new_staff.html',
+			templateUrl: '/admin/cdol/staff_change/forms/new_staff.html',
 		};
 	});
 	cdolStaffApp.directive('transferStaff', function () {
 		return {
-			templateUrl: '/admin/cdol/staffchange/forms/transfer_staff.html',
+			templateUrl: '/admin/cdol/staff_change/forms/transfer_staff.html',
 		};
 	});
 
 	cdolStaffApp.directive('jobChange', function () {
 		return {
-			templateUrl: '/admin/cdol/staffchange/forms/job_change.html',
+			templateUrl: '/admin/cdol/staff_change/forms/job_change.html',
 		};
 	});
 	cdolStaffApp.directive('nameChange', function () {
 		return {
-			templateUrl: '/admin/cdol/staffchange/forms/name_change.html',
+			templateUrl: '/admin/cdol/staff_change/forms/name_change.html',
 		};
 	});
 	cdolStaffApp.directive('exitStaff', function () {
 		return {
-			templateUrl: '/admin/cdol/staffchange/forms/exit_staff.html',
+			templateUrl: '/admin/cdol/staff_change/forms/exit_staff.html',
 		};
 	});
 
 	cdolStaffApp.directive('confirm', function () {
 		return {
-			templateUrl: '/admin/cdol/staffchange/forms/confirm.html',
+			templateUrl: '/admin/cdol/staff_change/forms/confirm.html',
 		};
 	});
 });
