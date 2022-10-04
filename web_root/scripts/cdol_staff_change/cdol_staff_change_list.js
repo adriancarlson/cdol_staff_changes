@@ -13,51 +13,56 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 		$scope.curDate = $attrs.ngCurDate;
 		$scope.adjustedYearId = new Date($attrs.ngCurDate).getFullYear() - 1991;
 
+		console.log('new staff length', $scope.newStaffList.length);
+
 		$scope.loadData = async (changeType) => {
 			loadingDialog();
-			console.log(changeType);
 
 			const pqData = { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId };
 
-			// getting counts
+			// getting staff counts
 			const countRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.counts', pqData);
 			$scope.staffChangeCounts = countRes[0];
 
-			// getting new staff
-			const newStaffRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId, changeType: 'New Staff' });
-			$scope.newStaffList = newStaffRes;
+			// adding new new change type key/value pair for PQ call to staff list
+			pqData.changeType = changeType;
 
-			// getting transfer staff
-			const transferStaffRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
-				curSchoolID: $scope.curSchoolId,
-				curYearID: $scope.adjustedYearId,
-				changeType: 'Transferring Staff',
-			});
-			$scope.transferStaffList = transferStaffRes;
+			// getting staff List
+			const staffList = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', pqData);
 
-			// getting job change staff
-			const jobChangeRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
-				curSchoolID: $scope.curSchoolId,
-				curYearID: $scope.adjustedYearId,
-				changeType: 'Job Change',
-			});
-			$scope.jobChangeList = jobChangeRes;
+			$scope.newStaffList = staffList;
 
-			// getting name change staff
-			const nameChangeRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
-				curSchoolID: $scope.curSchoolId,
-				curYearID: $scope.adjustedYearId,
-				changeType: 'Name Change',
-			});
-			$scope.nameChangeList = nameChangeRes;
+			// // getting transfer staff
+			// const transferStaffRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
+			// 	curSchoolID: $scope.curSchoolId,
+			// 	curYearID: $scope.adjustedYearId,
+			// 	changeType: 'Transferring Staff',
+			// });
+			// $scope.transferStaffList = transferStaffRes;
 
-			// getting exiting staff
-			const exitStaffRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
-				curSchoolID: $scope.curSchoolId,
-				curYearID: $scope.adjustedYearId,
-				changeType: 'Exiting Staff',
-			});
-			$scope.exitStaffList = exitStaffRes;
+			// // getting job change staff
+			// const jobChangeRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
+			// 	curSchoolID: $scope.curSchoolId,
+			// 	curYearID: $scope.adjustedYearId,
+			// 	changeType: 'Job Change',
+			// });
+			// $scope.jobChangeList = jobChangeRes;
+
+			// // getting name change staff
+			// const nameChangeRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
+			// 	curSchoolID: $scope.curSchoolId,
+			// 	curYearID: $scope.adjustedYearId,
+			// 	changeType: 'Name Change',
+			// });
+			// $scope.nameChangeList = nameChangeRes;
+
+			// // getting exiting staff
+			// const exitStaffRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
+			// 	curSchoolID: $scope.curSchoolId,
+			// 	curYearID: $scope.adjustedYearId,
+			// 	changeType: 'Exiting Staff',
+			// });
+			// $scope.exitStaffList = exitStaffRes;
 
 			$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`);
 
