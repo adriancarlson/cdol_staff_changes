@@ -1,5 +1,5 @@
-<div id="nameChangeStaffListGrid" data-pss-grid-widget data-data="nameChangeStaffList"
-    data-filtered-data="nameChangeStaffListFilt" data-client-side-pagination="false"
+<div id="name-change-Grid" data-pss-grid-widget data-data="staffList.nameChange"
+    data-filtered-data="filteredNameChangeList" data-client-side-pagination="false"
     data-filter-constraint="no-filters">
     <table class="grid">
         <thead>
@@ -20,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="nameChange in nameChangeStaffListFilt">
+            <tr ng-repeat="nameChange in filteredNameChangeList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap"><a
                         href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{nameChange.staffid}}">{{nameChange.title}}
