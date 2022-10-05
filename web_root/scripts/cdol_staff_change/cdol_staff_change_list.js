@@ -12,37 +12,38 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 		$scope.loadData = async (changeType) => {
 			loadingDialog();
 
-			// camelize change type
+			// camelize change type passed in
 			const camelChangeType = camelService.camelize(changeType);
-			
+			console.log('Running ... API call');
 			console.log('Before $scope.staffList', $scope.staffList);
 			console.log('Before API Calls', $scope.staffList.hasOwnProperty(camelChangeType));
 
-			//setting up arguments for PQ call
-			const pqData = { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId };
+			//only make API call to get the data if
+			if (!$scope.staffList.hasOwnProperty(camelChangeType)) {
+				//setting up arguments for PQ call
+				const pqData = { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId };
 
-			// getting staff counts
-			const countRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.counts', pqData);
-			$scope.staffChangeCounts = countRes[0];
+				// getting staff counts
+				const countRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.counts', pqData);
+				$scope.staffChangeCounts = countRes[0];
 
-			// adding new new change type key/value pair for PQ call to staff list
-			pqData.changeType = changeType;
+				// adding new new change type key/value pair for PQ call to staff list
+				pqData.changeType = changeType;
 
-			//setting up function to add key and value staff list to staffList object
-			const updateStaffList = (key, value) => ($scope.staffList[key] = value);
+				//setting up function to add key and value staff list to staffList object
+				const updateStaffList = (key, value) => ($scope.staffList[key] = value);
 
-			// getting staff List for current change type
-			const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', pqData);
+				// getting staff List for current change type
+				const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', pqData);
 
-			//updating staffList obj
-			updateStaffList(camelChangeType, res);
+				//updating staffList obj
+				updateStaffList(camelChangeType, res);
 
+				//setting left nav count
+				$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`);
+			}
 			console.log('After $scope.staffList', $scope.staffList);
 			console.log('After API Calls', $scope.staffList.hasOwnProperty(camelChangeType));
-
-			//setting left nav count
-			$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`);
-
 			closeLoading();
 		};
 
