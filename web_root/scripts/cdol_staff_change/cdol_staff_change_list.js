@@ -59,9 +59,9 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 			$scope.loadData('New Staff');
 		};
 	});
-	cdolStaffListApp.directive('newStaffList', () => ({ templateUrl: '/admin/cdol/staff_change/directives/tabs/new_staff_list.html' }));
-	cdolStaffListApp.directive('transferStaffList', () => ({ templateUrl: '/admin/cdol/staff_change/directives/tabs/transfer_staff_list.html' }));
-	cdolStaffListApp.directive('jobChangeList', () => ({ templateUrl: '/admin/cdol/staff_change/directives/tabs/job_change_list.html' }));
-	cdolStaffListApp.directive('nameChangeList', () => ({ templateUrl: '/admin/cdol/staff_change/directives/tabs/name_change_list.html' }));
-	cdolStaffListApp.directive('exitStaffList', () => ({ templateUrl: '/admin/cdol/staff_change/directives/tabs/exit_staff_list.html' }));
+	cdolStaffListApp.directive('newStaffList', () => ({ scope: true, templateUrl: '/admin/cdol/staff_change/directives/tabs/new_staff_list.html' }));
+	cdolStaffListApp.directive('transferStaffList', () => ({ scope: true, templateUrl: '/admin/cdol/staff_change/directives/tabs/transfer_staff_list.html' }));
+	cdolStaffListApp.directive('jobChangeList', () => ({ scope: true, templateUrl: '/admin/cdol/staff_change/directives/tabs/job_change_list.html' }));
+	cdolStaffListApp.directive('nameChangeList', () => ({ scope: true, templateUrl: '/admin/cdol/staff_change/directives/tabs/name_change_list.html' }));
+	cdolStaffListApp.directive('exitStaffList', () => ({ scope: true, templateUrl: '/admin/cdol/staff_change/directives/tabs/exit_staff_list.html' }));
 });
