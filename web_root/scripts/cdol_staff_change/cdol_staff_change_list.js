@@ -12,6 +12,12 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 		$scope.loadData = async (changeType) => {
 			loadingDialog();
 
+			// camelize change type
+			const camelChangeType = camelService.camelize(changeType);
+			
+			console.log('Before $scope.staffList', $scope.staffList);
+			console.log('Before API Calls', $scope.staffList.hasOwnProperty(camelChangeType));
+
 			//setting up arguments for PQ call
 			const pqData = { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId };
 
@@ -22,9 +28,6 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 			// adding new new change type key/value pair for PQ call to staff list
 			pqData.changeType = changeType;
 
-			// camelize change type
-			const camelChangeType = camelService.camelize(changeType);
-
 			//setting up function to add key and value staff list to staffList object
 			const updateStaffList = (key, value) => ($scope.staffList[key] = value);
 
@@ -33,6 +36,9 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 
 			//updating staffList obj
 			updateStaffList(camelChangeType, res);
+
+			console.log('After $scope.staffList', $scope.staffList);
+			console.log('After API Calls', $scope.staffList.hasOwnProperty(camelChangeType));
 
 			//setting left nav count
 			$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`);
