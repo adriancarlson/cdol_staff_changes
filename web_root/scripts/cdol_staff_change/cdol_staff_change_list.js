@@ -14,12 +14,13 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 
 			// camelize change type passed in
 			const camelChangeType = camelService.camelize(changeType);
-			console.log('Running ... API call');
+
 			console.log('Before $scope.staffList', $scope.staffList);
 			console.log('Before API Calls', $scope.staffList.hasOwnProperty(camelChangeType));
 
 			//only make API call to get the data if
 			if (!$scope.staffList.hasOwnProperty(camelChangeType)) {
+				console.log(`Running ... API call for ${camelChangeType}`);
 				//setting up arguments for PQ call
 				const pqData = { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId };
 
