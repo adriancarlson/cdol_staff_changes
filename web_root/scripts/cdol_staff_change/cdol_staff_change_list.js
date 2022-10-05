@@ -50,6 +50,14 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 
 		// fire the function to load the data
 		$scope.loadData('New Staff');
+
+		$scope.reloadData = () => {
+			$scope.staffChangeCounts = [];
+			$scope.staffList = {};
+			console.log('Reloading ... $scope.staffChangeCounts', $scope.staffChangeCounts);
+			console.log('Reloading ... $scope.staffList', $scope.staffList);
+			$scope.loadData('New Staff');
+		};
 	});
 	cdolStaffListApp.directive('newStaffList', () => ({ templateUrl: '/admin/cdol/staff_change/directives/tabs/new_staff_list.html' }));
 	cdolStaffListApp.directive('transferStaffList', () => ({ templateUrl: '/admin/cdol/staff_change/directives/tabs/transfer_staff_list.html' }));
