@@ -23,8 +23,9 @@
             data-ng-cloak>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-auto me-auto"><label for="year-selector">Year: </label>
-                        <select id="year-selector" name="" ng-model="adjustedYearId" ng-change="reloadData()">
+                    <div class="col-auto me-auto">
+                        <label for="year-selector">Year:</label>
+                        <select id="year-selector" ng-model="adjustedYearId" ng-change="reloadData()">
                             ~[tlist_sql;
                             SELECT
                             DISTINCT yearid,
@@ -37,9 +38,10 @@
                             [/tlist_sql]
                         </select>
                     </div>
-                    <div class="col-auto me-2"><a class="button" href="cdol_staff_change.html?status=Submit">Submit
-                            a
-                            Staff Change</a><button ng-click="reloadData()">Reload List</button></div>
+                    <div class="col-auto me-2">
+                        <a class="button" href="cdol_staff_change.html?status=Submit">Submit a Staff Change</a>
+                        <button ng-click="reloadData()">Reload List</button>
+                    </div>
                 </div>
             </div>
             <div class="tabs">
