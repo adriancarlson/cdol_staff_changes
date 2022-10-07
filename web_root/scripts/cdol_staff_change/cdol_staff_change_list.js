@@ -39,7 +39,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 
 				//updating staffList obj
 				updateStaffList(camelChangeType, res);
-				
+
 				$scope.$digest();
 
 				//setting left nav count
@@ -53,12 +53,14 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 		// fire the function to load the data
 		$scope.loadData('New Staff');
 
+		// grab selected tab reload data and have the selected tab display data
 		$scope.reloadData = () => {
+			const selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context');
 			$scope.staffChangeCounts = [];
 			$scope.staffList = {};
 			console.log('Reloading ... $scope.staffChangeCounts', $scope.staffChangeCounts);
 			console.log('Reloading ... $scope.staffList', $scope.staffList);
-			$scope.loadData('New Staff');
+			$scope.loadData(selectedTab);
 		};
 	});
 	cdolStaffListApp.directive('newStaffList', () => ({ templateUrl: '/admin/cdol/staff_change/directives/tabs/new_staff_list.html' }));

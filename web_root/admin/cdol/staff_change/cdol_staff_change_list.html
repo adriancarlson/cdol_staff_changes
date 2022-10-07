@@ -23,9 +23,8 @@
             data-ng-cloak>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-auto me-auto">
-                        <label for="year-selector">Year:</label>
-                        <select id="year-selector" ng-model="adjustedYearId" ng-change="reloadData()">
+                    <div class="col-auto me-auto"><label for="year-selector">Year: </label>
+                        <select id="year-selector" name="" ng-model="adjustedYearId" ng-change="reloadData()">
                             ~[tlist_sql;
                             SELECT
                             DISTINCT yearid,
@@ -38,28 +37,27 @@
                             [/tlist_sql]
                         </select>
                     </div>
-                    <div class="col-auto me-2">
-                        <a class="button" href="cdol_staff_change.html?status=Submit">Submit a Staff Change</a>
-                        <button ng-click="reloadData()">Reload List</button>
-                    </div>
+                    <div class="col-auto me-2"><a class="button" href="cdol_staff_change.html?status=Submit">Submit
+                            a
+                            Staff Change</a><button ng-click="reloadData()">Reload List</button></div>
                 </div>
             </div>
             <div class="tabs">
                 <ul>
-                    <li ng-click="loadData('New Staff')"><a href="#tabOneContent">New Staff <span
-                                class="badge text-bg-success ms-1">{{
+                    <li ng-click="loadData('New Staff')" data-context="New Staff"><a href="#tabOneContent">New Staff
+                            <span class="badge text-bg-success ms-1">{{
                                 staffChangeCounts.total_new_remaining }}</span></a></li>
-                    <li ng-click="loadData('Transferring Staff')"><a href="#tabTwoContent">Transferring Staff <span
-                                class="badge text-bg-primary ms-1">{{
+                    <li ng-click="loadData('Transferring Staff')" data-context="Transferring Staff"><a
+                            href="#tabTwoContent">Transferring Staff <span class="badge text-bg-primary ms-1">{{
                                 staffChangeCounts.total_transfer_remaining }}</span></a></li>
-                    <li ng-click="loadData('Job Change')"><a href="#tabThreeContent">Position/Job Changes <span
-                                class="badge text-bg-info ms-1">{{
+                    <li ng-click="loadData('Job Change')" data-context="Job Change"><a
+                            href="#tabThreeContent">Position/Job Changes <span class="badge text-bg-info ms-1">{{
                                 staffChangeCounts.total_name_change_remaining }}</span></a></li>
-                    <li ng-click="loadData('Name Change')"><a href="#tabFourContent">Name Changes <span
-                                class="badge text-bg-warning ms-1">{{
+                    <li ng-click="loadData('Name Change')" data-context="Name Change"><a href="#tabFourContent">Name
+                            Changes <span class="badge text-bg-warning ms-1">{{
                                 staffChangeCounts.total_name_change_remaining }}</span></a></li>
-                    <li ng-click="loadData('Exiting Staff')"><a href="#tabFiveContent">Exiting Staff <span
-                                class="badge text-bg-secondary ms-1">{{
+                    <li ng-click="loadData('Exiting Staff')" data-context="Exiting Staff"><a
+                            href="#tabFiveContent">Exiting Staff <span class="badge text-bg-secondary ms-1">{{
                                 staffChangeCounts.total_exit_remaining }}</span></a></li>
                 </ul>
                 <new-staff-list id="tabOneContent"></new-staff-list>
