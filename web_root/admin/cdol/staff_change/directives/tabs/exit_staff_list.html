@@ -1,5 +1,6 @@
-<div id="exit-staff-grid" data-pss-grid-widget data-data="staffList.exitingStaff" data-filtered-data="filteredExitingStaffList"
-    data-client-side-pagination="false" data-filter-constraint="no-filters">
+<div id="exit-staff-grid" data-pss-grid-widget data-data="staffList.exitingStaff"
+    data-filtered-data="filteredExitingStaffList" data-client-side-pagination="false"
+    data-filter-constraint="no-filters">
     <table class="grid">
         <thead>
             <tr>
@@ -19,8 +20,7 @@
             <tr ng-repeat="exitStaff in filteredExitingStaffList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap"><a
-                        href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{exitStaff.staffid}}">{{exitStaff.replacedstaff}}
-                        {{exitStaff.replaced_other}}</a>
+                        href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{exitStaff.staffid}}">{{exitStaff.old_name_placeholder}}</a>
                 </td>
                 <td class="nowrap">{{exitStaff.schname}}</td>
                 <td class="nowrap">{{exitStaff.submittedstaff}}</td>
