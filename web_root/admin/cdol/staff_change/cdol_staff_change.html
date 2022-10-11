@@ -10,25 +10,26 @@
     </head>
 
     <body>
-        ~[wc:admin_header_css]
-        <span ng-show="userContext.pageStatus =='Submit'"><a href="/admin/home.html"
-                target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; {{userContext.pageStatus}}
-            Staff Change</span>
-        <span ng-show="userContext.pageStatus =='Edit'"><a href="/admin/home.html"
-                target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; <a
-                href="/admin/cdol/staff_change/cdol_staff_change_list.html" target="_top">Staff Submissions</a> &gt;
-            {{userContext.pageStatus}} Staff Change Submissions </span>
-        ~[wc:admin_navigation_css]
-        <h1>{{userContext.pageStatus}} Staff Change</h1>
-
-
         <div id="cdol-staff-list-app-div" data-require-path="cdol_staff_change/cdol_staff_change"
-            data-module-name="cdolStaffAppMod" data-ng-controller="cdolStaffAppCtrl" data-ng-cur-school-id="~(curschoolid)"
-            data-ng-cur-year-id="~(curyearid)" data-ng-status="~(gpv.status)" data-ng-cur-user-id="~[x:userid]"
-            data-ng-cur-date="~[date]" data-ng-cur-time="~[time]" data-ng-staff-change-id="~(gpv.id)"
-            data-ng-cur-user-name="~[x:username;firstlast]" data-ng-cur-user-email="~[x:useremail]"
-            data-ng-cur-user-school-abbr="~(schoolabbr)" data-ng-init="findStaffChange()" data-ng-cloak>
+            data-module-name="cdolStaffAppMod" data-ng-controller="cdolStaffAppCtrl"
+            data-ng-cur-school-id="~(curschoolid)" data-ng-cur-year-id="~(curyearid)" data-ng-status="~(gpv.status)"
+            data-ng-cur-user-id="~[x:userid]" data-ng-cur-date="~[date]" data-ng-cur-time="~[time]"
+            data-ng-staff-change-id="~(gpv.id)" data-ng-cur-user-name="~[x:username;firstlast]"
+            data-ng-cur-user-email="~[x:useremail]" data-ng-cur-user-school-abbr="~(schoolabbr)"
+            data-ng-init="findStaffChange()" data-ng-cloak>
             <div ng-show="userContext.pageStatus =='Submit' || userContext.pageStatus =='Edit'">
+                ~[wc:admin_header_css]
+                <span ng-show="userContext.pageStatus =='Submit'"><a href="/admin/home.html"
+                        target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt;
+                    {{userContext.pageStatus}}
+                    Staff Change</span>
+                <span ng-show="userContext.pageStatus =='Edit'"><a href="/admin/home.html"
+                        target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; <a
+                        href="/admin/cdol/staff_change/cdol_staff_change_list.html" target="_top">Staff Submissions</a>
+                    &gt;
+                    {{userContext.pageStatus}} Staff Change Submissions </span>
+                ~[wc:admin_navigation_css]
+                <h1>{{userContext.pageStatus}} Staff Change</h1>
 
                 <!--dup table-->
                 <div class="box-round"
