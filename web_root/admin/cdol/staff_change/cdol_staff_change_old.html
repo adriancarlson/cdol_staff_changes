@@ -2,7 +2,7 @@
 <html>
 
     <head>
-        <title>Submit Staff Change</title>
+        <title>Staff Change</title>
         ~[wc:commonscripts]
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
@@ -10,10 +10,10 @@
     </head>
 
     <body id="cdolStaffAppDiv" ng-controller="cdolStaffAppCtrl as mainController"
-        data-require-path="cdol_staff_change/cdol_staff_change_list" data-module-name="cdolStaffApp"
-        ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)" ng-status="~(gpv.status)"
-        ng-cur-user-id="~[x:userid]" ng-cur-date="~[date]" ng-cur-time="~[time]" ng-staff-change-id="~(gpv.id)"
-        ng-cur-user-name=" ~[x:username;firstlast]" ng-cur-user-email="~[x:useremail]"
+        data-require-path="/admin/cdol/staff_change/scripts/cdol_staff_change.js?~(f.currenttime)"
+        data-module-name="cdolStaffApp" ng-cur-school-id="~(curschoolid)" ng-cur-year-id="~(curyearid)"
+        ng-status="~(gpv.status)" ng-cur-user-id="~[x:userid]" ng-cur-date="~[date]" ng-cur-time="~[time]"
+        ng-staff-change-id="~(gpv.id)" ng-cur-user-name=" ~[x:username;firstlast]" ng-cur-user-email="~[x:useremail]"
         ng-cur-user-school-abbr="~(schoolabbr)" ng-init="findStaffChange()" ng-cloak>
         ~[wc:admin_header_css]
         <span ng-show="userContext.pageStatus =='Submit'"><a href="/admin/home.html"
