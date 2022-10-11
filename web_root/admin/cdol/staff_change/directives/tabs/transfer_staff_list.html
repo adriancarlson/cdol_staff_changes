@@ -5,11 +5,10 @@
         <thead>
             <tr>
                 <th></th>
-                <th data-pss-sort-fields="last_name|text" class="nowrap">Transferring Staff Name
-                </th>
+                <th data-pss-sort-fields="last_name|text" class="nowrap">Transferring Staff</th>
                 <th data-pss-sort-fields="schname|text">New School</th>
-                <th data-pss-sort-fields="previous_employer|text">Original School</th>
-                <th data-pss-sort-fields="who_submitted|number">Who Submitted</th>
+                <th data-pss-sort-fields="previous_school_name|text">Original School</th>
+                <th data-pss-sort-fields="who_submitted|number">Submitted By</th>
                 <th data-pss-sort-fields="submission_date, submission_time" data-primary-sort="descending">
                     Submission Date</th>
                 <th data-pss-sort-fields="completion_date | date">Deadline</th>
@@ -28,7 +27,7 @@
                         {{transferringStaff.first_name}}
                         {{transferringStaff.last_name}}</a></td>
                 <td class="nowrap">{{transferringStaff.schname}}</td>
-                <td class="nowrap">{{transferringStaff.previous_combined}}</td>
+                <td class="nowrap">{{transferringStaff.previous_school_name}}</td>
                 <td class="nowrap">{{transferringStaff.submittedstaff}}</td>
                 <td class="nowrap">{{transferringStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{transferringStaff.submission_time}}</td>
