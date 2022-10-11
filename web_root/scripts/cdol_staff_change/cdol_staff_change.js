@@ -16,11 +16,12 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/dateServic
 				curYearId: $attrs.ngCurYearId,
 				curDate: $attrs.ngCurDate,
 				curTime: $attrs.ngCurTime,
+				staffChangeId: $attrs.ngStaffChangeId,
 				curUserId: $attrs.ngCurUserId,
-				curStaffId: $attrs.ngStaffChangeId,
+				curStaffId: $attrs.ngCurUserId,
 				curUserName: $attrs.ngCurUserName,
 				curUserEmail: $attrs.ngCurUserEmail,
-				curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr,
+				curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr
 			};
 		},
 	]);

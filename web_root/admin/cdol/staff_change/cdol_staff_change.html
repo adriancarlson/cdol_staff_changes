@@ -4,6 +4,8 @@
     <head>
         <title>Staff Change</title>
         ~[wc:commonscripts]
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
         <link href="/images/css/cdol_staff_change/cdol_staff_change.css" rel="stylesheet">
@@ -11,9 +13,9 @@
 
     <body id="cdol-staff-app-div" data-ng-controller="cdolStaffAppCtrl"
         data-require-path="cdol_staff_change/cdol_staff_change" data-module-name="cdolStaffAppMod"
-        data-ng-cur-school-id="~(curschoolid)" data-ng-cur-year-id="~(curyearid)" data-ng-status="~(gpv.status)"
-        data-ng-cur-user-id="~[x:userid]" data-ng-cur-date="~[date]" data-ng-cur-time="~[time]"
-        data-ng-staff-change-id="~(gpv.id)" data-ng-cur-user-name="~[x:username;firstlast]"
+        data-ng-status="~(gpv.status)" data-ng-cur-school-id="~(curschoolid)" data-ng-cur-year-id="~(curyearid)"
+        data-ng-cur-date="~[date]" data-ng-cur-time="~[time]" data-ng-staff-change-id="~(gpv.id)"
+        data-ng-cur-user-id="~[x:users_dcid]" data-ng-cur-user-name="~[x:username;firstlast]"
         data-ng-cur-user-email="~[x:useremail]" data-ng-cur-user-school-abbr="~(schoolabbr)" data-ng-cloak>
         ~[wc:admin_header_css]
         <a href="/admin/home.html" target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a>
@@ -24,7 +26,34 @@
 
         <div ng-if="userContext.pageStatus !='Confirm'">
             <h1>{{userContext.pageStatus}} Staff Change</h1>
-            {{userContext}}
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <label>Type of Staff Change</label>
+                        <select type="text" ng-model="userContext.formType">
+                            <option></option>
+                            <option value="New Staff">New Staff</option>
+                            <option value="Transferring Staff">Transferring Staff</option>
+                            <option value="Job Change">Position/Job Change</option>
+                            <option value="Name Change">Name Change</option>
+                            <option value="Exiting Staff">Exiting Staff</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <h5 class="card-header">New Staff:</h5>
+                            <div class="card-body">
+                                <p class="card-text">A new staff member is someone new to the Diocese of Lincoln and has
+                                    never worked for ~(schoolname) or any of the Diocese of Lincoln Schools</p>
+                                <div class="card-footer text-muted">
+                                    <strong>Example:</strong> A teacher coming to ~(schoolname) from out of state<br>
+                                    <strong>Example:</strong> A teacher strait out of college
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <confirm ng-if="userContext.pageStatus =='Confirm'"></confirm>
         ~[wc:admin_footer_css]
