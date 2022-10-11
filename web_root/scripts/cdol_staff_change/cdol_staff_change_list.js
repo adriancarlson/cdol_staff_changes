@@ -8,6 +8,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 		$scope.curYearId = $attrs.ngCurYearId;
 		$scope.curDate = $attrs.ngCurDate;
 		$scope.adjustedYearId = new Date($attrs.ngCurDate).getFullYear() - 1991;
+		$scope.selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context');
 
 		$scope.loadData = async (changeType) => {
 			loadingDialog();
@@ -15,8 +16,9 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 			// camelize changeType passed in
 			const camelChangeType = camelService.camelize(changeType);
 
-			console.log('Before $scope.staffList', $scope.staffList);
-			console.log('Before API Calls', $scope.staffList.hasOwnProperty(camelChangeType));
+			// 			console.log('Before $scope.staffList', $scope.staffList);
+			// 			console.log('Before API Calls', $scope.staffList.hasOwnProperty(camelChangeType));
+			//             console.log('$scope.selectedTab', $scope.selectedTab);
 
 			//only make API call to get the data if
 			if (!$scope.staffList.hasOwnProperty(camelChangeType)) {
@@ -45,22 +47,21 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 				//setting left nav count
 				$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`);
 			}
-			console.log('After $scope.staffList', $scope.staffList);
-			console.log('After API Calls', $scope.staffList.hasOwnProperty(camelChangeType));
+			// 			console.log('After $scope.staffList', $scope.staffList);
+			// 			console.log('After API Calls', $scope.staffList.hasOwnProperty(camelChangeType));
 			closeLoading();
 		};
 
 		// fire the function to load the data
-		$scope.loadData('New Staff');
+		$scope.loadData($scope.selectedTab);
 
 		// grab selected tab reload data and have the selected tab display data
 		$scope.reloadData = () => {
-			const selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context');
 			$scope.staffChangeCounts = [];
 			$scope.staffList = {};
-			console.log('Reloading ... $scope.staffChangeCounts', $scope.staffChangeCounts);
-			console.log('Reloading ... $scope.staffList', $scope.staffList);
-			$scope.loadData(selectedTab);
+			// 			console.log('Reloading ... $scope.staffChangeCounts', $scope.staffChangeCounts);
+			// 			console.log('Reloading ... $scope.staffList', $scope.staffList);
+			$scope.loadData($scope.selectedTab);
 		};
 	});
 	cdolStaffListApp.directive('newStaffList', () => ({ templateUrl: '/admin/cdol/staff_change/directives/tabs/new_staff_list.html' }));
