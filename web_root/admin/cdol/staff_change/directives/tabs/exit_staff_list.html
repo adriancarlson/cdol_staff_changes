@@ -20,7 +20,8 @@
             <tr ng-repeat="exitStaff in filteredExitingStaffList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap"><a
-                        href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{exitStaff.staffid}}">{{exitStaff.old_name_placeholder}}</a>
+                        href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{exitStaff.staffid}}">{{exitStaff.old_name_placeholder}}
+                        {{exitStaff.replacing_other}}</a>
                 </td>
                 <td class="nowrap">{{exitStaff.schname}}</td>
                 <td class="nowrap">{{exitStaff.submittedstaff}}</td>
