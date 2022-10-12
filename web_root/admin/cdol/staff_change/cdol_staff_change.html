@@ -26,29 +26,116 @@
 
         <div ng-if="userContext.pageStatus !='Confirm'">
             <h1>{{userContext.pageStatus}} Staff Change</h1>
+            userContext.formTypeHover: {{ userContext.formTypeHover}}
+            userContext.formType: {{ userContext.formType}}
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col">
-                        <label>Type of Staff Change</label>
-                        <select type="text" ng-model="userContext.formType">
-                            <option></option>
-                            <option value="New Staff">New Staff</option>
-                            <option value="Transferring Staff">Transferring Staff</option>
-                            <option value="Job Change">Position/Job Change</option>
-                            <option value="Name Change">Name Change</option>
-                            <option value="Exiting Staff">Exiting Staff</option>
-                        </select>
+                    <div class="col-2">
+                        <label>Type of Staff Change:</label>
+                        <div class="ms-3">
+                            <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'New Staff'"
+                                ng-mouseleave="userContext.formTypeHover = null">
+                                <input class="form-check-input" type="radio" name="new-staff-radio" id="new-staff-radio"
+                                    ng-model="userContext.formType" value="New Staff">
+                                <label class="form-check-label change-type-radio-label" for="new-staff-radio">
+                                    New Staff
+                                </label>
+                            </div>
+                            <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Transferring Staff'"
+                                ng-mouseleave="userContext.formTypeHover = null">
+                                <input class="form-check-input" type="radio" name="transferring-staff-radio"
+                                    id="transferring-staff-radio" ng-model="userContext.formType"
+                                    value="Transferring Staff">
+                                <label class="form-check-label change-type-radio-label" for="transferring-staff-radio">
+                                    Transferring Staff
+                                </label>
+                            </div>
+                            <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Job Change'"
+                                ng-mouseleave="userContext.formTypeHover = null">
+                                <input class="form-check-input" type="radio" name="job-change-radio"
+                                    id="job-change-radio" ng-model="userContext.formType" value="Job Change">
+                                <label class="form-check-label change-type-radio-label" for="job-change-radio">
+                                    Job Change
+                                </label>
+                            </div>
+                            <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Name Change'"
+                                ng-mouseleave="userContext.formTypeHover = null">
+                                <input class="form-check-input" type="radio" name="name-change-radio"
+                                    id="name-change-radio" ng-model="userContext.formType" value="Name Change">
+                                <label class="form-check-label change-type-radio-label" for="name-change-radio">
+                                    Name Change
+                                </label>
+                            </div>
+                            <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Exiting Staff'"
+                                ng-mouseleave="userContext.formTypeHover = null">
+                                <input class="form-check-input" type="radio" name="exiting-staff-radio"
+                                    id="exiting-staff-radio" ng-model="userContext.formType" value="Exiting Staff">
+                                <label class="form-check-label change-type-radio-label" for="exiting-staff-radio">
+                                    Exiting Staff
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col">
-                        <div class="card">
-                            <h5 class="card-header">New Staff:</h5>
+                    <div class="col" ng-if="userContext.formTypeHover !== null">
+                        <div id="new-staff-card" class="card" ng-if="userContext.formTypeHover === 'New Staff'">
+                            <div class="card-header bg-success text-white bg-gradient fs-6">New Staff :
+                            </div>
                             <div class="card-body">
-                                <p class="card-text">A new staff member is someone new to the Diocese of Lincoln and has
-                                    never worked for ~(schoolname) or any of the Diocese of Lincoln Schools</p>
-                                <div class="card-footer text-muted">
-                                    <strong>Example:</strong> A teacher coming to ~(schoolname) from out of state<br>
-                                    <strong>Example:</strong> A teacher strait out of college
-                                </div>
+                                A new staff member is someone new to the Diocese of Lincoln and has
+                                never worked for ~(schoolname) or any of the Diocese of Lincoln Schools
+                            </div>
+                            <div class="card-footer">
+                                <strong>Example:</strong> A teacher coming to ~(schoolname) from out of state<br>
+                                <strong>Example:</strong> A teacher first year teacher that just completed college
+                            </div>
+                        </div>
+                        <div id="transferring-staff-card" class="card"
+                            ng-if="userContext.formTypeHover === 'Transferring Staff'">
+                            <div class="card-header bg-primary text-white bg-gradient fs-6">Transferring Staff :
+                            </div>
+                            <div class="card-body">
+                                A new staff member is someone new to the Diocese of Lincoln and has
+                                never worked for ~(schoolname) or any of the Diocese of Lincoln Schools
+                            </div>
+                            <div class="card-footer">
+                                <strong>Example:</strong> A teacher coming to ~(schoolname) from out of state<br>
+                                <strong>Example:</strong> A teacher first year teacher that just completed college
+                            </div>
+                        </div>
+                        <div id="job-change-card" class="card" ng-if="userContext.formTypeHover === 'Job Change'">
+                            <div class="card-header bg-info text-white bg-gradient fs-6">Position/Job Change :
+                            </div>
+                            <div class="card-body">
+                                A new staff member is someone new to the Diocese of Lincoln and has
+                                never worked for ~(schoolname) or any of the Diocese of Lincoln Schools
+                            </div>
+                            <div class="card-footer">
+                                <strong>Example:</strong> A teacher coming to ~(schoolname) from out of state<br>
+                                <strong>Example:</strong> A teacher first year teacher that just completed college
+                            </div>
+                        </div>
+                        <div id="name-change-card" class="card" ng-if="userContext.formTypeHover === 'Name Change'">
+                            <div class="card-header bg-warning text-white bg-gradient fs-6">Name Change :
+                            </div>
+                            <div class="card-body">
+                                A new staff member is someone new to the Diocese of Lincoln and has
+                                never worked for ~(schoolname) or any of the Diocese of Lincoln Schools
+                            </div>
+                            <div class="card-footer">
+                                <strong>Example:</strong> A teacher coming to ~(schoolname) from out of state<br>
+                                <strong>Example:</strong> A teacher first year teacher that just completed college
+                            </div>
+                        </div>
+                        <div id="exiting-staff-card" class="card" ng-if="userContext.formTypeHover === 'Exiting Staff'">
+                            <div class="card-header bg-secondary text-white bg-gradient fs-6">Exiting Staff :
+                            </div>
+                            <div class="card-body">
+                                A new staff member is someone new to the Diocese of Lincoln and has
+                                never worked for ~(schoolname) or any of the Diocese of Lincoln Schools
+                            </div>
+                            <div class="card-footer">
+                                <strong>Example:</strong> A teacher coming to ~(schoolname) from out of state<br>
+                                <strong>Example:</strong> A teacher first year teacher that just completed college
                             </div>
                         </div>
                     </div>

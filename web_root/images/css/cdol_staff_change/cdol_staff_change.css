@@ -74,6 +74,9 @@ select.ng-invalid.ng-touched {
 .ml {
 	margin-left: 20px;
 }
+.change-type-radio-label {
+	font-weight: normal !important;
+}
 
 .fluid-form > div:not(.button-row):nth-of-type(odd):not(.button-row),
 fieldset > div:nth-of-type(odd):not(.button-row) {
