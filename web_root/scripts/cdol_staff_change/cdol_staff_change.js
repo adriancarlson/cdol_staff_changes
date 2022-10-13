@@ -23,6 +23,10 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/dateServic
 				curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr,
 				step: 'start',
 			};
+
+			$scope.formDipslay = (step) => {
+				$scope.step = step;
+			}
 		},
 	]);
 	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }));

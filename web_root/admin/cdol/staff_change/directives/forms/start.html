@@ -5,8 +5,8 @@
             <div class="ms-3">
                 <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'New Staff'"
                     ng-mouseleave="userContext.formTypeHover = userContext.formType">
-                    <input class="form-check-input" type="radio" name="new-staff-radio"
-                        id="new-staff-radio" ng-model="userContext.formType" value="New Staff">
+                    <input class="form-check-input" type="radio" name="new-staff-radio" id="new-staff-radio"
+                        ng-model="userContext.formType" value="New Staff">
                     <label class="form-check-label change-type-radio-label" for="new-staff-radio">
                         New Staff
                     </label>
@@ -14,41 +14,39 @@
                 <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Transferring Staff'"
                     ng-mouseleave="userContext.formTypeHover = userContext.formType">
                     <input class="form-check-input" type="radio" name="transferring-staff-radio"
-                        id="transferring-staff-radio" ng-model="userContext.formType"
-                        value="Transferring Staff">
-                    <label class="form-check-label change-type-radio-label"
-                        for="transferring-staff-radio">
+                        id="transferring-staff-radio" ng-model="userContext.formType" value="Transferring Staff">
+                    <label class="form-check-label change-type-radio-label" for="transferring-staff-radio">
                         Transferring Staff
                     </label>
                 </div>
                 <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Job Change'"
                     ng-mouseleave="userContext.formTypeHover = userContext.formType">
-                    <input class="form-check-input" type="radio" name="job-change-radio"
-                        id="job-change-radio" ng-model="userContext.formType" value="Job Change">
+                    <input class="form-check-input" type="radio" name="job-change-radio" id="job-change-radio"
+                        ng-model="userContext.formType" value="Job Change">
                     <label class="form-check-label change-type-radio-label" for="job-change-radio">
                         Position/Job Change
                     </label>
                 </div>
                 <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Name Change'"
                     ng-mouseleave="userContext.formTypeHover = userContext.formType">
-                    <input class="form-check-input" type="radio" name="name-change-radio"
-                        id="name-change-radio" ng-model="userContext.formType" value="Name Change">
+                    <input class="form-check-input" type="radio" name="name-change-radio" id="name-change-radio"
+                        ng-model="userContext.formType" value="Name Change">
                     <label class="form-check-label change-type-radio-label" for="name-change-radio">
                         Name Change
                     </label>
                 </div>
                 <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Exiting Staff'"
                     ng-mouseleave="userContext.formTypeHover = userContext.formType">
-                    <input class="form-check-input" type="radio" name="exiting-staff-radio"
-                        id="exiting-staff-radio" ng-model="userContext.formType" value="Exiting Staff">
+                    <input class="form-check-input" type="radio" name="exiting-staff-radio" id="exiting-staff-radio"
+                        ng-model="userContext.formType" value="Exiting Staff">
                     <label class="form-check-label change-type-radio-label" for="exiting-staff-radio">
                         Exiting Staff
                     </label>
                 </div>
                 <div class="row">
                     <div class="col"></div>
-                    <div class="col-auto"><button type="button"
-                            data-ng-disabled="!userContext.formType">Next <i
+                    <div class="col-auto"><button type="button" data-ng-disabled="!userContext.formType"
+                            data-ng-click="formDipslay(userContext.formType)">Next <i
                                 class="bi bi-chevron-right fw-bold"></i></button></div>
                 </div>
             </div>
@@ -72,8 +70,7 @@
                     but is teaching for the first time at ~(schoolname).
                 </div>
             </div>
-            <div id="transferring-staff-card" class="card"
-                ng-if="userContext.formTypeHover === 'Transferring Staff'">
+            <div id="transferring-staff-card" class="card" ng-if="userContext.formTypeHover === 'Transferring Staff'">
                 <div class="card-header bg-primary text-white bg-gradient fs-6 fw-semibold">Transferring
                     Staff :
                 </div>
@@ -123,8 +120,7 @@
                     last name changed.
                 </div>
             </div>
-            <div id="exiting-staff-card" class="card"
-                ng-if="userContext.formTypeHover === 'Exiting Staff'">
+            <div id="exiting-staff-card" class="card" ng-if="userContext.formTypeHover === 'Exiting Staff'">
                 <div class="card-header bg-secondary text-white bg-gradient fs-6 fw-semibold">Exiting
                     Staff
                     :
