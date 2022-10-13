@@ -32,7 +32,7 @@
                         <label>Type of Staff Change:</label>
                         <div class="ms-3">
                             <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'New Staff'"
-                                ng-mouseleave="userContext.formTypeHover = null">
+                                ng-mouseleave="userContext.formTypeHover = userContext.formType">
                                 <input class="form-check-input" type="radio" name="new-staff-radio" id="new-staff-radio"
                                     ng-model="userContext.formType" value="New Staff">
                                 <label class="form-check-label change-type-radio-label" for="new-staff-radio">
@@ -40,7 +40,7 @@
                                 </label>
                             </div>
                             <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Transferring Staff'"
-                                ng-mouseleave="userContext.formTypeHover = null">
+                                ng-mouseleave="userContext.formTypeHover = userContext.formType">
                                 <input class="form-check-input" type="radio" name="transferring-staff-radio"
                                     id="transferring-staff-radio" ng-model="userContext.formType"
                                     value="Transferring Staff">
@@ -49,7 +49,7 @@
                                 </label>
                             </div>
                             <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Job Change'"
-                                ng-mouseleave="userContext.formTypeHover = null">
+                                ng-mouseleave="userContext.formTypeHover = userContext.formType">
                                 <input class="form-check-input" type="radio" name="job-change-radio"
                                     id="job-change-radio" ng-model="userContext.formType" value="Job Change">
                                 <label class="form-check-label change-type-radio-label" for="job-change-radio">
@@ -57,7 +57,7 @@
                                 </label>
                             </div>
                             <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Name Change'"
-                                ng-mouseleave="userContext.formTypeHover = null">
+                                ng-mouseleave="userContext.formTypeHover = userContext.formType">
                                 <input class="form-check-input" type="radio" name="name-change-radio"
                                     id="name-change-radio" ng-model="userContext.formType" value="Name Change">
                                 <label class="form-check-label change-type-radio-label" for="name-change-radio">
@@ -65,7 +65,7 @@
                                 </label>
                             </div>
                             <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Exiting Staff'"
-                                ng-mouseleave="userContext.formTypeHover = null">
+                                ng-mouseleave="userContext.formTypeHover = userContext.formType">
                                 <input class="form-check-input" type="radio" name="exiting-staff-radio"
                                     id="exiting-staff-radio" ng-model="userContext.formType" value="Exiting Staff">
                                 <label class="form-check-label change-type-radio-label" for="exiting-staff-radio">
@@ -74,7 +74,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col" ng-if="userContext.formTypeHover !== null">
+                    <div class="col">
                         <div id="new-staff-card" class="card" ng-if="userContext.formTypeHover === 'New Staff'">
                             <div class="card-header bg-success text-white bg-gradient fs-6 fw-semibold">New Staff :
                             </div>
@@ -88,7 +88,8 @@
                                 <strong>Another Example:</strong> A teacher who will be teaching for the first time
                                 after just completing college.
                                 <br>
-                                <strong>Another Example:</strong> A teacher who previously taught at the public schools but is teaching for the first time at ~(schoolname).
+                                <strong>Another Example:</strong> A teacher who previously taught at the public schools
+                                but is teaching for the first time at ~(schoolname).
                             </div>
                         </div>
                         <div id="transferring-staff-card" class="card"
@@ -101,7 +102,8 @@
                                 from another Diocese of Lincoln School.
                             </div>
                             <div class="card-footer">
-                                <strong>For Example:</strong> A teacher coming <strong>INTO</strong> ~(schoolname) from any other Diocese of Lincoln school.<br>
+                                <strong>For Example:</strong> A teacher coming <strong>INTO</strong> ~(schoolname) from
+                                any other Diocese of Lincoln school.<br>
                                 <strong>Another Example:</strong> A priest or religious sister who previously taught at
                                 another Diocese of Lincoln School and is being reassigned to ~(schoolname).
                             </div>
@@ -126,7 +128,8 @@
                             <div class="card-header bg-warning text-dark bg-gradient fs-6 fw-semibold">Name Change :
                             </div>
                             <div class="card-body">
-                                Choose this option for someone who needs to, or will need to in the near future, legally change their name.
+                                Choose this option for someone who needs to, or will need to in the near future, legally
+                                change their name.
                             </div>
                             <div class="card-footer">
                                 <strong>Example:</strong> A staff member who is going to get married and needs their
