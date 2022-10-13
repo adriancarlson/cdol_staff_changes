@@ -25,8 +25,8 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/dateServic
 			};
 
 			$scope.formDipslay = (step) => {
-				$scope.step = step;
-			}
+				$scope.userContext.step = step;
+			};
 		},
 	]);
 	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }));
