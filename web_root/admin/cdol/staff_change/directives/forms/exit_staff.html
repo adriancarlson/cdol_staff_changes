@@ -5,75 +5,79 @@
         member form first. When you fill out that form you can choose who the New or Transfering Staff
         member is replacing and an Exiting Staff Record will automatically submitted for the replaced staff.
     </div>
+    exitingStaff: {{exitingStaff}}
     <div class="card">
-        <div class="card-header bg-secondary text-white bg-gradient fs-6 fw-semibold">Exiting
-            Staff
-            :
-        </div>
+        <div class="card-header bg-secondary text-bg-secondary bg-gradient fs-6 fw-semibold">Exiting Staff:</div>
         <div class="card-body">
-            exitingStaff: {{exitingStaff}}
             <form name="exitingForm" method="POST" novalidate>
-                <div class="row align-items-center">
+                <div class="row align-items-center mb-3">
                     <div class="col-auto">
-                        <div class="form-floating">
-                            <select class="form-select form-select-sm" id="users_dcid"
-                                aria-label="Who is not returning?" data-ng-model="exitingStaff.users_dcid"
-                                data-ng-required="true" data-ng-change="getExistingStaff(exitingStaff.users_dcid)">
-                                <option></option>
-                                ~[tlist_sql;SELECT
-                                users.dcid,
-                                users.first_name,
-                                users.last_name
-                                FROM SCHOOLSTAFF
-                                inner join users
-                                on users.dcid = schoolstaff.users_dcid
-                                WHERE schoolstaff.status =1
-                                ~[if.is.a.school]
-                                AND schoolstaff.schoolid = ~(curschoolid)
-                                [/if.is.a.school]
-                                Order BY users.last_name , users.first_name]
-                                <option value="~(dcid)">~(first) ~(last)</option>
-                                [/tlist_sql]
-                                <option value="-1">-- Other --</option>
+                        <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is not
+                            returning?</label>
+                        <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
+                            data-ng-model="exitingStaff.users_dcid" data-ng-required="true"
+                            data-ng-change="getExistingStaff(userContext.step, exitingStaff.users_dcid)">
+                            <option selected></option>
+                            ~[tlist_sql;SELECT
+                            users.dcid,
+                            users.first_name,
+                            users.last_name
+                            FROM SCHOOLSTAFF
+                            inner join users
+                            on users.dcid = schoolstaff.users_dcid
+                            WHERE schoolstaff.status = 1
+                            ~[if.is.a.school]
+                            AND schoolstaff.schoolid = ~(curschoolid)
+                            [/if.is.a.school]
+                            Order BY users.last_name , users.first_name]
+                            <option value="~(dcid)">~(first) ~(last)</option>
+                            [/tlist_sql]
+                            <option value="-1">-- Other --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3" data-ng-if="exitingStaff.users_dcid == -1">
+                    <div class="col-9">
+                        <label for="exiting-staff-name" class="form-label form-label-sm  label-reset req">Exiting Staff
+                            Name</label>
+                        <div class="input-group">
+                            <select class="form-select form-select-sm" aria-label="title"
+                                data-ng-model="exitingStaff.title" data-ng-required="true">
+                                <option selected></option>
+                                <option value="Mr.">Mr.</option>
+                                <option value="Mrs.">Mrs.</option>
+                                <option value="Ms.">Ms.</option>
+                                <option value="Dr.">Dr.</option>
+                                <option value="Fr.">Fr.</option>
+                                <option value="Msgr.">Msgr.</option>
+                                <option value="Sr.">Sr.</option>
+                                <option value="Br.">Br.</option>
                             </select>
-                            <label for="users_dcid">Who is not returning?</label>
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
+                                aria-label="First name" data-ng-model="exitingStaff.first_name" data-ng-required="true">
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="Middle name"
+                                aria-label="Middle name" data-ng-model="exitingStaff.middle_name">
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
+                                aria-label="Last name" data-ng-model="exitingStaff.last_name" data-ng-required="true">
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center" data-ng-if="exitingStaff.users_dcid === -1">
+                <div class="row align-items-center mb-3"
+                    data-ng-if="userContext.pageStatus =='Submit' && exitingStaff.users_dcid">
                     <div class="col-auto">
-                        <div class="form-floating">
-                            <select class="form-select form-select-sm" id="title" aria-label="Who is not returning?"
-                                data-ng-model="exitingStaff.title"
-                                data-ng-required="true">~[x:codesetoptions;codetype=Title;includeblank;value=~([U_CDOL_STAFF_CHANGES]title)]</select>
-                            <label for="title">Title</label>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="first_name"
-                                data-ng-model="exitingStaff.first_name" data-ng-required="true">
-                            <label for="first_name">First Name</label>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="middle_name"
-                                data-ng-model="exitingStaff.middle_name" data-ng-required="true">
-                            <label for="middle_name">First Name</label>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="last_name"
-                                data-ng-model="exitingStaff.last_name" data-ng-required="true">
-                            <label for="last_name">First Name</label>
+                        <div class="card">
+                            <div class="card-header fw-semibold ps-1">{{ exitingStaff.first_name}} {{
+                                exitingStaff.last_name}}'s Deactivation
+                                Date</div>
+                            <div class="card-body">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </form>
         </div>
+        </form>
     </div>
+</div>
 </div>
 
 <!-- <form name="exitingForm" method="POST" novalidate>

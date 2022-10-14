@@ -27,7 +27,7 @@
 
         <div ng-if="userContext.pageStatus !='Confirm'">
             <h1 class="mb-1">{{userContext.pageStatus}} Staff Change</h1>
-            <div id="form-container" data-ng-switch on="userContext.step">
+            <div id="form-container" data-ng-switch on="userContext.pageContext">
                 <start data-ng-switch-when="start"></start>
                 <exit-staff data-ng-switch-when="Exiting Staff"></exit-staff>
                 <confirm data-ng-switch-when="confirm"></confirm>
