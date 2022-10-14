@@ -38,10 +38,11 @@ define([
 			// //setting up function to add key and value staff list to staffList object
 			// const updateStaffList = (key, value) => ($scope.staffList[key] = value);
 
-			// const pqData = { userDcid: userDcid };
+			const pqData = { userDcid: userDcid };
 
 			// // getting staff List for current change type
-			// const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData);
+			const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData);
+			console.log(res);
 
 			// //updating staffList obj
 			// updateStaffList(camelChangeType, res);
