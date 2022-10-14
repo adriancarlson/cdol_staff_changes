@@ -1,6 +1,14 @@
-define(['angular', 'components/shared/index', '/scripts/cdol/services/dateService.js', '/scripts/cdol/services/checkboxService.js', 'scripts/cdol/services/camelService.js'], function (angular) {
-	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'dateService', 'checkboxModule', 'camelModule']);
-	cdolStaffApp.controller('cdolStaffAppCtrl', function ($scope, $http, $attrs, $q, $window, dateService, checkboxService, camelService) {
+define([
+	'angular',
+	'components/shared/index',
+	'/scripts/cdol/services/dateService.js',
+	'/scripts/cdol/services/checkboxService.js',
+	'/scripts/cdol/services/camelService.js',
+	'/scripts/cdol/services/pqService.js',
+], function (angular) {
+	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'dateService', 'checkboxModule', 'camelModule', 'pqModule']);
+	cdolStaffApp.controller('cdolStaffAppCtrl', function ($scope, $http, $attrs, $q, $window, dateService, checkboxService, camelService, pqService) {
+		//initializing overall form data
 		$scope.userContext = {
 			pageStatus: $attrs.ngStatus,
 			curSchoolId: $attrs.ngCurSchoolId,
@@ -16,14 +24,27 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/dateServic
 			pageContext: 'start',
 		};
 
+		// function to switch forms
 		$scope.formDipslay = (pageContext) => {
 			$scope.userContext.pageContext = pageContext;
 		};
 
-		$scope.getExistingStaff = (pageContext, userDcid) => {
+		// pulls existing staff records and sets them to attributes on current page/from context scope
+		$scope.getExistingStaff = async (pageContext, userDcid) => {
 			const camelPageContext = camelService.camelize(pageContext);
 			console.log(camelPageContext);
 			console.log(userDcid);
+
+			// //setting up function to add key and value staff list to staffList object
+			// const updateStaffList = (key, value) => ($scope.staffList[key] = value);
+
+			// const pqData = { userDcid: userDcid };
+
+			// // getting staff List for current change type
+			// const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData);
+
+			// //updating staffList obj
+			// updateStaffList(camelChangeType, res);
 		};
 	});
 	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }));
