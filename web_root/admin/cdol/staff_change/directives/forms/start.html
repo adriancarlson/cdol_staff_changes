@@ -3,42 +3,42 @@
         <div class="col-auto">
             <label>Type of Staff Change:</label>
             <div class="ms-3">
-                <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'New Staff'"
+                <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'newStaff'"
                     ng-mouseleave="userContext.formTypeHover = userContext.formType">
                     <input class="form-check-input" type="radio" name="new-staff-radio" id="new-staff-radio"
-                        ng-model="userContext.formType" value="New Staff">
+                        ng-model="userContext.formType" value="newStaff">
                     <label class="form-check-label change-type-radio-label" for="new-staff-radio">
                         New Staff
                     </label>
                 </div>
-                <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Transferring Staff'"
+                <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'transferringStaff'"
                     ng-mouseleave="userContext.formTypeHover = userContext.formType">
                     <input class="form-check-input" type="radio" name="transferring-staff-radio"
-                        id="transferring-staff-radio" ng-model="userContext.formType" value="Transferring Staff">
+                        id="transferring-staff-radio" ng-model="userContext.formType" value="transferringStaff">
                     <label class="form-check-label change-type-radio-label" for="transferring-staff-radio">
                         Transferring Staff
                     </label>
                 </div>
-                <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Job Change'"
+                <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'jobChange'"
                     ng-mouseleave="userContext.formTypeHover = userContext.formType">
                     <input class="form-check-input" type="radio" name="job-change-radio" id="job-change-radio"
-                        ng-model="userContext.formType" value="Job Change">
+                        ng-model="userContext.formType" value="jobChange">
                     <label class="form-check-label change-type-radio-label" for="job-change-radio">
                         Position/Job Change
                     </label>
                 </div>
-                <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Name Change'"
+                <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'nameChange'"
                     ng-mouseleave="userContext.formTypeHover = userContext.formType">
                     <input class="form-check-input" type="radio" name="name-change-radio" id="name-change-radio"
-                        ng-model="userContext.formType" value="Name Change">
+                        ng-model="userContext.formType" value="nameChange">
                     <label class="form-check-label change-type-radio-label" for="name-change-radio">
                         Name Change
                     </label>
                 </div>
-                <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'Exiting Staff'"
+                <div class="form-check" ng-mouseenter="userContext.formTypeHover = 'exitingStaff'"
                     ng-mouseleave="userContext.formTypeHover = userContext.formType">
                     <input class="form-check-input" type="radio" name="exiting-staff-radio" id="exiting-staff-radio"
-                        ng-model="userContext.formType" value="Exiting Staff">
+                        ng-model="userContext.formType" value="exitingStaff">
                     <label class="form-check-label change-type-radio-label" for="exiting-staff-radio">
                         Exiting Staff
                     </label>
@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="col">
-            <div id="new-staff-card" class="card" ng-if="userContext.formTypeHover === 'New Staff'">
+            <div id="new-staff-card" class="card" ng-if="userContext.formTypeHover === 'newStaff'">
                 <div class="card-header bg-success text-white bg-gradient fs-6 fw-semibold">New Staff :
                 </div>
                 <div class="card-body">
@@ -70,7 +70,7 @@
                     but is teaching for the first time at ~(schoolname).
                 </div>
             </div>
-            <div id="transferring-staff-card" class="card" ng-if="userContext.formTypeHover === 'Transferring Staff'">
+            <div id="transferring-staff-card" class="card" ng-if="userContext.formTypeHover === 'transferringStaff'">
                 <div class="card-header bg-primary text-white bg-gradient fs-6 fw-semibold">Transferring
                     Staff :
                 </div>
@@ -87,7 +87,7 @@
                     another Diocese of Lincoln School and is being reassigned to ~(schoolname).
                 </div>
             </div>
-            <div id="job-change-card" class="card" ng-if="userContext.formTypeHover === 'Job Change'">
+            <div id="job-change-card" class="card" ng-if="userContext.formTypeHover === 'jobChange'">
                 <div class="card-header bg-info text-dark bg-gradient fs-6 fw-semibold">Position/Job
                     Change
                     :
@@ -107,7 +107,7 @@
                     is now going to be the administrative assistant in the front office.
                 </div>
             </div>
-            <div id="name-change-card" class="card" ng-if="userContext.formTypeHover === 'Name Change'">
+            <div id="name-change-card" class="card" ng-if="userContext.formTypeHover === 'nameChange'">
                 <div class="card-header bg-warning text-dark bg-gradient fs-6 fw-semibold">Name Change :
                 </div>
                 <div class="card-body">
@@ -120,7 +120,7 @@
                     last name changed.
                 </div>
             </div>
-            <div id="exiting-staff-card" class="card" ng-if="userContext.formTypeHover === 'Exiting Staff'">
+            <div id="exiting-staff-card" class="card" ng-if="userContext.formTypeHover === 'exitingStaff'">
                 <div class="card-header bg-secondary text-white bg-gradient fs-6 fw-semibold">Exiting
                     Staff
                     :

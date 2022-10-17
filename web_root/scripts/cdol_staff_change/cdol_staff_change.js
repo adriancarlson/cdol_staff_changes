@@ -27,25 +27,19 @@ define([
 		// function to switch forms
 		$scope.formDipslay = (pageContext) => {
 			$scope.userContext.pageContext = pageContext;
-			const camelPageContext = camelService.camelize(pageContext);
-			$scope[camelPageContext] = {};
+			$scope[pageContext] = {};
 		};
 
 		// pulls existing staff records and sets them to attributes on current page/from context scope
 		$scope.getExistingStaff = async (pageContext, userDcid) => {
-			const camelPageContext = camelService.camelize(pageContext);
-			console.log(camelPageContext);
-			console.log(userDcid);
-
 			const pqData = { userDcid: userDcid };
 
 			// // getting staff List for current change type
 			const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData);
-			console.log(res[0].first_name);
-			$scope[camelPageContext].title = res[0].title;
-			$scope[camelPageContext].first_name = res[0].first_name;
-			$scope[camelPageContext].middle_name = res[0].middle_name;
-			$scope[camelPageContext].last_name = res[0].last_name;
+			$scope[pageContext].title = res[0].title;
+			$scope[pageContext].first_name = res[0].first_name;
+			$scope[pageContext].middle_name = res[0].middle_name;
+			$scope[pageContext].last_name = res[0].last_name;
 
 			// $scope[camelPageContext] = res[0];
 
