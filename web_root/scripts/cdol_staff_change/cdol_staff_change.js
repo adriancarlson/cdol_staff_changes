@@ -27,6 +27,8 @@ define([
 		// function to switch forms
 		$scope.formDipslay = (pageContext) => {
 			$scope.userContext.pageContext = pageContext;
+			const camelPageContext = camelService.camelize(pageContext);
+			$scope[camelPageContext] = {};
 		};
 
 		// pulls existing staff records and sets them to attributes on current page/from context scope
@@ -35,17 +37,19 @@ define([
 			console.log(camelPageContext);
 			console.log(userDcid);
 
-			// //setting up function to add key and value staff list to staffList object
-			// const updateStaffList = (key, value) => ($scope.staffList[key] = value);
-
 			const pqData = { userDcid: userDcid };
 
 			// // getting staff List for current change type
 			const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData);
-			console.log(res);
+			console.log(res[0].first_name);
+			$scope[camelPageContext].title = res[0].title;
+			$scope[camelPageContext].first_name = res[0].first_name;
+			$scope[camelPageContext].middle_name = res[0].middle_name;
+			$scope[camelPageContext].last_name = res[0].last_name;
 
-			// //updating staffList obj
-			// updateStaffList(camelChangeType, res);
+			// $scope[camelPageContext] = res[0];
+
+			$scope.$digest();
 		};
 	});
 	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }));
