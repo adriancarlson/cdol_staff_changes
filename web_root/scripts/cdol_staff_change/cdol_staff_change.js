@@ -24,7 +24,7 @@ define([
 			pageContext: 'start',
 		};
 
-		// function to switch forms
+		// function to switch forms and set scope to hold form data
 		$scope.formDipslay = (pageContext) => {
 			$scope.userContext.pageContext = pageContext;
 			$scope[pageContext] = {};
@@ -32,18 +32,17 @@ define([
 
 		// pulls existing staff records and sets them to attributes on current page/from context scope
 		$scope.getExistingStaff = async (pageContext, userDcid) => {
+			$scope[pageContext] = { users_dcid: userDcid };
+
+			//arguments for the PowerQuery
 			const pqData = { userDcid: userDcid };
 
 			// // getting staff List for current change type
-			const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData);
-			$scope[pageContext].title = res[0].title;
-			$scope[pageContext].first_name = res[0].first_name;
-			$scope[pageContext].middle_name = res[0].middle_name;
-			$scope[pageContext].last_name = res[0].last_name;
-
-			// $scope[camelPageContext] = res[0];
-
-			$scope.$digest();
+			if (userDcid && userDcid !== -1) {
+				const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData);
+				$scope[pageContext] = Object.assign($scope[pageContext], res[0]);
+				$scope.$digest();
+			}
 		};
 	});
 	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }));
