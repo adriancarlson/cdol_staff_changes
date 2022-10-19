@@ -105,12 +105,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' &&exitingStaff.exit_date_radio">
-                    <div class="col-auto">
-                        <div class="alert alert-warning" role="alert" ng-if="userContext.pageStatus =='Submit'"><i
-                                class="bi bi-exclamation-triangle-fill"></i> {{ exitingStaff.first_name}} {{
+                    <div class="col" data-ng-if="userContext.pageStatus =='Submit' &&exitingStaff.exit_date_radio">
+                        <div class="alert alert-warning" role="alert"><i class="bi bi-exclamation-triangle-fill"></i> {{
+                            exitingStaff.first_name}} {{
                             exitingStaff.last_name}}'s account will
                             be deactivated shortly
                             after <span data-ng-switch on="exitingStaff.exit_date_radio">
@@ -131,8 +128,8 @@
                         </div>
                     </div>
                 </div>
+            </form>
         </div>
-        </form>
     </div>
 </div>
 
