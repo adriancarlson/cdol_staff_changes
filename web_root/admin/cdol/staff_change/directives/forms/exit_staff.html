@@ -114,7 +114,7 @@
                                 <span data-ng-switch-when="today">{{userContext.curDate}}</span>
                                 <span data-ng-switch-when="june30">June 30th</span>
                                 <span data-ng-switch-when="other">{{exitingStaff.deadline}}</span>
-                            </span>.They
+                            </span>. They
                             will no longer be able to access PowerSchool, Canvas, Office 365, Teams, Email, or log
                             on to a device.<br> If {{ exitingStaff.first_name}} {{ exitingStaff.last_name}} needs access
                             to
@@ -124,11 +124,37 @@
                                 <span data-ng-switch-when="june30">June 30th</span>
                                 <span data-ng-switch-when="other">{{exitingStaff.deadline}}</span>
                             </span> or needs
-                            to be deactivated sooner, please modify the deactivation date above.
+                            to be deactivated sooner, please modify the deactivation date.
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3"
+                    data-ng-if="userContext.pageStatus =='Submit' && exitingStaff.first_name">
+                    <div class="col-5">
+                        <div class="form-floating">
+                            <textarea class="form-control" style="height: 100px" placeholder="Additional Notes/Details?"
+                                id="exit-add-notes" spellcheck="true" wrap="absolute"
+                                ng-model="exitingStaff.notes"></textarea>
+                            <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i>
+                            <strong><u>Please Note</u></strong>: personal files (i.e. Documents, pictures, music and
+                            videos)
+                            should be removed by {{
+                            exitingStaff.first_name}} {{
+                            exitingStaff.last_name}} prior to departure.<br> The Education Techonology office is not
+                            responsible for any files after {{
+                            exitingStaff.first_name}} {{
+                            exitingStaff.last_name}} has bee deactivated.
                         </div>
                     </div>
                 </div>
             </form>
+        </div>
+        <div class="card-footer">
+            Buttons go here
         </div>
     </div>
 </div>
