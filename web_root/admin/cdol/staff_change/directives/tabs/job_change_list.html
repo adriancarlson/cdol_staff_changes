@@ -20,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="jobChange in filteredJobChangeList">
+            <tr data-ng-repeat="jobChange in filteredJobChangeList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap"><a
                         href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{jobChange.staffid}}">{{jobChange.title}}
@@ -33,20 +33,20 @@
                 <td class="nowrap">{{jobChange.submission_date | date : 'MM/dd/yyyy'}}
                     {{jobChange.submission_time}}</td>
                 <td
-                    ng-class="{'req-notation': (jobChange.completion_date  < curDate) && (jobChange.ps_created != 1  || (jobChange.ad_created != 1 && jobChange.ad_ignored != 1) || jobChange.lms_created != 1 || (jobChange.o365_created != 1 && jobChange.o365_ignored != 1))}">
+                    data-ng-class="{'req-notation': (jobChange.completion_date  < curDate) && (jobChange.ps_created != 1  || (jobChange.ad_created != 1 && jobChange.ad_ignored != 1) || jobChange.lms_created != 1 || (jobChange.o365_created != 1 && jobChange.o365_ignored != 1))}">
                     {{jobChange.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <td><span ng-show="jobChange.ps_created != 1">&#10060;</span><span
-                        ng-show="jobChange.ps_created == 1">&#10004;&#65039;</span></td>
+                <td><span data-ng-show="jobChange.ps_created != 1">&#10060;</span><span
+                        data-ng-show="jobChange.ps_created == 1">&#10004;&#65039;</span></td>
                 <td>
-                    <span ng-show="jobChange.ad_created != 1 && jobChange.ad_ignored != 1">&#10060;</span>
-                    <span ng-show="jobChange.ad_created == 1 || jobChange.ad_ignored == 1">&#10004;&#65039;</span>
+                    <span data-ng-show="jobChange.ad_created != 1 && jobChange.ad_ignored != 1">&#10060;</span>
+                    <span data-ng-show="jobChange.ad_created == 1 || jobChange.ad_ignored == 1">&#10004;&#65039;</span>
                 </td>
                 <td>
-                    <span ng-show="jobChange.o365_created != 1 && jobChange.o365_ignored != 1">&#10060;</span>
-                    <span ng-show="jobChange.o365_created == 1 || jobChange.o365_ignored == 1">&#10004;&#65039;</span>
+                    <span data-ng-show="jobChange.o365_created != 1 && jobChange.o365_ignored != 1">&#10060;</span>
+                    <span data-ng-show="jobChange.o365_created == 1 || jobChange.o365_ignored == 1">&#10004;&#65039;</span>
                 </td>
-                <td><span ng-show="jobChange.lms_created != 1">&#10060;</span><span
-                        ng-show="jobChange.lms_created == 1">&#10004;&#65039;</span></td>
+                <td><span data-ng-show="jobChange.lms_created != 1">&#10060;</span><span
+                        data-ng-show="jobChange.lms_created == 1">&#10004;&#65039;</span></td>
                 <td>{{jobChange.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
         </tbody>

@@ -17,7 +17,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="exitStaff in filteredExitingStaffList">
+            <tr data-ng-repeat="exitStaff in filteredExitingStaffList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap"><a
                         href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{exitStaff.staffid}}">{{exitStaff.old_name_placeholder}}
@@ -28,13 +28,13 @@
                 <td class="nowrap">{{exitStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{exitStaff.submission_time}}</td>
                 <td
-                    ng-class="{'req-notation': (exitStaff.completion_date  < curDate) && (exitStaff.ps_created != 1  || (exitStaff.ad_created != 1 && exitStaff.ad_ignored != 1))}">
+                    data-ng-class="{'req-notation': (exitStaff.completion_date  < curDate) && (exitStaff.ps_created != 1  || (exitStaff.ad_created != 1 && exitStaff.ad_ignored != 1))}">
                     {{exitStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <td><span ng-show="exitStaff.ps_created != 1">&#10060;</span><span
-                        ng-show="exitStaff.ps_created == 1">&#10004;&#65039;</span></td>
+                <td><span data-ng-show="exitStaff.ps_created != 1">&#10060;</span><span
+                        data-ng-show="exitStaff.ps_created == 1">&#10004;&#65039;</span></td>
                 <td>
-                    <span ng-show="exitStaff.ad_created != 1 && exitStaff.ad_ignored != 1">&#10060;</span>
-                    <span ng-show="exitStaff.ad_created == 1 || exitStaff.ad_ignored == 1">&#10004;&#65039;</span>
+                    <span data-ng-show="exitStaff.ad_created != 1 && exitStaff.ad_ignored != 1">&#10060;</span>
+                    <span data-ng-show="exitStaff.ad_created == 1 || exitStaff.ad_ignored == 1">&#10004;&#65039;</span>
                 </td>
                 <td>{{exitStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>

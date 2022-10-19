@@ -20,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="nameChange in filteredNameChangeList">
+            <tr data-ng-repeat="nameChange in filteredNameChangeList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap"><a
                         href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{nameChange.staffid}}">{{nameChange.title}}
@@ -32,20 +32,20 @@
                 <td class="nowrap">{{nameChange.submission_date | date : 'MM/dd/yyyy'}}
                     {{nameChange.submission_time}}</td>
                 <td
-                    ng-class="{'req-notation': (nameChange.completion_date  < curDate) && (nameChange.ps_created != 1  || (nameChange.ad_created != 1 && nameChange.ad_ignored != 1) || nameChange.lms_created != 1 || (nameChange.o365_created != 1 && nameChange.o365_ignored != 1))}">
+                    data-ng-class="{'req-notation': (nameChange.completion_date  < curDate) && (nameChange.ps_created != 1  || (nameChange.ad_created != 1 && nameChange.ad_ignored != 1) || nameChange.lms_created != 1 || (nameChange.o365_created != 1 && nameChange.o365_ignored != 1))}">
                     {{nameChange.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <td><span ng-show="nameChange.ps_created != 1">&#10060;</span><span
-                        ng-show="nameChange.ps_created == 1">&#10004;&#65039;</span></td>
+                <td><span data-ng-show="nameChange.ps_created != 1">&#10060;</span><span
+                        data-ng-show="nameChange.ps_created == 1">&#10004;&#65039;</span></td>
                 <td>
-                    <span ng-show="nameChange.ad_created != 1 && nameChange.ad_ignored != 1">&#10060;</span>
-                    <span ng-show="nameChange.ad_created == 1 || nameChange.ad_ignored == 1">&#10004;&#65039;</span>
+                    <span data-ng-show="nameChange.ad_created != 1 && nameChange.ad_ignored != 1">&#10060;</span>
+                    <span data-ng-show="nameChange.ad_created == 1 || nameChange.ad_ignored == 1">&#10004;&#65039;</span>
                 </td>
                 <td>
-                    <span ng-show="nameChange.o365_created != 1 && nameChange.o365_ignored != 1">&#10060;</span>
-                    <span ng-show="nameChange.o365_created == 1 || nameChange.o365_ignored == 1">&#10004;&#65039;</span>
+                    <span data-ng-show="nameChange.o365_created != 1 && nameChange.o365_ignored != 1">&#10060;</span>
+                    <span data-ng-show="nameChange.o365_created == 1 || nameChange.o365_ignored == 1">&#10004;&#65039;</span>
                 </td>
-                <td><span ng-show="nameChange.lms_created != 1">&#10060;</span><span
-                        ng-show="nameChange.lms_created == 1">&#10004;&#65039;</span></td>
+                <td><span data-ng-show="nameChange.lms_created != 1">&#10060;</span><span
+                        data-ng-show="nameChange.lms_created == 1">&#10004;&#65039;</span></td>
                 <td>{{nameChange.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
         </tbody>

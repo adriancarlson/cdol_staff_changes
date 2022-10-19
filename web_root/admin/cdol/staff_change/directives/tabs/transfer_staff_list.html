@@ -20,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="transferringStaff in filteredTransferringStaffList">
+            <tr data-ng-repeat="transferringStaff in filteredTransferringStaffList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap"><a
                         href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{transferringStaff.staffid}}">{{transferringStaff.title}}
@@ -32,24 +32,24 @@
                 <td class="nowrap">{{transferringStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{transferringStaff.submission_time}}</td>
                 <td
-                    ng-class="{'req-notation': (transferringStaff.completion_date  < curDate) && (transferringStaff.ps_created != 1  || (transferringStaff.ad_created != 1 && transferringStaff.ad_ignored != 1) || transferringStaff.lms_created != 1 || (transferringStaff.o365_created != 1 && transferringStaff.o365_ignored != 1))}">
+                    data-ng-class="{'req-notation': (transferringStaff.completion_date  < curDate) && (transferringStaff.ps_created != 1  || (transferringStaff.ad_created != 1 && transferringStaff.ad_ignored != 1) || transferringStaff.lms_created != 1 || (transferringStaff.o365_created != 1 && transferringStaff.o365_ignored != 1))}">
                     {{transferringStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <td><span ng-show="transferringStaff.ps_created != 1">&#10060;</span><span
-                        ng-show="transferringStaff.ps_created == 1">&#10004;&#65039;</span></td>
+                <td><span data-ng-show="transferringStaff.ps_created != 1">&#10060;</span><span
+                        data-ng-show="transferringStaff.ps_created == 1">&#10004;&#65039;</span></td>
                 <td>
                     <span
-                        ng-show="transferringStaff.ad_created != 1 && transferringStaff.ad_ignored != 1">&#10060;</span>
+                        data-ng-show="transferringStaff.ad_created != 1 && transferringStaff.ad_ignored != 1">&#10060;</span>
                     <span
-                        ng-show="transferringStaff.ad_created == 1 || transferringStaff.ad_ignored == 1">&#10004;&#65039;</span>
+                        data-ng-show="transferringStaff.ad_created == 1 || transferringStaff.ad_ignored == 1">&#10004;&#65039;</span>
                 </td>
                 <td>
                     <span
-                        ng-show="transferringStaff.o365_created != 1 && transferringStaff.o365_ignored != 1">&#10060;</span>
+                        data-ng-show="transferringStaff.o365_created != 1 && transferringStaff.o365_ignored != 1">&#10060;</span>
                     <span
-                        ng-show="transferringStaff.o365_created == 1 || transferringStaff.o365_ignored == 1">&#10004;&#65039;</span>
+                        data-ng-show="transferringStaff.o365_created == 1 || transferringStaff.o365_ignored == 1">&#10004;&#65039;</span>
                 </td>
-                <td><span ng-show="transferringStaff.lms_created != 1">&#10060;</span><span
-                        ng-show="transferringStaff.lms_created == 1">&#10004;&#65039;</span></td>
+                <td><span data-ng-show="transferringStaff.lms_created != 1">&#10060;</span><span
+                        data-ng-show="transferringStaff.lms_created == 1">&#10004;&#65039;</span></td>
                 <td>{{transferringStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
         </tbody>

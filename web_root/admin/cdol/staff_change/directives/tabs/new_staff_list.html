@@ -19,7 +19,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="newStaff in filteredNewStaffList">
+            <tr data-ng-repeat="newStaff in filteredNewStaffList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap"><a
                         href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{newStaff.staffid}}">{{newStaff.title}}
@@ -30,20 +30,20 @@
                 <td class="nowrap">{{newStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{newStaff.submission_time}}</td>
                 <td
-                    ng-class="{'req-notation': (newStaff.completion_date  < curDate) && (newStaff.ps_created != 1  || (newStaff.ad_created != 1 && newStaff.ad_ignored != 1) || newStaff.lms_created != 1 || (newStaff.o365_created != 1 && newStaff.o365_ignored != 1))}">
+                    data-ng-class="{'req-notation': (newStaff.completion_date  < curDate) && (newStaff.ps_created != 1  || (newStaff.ad_created != 1 && newStaff.ad_ignored != 1) || newStaff.lms_created != 1 || (newStaff.o365_created != 1 && newStaff.o365_ignored != 1))}">
                     {{newStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <td><span ng-show="newStaff.ps_created != 1">&#10060;</span><span
-                        ng-show="newStaff.ps_created == 1">&#10004;&#65039;</span></td>
+                <td><span data-ng-show="newStaff.ps_created != 1">&#10060;</span><span
+                        data-ng-show="newStaff.ps_created == 1">&#10004;&#65039;</span></td>
                 <td>
-                    <span ng-show="newStaff.ad_created != 1 && newStaff.ad_ignored != 1">&#10060;</span>
-                    <span ng-show="newStaff.ad_created == 1 || newStaff.ad_ignored == 1">&#10004;&#65039;</span>
+                    <span data-ng-show="newStaff.ad_created != 1 && newStaff.ad_ignored != 1">&#10060;</span>
+                    <span data-ng-show="newStaff.ad_created == 1 || newStaff.ad_ignored == 1">&#10004;&#65039;</span>
                 </td>
                 <td>
-                    <span ng-show="newStaff.o365_created != 1 && newStaff.o365_ignored != 1">&#10060;</span>
-                    <span ng-show="newStaff.o365_created == 1 || newStaff.o365_ignored == 1">&#10004;&#65039;</span>
+                    <span data-ng-show="newStaff.o365_created != 1 && newStaff.o365_ignored != 1">&#10060;</span>
+                    <span data-ng-show="newStaff.o365_created == 1 || newStaff.o365_ignored == 1">&#10004;&#65039;</span>
                 </td>
-                <td><span ng-show="newStaff.lms_created != 1">&#10060;</span><span
-                        ng-show="newStaff.lms_created == 1">&#10004;&#65039;</span></td>
+                <td><span data-ng-show="newStaff.lms_created != 1">&#10060;</span><span
+                        data-ng-show="newStaff.lms_created == 1">&#10004;&#65039;</span></td>
                 <td>{{newStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
         </tbody>

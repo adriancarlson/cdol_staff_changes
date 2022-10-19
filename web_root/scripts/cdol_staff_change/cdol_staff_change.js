@@ -24,6 +24,15 @@ define([
 			pageContext: 'start',
 		};
 
+		const todayBeforeJuly = () => {
+			const curYear = new Date().getFullYear();
+			const firstDay = new Date(`01/01/${curYear}`);
+			const lastDay = new Date(`06/30/${curYear}`);
+			const today = new Date();
+			$scope.userContext.isTodayBeforeJuly = today >= firstDay && today < lastDay;
+		};
+		todayBeforeJuly();
+
 		// function to switch forms and set scope to hold form data
 		$scope.formDipslay = (pageContext) => {
 			$scope.userContext.pageContext = pageContext;
