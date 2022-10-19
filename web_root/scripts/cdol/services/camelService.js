@@ -8,5 +8,14 @@ define(['angular'], function (angular) {
 				return index === 0 ? match.toLowerCase() : match.toUpperCase();
 			});
 		};
+
+		this.decamelize = function (str) {
+			return str
+				.replace(/([A-Z])/g, ' $1')
+				.trim()
+				.replace(/^./, function (str) {
+					return str.toUpperCase();
+				});
+		};
 	});
 });

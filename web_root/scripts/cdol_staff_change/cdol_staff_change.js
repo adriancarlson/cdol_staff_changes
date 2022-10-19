@@ -55,6 +55,40 @@ define([
 				$scope.$digest();
 			}
 		};
+
+		$scope.submitStaffChange = async () => {
+			//adding generic fields for any payload
+			const commonPayload = {
+				schoolid: $scope.userContext.curSchoolId,
+				yearid: $scope.userContext.adjustedYearId.toString(),
+				change_type: camelService.camelize($scope.userContext.pageContext),
+				submission_date: dateService.formatDateForApi($scope.userContext.curDate),
+				submission_time: $scope.userContext.curTime,
+				who_submitted: $scope.userContext.curUserId,
+			};
+
+			// if (!$scope.exitingStaff) {
+			// 	console.log('Running Exiting Staff...');
+
+			// 	//configure deadline date
+			// 	if ($scope.newStaff.exit_date_radio == 'today' || $scope.newStaff.exit_date_radio == '') {
+			// 		$scope.newStaff.deadline = todayFormated;
+			// 	} else if ($scope.newStaff.exit_date_radio == 'june30') {
+			// 		$scope.newStaff.deadline = $scope.userContext.accountChangeDate;
+			// 	}
+			// }
+			// $scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
+				// add commonPayload to exitingStaff
+				$scope.exitingStaff = Object.assign($scope.exitingStaff, commonPayload);
+
+				console.log('exitingStaff Payload', $scope.exitingStaff);
+
+			
+
+				// make sure dates are preped for api
+
+				// $scope.$digest();
+		};
 	});
 	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }));
 	cdolStaffApp.directive('newStaff', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/new_staff.html' }));
