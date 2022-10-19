@@ -95,7 +95,6 @@
                                 <div class="row row-cols-sm-auto align-items-center mt-2"
                                     data-ng-if="exitingStaff.exit_date_radio==='other'">
                                     <div class="col">
-
                                         <label class="form-label form-label-sm label-reset req">Deactivation
                                             Date</label><br>
                                         <input type="text" class="psDateWidget" ng-model="exitingStaff.deadline"
@@ -107,10 +106,34 @@
                         </div>
                     </div>
                 </div>
+                <div class="row align-items-center mb-3"
+                    data-ng-if="userContext.pageStatus =='Submit' &&exitingStaff.exit_date_radio">
+                    <div class="col-auto">
+                        <div class="alert alert-warning" role="alert" ng-if="userContext.pageStatus =='Submit'"><i
+                                class="bi bi-exclamation-triangle-fill"></i> {{ exitingStaff.first_name}} {{
+                            exitingStaff.last_name}}'s account will
+                            be deactivated shortly
+                            after <span data-ng-switch on="exitingStaff.exit_date_radio">
+                                <span data-ng-switch-when="today">{{userContext.curDate}}</span>
+                                <span data-ng-switch-when="june30">June 30th</span>
+                                <span data-ng-switch-when="other">{{exitingStaff.deadline}}</span>
+                            </span>.They
+                            will no longer be able to access PowerSchool, Canvas, Office 365, Teams, Email, or log
+                            on to a device.<br> If {{ exitingStaff.first_name}} {{ exitingStaff.last_name}} needs access
+                            to
+                            their
+                            account after <span data-ng-switch on="exitingStaff.exit_date_radio">
+                                <span data-ng-switch-when="today">{{userContext.curDate}}</span>
+                                <span data-ng-switch-when="june30">June 30th</span>
+                                <span data-ng-switch-when="other">{{exitingStaff.deadline}}</span>
+                            </span> or needs
+                            to be deactivated sooner, please modify the deactivation date above.
+                        </div>
+                    </div>
+                </div>
         </div>
         </form>
     </div>
-</div>
 </div>
 
 <!-- <form name="exitingForm" method="POST" novalidate>
