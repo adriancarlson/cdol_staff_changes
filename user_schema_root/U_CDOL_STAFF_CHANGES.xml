@@ -46,5 +46,9 @@
         <field name="leaving_radio" type="string" length="50"/>
         <field name="previous_position" type="Clob"/>
         <field name="new_position" type="Clob"/>
+        <field name="change_type" type="String" length="100" />
+        <field name="users_dcid" type="Integer" />
+        <field name="prev_school_number" type="Integer" />
+        <field name="prev_school_name" type="String" length="100" />
     </extendedTable>
 </psExtension>
