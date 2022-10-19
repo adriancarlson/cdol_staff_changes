@@ -26,6 +26,14 @@ select {
 	border-radius: 4px;
 }
 
+.dark-orange {
+	background-color: DarkOrange;
+}
+
+.dark-orange:hover {
+	background-color: #e67300;
+}
+
 .notation {
 	font-weight: normal;
 	font-style: italic;

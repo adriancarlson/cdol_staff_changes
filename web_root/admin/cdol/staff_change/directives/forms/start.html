@@ -17,7 +17,8 @@
                         <div class="form-check" data-ng-mouseenter="userContext.formTypeHover = 'transferringStaff'"
                             data-ng-mouseleave="userContext.formTypeHover = userContext.formType">
                             <input class="form-check-input" type="radio" name="transferring-staff-radio"
-                                id="transferring-staff-radio" data-ng-model="userContext.formType" value="transferringStaff">
+                                id="transferring-staff-radio" data-ng-model="userContext.formType"
+                                value="transferringStaff">
                             <label class="form-check-label change-type-radio-label" for="transferring-staff-radio">
                                 Transferring Staff
                             </label>
@@ -50,7 +51,7 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col"></div>
-                            <div class="col-auto pe-0"><button type="button" class="m-0"
+                            <div class="col-auto pe-1"><button type="button" class="m-0 p-2 pe-1"
                                     data-ng-disabled="!userContext.formType"
                                     data-ng-click="formDipslay(userContext.formType)">Next <i
                                         class="bi bi-chevron-right fw-bold"></i></button></div>
@@ -79,7 +80,8 @@
                     but is teaching for the first time at ~(schoolname).
                 </div>
             </div>
-            <div id="transferring-staff-card" class="card" data-ng-if="userContext.formTypeHover === 'transferringStaff'">
+            <div id="transferring-staff-card" class="card"
+                data-ng-if="userContext.formTypeHover === 'transferringStaff'">
                 <div class="card-header bg-primary text-white bg-gradient fs-6 fw-semibold">Transferring
                     Staff :
                 </div>

@@ -36,7 +36,9 @@ define([
 		// function to switch forms and set scope to hold form data
 		$scope.formDipslay = (pageContext) => {
 			$scope.userContext.pageContext = pageContext;
-			$scope[pageContext] = {};
+			if ($scope[pageContext] === undefined) {
+				$scope[pageContext] = {};
+			}
 		};
 
 		// pulls existing staff records and sets them to attributes on current page/from context scope
