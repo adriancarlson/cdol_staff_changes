@@ -76,21 +76,32 @@
                                         id="exit-date-today" data-ng-model="exitingStaff.exit_date_radio" value="today"
                                         data-ng-required="!exitingStaff.exit_date_radio">
                                     <label class="form-check-label" for="exit-date-today">Today
-                                        ()</label>
+                                        ({{ userContext.curDate}})</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline" data-ng-if="userContext.isTodayBeforeJuly">
                                     <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-june30" data-ng-model="newStaff.exit_date_radio" value="june30"
-                                        data-ng-required="!exitingStaff.exit_date_radio">
+                                        id="exit-date-june30" data-ng-model="exitingStaff.exit_date_radio"
+                                        value="june30" data-ng-required="!exitingStaff.exit_date_radio">
                                     <label class="form-check-label" for="exit-date-june30">June
                                         30th</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-specific" data-ng-model="newStaff.exit_date_radio" value="other"
-                                        data-ng-required="!exitingStaff.exit_date_radio">
+                                        id="exit-date-specific" data-ng-model="exitingStaff.exit_date_radio"
+                                        value="other" data-ng-required="!exitingStaff.exit_date_radio">
                                     <label class="form-check-label" for="exit-date-specific">Specific
                                         Date</label>
+                                </div>
+                                <div class="row row-cols-sm-auto align-items-center mt-2"
+                                    data-ng-if="exitingStaff.exit_date_radio==='other'">
+                                    <div class="col">
+
+                                        <label class="form-label form-label-sm label-reset req">Deactivation
+                                            Date</label><br>
+                                        <input type="text" class="psDateWidget" ng-model="exitingStaff.deadline"
+                                            ng-required="true">
+                                        <script type="text/javascript">initBehaviors();</script>
+                                    </div>
                                 </div>
                             </div>
                         </div>
