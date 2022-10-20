@@ -1,7 +1,7 @@
-define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.js', '/scripts/cdol/services/camelService.js'], function (angular) {
-	var cdolStaffListApp = angular.module('cdolStaffListMod', ['powerSchoolModule', 'pqModule', 'camelModule']);
+define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.js'], function (angular) {
+	var cdolStaffListApp = angular.module('cdolStaffListMod', ['powerSchoolModule', 'pqModule']);
 
-	cdolStaffListApp.controller('cdolStaffListCtrl', function ($scope, $attrs, pqService, camelService) {
+	cdolStaffListApp.controller('cdolStaffListCtrl', function ($scope, $attrs, pqService) {
 		$scope.staffChangeCounts = [];
 		$scope.staffList = {};
 		$scope.curSchoolId = $attrs.ngCurSchoolId;
