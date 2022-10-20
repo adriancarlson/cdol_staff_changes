@@ -63,7 +63,7 @@ define([
 			//adding generic fields and values needed for any payload
 			const commonPayload = {
 				schoolid: $scope.userContext.curSchoolId,
-				calendar_year: new Date().getFullYear(),
+				calendar_year: new Date().getFullYear().toString(),
 				change_type: $scope.userContext.pageContext,
 				submission_date: dateService.formatDateForApi($scope.userContext.curDate),
 				submission_time: $scope.userContext.curTime,
@@ -88,10 +88,11 @@ define([
 				}
 				formPayload.dob = dateService.formatDateForApi(formPayload.dob);
 
+				delete formPayload.date_radio;
+				
 				//submitting staff changes through api
 				const res = await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload);
 
-				console.log(`response from API call: ${res}`);
 			});
 		};
 	});

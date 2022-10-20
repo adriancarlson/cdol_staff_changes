@@ -75,27 +75,28 @@
                             <div class="card-body">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-today" data-ng-model="date_radio" value="today"
-                                        data-ng-required="!date_radio">
+                                        id="exit-date-today" data-ng-model="submitPayload.exitingStaff.date_radio"
+                                        value="today" data-ng-required="!submitPayload.exitingStaff.date_radio">
                                     <label class="form-check-label" for="exit-date-today">Today
                                         ({{ userContext.curDate}})</label>
                                 </div>
                                 <div class="form-check form-check-inline" data-ng-if="userContext.isTodayBeforeJuly">
                                     <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-june30" data-ng-model="date_radio" value="june30"
-                                        data-ng-required="!date_radio">
+                                        id="exit-date-june30" data-ng-model="submitPayload.exitingStaff.date_radio"
+                                        value="june30" data-ng-required="!submitPayload.exitingStaff.date_radio">
                                     <label class="form-check-label" for="exit-date-june30">June
                                         30th</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-specific" data-ng-model="date_radio" value="other"
-                                        data-ng-required="!date_radio">
+                                        id="exit-date-specific"
+                                        data-ng-model="submitPayload.exitingStaff.date_radio" value="other"
+                                        data-ng-required="!submitPayload.exitingStaff.date_radio">
                                     <label class="form-check-label" for="exit-date-specific">Specific
                                         Date</label>
                                 </div>
                                 <div class="row row-cols-sm-auto align-items-center mt-2"
-                                    data-ng-if="date_radio==='other'">
+                                    data-ng-if="submitPayload.exitingStaff.date_radio==='other'">
                                     <div class="col">
                                         <label class="form-label form-label-sm label-reset req">Deactivation
                                             Date</label><br>
@@ -107,12 +108,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col" data-ng-if="userContext.pageStatus =='Submit' && date_radio">
+                    <div class="col"
+                        data-ng-if="userContext.pageStatus =='Submit' && submitPayload.exitingStaff.date_radio">
                         <div class="alert alert-warning" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>
                             {{submitPayload.exitingStaff.first_name}} {{submitPayload.exitingStaff.last_name}}'s account
                             will
                             be deactivated shortly
-                            after <span data-ng-switch on="date_radio">
+                            after <span data-ng-switch on="submitPayload.exitingStaff.date_radio">
                                 <span data-ng-switch-when="today">{{userContext.curDate}}</span>
                                 <span data-ng-switch-when="june30">June 30th</span>
                                 <span data-ng-switch-when="other">{{submitPayload.exitingStaff.deadline}}</span>
@@ -122,7 +124,7 @@
                             submitPayload.exitingStaff.last_name}} needs access
                             to
                             their
-                            account after <span data-ng-switch on="date_radio">
+                            account after <span data-ng-switch on="exitingStaff.date_radio">
                                 <span data-ng-switch-when="today">{{userContext.curDate}}</span>
                                 <span data-ng-switch-when="june30">June 30th</span>
                                 <span data-ng-switch-when="other">{{submitPayload.exitingStaff.deadline}}</span>
