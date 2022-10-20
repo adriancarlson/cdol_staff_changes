@@ -24,6 +24,8 @@ define([
 			pageContext: 'start',
 		};
 
+		$scope.submitPayload = {}
+
 		const todayBeforeJuly = () => {
 			const curYear = new Date().getFullYear();
 			const firstDay = new Date(`01/01/${curYear}`);
@@ -36,14 +38,14 @@ define([
 		// function to switch forms and set scope to hold form data
 		$scope.formDipslay = (pageContext) => {
 			$scope.userContext.pageContext = pageContext;
-			if ($scope[pageContext] === undefined) {
-				$scope[pageContext] = {};
+			if ($scope.submitPayload[pageContext] === undefined) {
+				$scope.submitPayload[pageContext] = {};
 			}
 		};
 
 		// pulls existing staff records and sets them to attributes on current page/from context scope
 		$scope.getExistingStaff = async (pageContext, userDcid) => {
-			$scope[pageContext] = { users_dcid: userDcid };
+			$scope.submitPayload[pageContext] = { users_dcid: userDcid };
 
 			//arguments for the PowerQuery
 			const pqData = { userDcid: userDcid };
@@ -51,7 +53,7 @@ define([
 			// // getting staff List for current change type
 			if (userDcid && userDcid !== -1) {
 				const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData);
-				$scope[pageContext] = Object.assign($scope[pageContext], res[0]);
+				$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], res[0]);
 				$scope.$digest();
 			}
 		};
@@ -61,11 +63,12 @@ define([
 			const commonPayload = {
 				schoolid: $scope.userContext.curSchoolId,
 				calendar_year: new Date().getFullYear(),
-				change_type: camelService.camelize($scope.userContext.pageContext),
+				change_type: $scope.userContext.pageContext,
 				submission_date: dateService.formatDateForApi($scope.userContext.curDate),
 				submission_time: $scope.userContext.curTime,
 				who_submitted: $scope.userContext.curUserId,
 			};
+			
 
 			// if (!$scope.exitingStaff) {
 			// 	console.log('Running Exiting Staff...');
