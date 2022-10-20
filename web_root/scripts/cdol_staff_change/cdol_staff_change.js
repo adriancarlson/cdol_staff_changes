@@ -60,7 +60,7 @@ define([
 			//adding generic fields for any payload
 			const commonPayload = {
 				schoolid: $scope.userContext.curSchoolId,
-				yearid: $scope.userContext.adjustedYearId.toString(),
+				calendar_year: new Date().getFullYear(),
 				change_type: camelService.camelize($scope.userContext.pageContext),
 				submission_date: dateService.formatDateForApi($scope.userContext.curDate),
 				submission_time: $scope.userContext.curTime,

@@ -50,5 +50,6 @@
         <field name="users_dcid" type="Integer" />
         <field name="prev_school_number" type="Integer" />
         <field name="prev_school_name" type="String" length="100" />
+        <field name="calendar_year" type="Integer" />
     </extendedTable>
 </psExtension>
