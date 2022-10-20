@@ -82,8 +82,10 @@ define([
 					} else if (formPayload.date_radio === 'june30') {
 						formPayload.deadline = new Date(`06/30/${formPayload.calendar_year}`);
 					}
+					// get all date fields ready for API call
+					formPayload.deadline = dateService.formatDateForApi(formPayload.deadline);
 				}
-				// get all date fields ready for API call
+				formPayload.dob = dateService.formatDateForApi(formPayload.dob);
 			});
 
 			console.log('exitingStaff Payload', $scope.submitPayload);
