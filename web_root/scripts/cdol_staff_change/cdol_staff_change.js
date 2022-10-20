@@ -24,7 +24,7 @@ define([
 			pageContext: 'start',
 		};
 
-		$scope.submitPayload = {}
+		$scope.submitPayload = {};
 
 		const todayBeforeJuly = () => {
 			const curYear = new Date().getFullYear();
@@ -68,8 +68,13 @@ define([
 				submission_time: $scope.userContext.curTime,
 				who_submitted: $scope.userContext.curUserId,
 			};
-			
 
+			for (const [key, value] of Object.entries($scope.submitPayload)) {
+				Object.assign($scope.submitPayload[value], commonPayload);
+				console.log(`${value}`);
+			}
+
+			console.log('exitingStaff Payload', $scope.submitPayload.exitingStaff);
 			// if (!$scope.exitingStaff) {
 			// 	console.log('Running Exiting Staff...');
 
@@ -81,16 +86,14 @@ define([
 			// 	}
 			// }
 			// $scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
-				// add commonPayload to exitingStaff
-				$scope.exitingStaff = Object.assign($scope.exitingStaff, commonPayload);
+			// add commonPayload to exitingStaff
+			// $scope.exitingStaff = Object.assign($scope.exitingStaff, commonPayload);
 
-				console.log('exitingStaff Payload', $scope.exitingStaff);
+			// console.log('exitingStaff Payload', $scope.exitingStaff);
 
-			
+			// make sure dates are preped for api
 
-				// make sure dates are preped for api
-
-				// $scope.$digest();
+			// $scope.$digest();
 		};
 	});
 	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }));

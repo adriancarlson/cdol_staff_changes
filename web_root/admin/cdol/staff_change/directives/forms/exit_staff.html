@@ -55,11 +55,13 @@
                                 <option value="Br.">Br.</option>
                             </select>
                             <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
-                                aria-label="First name" data-ng-model="submitPayload.exitingStaff.first_name" data-ng-required="true">
+                                aria-label="First name" data-ng-model="submitPayload.exitingStaff.first_name"
+                                data-ng-required="true">
                             <input type="text" class="form-control form-control-sm w-25" placeholder="Middle name"
                                 aria-label="Middle name" data-ng-model="submitPayload.exitingStaff.middle_name">
                             <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
-                                aria-label="Last name" data-ng-model="submitPayload.exitingStaff.last_name" data-ng-required="true">
+                                aria-label="Last name" data-ng-model="submitPayload.exitingStaff.last_name"
+                                data-ng-required="true">
                         </div>
                     </div>
                 </div>
@@ -73,53 +75,56 @@
                             <div class="card-body">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-today" data-ng-model="submitPayload.exitingStaff.exit_date_radio" value="today"
-                                        data-ng-required="!submitPayload.exitingStaff.exit_date_radio">
+                                        id="exit-date-today" data-ng-model="submitPayload.exitingStaff.date_radio"
+                                        value="today" data-ng-required="!submitPayload.exitingStaff.date_radio">
                                     <label class="form-check-label" for="exit-date-today">Today
                                         ({{ userContext.curDate}})</label>
                                 </div>
                                 <div class="form-check form-check-inline" data-ng-if="userContext.isTodayBeforeJuly">
                                     <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-june30" data-ng-model="submitPayload.exitingStaff.exit_date_radio"
-                                        value="june30" data-ng-required="!submitPayload.exitingStaff.exit_date_radio">
+                                        id="exit-date-june30" data-ng-model="submitPayload.exitingStaff.date_radio"
+                                        value="june30" data-ng-required="!submitPayload.exitingStaff.date_radio">
                                     <label class="form-check-label" for="exit-date-june30">June
                                         30th</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-specific" data-ng-model="submitPayload.exitingStaff.exit_date_radio"
-                                        value="other" data-ng-required="!submitPayload.exitingStaff.exit_date_radio">
+                                        id="exit-date-specific"
+                                        data-ng-model="submitPayload.exitingStaff.date_radio" value="other"
+                                        data-ng-required="!submitPayload.exitingStaff.date_radio">
                                     <label class="form-check-label" for="exit-date-specific">Specific
                                         Date</label>
                                 </div>
                                 <div class="row row-cols-sm-auto align-items-center mt-2"
-                                    data-ng-if="submitPayload.exitingStaff.exit_date_radio==='other'">
+                                    data-ng-if="submitPayload.exitingStaff.date_radio==='other'">
                                     <div class="col">
                                         <label class="form-label form-label-sm label-reset req">Deactivation
                                             Date</label><br>
-                                        <input type="text" class="psDateWidget" ng-model="submitPayload.exitingStaff.deadline"
-                                            ng-required="true">
+                                        <input type="text" class="psDateWidget"
+                                            ng-model="submitPayload.exitingStaff.deadline" ng-required="true">
                                         <script type="text/javascript">initBehaviors();</script>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col" data-ng-if="userContext.pageStatus =='Submit' && submitPayload.exitingStaff.exit_date_radio">
-                        <div class="alert alert-warning" role="alert"><i class="bi bi-exclamation-triangle-fill"></i> {{
-                            exitingStaff.first_name}} {{
-                            exitingStaff.last_name}}'s account will
+                    <div class="col"
+                        data-ng-if="userContext.pageStatus =='Submit' && submitPayload.exitingStaff.date_radio">
+                        <div class="alert alert-warning" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>
+                            {{submitPayload.exitingStaff.first_name}} {{submitPayload.exitingStaff.last_name}}'s account
+                            will
                             be deactivated shortly
-                            after <span data-ng-switch on="submitPayload.exitingStaff.exit_date_radio">
+                            after <span data-ng-switch on="submitPayload.exitingStaff.date_radio">
                                 <span data-ng-switch-when="today">{{userContext.curDate}}</span>
                                 <span data-ng-switch-when="june30">June 30th</span>
                                 <span data-ng-switch-when="other">{{submitPayload.exitingStaff.deadline}}</span>
                             </span>. They
                             will no longer be able to access PowerSchool, Canvas, Office 365, Teams, Email, or log
-                            on to a device.<br> If {{ submitPayload.exitingStaff.first_name}} {{ submitPayload.exitingStaff.last_name}} needs access
+                            on to a device.<br> If {{ submitPayload.exitingStaff.first_name}} {{
+                            submitPayload.exitingStaff.last_name}} needs access
                             to
                             their
-                            account after <span data-ng-switch on="exitingStaff.exit_date_radio">
+                            account after <span data-ng-switch on="exitingStaff.date_radio">
                                 <span data-ng-switch-when="today">{{userContext.curDate}}</span>
                                 <span data-ng-switch-when="june30">June 30th</span>
                                 <span data-ng-switch-when="other">{{submitPayload.exitingStaff.deadline}}</span>
@@ -143,11 +148,12 @@
                             <strong><u>Please Note</u></strong>: personal files (i.e. Documents, pictures, music and
                             videos)
                             should be removed by {{
-                                submitPayload.exitingStaff.first_name}} {{
-                                    submitPayload.exitingStaff.last_name}} prior to departure.<br> The Education Techonology office is not
+                            submitPayload.exitingStaff.first_name}} {{
+                            submitPayload.exitingStaff.last_name}} prior to departure.<br> The Education Techonology
+                            office is not
                             responsible for any files after {{
-                                submitPayload.exitingStaff.first_name}} {{
-                                    submitPayload.exitingStaff.last_name}} has been deactivated.
+                            submitPayload.exitingStaff.first_name}} {{
+                            submitPayload.exitingStaff.last_name}} has been deactivated.
                         </div>
                     </div>
                 </div>
