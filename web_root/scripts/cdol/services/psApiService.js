@@ -1,7 +1,7 @@
 define(['angular'], function (angular) {
 	angular.module('psApiModule', []).service('psApiService', function ($http, $q) {
 		this.psApiCall = (tableName, method, payload) => {
-			var deferredResponse = $q.defer();
+			let deferredResponse = $q.defer();
 
 			const data = { tables: {} };
 

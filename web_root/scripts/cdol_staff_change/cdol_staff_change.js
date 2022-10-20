@@ -78,21 +78,29 @@ define([
 
 				// constructing deadline
 				if (formPayload.hasOwnProperty('date_radio')) {
+					const today = new Date();
+					const yyyy = today.getFullYear();
+					let mm = today.getMonth() + 1; // Months start at 0!
+					let dd = today.getDate();
+					if (dd < 10) dd = '0' + dd;
+					if (mm < 10) mm = '0' + mm;
+					todayFormated = mm + '/' + dd + '/' + yyyy;
+
 					if (formPayload.date_radio === 'today') {
-						formPayload.deadline = new Date();
+						formPayload.deadline = todayFormated;
 					} else if (formPayload.date_radio === 'june30') {
-						formPayload.deadline = new Date(`06/30/${formPayload.calendar_year}`);
+						formPayload.deadline = `06/30/${yyyy}`;
 					}
-					// get all date fields ready for API call
-					// formPayload.deadline = dateService.formatDateForApi(formPayload.deadline);
 				}
-				formPayload.dob = dateService.formatDateForApi(formPayload.dob);
+				// copying formPayload using spread. Then deleting any unneeded radio buttons key value pairs before sending to API call
+				apiPayload = { ...formPayload };
+				// get all date fields ready for API call
+				apiPayload.deadline = dateService.formatDateForApi(apiPayload.deadline);
+				apiPayload.dob = dateService.formatDateForApi(apiPayload.dob);
+				delete apiPayload.date_radio;
 
-				delete formPayload.date_radio;
-				
 				//submitting staff changes through api
-				const res = await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload);
-
+				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', apiPayload);
 			});
 		};
 	});
