@@ -7,7 +7,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 		$scope.curSchoolId = $attrs.ngCurSchoolId;
 		$scope.curYearId = $attrs.ngCurYearId;
 		$scope.curDate = $attrs.ngCurDate;
-		$scope.adjustedYearId = new Date($attrs.ngCurDate).getFullYear() - 1991;
+		$scope.calendarYear = new Date().getFullYear();
 		$scope.selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context');
 
 		$scope.loadData = async (changeType) => {
@@ -24,7 +24,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 			if (!$scope.staffList.hasOwnProperty(camelChangeType)) {
 				console.log(`Running ... API call for ${camelChangeType}`);
 				//setting up arguments for PQ call
-				const pqData = { curSchoolID: $scope.curSchoolId, curYearID: $scope.adjustedYearId };
+				const pqData = { curSchoolID: $scope.curSchoolId, calendarYear: $scope.calendarYear };
 
 				// getting staff counts
 				const countRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.counts', pqData);

@@ -24,15 +24,14 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-auto me-auto"><label for="year-selector">Year: </label>
-                        <select id="year-selector" name="" data-ng-model="adjustedYearId" data-ng-change="reloadData()">
+                        <select id="year-selector" name="" data-ng-model="calendarYear" data-ng-change="reloadData()">
                             ~[tlist_sql;
                             SELECT
-                            DISTINCT yearid,
-                            yearid + 1991 as yearname
+                            DISTINCT calendar_year
                             FROM
                             u_cdol_staff_changes
-                            ORDER BY yearid ]
-                            <option value="~(yrid)" data-ng-selected="~(yrid) === adjustedYearId">~(yearname)
+                            ORDER BY calendar_year ]
+                            <option value="~(calendar_year)" data-ng-selected="~(calendar_year) === calendarYear">~(calendar_year)
                             </option>
                             [/tlist_sql]
                         </select>
