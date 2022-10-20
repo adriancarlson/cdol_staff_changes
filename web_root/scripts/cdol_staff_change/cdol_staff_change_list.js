@@ -13,16 +13,13 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 		$scope.loadData = async (changeType) => {
 			loadingDialog();
 
-			// camelize changeType passed in
-			const camelChangeType = camelService.camelize(changeType);
-
 			// 			console.log('Before $scope.staffList', $scope.staffList);
 			// 			console.log('Before API Calls', $scope.staffList.hasOwnProperty(camelChangeType));
 			//             console.log('$scope.selectedTab', $scope.selectedTab);
 
 			//only make API call to get the data if
-			if (!$scope.staffList.hasOwnProperty(camelChangeType)) {
-				console.log(`Running ... API call for ${camelChangeType}`);
+			if (!$scope.staffList.hasOwnProperty(changeType)) {
+				console.log(`Running ... API call for ${changeType}`);
 				//setting up arguments for PQ call
 				const pqData = { curSchoolID: $scope.curSchoolId, calendarYear: $scope.calendarYear };
 
@@ -40,7 +37,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 				const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', pqData);
 
 				//updating staffList obj
-				updateStaffList(camelChangeType, res);
+				updateStaffList(changeType, res);
 
 				$scope.$digest();
 
