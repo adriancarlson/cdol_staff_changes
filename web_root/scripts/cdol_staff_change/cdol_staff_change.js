@@ -84,12 +84,12 @@ define([
 						formPayload.deadline = new Date(`06/30/${formPayload.calendar_year}`);
 					}
 					// get all date fields ready for API call
-					formPayload.deadline = dateService.formatDateForApi(formPayload.deadline);
+					// formPayload.deadline = dateService.formatDateForApi(formPayload.deadline);
 				}
 				formPayload.dob = dateService.formatDateForApi(formPayload.dob);
 
 				//submitting staff changes through api
-				const res = await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', data);
+				const res = await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload);
 
 				console.log(`response from API call: ${res}`);
 			});
