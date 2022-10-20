@@ -1,9 +1,14 @@
 define(['angular'], function (angular) {
 	angular.module('psApiModule', []).service('psApiService', function ($http, $q) {
-		this.psApiCall = (table, method, data) => {
+		this.psApiCall = (tableName, method, payload) => {
 			var deferredResponse = $q.defer();
+
+			const data = { tables: {} };
+
+			data.tables[tableName] = payload;
+
 			$http({
-				url: `/ws/schema/table/${table}`,
+				url: `/ws/schema/table/${tableName}`,
 				method: method,
 				data: data || {},
 				headers: {

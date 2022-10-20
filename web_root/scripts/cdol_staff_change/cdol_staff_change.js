@@ -89,7 +89,7 @@ define([
 				formPayload.dob = dateService.formatDateForApi(formPayload.dob);
 
 				//submitting staff changes through api
-				const res = await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload);
+				const res = await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', data);
 
 				console.log(`response from API call: ${res}`);
 			});
