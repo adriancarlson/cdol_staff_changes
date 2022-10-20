@@ -18,7 +18,7 @@ define(['angular'], function (angular) {
 					deferredResponse.resolve(res.data.record || []);
 				},
 				(res) => {
-					psAlert({ message: 'There was an error loading the Staff Change Data', title: 'Error Loading Data' });
+					psAlert({ message: `There was an error loading the data from ${query}`, title: 'Error Loading Data' });
 				},
 			);
 			return deferredResponse.promise;

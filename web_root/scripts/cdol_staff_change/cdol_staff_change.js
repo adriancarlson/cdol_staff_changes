@@ -5,9 +5,10 @@ define([
 	'/scripts/cdol/services/checkboxService.js',
 	'/scripts/cdol/services/camelService.js',
 	'/scripts/cdol/services/pqService.js',
+	'/scripts/cdol/services/psApiService.js',
 ], function (angular) {
-	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'dateService', 'checkboxModule', 'camelModule', 'pqModule']);
-	cdolStaffApp.controller('cdolStaffAppCtrl', function ($scope, $http, $attrs, $q, $window, dateService, checkboxService, camelService, pqService) {
+	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'dateService', 'checkboxModule', 'camelModule', 'pqModule', 'psApiModule']);
+	cdolStaffApp.controller('cdolStaffAppCtrl', function ($scope, $http, $attrs, $q, $window, dateService, checkboxService, camelService, pqService, psApiService) {
 		//initializing overall form data
 		$scope.userContext = {
 			pageStatus: $attrs.ngStatus,
@@ -69,7 +70,7 @@ define([
 				who_submitted: $scope.userContext.curUserId,
 			};
 			//loop though submitPayload object
-			Object.keys($scope.submitPayload).forEach((key, index) => {
+			Object.keys($scope.submitPayload).forEach(async (key, index) => {
 				let formPayload = $scope.submitPayload[key];
 
 				//add commonPayload to each object in submitPayload
@@ -86,9 +87,12 @@ define([
 					formPayload.deadline = dateService.formatDateForApi(formPayload.deadline);
 				}
 				formPayload.dob = dateService.formatDateForApi(formPayload.dob);
-			});
 
-			console.log('exitingStaff Payload', $scope.submitPayload);
+				//submitting staff changes through api
+				const res = await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload);
+
+				console.log(`response from API call: ${res}`);
+			});
 		};
 	});
 	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }));
