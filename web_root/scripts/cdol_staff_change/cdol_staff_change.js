@@ -59,7 +59,7 @@ define([
 		};
 
 		$scope.submitStaffChange = async () => {
-			//adding generic fields for any payload
+			//adding generic fields and values needed for any payload
 			const commonPayload = {
 				schoolid: $scope.userContext.curSchoolId,
 				calendar_year: new Date().getFullYear(),
@@ -68,15 +68,16 @@ define([
 				submission_time: $scope.userContext.curTime,
 				who_submitted: $scope.userContext.curUserId,
 			};
+			//loop though submitPayload object
+			Object.keys($scope.submitPayload).forEach(function (key, index) {
+				//add commonPayload to each object in submitPayload
+				$scope.submitPayload[key] = Object.assign($scope.submitPayload[key], commonPayload);
 
-			for (const [key, value] of Object.entries($scope.submitPayload)) {
-				Object.assign($scope.submitPayload[value], commonPayload);
-				console.log(`${value}`);
-			}
-
-			console.log('exitingStaff Payload', $scope.submitPayload.exitingStaff);
-			// if (!$scope.exitingStaff) {
-			// 	console.log('Running Exiting Staff...');
+				if ($scope.submitPayload[key].hasOwnProperty('date_radio')) {
+					console.log($scope.submitPayload[key].date_radio);
+				}
+			});
+			console.log('exitingStaff Payload', $scope.submitPayload);
 
 			// 	//configure deadline date
 			// 	if ($scope.newStaff.exit_date_radio == 'today' || $scope.newStaff.exit_date_radio == '') {
@@ -85,15 +86,6 @@ define([
 			// 		$scope.newStaff.deadline = $scope.userContext.accountChangeDate;
 			// 	}
 			// }
-			// $scope.newStaff.deadline = dateService.formatDateForApi($scope.newStaff.deadline);
-			// add commonPayload to exitingStaff
-			// $scope.exitingStaff = Object.assign($scope.exitingStaff, commonPayload);
-
-			// console.log('exitingStaff Payload', $scope.exitingStaff);
-
-			// make sure dates are preped for api
-
-			// $scope.$digest();
 		};
 	});
 	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }));
