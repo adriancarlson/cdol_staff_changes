@@ -69,23 +69,24 @@ define([
 				who_submitted: $scope.userContext.curUserId,
 			};
 			//loop though submitPayload object
-			Object.keys($scope.submitPayload).forEach(function (key, index) {
+			Object.keys($scope.submitPayload).forEach((key, index) => {
+				let formPayload = $scope.submitPayload[key];
+
 				//add commonPayload to each object in submitPayload
-				$scope.submitPayload[key] = Object.assign($scope.submitPayload[key], commonPayload);
+				formPayload = Object.assign(formPayload, commonPayload);
 
-				if ($scope.submitPayload[key].hasOwnProperty('date_radio')) {
-					console.log($scope.submitPayload[key].date_radio);
+				// constructing deadline
+				if (formPayload.hasOwnProperty('date_radio')) {
+					if (formPayload.date_radio === 'today') {
+						formPayload.deadline = new Date();
+					} else if (formPayload.date_radio === 'june30') {
+						formPayload.deadline = new Date(`06/30/${formPayload.calendar_year}`);
+					}
 				}
+				// get all date fields ready for API call
 			});
-			console.log('exitingStaff Payload', $scope.submitPayload);
 
-			// 	//configure deadline date
-			// 	if ($scope.newStaff.exit_date_radio == 'today' || $scope.newStaff.exit_date_radio == '') {
-			// 		$scope.newStaff.deadline = todayFormated;
-			// 	} else if ($scope.newStaff.exit_date_radio == 'june30') {
-			// 		$scope.newStaff.deadline = $scope.userContext.accountChangeDate;
-			// 	}
-			// }
+			console.log('exitingStaff Payload', $scope.submitPayload);
 		};
 	});
 	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }));
