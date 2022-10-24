@@ -22,7 +22,8 @@ define([
 			curUserName: $attrs.ngCurUserName,
 			curUserEmail: $attrs.ngCurUserEmail,
 			curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr,
-			pageContext: 'start'
+			pageContext: 'start',
+			prevContext: ''
 		}
 
 		$scope.submitPayload = {}

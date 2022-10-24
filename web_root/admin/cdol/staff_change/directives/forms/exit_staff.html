@@ -5,6 +5,7 @@
         member form first. When you fill out that form you can choose who the New or Transfering Staff
         member is replacing and an Exiting Staff Record will automatically submitted for the replaced staff.
     </div>
+    prevContext: {{userContext.prevContext}} | pageContext: {{userContext.pageContext}} <br>
     exitingStaff: {{submitPayload.exitingStaff}}
     <div class="card">
         <div class="card-header bg-secondary text-bg-secondary bg-gradient fs-6 fw-semibold">Exiting Staff:</div>
@@ -89,9 +90,8 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-specific"
-                                        data-ng-model="submitPayload.exitingStaff.date_radio" value="other"
-                                        data-ng-required="!submitPayload.exitingStaff.date_radio">
+                                        id="exit-date-specific" data-ng-model="submitPayload.exitingStaff.date_radio"
+                                        value="other" data-ng-required="!submitPayload.exitingStaff.date_radio">
                                     <label class="form-check-label" for="exit-date-specific">Specific
                                         Date</label>
                                 </div>
