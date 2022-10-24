@@ -22,7 +22,8 @@ define([
 			curUserName: $attrs.ngCurUserName,
 			curUserEmail: $attrs.ngCurUserEmail,
 			curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr,
-			pageContext: 'start'
+			pageContext: 'start',
+			prevContext: ''
 		}
 
 		$scope.submitPayload = {}
@@ -37,10 +38,14 @@ define([
 		todayBeforeJuly()
 
 		// function to switch forms and set scope to hold form data
-		$scope.formDipslay = pageContext => {
-			$scope.userContext.pageContext = pageContext
-			if ($scope.submitPayload[pageContext] === undefined) {
-				$scope.submitPayload[pageContext] = {}
+		$scope.formDipslay = (prevContext, curContext) => {
+			$scope.userContext.pageContext = curContext
+			$scope.userContext.prevContext = prevContext
+			if ($scope.submitPayload[curContext] === undefined) {
+				$scope.submitPayload[curContext] = {}
+			}
+			if ($scope.submitPayload[curContext] == 'start') {
+				$scope.submitPayload = {}
 			}
 		}
 
@@ -108,6 +113,7 @@ define([
 				//submitting staff changes through api
 				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', apiPayload)
 			})
+			$scope.formDipslay($scope.userContext.pageContext, 'confirm')
 		}
 	})
 	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }))

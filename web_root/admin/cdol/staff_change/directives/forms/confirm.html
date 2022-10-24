@@ -1,4 +1,31 @@
-<div>
+<div id="confirm-form-container" class="container-fluid">
+    prevContext: {{userContext.prevContext}} | pageContext: {{userContext.pageContext}} <br>
+    submitPayload: {{submitPayload}}
+    <div class="card">
+        <div class="card-header bg-success text-bg-success bg-gradient fs-6 fw-semibold">Thank you</div>
+        <div class="card-body">
+            <div class="alert alert-success" role="alert"><i class="bi bi-check-circle-fill"></i>
+                <h4>Thank you for your submission!</h4>
+                <p>Your submission for has been sent to the Education Technology Office. We will be in concact with you
+                    once </p>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-auto me-auto"></div>
+                <div class="col-auto">
+                    <a href="cdol_staff_change.html?status=Submit" type="button" id="subAnother" class="m-0 p-2">Submit
+                        Another Staff Change</a>
+                    <a href="cdol_staff_change_list.html" type="button" id="listAll" class="m-0 p-2">View All
+                        Submissions</a>
+                    <a href="/admin/home.html" type="button" id="exit" class="m-0 p-2">Exit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div>
     <h1>Thank You!</h1>
     <div class="feedback-confirm" style="width:700px"><b><u>Thank You for your submission!</u></b>
         <br>
@@ -18,4 +45,4 @@
             Staff Change</a><a class="button" href="cdol_staff_change_list.html">View All Submissions</a><a
             class="button" href="/admin/home.html">Exit</a>
     </div>
-</div>
+</div> -->

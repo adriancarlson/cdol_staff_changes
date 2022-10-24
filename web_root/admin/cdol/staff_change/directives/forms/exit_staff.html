@@ -5,6 +5,7 @@
         member form first. When you fill out that form you can choose who the New or Transfering Staff
         member is replacing and an Exiting Staff Record will automatically submitted for the replaced staff.
     </div>
+    prevContext: {{userContext.prevContext}} | pageContext: {{userContext.pageContext}} <br>
     exitingStaff: {{submitPayload.exitingStaff}}
     <div class="card">
         <div class="card-header bg-secondary text-bg-secondary bg-gradient fs-6 fw-semibold">Exiting Staff:</div>
@@ -162,7 +163,7 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col-auto me-auto"><button type="button" class="m-0 p-2 ps-1"
-                        data-ng-click="formDipslay('start')"><i class="bi bi-chevron-left fw-bold"></i> Back</button>
+                        data-ng-click="formDipslay(userContext.pageContext,'start')"><i class="bi bi-chevron-left fw-bold"></i> Back</button>
                 </div>
                 <div class="col-auto"><span class="req-notation me-2"
                         ng-if="(exitingForm.$invalid && exitingForm.$dirty) || !submitPayload.exitingStaff.users_dcid">Please
