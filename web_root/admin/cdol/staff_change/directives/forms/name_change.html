@@ -1,5 +1,4 @@
 <div id="name-change-form-container" class="container-fluid">
-    prevContext: {{userContext.prevContext}} | pageContext: {{userContext.pageContext}} <br>
     nameChange: {{submitPayload.nameChange}}
     <div class="card">
         <div class="card-header bg-secondary text-bg-secondary bg-gradient fs-6 fw-semibold">Name Change:</div>
@@ -121,7 +120,7 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col-auto me-auto"><button type="button" class="m-0 p-2 ps-1"
-                        data-ng-click="formDipslay(userContext.pageContext, 'start')"><i class="bi bi-chevron-left fw-bold"></i> Back</button>
+                        data-ng-click="formDipslay('start')"><i class="bi bi-chevron-left fw-bold"></i> Back</button>
                 </div>
                 <div class="col-auto"><span class="req-notation me-2"
                         ng-if="(nameChangeForm.$invalid && nameChangeForm.$dirty) || !submitPayload.nameChange.users_dcid">Please
