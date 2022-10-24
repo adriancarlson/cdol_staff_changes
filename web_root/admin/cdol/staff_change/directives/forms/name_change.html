@@ -1,13 +1,14 @@
 <div id="name-change-form-container" class="container-fluid">
     prevContext: {{userContext.prevContext}} | pageContext: {{userContext.pageContext}} <br>
-    nameChange: {{submitPayload.nameChange}}
+    submitPayload: {{submitPayload}}
     <div class="card">
         <div class="card-header bg-secondary text-bg-secondary bg-gradient fs-6 fw-semibold">Name Change:</div>
         <div class="card-body">
             <form name="nameChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
-                        <label for="users_dcid" class="form-label form-label-sm label-reset req">Who's name is changing?</label>
+                        <label for="users_dcid" class="form-label form-label-sm label-reset req">Who's name is
+                            changing?</label>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.nameChange.users_dcid" data-ng-required="true"
                             data-ng-change="getExistingStaff(userContext.pageContext, submitPayload.nameChange.users_dcid)">
@@ -31,7 +32,8 @@
                 </div>
                 <div class="row align-items-center mb-3">
                     <div class="col-6">
-                        <label for="name-change-staff-name" class="form-label form-label-sm  label-reset req">Please modify name below to new name</label>
+                        <label for="name-change-staff-name" class="form-label form-label-sm  label-reset req">Please
+                            modify name below to new name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
                                 data-ng-model="submitPayload.nameChange.title" data-ng-required="true"
@@ -79,9 +81,8 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-specific"
-                                        data-ng-model="submitPayload.nameChange.date_radio" value="other"
-                                        data-ng-required="!submitPayload.nameChange.date_radio">
+                                        id="exit-date-specific" data-ng-model="submitPayload.nameChange.date_radio"
+                                        value="other" data-ng-required="!submitPayload.nameChange.date_radio">
                                     <label class="form-check-label" for="exit-date-specific">Specific
                                         Date</label>
                                 </div>
@@ -101,7 +102,10 @@
                     <div class="col"
                         data-ng-if="userContext.pageStatus =='Submit' && submitPayload.nameChange.date_radio">
                         <div class="alert alert-warning" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>
-                            {{submitPayload.nameChange.old_name_placeholder}} will need to at ~(schoolname) and on the network in order to change their name, so we can ensure they can log into all the various systems after the update.<br> Please choose an change date when {{submitPayload.nameChange.old_name_placeholder}} can be at ~(schoolname).
+                            {{submitPayload.nameChange.old_name_placeholder}} will need to at ~(schoolname) and on the
+                            network in order to change their name, so we can ensure they can log into all the various
+                            systems after the update.<br> Please choose an change date when
+                            {{submitPayload.nameChange.old_name_placeholder}} can be at ~(schoolname).
                         </div>
                     </div>
                 </div>
@@ -109,10 +113,12 @@
                     data-ng-if="userContext.pageStatus =='Submit' && submitPayload.nameChange.first_name">
                     <div class="col-5">
                         <div class="form-floating">
-                            <textarea class="form-control" style="height: 100px" placeholder="Reason for Name Change and/or additional Notes/Details?"
+                            <textarea class="form-control" style="height: 100px"
+                                placeholder="Reason for Name Change and/or additional Notes/Details?"
                                 id="exit-add-notes" spellcheck="true" wrap="absolute"
                                 ng-model="submitPayload.nameChange.notes"></textarea>
-                            <label class="fw-semibold" for="exit-add-notes">Reason for Name Change and/or additional Notes/Details?</label>
+                            <label class="fw-semibold" for="exit-add-notes">Reason for Name Change and/or additional
+                                Notes/Details?</label>
                         </div>
                     </div>
                 </div>
@@ -121,7 +127,8 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col-auto me-auto"><button type="button" class="m-0 p-2 ps-1"
-                        data-ng-click="formDipslay('start')"><i class="bi bi-chevron-left fw-bold"></i> Back</button>
+                        data-ng-click="formDipslay('start', userContext.formType)"><i
+                            class="bi bi-chevron-left fw-bold"></i> Back</button>
                 </div>
                 <div class="col-auto"><span class="req-notation me-2"
                         ng-if="(nameChangeForm.$invalid && nameChangeForm.$dirty) || !submitPayload.nameChange.users_dcid">Please

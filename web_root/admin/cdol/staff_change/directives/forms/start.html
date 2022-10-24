@@ -1,4 +1,5 @@
-prevContext: {{userContext.prevContext}} | pageContext: {{userContext.pageContext}}
+prevContext: {{userContext.prevContext}} | pageContext: {{userContext.pageContext}}<br>
+submitPayload: {{submitPayload}}
 <div id="start-form-container" class="container-fluid">
     <div class="row">
         <div class="col-auto">
@@ -54,7 +55,7 @@ prevContext: {{userContext.prevContext}} | pageContext: {{userContext.pageContex
                             <div class="col"></div>
                             <div class="col-auto pe-1"><button type="button" class="m-0 p-2 pe-1"
                                     data-ng-disabled="!userContext.formType"
-                                    data-ng-click="formDipslay(userContext.formType)">Next <i
+                                    data-ng-click="formDipslay(userContext.formType, userContext.prevContext)">Next <i
                                         class="bi bi-chevron-right fw-bold"></i></button></div>
                         </div>
                     </div>

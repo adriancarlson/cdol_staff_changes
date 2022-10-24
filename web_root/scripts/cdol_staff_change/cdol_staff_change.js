@@ -23,7 +23,7 @@ define([
 			curUserEmail: $attrs.ngCurUserEmail,
 			curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr,
 			pageContext: 'start',
-			prevContext: ''
+			prevContext: undefined
 		}
 
 		$scope.submitPayload = {}
@@ -38,13 +38,12 @@ define([
 		todayBeforeJuly()
 
 		// function to switch forms and set scope to hold form data
-		$scope.formDipslay = pageContext => {
+		$scope.formDipslay = (pageContext, prevContext) => {
 			$scope.userContext.pageContext = pageContext
-			if ($scope.submitPayload[pageContext] === undefined) {
-				$scope.submitPayload[pageContext] = {}
-			}
-			if ($scope.submitPayload[pageContext] == 'start') {
-				$scope.submitPayload = {}
+			$scope.userContext.prevContext = prevContext
+
+			if ($scope.userContext.prevContext !== undefined && $scope.userContext.pageContext !== 'start' && $scope.userContext.pageContext !== $scope.userContext.prevContext) {
+				delete $scope.submitPayload[prevContext]
 			}
 		}
 
