@@ -5,9 +5,9 @@ define([
 	'/scripts/cdol/services/checkboxService.js',
 	'/scripts/cdol/services/camelService.js',
 	'/scripts/cdol/services/pqService.js',
-	'/scripts/cdol/services/psApiService.js',
+	'/scripts/cdol/services/psApiService.js'
 ], function (angular) {
-	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'dateService', 'checkboxModule', 'camelModule', 'pqModule', 'psApiModule']);
+	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'dateService', 'checkboxModule', 'camelModule', 'pqModule', 'psApiModule'])
 	cdolStaffApp.controller('cdolStaffAppCtrl', function ($scope, $http, $attrs, $q, $window, dateService, checkboxService, camelService, pqService, psApiService) {
 		//initializing overall form data
 		$scope.userContext = {
@@ -22,46 +22,46 @@ define([
 			curUserName: $attrs.ngCurUserName,
 			curUserEmail: $attrs.ngCurUserEmail,
 			curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr,
-			pageContext: 'start',
-		};
+			pageContext: 'start'
+		}
 
-		$scope.submitPayload = {};
+		$scope.submitPayload = {}
 
 		const todayBeforeJuly = () => {
-			const curYear = new Date().getFullYear();
-			const firstDay = new Date(`01/01/${curYear}`);
-			const lastDay = new Date(`06/30/${curYear}`);
-			const today = new Date();
-			$scope.userContext.isTodayBeforeJuly = today >= firstDay && today < lastDay;
-		};
-		todayBeforeJuly();
+			const curYear = new Date().getFullYear()
+			const firstDay = new Date(`01/01/${curYear}`)
+			const lastDay = new Date(`06/30/${curYear}`)
+			const today = new Date()
+			$scope.userContext.isTodayBeforeJuly = today >= firstDay && today < lastDay
+		}
+		todayBeforeJuly()
 
 		// function to switch forms and set scope to hold form data
-		$scope.formDipslay = (pageContext) => {
-			$scope.userContext.pageContext = pageContext;
+		$scope.formDipslay = pageContext => {
+			$scope.userContext.pageContext = pageContext
 			if ($scope.submitPayload[pageContext] === undefined) {
-				$scope.submitPayload[pageContext] = {};
+				$scope.submitPayload[pageContext] = {}
 			}
-		};
+		}
 
 		// pulls existing staff records and sets them to attributes on current page/from context scope
 		$scope.getExistingStaff = async (pageContext, userDcid) => {
-			$scope.submitPayload[pageContext] = { users_dcid: userDcid };
+			$scope.submitPayload[pageContext] = { users_dcid: userDcid }
 
 			//arguments for the PowerQuery
-			const pqData = { userDcid: userDcid };
+			const pqData = { userDcid: userDcid }
 
 			// // getting staff List for current change type
 			if (userDcid && userDcid !== -1) {
-				const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData);
+				const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData)
+				$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], res[0])
+
 				if (pageContext !== 'nameChange') {
-				$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], res[0]);
-			} else {
-				$scope.submitPayload[pageContext].old_name_placeholder = `${$scope.submitPayload[pageContext].first_name}  ${$scope.submitPayload[pageContext].last_name}`
+					$scope.submitPayload[pageContext].old_name_placeholder = `${$scope.submitPayload[pageContext].first_name}  ${$scope.submitPayload[pageContext].last_name}`
+				}
+				$scope.$digest()
 			}
-				$scope.$digest();
-			}
-		};
+		}
 
 		$scope.submitStaffChange = async () => {
 			//adding generic fields and values needed for any payload
@@ -71,48 +71,48 @@ define([
 				change_type: $scope.userContext.pageContext,
 				submission_date: dateService.formatDateForApi($scope.userContext.curDate),
 				submission_time: $scope.userContext.curTime,
-				who_submitted: $scope.userContext.curUserId,
-			};
+				who_submitted: $scope.userContext.curUserId
+			}
 			//loop though submitPayload object
 			Object.keys($scope.submitPayload).forEach(async (key, index) => {
-				let formPayload = $scope.submitPayload[key];
+				let formPayload = $scope.submitPayload[key]
 
 				//add commonPayload to each object in submitPayload
-				formPayload = Object.assign(formPayload, commonPayload);
+				formPayload = Object.assign(formPayload, commonPayload)
 
 				// constructing deadline
 				if (formPayload.hasOwnProperty('date_radio')) {
-					const today = new Date();
-					const yyyy = today.getFullYear();
-					let mm = today.getMonth() + 1; // Months start at 0!
-					let dd = today.getDate();
-					if (dd < 10) dd = '0' + dd;
-					if (mm < 10) mm = '0' + mm;
-					todayFormated = mm + '/' + dd + '/' + yyyy;
+					const today = new Date()
+					const yyyy = today.getFullYear()
+					let mm = today.getMonth() + 1 // Months start at 0!
+					let dd = today.getDate()
+					if (dd < 10) dd = '0' + dd
+					if (mm < 10) mm = '0' + mm
+					todayFormated = mm + '/' + dd + '/' + yyyy
 
 					if (formPayload.date_radio === 'today') {
-						formPayload.deadline = todayFormated;
+						formPayload.deadline = todayFormated
 					} else if (formPayload.date_radio === 'june30') {
-						formPayload.deadline = `06/30/${yyyy}`;
+						formPayload.deadline = `06/30/${yyyy}`
 					}
 				}
 				// copying formPayload using spread. Then deleting any unneeded radio buttons key value pairs before sending to API call
-				apiPayload = { ...formPayload };
+				apiPayload = { ...formPayload }
 				// get all date fields ready for API call
-				apiPayload.deadline = dateService.formatDateForApi(apiPayload.deadline);
-				apiPayload.dob = dateService.formatDateForApi(apiPayload.dob);
-				delete apiPayload.date_radio;
+				apiPayload.deadline = dateService.formatDateForApi(apiPayload.deadline)
+				apiPayload.dob = dateService.formatDateForApi(apiPayload.dob)
+				delete apiPayload.date_radio
 
 				//submitting staff changes through api
-				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', apiPayload);
-			});
-		};
-	});
-	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }));
-	cdolStaffApp.directive('newStaff', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/new_staff.html' }));
-	cdolStaffApp.directive('transferStaff', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/transfer_staff.html' }));
-	cdolStaffApp.directive('jobChange', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/job_change.html' }));
-	cdolStaffApp.directive('nameChange', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/name_change.html' }));
-	cdolStaffApp.directive('exitStaff', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/exit_staff.html' }));
-	cdolStaffApp.directive('confirm', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/confirm.html' }));
-});
+				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', apiPayload)
+			})
+		}
+	})
+	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }))
+	cdolStaffApp.directive('newStaff', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/new_staff.html' }))
+	cdolStaffApp.directive('transferStaff', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/transfer_staff.html' }))
+	cdolStaffApp.directive('jobChange', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/job_change.html' }))
+	cdolStaffApp.directive('nameChange', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/name_change.html' }))
+	cdolStaffApp.directive('exitStaff', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/exit_staff.html' }))
+	cdolStaffApp.directive('confirm', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/confirm.html' }))
+})

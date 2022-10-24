@@ -6,8 +6,7 @@
             <form name="nameChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
-                        <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is not
-                            returning?</label>
+                        <label for="users_dcid" class="form-label form-label-sm label-reset req">Who's name is changing?</label>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.nameChange.users_dcid" data-ng-required="true"
                             data-ng-change="getExistingStaff(userContext.pageContext, submitPayload.nameChange.users_dcid)">
@@ -31,7 +30,7 @@
                 </div>
                 <div class="row align-items-center mb-3">
                     <div class="col-6">
-                        <label for="name-change-staff-name" class="form-label form-label-sm  label-reset req">Who's name is changing?</label>
+                        <label for="name-change-staff-name" class="form-label form-label-sm  label-reset req">Please modify name below to new name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
                                 data-ng-model="submitPayload.nameChange.title" data-ng-required="true"
@@ -101,7 +100,7 @@
                     <div class="col"
                         data-ng-if="userContext.pageStatus =='Submit' && submitPayload.nameChange.date_radio">
                         <div class="alert alert-warning" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>
-                            {{submitPayload.nameChange.old_name_placeholder}} will need to at ~(schoolname) and on the network in order to change their name. So we can ensure they can log into all the various systems after the update.<br> Please choose an change date that {{submitPayload.nameChange.old_name_placeholder}} can be at ~(schoolname).
+                            {{submitPayload.nameChange.old_name_placeholder}} will need to at ~(schoolname) and on the network in order to change their name, so we can ensure they can log into all the various systems after the update.<br> Please choose an change date when {{submitPayload.nameChange.old_name_placeholder}} can be at ~(schoolname).
                         </div>
                     </div>
                 </div>
