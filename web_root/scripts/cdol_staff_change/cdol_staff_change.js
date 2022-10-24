@@ -54,7 +54,11 @@ define([
 			// // getting staff List for current change type
 			if (userDcid && userDcid !== -1) {
 				const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData);
+				if (pageContext !== 'nameChange') {
 				$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], res[0]);
+			} else {
+				$scope.submitPayload[pageContext].old_name_placeholder = `${$scope.submitPayload[pageContext].first_name}  ${$scope.submitPayload[pageContext].last_name}`
+			}
 				$scope.$digest();
 			}
 		};

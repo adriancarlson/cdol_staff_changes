@@ -1,135 +1,139 @@
-<form name="nameChangeForm" method="POST" novalidate>
-    <div class="fluid-form">
-        <div>
-            <div>
-                <label class="req">Who's name is changing?</label>
-                <select ng-show="userContext.pageStatus =='Submit'" name="" ng-model="newStaff.replacing"
-                    ng-required="true" ng-change="getExistingStaff()">
-                    <option></option>
-                    ~[tlist_sql;SELECT distinct
-                    users.dcid,
-                    users.first_name,
-                    users.last_name
-                    FROM SCHOOLSTAFF
-                    inner join users
-                    on users.dcid = schoolstaff.users_dcid
-                    WHERE schoolstaff.status =1
-                    ~[if.is.a.school]
-                    AND schoolstaff.schoolid = ~(curschoolid)
-                    [/if.is.a.school]
-                    Order BY users.last_name , users.first_name]
-                    <option value="~(dcid)">~(first) ~(last)</option>
-                    [/tlist_sql]
-                </select>
-                <input ng-show="userContext.pageStatus =='Edit'" name="" type="text" value=""
-                    ng-model="newStaff.old_name_placeholder">
-            </div>
+<div id="name-change-form-container" class="container-fluid">
+    nameChange: {{submitPayload.nameChange}}
+    <div class="card">
+        <div class="card-header bg-secondary text-bg-secondary bg-gradient fs-6 fw-semibold">Name Change:</div>
+        <div class="card-body">
+            <form name="nameChangeForm" method="POST" novalidate>
+                <div class="row align-items-center mb-3">
+                    <div class="col-auto">
+                        <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is not
+                            returning?</label>
+                        <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
+                            data-ng-model="submitPayload.nameChange.users_dcid" data-ng-required="true"
+                            data-ng-change="getExistingStaff(userContext.pageContext, submitPayload.nameChange.users_dcid)">
+                            <option selected></option>
+                            ~[tlist_sql;SELECT
+                            users.dcid,
+                            users.first_name,
+                            users.last_name
+                            FROM SCHOOLSTAFF
+                            inner join users
+                            on users.dcid = schoolstaff.users_dcid
+                            WHERE schoolstaff.status = 1
+                            ~[if.is.a.school]
+                            AND schoolstaff.schoolid = ~(curschoolid)
+                            [/if.is.a.school]
+                            Order BY users.last_name , users.first_name]
+                            <option value="~(dcid)">~(first) ~(last)</option>
+                            [/tlist_sql]
+                        </select>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="name-change-staff-name" class="form-label form-label-sm  label-reset req">Who's name is changing?</label>
+                        <div class="input-group">
+                            <select class="form-select form-select-sm" aria-label="title"
+                                data-ng-model="submitPayload.nameChange.title" data-ng-required="true"
+                                data-ng-if="!['Fr.','Msgr.','Sr.','Br.'].includes(submitPayload.nameChange.title)">
+                                <option selected></option>
+                                <option value="Mr.">Mr.</option>
+                                <option value="Mrs.">Mrs.</option>
+                                <option value="Ms.">Ms.</option>
+                                <option value="Dr.">Dr.</option>
+                                <option value="Fr.">Fr.</option>
+                                <option value="Msgr.">Msgr.</option>
+                                <option value="Sr.">Sr.</option>
+                                <option value="Br.">Br.</option>
+                            </select>
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
+                                aria-label="First name" data-ng-model="submitPayload.nameChange.first_name"
+                                data-ng-required="true">
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="Middle name"
+                                aria-label="Middle name" data-ng-model="submitPayload.nameChange.middle_name">
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
+                                aria-label="Last name" data-ng-model="submitPayload.nameChange.last_name"
+                                data-ng-required="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3"
+                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.nameChange.first_name">
+                    <div class="col-auto">
+                        <div class="card">
+                            <div class="card-header fw-semibold ps-1 req">Requested Name Change Date</div>
+                            <div class="card-body">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="exit-date-group"
+                                        id="exit-date-today" data-ng-model="submitPayload.nameChange.date_radio"
+                                        value="today" data-ng-required="!submitPayload.nameChange.date_radio">
+                                    <label class="form-check-label" for="exit-date-today">Today
+                                        ({{ userContext.curDate}})</label>
+                                </div>
+                                <div class="form-check form-check-inline" data-ng-if="userContext.isTodayBeforeJuly">
+                                    <input class="form-check-input" type="radio" name="exit-date-group"
+                                        id="exit-date-june30" data-ng-model="submitPayload.nameChange.date_radio"
+                                        value="june30" data-ng-required="!submitPayload.nameChange.date_radio">
+                                    <label class="form-check-label" for="exit-date-june30">June
+                                        30th</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="exit-date-group"
+                                        id="exit-date-specific"
+                                        data-ng-model="submitPayload.nameChange.date_radio" value="other"
+                                        data-ng-required="!submitPayload.nameChange.date_radio">
+                                    <label class="form-check-label" for="exit-date-specific">Specific
+                                        Date</label>
+                                </div>
+                                <div class="row row-cols-sm-auto align-items-center mt-2"
+                                    data-ng-if="submitPayload.nameChange.date_radio==='other'">
+                                    <div class="col">
+                                        <label class="form-label form-label-sm label-reset req">Deactivation
+                                            Date</label><br>
+                                        <input type="text" class="psDateWidget"
+                                            ng-model="submitPayload.nameChange.deadline" ng-required="true">
+                                        <script type="text/javascript">initBehaviors();</script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col"
+                        data-ng-if="userContext.pageStatus =='Submit' && submitPayload.nameChange.date_radio">
+                        <div class="alert alert-warning" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>
+                            {{submitPayload.nameChange.old_name_placeholder}} will need to at ~(schoolname) and on the network in order to change their name. So we can ensure they can log into all the various systems after the update.<br> Please choose an change date that {{submitPayload.nameChange.old_name_placeholder}} can be at ~(schoolname).
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3"
+                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.nameChange.first_name">
+                    <div class="col-5">
+                        <div class="form-floating">
+                            <textarea class="form-control" style="height: 100px" placeholder="Reason for Name Change and/or additional Notes/Details?"
+                                id="exit-add-notes" spellcheck="true" wrap="absolute"
+                                ng-model="submitPayload.nameChange.notes"></textarea>
+                            <label class="fw-semibold" for="exit-add-notes">Reason for Name Change and/or additional Notes/Details?</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div><label>Staff's New Name</label></div>
-        <div>
-            <div>
-                <label class="req">Title</label>
-                <select name="" id="selectTitle" ng-model="newStaff.title"
-                    ng-required="true">~[x:codesetoptions;codetype=Title;includeblank;value=~([U_CDOL_STAFF_CHANGES]title)]</select>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-auto me-auto"><button type="button" class="m-0 p-2 ps-1"
+                        data-ng-click="formDipslay('start')"><i class="bi bi-chevron-left fw-bold"></i> Back</button>
+                </div>
+                <div class="col-auto"><span class="req-notation me-2"
+                        ng-if="(nameChangeForm.$invalid && nameChangeForm.$dirty) || !submitPayload.nameChange.users_dcid">Please
+                        fill all required fields prior to submitting.</span>
+                    <button type="button" id="subBtn" class="m-0 p-2" data-ng-disabled="nameChangeForm.$invalid"
+                        data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
+                    <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
+                        data-ng-click="subConfirm = false">Cancel</button>
+                    <button type="button" id="confBtn" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
+                        data-ng-click="submitStaffChange()">Confirm Submit</button>
+                </div>
             </div>
-            <div>
-                <label class="req">First Name</label>
-                <input name="" type="text" value="" ng-model="newStaff.first_name" ng-required="true">
-            </div>
-            <div>
-                <label>Middle Name</label>
-                <input name="" type="text" value="" ng-model="newStaff.middle_name">
-            </div>
-            <div>
-                <label class="req">Last Name</label>
-                <input name="" type="text" value="" ng-model="newStaff.last_name" ng-required="true">
-            </div>
-        </div>
-        <div>
-            <div>
-                <label>Reason for Name Change and/or additional Notes/Details?</label>
-                <textarea name="body" rows="3" cols="77" spellcheck="true" wrap="absolute"
-                    ng-model="newStaff.notes"></textarea>
-            </div>
-        </div>
-        ~[if#distCheck.security.inrole=9]
-        <div style="background-color: #fff; border-top: 1px solid #eee;"
-            ng-show="userContext.pageStatus =='Edit'">
-            <div>
-                <table class="grid">
-                    <thead>
-                        <tr>
-                            <th colspan="4">Account Update</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
-                                <input type="checkbox" name=""
-                                    ng-model="newStaff.ps_created"><label>PowerSchool Account
-                                    Updated?</label>
-                                <ul>
-                                    <li>User Name Updated?</li>
-                                    <li>Email Address Updated?</li>
-                                </ul>
-                            </td>
-                            <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
-                                <input type="checkbox" name="" ng-model="newStaff.ad_created"><label>AD User
-                                    Account created?</label>
-                                <ul>
-                                    <li>Exchange email updated?</li>
-                                </ul>
-                            </td>
-                            <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
-                                <input type="checkbox" name="" ng-model="newStaff.o365_created"><label>O365
-                                    User
-                                    Account updated?</label>
-                                <ul>
-                                    <li>Office 365 updated?</li>
-                                </ul>
-                            </td>
-                            <td style="background-color: #fff;padding: 5px 10px 10px 2px;">
-                                <input type="checkbox" name="" ng-model="newStaff.lms_created"><label>LMS
-                                    Account
-                                    Updated?</label>
-                                <ul>
-                                    <li>LMS name Updated?</li>
-                                    <li>Matches O365 Login?</li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        [/if#distCheck]
-        <div class="button-row" ng-show="userContext.pageStatus =='Submit'">
-            <span class="req-notation" ng-show="nameChangeForm.$invalid && nameChangeForm.$dirty">Please
-                fill all required fields prior to submitting.</span>
-            <span style="display:inline; padding: 4px 4px 4px 30px;" ng-show="subConfirm"
-                class="feedback-alert">Please double check spelling prior to
-                submission. It is critical for accurate account creation.</span>
-            <button id="canBtn" type="button" ng-show="subConfirm"
-                ng-click="subConfirm = false">Cancel</button>
-            <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="subConfirm"
-                ng-click="submitStaffChange()">Confirm Submission</button>
-            <button id="subBtn" type="button" ng-show="!subConfirm" ng-click="subConfirm = true"
-                ng-disabled="nameChangeForm.$invalid">Submit</button>
-        </div>
-        <div ng-show="userContext.pageStatus =='Edit'" class="button-row">
-            <span class="req-notation" ng-show="nameChangeForm.$invalid && nameChangeForm.$dirty">Please
-                fill all required fields prior to submitting.</span>
-            <button id="canBtn" type="button" ng-show="delUpdate"
-                ng-click="delUpdate = false">Cancel</button>
-            <button id="conBtn" type="button" style="background-color: DarkOrange;" ng-show="delUpdate"
-                ng-click="deleteStaffChange()">Confirm Deletion</button>
-            <a id="bkBtn" class="button" ng-show="!delUpdate"
-                href="/admin/cdol/staff_change/cdol_staff_change_list.html">Back</a>
-            <button id="delBtn" type="button" ng-show="!delUpdate" ng-click="delUpdate = true">Delete
-                Submission</button>
-            <button id="upBtn" type="button" ng-disabled="nameChangeForm.$invalid" ng-show="!delUpdate"
-                ng-click="submitStaffUpdate()">Submit
-                Update</button>
         </div>
     </div>
-</form>
+</div>

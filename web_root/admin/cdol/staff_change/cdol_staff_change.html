@@ -20,8 +20,9 @@
         data-ng-cur-user-email="~[x:useremail]" data-ng-cur-user-school-abbr="~(schoolabbr)" data-ng-cloak>
         ~[wc:admin_header_css]
         <a href="/admin/home.html" target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a>
-        <span data-ng-show="userContext.pageStatus =='Edit'"><a href="/admin/cdol/staff_change/cdol_staff_change_list.html"
-                target="_top">&gt; Staff Submissions</a></span>
+        <span data-ng-show="userContext.pageStatus =='Edit'"><a
+                href="/admin/cdol/staff_change/cdol_staff_change_list.html" target="_top">&gt; Staff
+                Submissions</a></span>
         &gt; {{userContext.pageStatus}} Staff Change
         ~[wc:admin_navigation_css]
 
@@ -30,6 +31,7 @@
             <div id="form-container" data-ng-switch on="userContext.pageContext">
                 <start data-ng-switch-when="start"></start>
                 <exit-staff data-ng-switch-when="exitingStaff"></exit-staff>
+                <name-change data-ng-switch-when="nameChange"></name-change>
                 <confirm data-ng-switch-when="confirm"></confirm>
             </div>
         </div>
