@@ -24,7 +24,7 @@
                 <td>{{$index +1}}</td>
                 <td class="nowrap"><a
                         href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{jobChange.staffid}}">{{jobChange.title}}
-                        {{jobChange.first_name}}a
+                        {{jobChange.first_name}}
                         {{jobChange.last_name}}</a></td>
                 <td class="nowrap">{{jobChange.previous_position}}</td>
                 <td class="nowrap">{{jobChange.new_position}}</td>
@@ -43,7 +43,8 @@
                 </td>
                 <td>
                     <span data-ng-show="jobChange.o365_created != 1 && jobChange.o365_ignored != 1">&#10060;</span>
-                    <span data-ng-show="jobChange.o365_created == 1 || jobChange.o365_ignored == 1">&#10004;&#65039;</span>
+                    <span
+                        data-ng-show="jobChange.o365_created == 1 || jobChange.o365_ignored == 1">&#10004;&#65039;</span>
                 </td>
                 <td><span data-ng-show="jobChange.lms_created != 1">&#10060;</span><span
                         data-ng-show="jobChange.lms_created == 1">&#10004;&#65039;</span></td>

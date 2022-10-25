@@ -1,21 +1,24 @@
 [
 ~[tlist_sql;
-    SELECT DISTINCT
     users.dcid,
     users.first_name,
     users.last_name,
-    users.homeschoolid
+    users.homeschoolid,
+    schools.name
     FROM schoolstaff
-    inner join users
-    on users.dcid = schoolstaff.users_dcid
+    INNER JOIN users
+    ON users.dcid = schoolstaff.users_dcid
+    LEFT JOIN schools 
+    ON users.homeschoolid = schools.school_number
     WHERE users.dcid = '~(gpv.userDcid)'
     and schoolstaff.status = 1
 ;]
     {
-        "users_dcid": ~(1),
+        "users_dcid": "~(1;JSON)",
         "first_name":"~(2;JSON)",
         "last_name":"~(3;JSON)",
-        "homeschoolid": ~(4)
+        "homeschoolid": "~(4;JSON)"
+        "homeschoolname": "~(5;JSON)"
     },
 [/tlist_sql]
 {}]

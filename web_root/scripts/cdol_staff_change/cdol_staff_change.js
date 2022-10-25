@@ -83,6 +83,7 @@ define([
 				}
 				if (pageContext === 'transferringStaff') {
 					$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
+					$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
 				}
 
 				$scope.$digest()
