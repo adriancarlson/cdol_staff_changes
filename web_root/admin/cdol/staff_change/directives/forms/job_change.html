@@ -1,4 +1,143 @@
-<form name="jobChangeForm" method="POST" novalidate>
+<div id="job-change-form-container" class="container-fluid">
+    prevContext: {{userContext.prevContext}} | pageContext: {{userContext.pageContext}} <br>
+    submitPayload: {{submitPayload}}
+    <div class="card">
+        <div class="card-header  bg-info text-bg-info bg-gradient fs-6 fw-semibold">Position/Job Change:</div>
+        <div class="card-body">
+            <form name="jobChangeForm" method="POST" novalidate>
+                <div class="row align-items-center mb-3">
+                    <div class="col-auto">
+                        <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is changing
+                            Job/positions?</label>
+                        <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
+                            data-ng-model="submitPayload.jobChange.users_dcid" data-ng-required="true"
+                            data-ng-change="getExistingStaff(userContext.pageContext, submitPayload.jobChange.users_dcid)">
+                            <option selected></option>
+                            ~[tlist_sql;SELECT
+                            users.dcid,
+                            users.first_name,
+                            users.last_name
+                            FROM SCHOOLSTAFF
+                            inner join users
+                            on users.dcid = schoolstaff.users_dcid
+                            WHERE schoolstaff.status = 1
+                            ~[if.is.a.school]
+                            AND schoolstaff.schoolid = ~(curschoolid)
+                            [/if.is.a.school]
+                            Order BY users.last_name , users.first_name]
+                            <option value="~(dcid)">~(first) ~(last)</option>
+                            [/tlist_sql]
+                            <option value="-1">-- Other --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.first_name">
+                    <div class="col-auto">
+                        <div class="card">
+                            <div class="card-header fw-semibold ps-1 req">Position/Job Change Information</div>
+                            <div class="card-body">
+                                <div class="col-5">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" style="height: 100px"
+                                            placeholder="Previous Position/Job:" id="job-change-previous-position"
+                                            spellcheck="true" wrap="absolute"
+                                            ng-model="submitPayload.jobChange.previous_position"></textarea>
+                                        <label class="fw-semibold" for="job-change-previous-position">Previous
+                                            Position/Job:</label>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" style="height: 100px"
+                                            placeholder="New Position/Job:" id="job-change-previous-new"
+                                            spellcheck="true" wrap="absolute"
+                                            ng-model="submitPayload.jobChange.new_position"></textarea>
+                                        <label class="fw-semibold" for="job-change-previous-new">New
+                                            Position/Job:</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row align-items-center mb-3"
+                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.jobChange.first_name">
+                    <div class="col-auto">
+                        <div class="card">
+                            <div class="card-header fw-semibold ps-1 req">Date of Position/Job Change</div>
+                            <div class="card-body">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="exit-date-group"
+                                        id="exit-date-today" data-ng-model="submitPayload.jobChange.date_radio"
+                                        value="today" data-ng-required="!submitPayload.jobChange.date_radio">
+                                    <label class="form-check-label" for="exit-date-today">Today
+                                        ({{ userContext.curDate}})</label>
+                                </div>
+                                <div class="form-check form-check-inline" data-ng-if="userContext.isTodayBeforeJuly">
+                                    <input class="form-check-input" type="radio" name="exit-date-group"
+                                        id="exit-date-june30" data-ng-model="submitPayload.jobChange.date_radio"
+                                        value="june30" data-ng-required="!submitPayload.jobChange.date_radio">
+                                    <label class="form-check-label" for="exit-date-june30">June
+                                        30th</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="exit-date-group"
+                                        id="exit-date-specific" data-ng-model="submitPayload.jobChange.date_radio"
+                                        value="other" data-ng-required="!submitPayload.jobChange.date_radio">
+                                    <label class="form-check-label" for="exit-date-specific">Specific
+                                        Date</label>
+                                </div>
+                                <div class="row row-cols-sm-auto align-items-center mt-2"
+                                    data-ng-if="submitPayload.jobChange.date_radio==='other'">
+                                    <div class="col">
+                                        <label class="form-label form-label-sm label-reset req">Deactivation
+                                            Date</label><br>
+                                        <input type="text" class="psDateWidget"
+                                            ng-model="submitPayload.jobChange.deadline" ng-required="true">
+                                        <script type="text/javascript">initBehaviors();</script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3"
+                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.jobChange.first_name">
+                    <div class="col-5">
+                        <div class="form-floating">
+                            <textarea class="form-control" style="height: 100px" placeholder="Additional Notes/Details?"
+                                id="exit-add-notes" spellcheck="true" wrap="absolute"
+                                ng-model="submitPayload.jobChange.notes"></textarea>
+                            <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-auto me-auto"><button type="button" class="m-0 p-2 ps-1"
+                        data-ng-click="formDipslay('start',userContext.formType)"><i
+                            class="bi bi-chevron-left fw-bold"></i> Back</button>
+                </div>
+                <div class="col-auto"><span class="req-notation me-2"
+                        ng-if="(jobChangeForm.$invalid && jobChangeForm.$dirty) || !submitPayload.jobChange.users_dcid">Please
+                        fill all required fields prior to submitting.</span>
+                    <button type="button" id="subBtn" class="m-0 p-2" data-ng-disabled="jobChangeForm.$invalid"
+                        data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
+                    <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
+                        data-ng-click="subConfirm = false">Cancel</button>
+                    <button type="button" id="confBtn" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
+                        data-ng-click="submitStaffChange()">Confirm Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <form name="jobChangeForm" method="POST" novalidate>
     <div class="fluid-form">
         <h4 style="margin-left: 10px;">{{newStaff.name_change}}</h4>
         <div>
@@ -153,4 +292,4 @@
                 Update</button>
         </div>
     </div>
-</form>
+</form> -->

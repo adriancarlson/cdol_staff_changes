@@ -2,7 +2,7 @@
     prevContext: {{userContext.prevContext}} | pageContext: {{userContext.pageContext}} <br>
     submitPayload: {{submitPayload}}
     <div class="card">
-        <div class="card-header bg-secondary text-bg-secondary bg-gradient fs-6 fw-semibold">Name Change:</div>
+        <div class="card-header bg-warning text-bg-warning bg-gradient fs-6 fw-semibold">Name Change:</div>
         <div class="card-body">
             <form name="nameChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
@@ -33,7 +33,7 @@
                 <div class="row align-items-center mb-3">
                     <div class="col-6">
                         <label for="name-change-staff-name" class="form-label form-label-sm  label-reset req">Please
-                            modify name below to new name</label>
+                            change name below to staff's new name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
                                 data-ng-model="submitPayload.nameChange.title" data-ng-required="true"
@@ -133,7 +133,7 @@
                 <div class="col-auto"><span class="req-notation me-2"
                         ng-if="(nameChangeForm.$invalid && nameChangeForm.$dirty) || !submitPayload.nameChange.users_dcid">Please
                         fill all required fields prior to submitting.</span>
-                    <button type="button" id="subBtn" class="m-0 p-2" data-ng-disabled="nameChangeForm.$invalid"
+                    <button type="button" id="subBtn" class="m-0 p-2" data-ng-disabled="nameChangeForm.$invalid "
                         data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
                     <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
                         data-ng-click="subConfirm = false">Cancel</button>
