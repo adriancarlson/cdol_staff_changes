@@ -2,6 +2,6 @@
 SELECT count(id)
 FROM u_cdol_staff_changes
 WHERE final_completion_date is null
-and yearid = to_number(to_char(sysdate, 'YYYY') - 1991)
+and calendar_year = ~(f.currentdate;format= YYYY)
 ~[if.is.a.school] AND U_CDOL_STAFF_CHANGES.schoolid=~(curschoolid) [/if]
 ;]~(cnt)[/tlist_sql]

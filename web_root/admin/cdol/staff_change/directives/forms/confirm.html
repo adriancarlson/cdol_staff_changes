@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-header bg-success text-bg-success bg-gradient fs-6 fw-semibold">Thank you</div>
         <div class="card-body">
-            <div class="alert alert-success" role="alert"><i class="bi bi-check-circle-fill"></i>  <strong><u>Thank you
+            <div class="alert alert-success" role="alert"><i class="bi bi-check-circle-fill"></i> <strong><u>Thank you
                         for your submission!</u></strong>
                 <p>Your submission for <span
                         data-ng-if="userContext.prevContext ==='nameChange'">{{submitPayload[userContext.prevContext].old_name_placeholder}}</span>
@@ -21,7 +21,8 @@
                         <span data-ng-switch-when="exitingStaff">has been deactivated.</span>
                     </span>
                 </p>
-                <p>This will occur around {{submitPayload[userContext.prevContext].deadline}} unless specified otherwise.</p>
+                <p>This will occur around {{submitPayload[userContext.prevContext].deadline}} unless specified
+                    otherwise.</p>
             </div>
         </div>
         <div class="card-footer">
@@ -29,11 +30,12 @@
                 <div class="col-auto me-auto"></div>
                 <div class="col-auto">
                     <a href="cdol_staff_change.html?status=Submit" type="button" id="subAnother"
-                        class="btn m-0 p-2">Submit
+                        class="m-0 p-2 btn btn-primary ps-blue">Submit
                         Another Staff Change</a>
-                    <a href="cdol_staff_change_list.html" type="button" id="listAll" class="btn m-0 p-2">View All
+                    <a href="cdol_staff_change_list.html" type="button" id="listAll"
+                        class="m-0 p-2 btn btn-primary ps-blue">View All
                         Submissions</a>
-                    <a href="/admin/home.html" type="button" id="exit" class="btn m-0 p-2">Exit</a>
+                    <a href="/admin/home.html" type="button" id="exit" class="m-0 p-2 btn btn-primary ps-blue">Exit</a>
                 </div>
             </div>
         </div>

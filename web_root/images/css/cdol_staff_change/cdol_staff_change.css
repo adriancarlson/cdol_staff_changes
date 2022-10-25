@@ -25,6 +25,9 @@ input,
 select {
 	border-radius: 4px;
 }
+.ps-blue {
+	background-color: #00427c;
+}
 
 .dark-orange {
 	background-color: DarkOrange;
