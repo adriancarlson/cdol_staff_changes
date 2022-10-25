@@ -61,8 +61,20 @@ define([
 
 			// // getting staff List for current change type
 			if (userDcid && userDcid !== -1) {
-				const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData)
-				$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], res[0])
+				//had to switch from using a PQ back to using tlist because PQ's data restriction framework removed staff not currently at the school. I left the PQ method commented out below
+				const res = await $http({
+					url: '/admin/cdol/staff_change/data/getExistingStaff.json',
+					method: 'GET',
+					params: pqData
+				})
+
+				const exitstingStaff = res.data
+				exitstingStaff.pop()
+				$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], exitstingStaff[0])
+
+				//PQ method below. Does not work because of DRF
+				// const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData)
+				// $scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], res[0])
 
 				if (pageContext === 'nameChange') {
 					$scope.submitPayload[

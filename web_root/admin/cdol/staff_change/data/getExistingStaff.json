@@ -3,16 +3,19 @@
     SELECT DISTINCT
     users.dcid,
     users.first_name,
-    users.last_name
-    FROM SCHOOLSTAFF
+    users.last_name,
+    users.homeschoolid
+    FROM schoolstaff
     inner join users
     on users.dcid = schoolstaff.users_dcid
-    WHERE users.dcid = '~(gpv.udcid)'
+    WHERE users.dcid = '~(gpv.userDcid)'
+    and schoolstaff.status = 1
 ;]
     {
-        "udcid": ~(1),
+        "users_dcid": ~(1),
         "first_name":"~(2;JSON)",
-        "last_name":"~(3;JSON)"
+        "last_name":"~(3;JSON)",
+        "homeschoolid": ~(4)
     },
 [/tlist_sql]
 {}]
