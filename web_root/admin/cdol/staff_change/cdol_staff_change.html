@@ -30,9 +30,11 @@
             <h1 class="mb-1">{{userContext.pageStatus}} Staff Change</h1>
             <div id="form-container" data-ng-switch on="userContext.pageContext">
                 <start data-ng-switch-when="start"></start>
-                <exit-staff data-ng-switch-when="exitingStaff"></exit-staff>
+                <new-staff data-ng-switch-when="newStaff"></new-staff>
+                <transfer-staff data-ng-switch-when="transferringStaff"></transfer-staff>
                 <job-change data-ng-switch-when="jobChange"></job-change>
                 <name-change data-ng-switch-when="nameChange"></name-change>
+                <exit-staff data-ng-switch-when="exitingStaff"></exit-staff>
                 <confirm data-ng-switch-when="confirm"></confirm>
             </div>
         </div>

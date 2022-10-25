@@ -1,4 +1,157 @@
-<form name="staffTransferForm" method="POST" novalidate>
+<div id="transferring-form-container" class="container-fluid">
+    prevContext: {{userContext.prevContext}} | pageContext: {{userContext.pageContext}} <br>
+    submitPayload: {{submitPayload}}
+    <div class="card">
+        <div class="card-header bg-secondary text-bg-secondary bg-gradient fs-6 fw-semibold">Transferring Staff:</div>
+        <div class="card-body">
+            <form name="transferringStaffForm" method="POST" novalidate>
+                <div class="row align-items-center mb-3">
+                    <div class="col-auto">
+                        <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is not
+                            returning?</label>
+                        <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
+                            data-ng-model="submitPayload.transferringStaff.users_dcid" data-ng-required="true"
+                            data-ng-change="getExistingStaff(userContext.pageContext, submitPayload.transferringStaff.users_dcid)">
+                            <option selected></option>
+                            ~[tlist_sql;SELECT DISTINCT
+                            users.dcid,
+                            users.first_name,
+                            users.last_name
+                            FROM SCHOOLSTAFF
+                            inner join users
+                            on users.dcid = schoolstaff.users_dcid
+                            WHERE schoolstaff.status = 1
+                            Order BY users.last_name , users.first_name]
+                            <option value="~(dcid)">~(first) ~(last)</option>
+                            [/tlist_sql]
+                            <option value="-1">-- Other --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid == -1">
+                    <div class="col-6">
+                        <label for="transferring-staff-name"
+                            class="form-label form-label-sm  label-reset req">Transferring Staff
+                            Name</label>
+                        <div class="input-group">
+                            <select class="form-select form-select-sm" aria-label="title"
+                                data-ng-model="submitPayload.transferringStaff.title" data-ng-required="true"
+                                data-ng-if="!['Fr.','Msgr.','Sr.','Br.'].includes(submitPayload.transferringStaff.title)">
+                                <option selected></option>
+                                <option value="Mr.">Mr.</option>
+                                <option value="Mrs.">Mrs.</option>
+                                <option value="Ms.">Ms.</option>
+                                <option value="Dr.">Dr.</option>
+                                <option value="Fr.">Fr.</option>
+                                <option value="Msgr.">Msgr.</option>
+                                <option value="Sr.">Sr.</option>
+                                <option value="Br.">Br.</option>
+                            </select>
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
+                                aria-label="First name" data-ng-model="submitPayload.transferringStaff.first_name"
+                                data-ng-required="true">
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="Middle name"
+                                aria-label="Middle name" data-ng-model="submitPayload.transferringStaff.middle_name">
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
+                                aria-label="Last name" data-ng-model="submitPayload.transferringStaff.last_name"
+                                data-ng-required="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3"
+                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.first_name">
+                    <div class="col-auto">
+                        <div class="card">
+                            <div class="card-header fw-semibold ps-1 req">{{
+                                submitPayload.transferringStaff.first_name}} {{
+                                submitPayload.transferringStaff.last_name}}'s Transfer
+                                Date</div>
+                            <div class="card-body">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="exit-date-group"
+                                        id="exit-date-today" data-ng-model="submitPayload.transferringStaff.date_radio"
+                                        value="today" data-ng-required="!submitPayload.transferringStaff.date_radio">
+                                    <label class="form-check-label" for="exit-date-today">Today
+                                        ({{ userContext.curDate}})</label>
+                                </div>
+                                <div class="form-check form-check-inline" data-ng-if="userContext.isTodayBeforeJuly">
+                                    <input class="form-check-input" type="radio" name="exit-date-group"
+                                        id="exit-date-june30" data-ng-model="submitPayload.transferringStaff.date_radio"
+                                        value="june30" data-ng-required="!submitPayload.transferringStaff.date_radio">
+                                    <label class="form-check-label" for="exit-date-june30">June
+                                        30th</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="exit-date-group"
+                                        id="exit-date-specific"
+                                        data-ng-model="submitPayload.transferringStaff.date_radio" value="other"
+                                        data-ng-required="!submitPayload.transferringStaff.date_radio">
+                                    <label class="form-check-label" for="exit-date-specific">Specific
+                                        Date</label>
+                                </div>
+                                <div class="row row-cols-sm-auto align-items-center mt-2"
+                                    data-ng-if="submitPayload.transferringStaff.date_radio==='other'">
+                                    <div class="col">
+                                        <label class="form-label form-label-sm label-reset req">Transfer
+                                            Date</label><br>
+                                        <input type="text" class="psDateWidget"
+                                            ng-model="submitPayload.transferringStaff.deadline" ng-required="true">
+                                        <script type="text/javascript">initBehaviors();</script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3"
+                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.first_name">
+                    <div class="col-xl-6">
+                        <div class="form-floating">
+                            <textarea class="form-control" style="height: 100px" placeholder="Additional Notes/Details?"
+                                id="exit-add-notes" spellcheck="true" wrap="absolute"
+                                ng-model="submitPayload.transferringStaff.notes"></textarea>
+                            <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i>
+                            <strong><u>Please Note</u></strong>: personal files (i.e. Documents, pictures, music and
+                            videos)
+                            should be moved by {{
+                            submitPayload.transferringStaff.first_name}} {{
+                            submitPayload.transferringStaff.last_name}}.<br> The Education
+                            Techonology
+                            Office is not
+                            responsible for any files after {{
+                            submitPayload.transferringStaff.first_name}} {{
+                            submitPayload.transferringStaff.last_name}} has been transferred.
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-auto me-auto"><button type="button" class="m-0 p-2 ps-1"
+                        data-ng-click="formDipslay('start',userContext.formType)"><i
+                            class="bi bi-chevron-left fw-bold"></i> Back</button>
+                </div>
+                <div class="col-auto"><span class="req-notation me-2"
+                        ng-if="(transferringStaffForm.$invalid && transferringStaffForm.$dirty) || !submitPayload.transferringStaff.users_dcid">Please
+                        fill all required fields prior to submitting.</span>
+                    <button type="button" id="subBtn" class="m-0 p-2" data-ng-disabled="transferringStaffForm.$invalid"
+                        data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
+                    <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
+                        data-ng-click="subConfirm = false">Cancel</button>
+                    <button type="button" id="confBtn" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
+                        data-ng-click="submitStaffChange()">Confirm Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <form name="staffTransferForm" method="POST" novalidate>
     <script type="text/javascript">initBehaviors();</script>
     <div class="fluid-form">
         <h4 style="margin-left: 10px;">{{newStaff.name_change}} Name</h4>
@@ -311,4 +464,4 @@ font-size: 13.5pt;"> *</span><br><span class="notation">(choose Other if staff m
                 Update</button>
         </div>
     </div>
-</form>
+</form> -->

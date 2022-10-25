@@ -69,6 +69,10 @@ define([
 						pageContext
 					].old_name_placeholder = `${$scope.submitPayload[pageContext].title} ${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
 				}
+				if (pageContext === 'transferringStaff') {
+					$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
+				}
+
 				$scope.$digest()
 			}
 		}
@@ -112,6 +116,7 @@ define([
 				apiPayload.deadline = dateService.formatDateForApi(apiPayload.deadline)
 				apiPayload.dob = dateService.formatDateForApi(apiPayload.dob)
 				delete apiPayload.date_radio
+				delete apiPayload.homeschoolid
 
 				//submitting staff changes through api
 				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', apiPayload)

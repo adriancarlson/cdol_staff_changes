@@ -8,7 +8,7 @@
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
                         <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is changing
-                            Job/positions?</label>
+                            Positions/Jobs?</label>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.jobChange.users_dcid" data-ng-required="true"
                             data-ng-change="getExistingStaff(userContext.pageContext, submitPayload.jobChange.users_dcid)">
@@ -119,8 +119,8 @@
                                 <div class="row row-cols-sm-auto align-items-center mt-2"
                                     data-ng-if="submitPayload.jobChange.date_radio==='other'">
                                     <div class="col">
-                                        <label class="form-label form-label-sm label-reset req">Deactivation
-                                            Date</label><br>
+                                        <label class="form-label form-label-sm label-reset req">Date of Position/Job
+                                            Change</label><br>
                                         <input type="text" class="psDateWidget"
                                             ng-model="submitPayload.jobChange.deadline" ng-required="true">
                                         <script type="text/javascript">initBehaviors();</script>
