@@ -1,17 +1,18 @@
 [
 ~[tlist_sql;
-    users.dcid,
-    users.first_name,
-    users.last_name,
-    users.homeschoolid,
-    schools.name
+    SELECT DISTINCT    
+        users.dcid,
+        users.first_name,
+        users.last_name,
+        users.homeschoolid,
+        schools.name
     FROM schoolstaff
     INNER JOIN users
-    ON users.dcid = schoolstaff.users_dcid
+        ON users.dcid = schoolstaff.users_dcid
     LEFT JOIN schools 
-    ON users.homeschoolid = schools.school_number
+        ON users.homeschoolid = schools.school_number
     WHERE users.dcid = '~(gpv.userDcid)'
-    and schoolstaff.status = 1
+        AND schoolstaff.status = 1
 ;]
     {
         "users_dcid": "~(1;JSON)",
