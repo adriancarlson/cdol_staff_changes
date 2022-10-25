@@ -111,7 +111,7 @@ define([
 				//submitting staff changes through api
 				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', apiPayload)
 			})
-			$scope.formDipslay('confirm', $scope.userContext.prevContext)
+			$scope.formDipslay('confirm', $scope.userContext.pageContext)
 		}
 	})
 	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }))
