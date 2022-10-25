@@ -31,12 +31,41 @@
                         </select>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.first_name">
-                    <div class="col-auto">
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.users_dcid == -1">
+                    <div class="col-6">
+                        <label for="job-change-name" class="form-label form-label-sm  label-reset req">Exiting Staff
+                            Name</label>
+                        <div class="input-group">
+                            <select class="form-select form-select-sm" aria-label="title"
+                                data-ng-model="submitPayload.jobChange.title" data-ng-required="true"
+                                data-ng-if="!['Fr.','Msgr.','Sr.','Br.'].includes(submitPayload.jobChange.title)">
+                                <option selected></option>
+                                <option value="Mr.">Mr.</option>
+                                <option value="Mrs.">Mrs.</option>
+                                <option value="Ms.">Ms.</option>
+                                <option value="Dr.">Dr.</option>
+                                <option value="Fr.">Fr.</option>
+                                <option value="Msgr.">Msgr.</option>
+                                <option value="Sr.">Sr.</option>
+                                <option value="Br.">Br.</option>
+                            </select>
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
+                                aria-label="First name" data-ng-model="submitPayload.jobChange.first_name"
+                                data-ng-required="true">
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="Middle name"
+                                aria-label="Middle name" data-ng-model="submitPayload.jobChange.middle_name">
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
+                                aria-label="Last name" data-ng-model="submitPayload.jobChange.last_name"
+                                data-ng-required="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.users_dcid">
+                    <div class="col-xl-6">
                         <div class="card">
                             <div class="card-header fw-semibold ps-1 req">Position/Job Change Information</div>
                             <div class="card-body">
-                                <div class="col-5">
+                                <div class="col mb-3">
                                     <div class="form-floating">
                                         <textarea class="form-control" style="height: 100px"
                                             placeholder="Previous Position/Job:" id="job-change-previous-position"
@@ -46,7 +75,7 @@
                                             Position/Job:</label>
                                     </div>
                                 </div>
-                                <div class="col-5">
+                                <div class="col">
                                     <div class="form-floating">
                                         <textarea class="form-control" style="height: 100px"
                                             placeholder="New Position/Job:" id="job-change-previous-new"
@@ -60,8 +89,6 @@
                         </div>
                     </div>
                 </div>
-
-
                 <div class="row align-items-center mb-3"
                     data-ng-if="userContext.pageStatus =='Submit' && submitPayload.jobChange.first_name">
                     <div class="col-auto">
@@ -105,7 +132,7 @@
                 </div>
                 <div class="row align-items-center mb-3"
                     data-ng-if="userContext.pageStatus =='Submit' && submitPayload.jobChange.first_name">
-                    <div class="col-5">
+                    <div class="col-xl-6">
                         <div class="form-floating">
                             <textarea class="form-control" style="height: 100px" placeholder="Additional Notes/Details?"
                                 id="exit-add-notes" spellcheck="true" wrap="absolute"
