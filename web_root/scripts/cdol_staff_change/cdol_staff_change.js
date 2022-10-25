@@ -42,7 +42,12 @@ define([
 			$scope.userContext.pageContext = pageContext
 			$scope.userContext.prevContext = prevContext
 
-			if ($scope.userContext.prevContext !== undefined && $scope.userContext.pageContext !== 'start' && $scope.userContext.pageContext !== $scope.userContext.prevContext) {
+			if (
+				$scope.userContext.prevContext !== undefined &&
+				$scope.userContext.pageContext !== 'start' &&
+				$scope.userContext.pageContext !== 'confirm' &&
+				$scope.userContext.pageContext !== $scope.userContext.prevContext
+			) {
 				delete $scope.submitPayload[prevContext]
 			}
 		}
