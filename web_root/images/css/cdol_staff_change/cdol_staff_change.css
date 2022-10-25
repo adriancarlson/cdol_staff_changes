@@ -25,7 +25,11 @@ input,
 select {
 	border-radius: 4px;
 }
-.ps-blue {
+
+.btn-ps-blue {
+	background-color: #0066a5;
+}
+.btn-ps-blue:hover {
 	background-color: #00427c;
 }
 
