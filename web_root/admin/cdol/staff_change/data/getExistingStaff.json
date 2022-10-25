@@ -17,7 +17,7 @@
         "users_dcid": "~(1;JSON)",
         "first_name":"~(2;JSON)",
         "last_name":"~(3;JSON)",
-        "homeschoolid": "~(4;JSON)"
+        "homeschoolid": "~(4;JSON)",
         "homeschoolname": "~(5;JSON)"
     },
 [/tlist_sql]
