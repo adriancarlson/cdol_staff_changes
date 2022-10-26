@@ -11,7 +11,7 @@
                             to ~(schoolname)?</label>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.transferringStaff.users_dcid" data-ng-required="true"
-                            data-ng-change="getExistingStaff(userContext.pageContext, submitPayload.transferringStaff.users_dcid)">
+                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.transferringStaff.users_dcid)">
                             <option selected></option>
                             ~[tlist_sql;SELECT DISTINCT
                             users.dcid,

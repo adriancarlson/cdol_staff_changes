@@ -83,19 +83,20 @@ define([
 						$scope.submitPayload[pageContext].prev_school_name = ''
 					}
 				}
-			}
-		}
 
-		$scope.getSchool = (pageContext, schoolNum) => {
-			if (schoolNum == -1) {
-				$scope.submitPayload[pageContext].prev_school_name = ''
-			}
+				if (resource === 'usersData') {
+					$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], foundItem)
 
-			if (schoolNum && schoolNum != -1) {
-				const foundSchool = $scope.schoolsData.find(school => {
-					return school.school_number === schoolNum
-				})
-				$scope.submitPayload[pageContext].prev_school_name = foundSchool.schoolname
+					if (pageContext === 'nameChange') {
+						$scope.submitPayload[
+							pageContext
+						].old_name_placeholder = `${$scope.submitPayload[pageContext].title} ${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
+					}
+					if (pageContext === 'transferringStaff') {
+						$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
+						$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
+					}
+				}
 			}
 		}
 
@@ -114,16 +115,6 @@ define([
 				//PQ method below. Does not work because of DRF
 				// const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData)
 				// $scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], res[0])
-
-				if (pageContext === 'nameChange') {
-					$scope.submitPayload[
-						pageContext
-					].old_name_placeholder = `${$scope.submitPayload[pageContext].title} ${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
-				}
-				if (pageContext === 'transferringStaff') {
-					$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
-					$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
-				}
 
 				$scope.$digest()
 			}
