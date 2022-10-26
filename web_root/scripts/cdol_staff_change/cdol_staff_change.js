@@ -37,6 +37,18 @@ define([
 		}
 		todayBeforeJuly()
 
+		const getSchools = async () => {
+			const res = await $http({
+				url: '/admin/cdol/staff_change/data/getSchools.json',
+				method: 'GET',
+				params: pqData
+			})
+			$scope.schoolData = res.data
+			$scope.schoolData.pop()
+			console.log($scope.schoolData)
+		}
+		getSchools()
+
 		// function to switch forms and set scope to hold form data
 		$scope.formDipslay = (pageContext, prevContext) => {
 			$scope.userContext.pageContext = pageContext

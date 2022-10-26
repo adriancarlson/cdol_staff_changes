@@ -6,7 +6,6 @@
     FROM schools
     WHERE 
         schools.school_number NOT IN (888888,999999,79438)
-    AND schools.school_number = '~(gpv.schoolDcid)'
     ORDER BY schools.name
 ;]
     {
