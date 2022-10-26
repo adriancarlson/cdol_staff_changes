@@ -36,26 +36,20 @@ define([
 			$scope.userContext.isTodayBeforeJuly = today >= firstDay && today < lastDay
 		}
 		todayBeforeJuly()
-
-		const getSchools = async () => {
+		
+		//had to switch from PQ's to pulling this data through t_list SQL and JSON files because of PowerSchools Data Restriction Framework on PQs
+		const getJSONData = async resource => {
 			const res = await $http({
-				url: '/admin/cdol/staff_change/data/getSchools.json',
+				url: `/admin/cdol/staff_change/data/get${resource}.json`,
 				method: 'GET'
 			})
-			$scope.schoolData = res.data
-			$scope.schoolData.pop()
+			$scope[resource] = res.data
+			$scope[resource].pop()
+			console.log($scope[resource])
 		}
-		getSchools()
 
-		const getUsers = async () => {
-			const res = await $http({
-				url: '/admin/cdol/staff_change/data/getUsers.json',
-				method: 'GET'
-			})
-			$scope.userData = res.data
-			$scope.userData.pop()
-		}
-		getUsers()
+		getJSONData(Schools)
+		getJSONData(Users)
 
 		// function to switch forms and set scope to hold form data
 		$scope.formDipslay = (pageContext, prevContext) => {
@@ -78,7 +72,7 @@ define([
 			}
 
 			if (schoolNum && schoolNum != -1) {
-				const foundSchool = $scope.schoolData.find(school => {
+				const foundSchool = $scope.schools.find(school => {
 					return school.school_number === schoolNum
 				})
 				$scope.submitPayload[pageContext].prev_school_name = foundSchool.schoolname
@@ -91,8 +85,8 @@ define([
 
 			// // getting staff List for current change type
 			if (userDcid && userDcid !== -1) {
-				const foundUser = $scope.userData.find(user => {
-					return user.user_dcid === userDcid
+				const foundUser = $scope.users.find(user => {
+					return user.users_dcid === userDcid
 				})
 
 				$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], foundUser)
