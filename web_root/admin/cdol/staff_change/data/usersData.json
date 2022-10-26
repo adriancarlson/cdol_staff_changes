@@ -14,7 +14,7 @@
     WHERE schoolstaff.status = 1
 ;]
     {
-        "users_dcid": "~(1;JSON)",
+        "identifier": "~(1;JSON)",
         "first_name":"~(2;JSON)",
         "last_name":"~(3;JSON)",
         "homeschoolid": "~(4;JSON)",

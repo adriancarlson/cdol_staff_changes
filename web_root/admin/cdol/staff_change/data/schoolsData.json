@@ -9,7 +9,7 @@
     ORDER BY schools.name
 ;]
     {
-        "school_number": "~(1;JSON)",
+        "identifier": "~(1;JSON)",
         "schoolname":"~(2;JSON)"
     },
 [/tlist_sql]
