@@ -39,13 +39,14 @@ define([
 
 		//had to switch from PQ's to pulling this data through t_list SQL and JSON files because of PowerSchools Data Restriction Framework on PQs
 		$scope.getJSONData = async resource => {
-			const res = await $http({
-				url: `/admin/cdol/staff_change/data/${resource}.json`,
-				method: 'GET'
-			})
-			$scope[resource] = res.data
-			$scope[resource].pop()
-			console.log($scope[resource])
+			if (!$scope[resource]) {
+				const res = await $http({
+					url: `/admin/cdol/staff_change/data/${resource}.json`,
+					method: 'GET'
+				})
+				$scope[resource] = res.data
+				$scope[resource].pop()
+			}
 		}
 
 		// function to switch forms and set scope to hold form data
@@ -67,6 +68,21 @@ define([
 				$scope.userContext.pageContext !== $scope.userContext.prevContext
 			) {
 				delete $scope.submitPayload[prevContext]
+			}
+		}
+
+		$scope.updateScopeFromDropdown = (pageContext, resource, identifier) => {
+			if (identifier && identifier != -1) {
+				const foundItem = $scope[resource].find(item => {
+					return item.identifier === identifier
+				})
+
+				if (resource === 'schoolsData') {
+					$scope.submitPayload[pageContext].prev_school_name = foundItem.schoolname
+					if (identifier == -1) {
+						$scope.submitPayload[pageContext].prev_school_name = ''
+					}
+				}
 			}
 		}
 
