@@ -100,26 +100,6 @@ define([
 			}
 		}
 
-		// pulls existing staff records and sets them to attributes on current page/from context scope
-		$scope.getExistingStaff = (pageContext, userDcid) => {
-			$scope.submitPayload[pageContext] = { users_dcid: userDcid }
-
-			// // getting staff List for current change type
-			if (userDcid && userDcid !== -1) {
-				const foundUser = $scope.usersData.find(user => {
-					return user.users_dcid === userDcid
-				})
-
-				$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], foundUser)
-
-				//PQ method below. Does not work because of DRF
-				// const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData)
-				// $scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], res[0])
-
-				$scope.$digest()
-			}
-		}
-
 		$scope.submitStaffChange = async () => {
 			//adding generic fields and values needed for any payload
 			const commonPayload = {
@@ -158,6 +138,7 @@ define([
 				// get all date fields ready for API call
 				apiPayload.deadline = dateService.formatDateForApi(apiPayload.deadline)
 				apiPayload.dob = dateService.formatDateForApi(apiPayload.dob)
+				delete apiPayload.identifier
 				delete apiPayload.date_radio
 				delete apiPayload.homeschoolid
 

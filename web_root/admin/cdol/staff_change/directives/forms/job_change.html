@@ -11,7 +11,7 @@
                             Positions/Jobs?</label>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.jobChange.users_dcid" data-ng-required="true"
-                            data-ng-change="getExistingStaff(userContext.pageContext, submitPayload.jobChange.users_dcid)">
+                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.jobChange.users_dcid)">
                             <option selected></option>
                             ~[tlist_sql;SELECT
                             users.dcid,
