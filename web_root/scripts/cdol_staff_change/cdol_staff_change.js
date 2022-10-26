@@ -40,7 +40,7 @@ define([
 		//had to switch from PQ's to pulling this data through t_list SQL and JSON files because of PowerSchools Data Restriction Framework on PQs
 		$scope.getJSONData = async resource => {
 			const res = await $http({
-				url: `/admin/cdol/staff_change/data/get${resource}.json`,
+				url: `/admin/cdol/staff_change/data/${resource}.json`,
 				method: 'GET'
 			})
 			$scope[resource] = res.data
@@ -59,7 +59,7 @@ define([
 			if (pageContext === 'transferringStaff') {
 				$scope.getJSONData('schoolsData')
 			}
-			
+
 			if (
 				$scope.userContext.prevContext !== undefined &&
 				$scope.userContext.pageContext !== 'start' &&
