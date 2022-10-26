@@ -75,7 +75,7 @@ define([
 			if (resource === 'usersData') {
 				$scope.submitPayload[pageContext] = { users_dcid: identifier }
 			}
-
+			
 			if (resource === 'schoolsData') {
 				if (identifier == -1) {
 					$scope.submitPayload[pageContext].prev_school_name = ''
