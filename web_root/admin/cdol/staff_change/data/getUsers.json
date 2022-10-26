@@ -11,8 +11,7 @@
         ON users.dcid = schoolstaff.users_dcid
     LEFT JOIN schools 
         ON users.homeschoolid = schools.school_number
-    WHERE users.dcid = '~(gpv.userDcid)'
-        AND schoolstaff.status = 1
+    WHERE schoolstaff.status = 1
 ;]
     {
         "users_dcid": "~(1;JSON)",

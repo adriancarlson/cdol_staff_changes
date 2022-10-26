@@ -47,6 +47,16 @@ define([
 		}
 		getSchools()
 
+		const getUsers = async () => {
+			const res = await $http({
+				url: '/admin/cdol/staff_change/data/getUsers.json',
+				method: 'GET'
+			})
+			$scope.userData = res.data
+			$scope.userData.pop()
+		}
+		getUsers()
+
 		// function to switch forms and set scope to hold form data
 		$scope.formDipslay = (pageContext, prevContext) => {
 			$scope.userContext.pageContext = pageContext
@@ -62,7 +72,7 @@ define([
 			}
 		}
 
-		$scope.getSchool = async (pageContext, schoolNum) => {
+		$scope.getSchool = (pageContext, schoolNum) => {
 			if (schoolNum == -1) {
 				$scope.submitPayload[pageContext].prev_school_name = ''
 			}
@@ -76,24 +86,16 @@ define([
 		}
 
 		// pulls existing staff records and sets them to attributes on current page/from context scope
-		$scope.getExistingStaff = async (pageContext, userDcid) => {
+		$scope.getExistingStaff = (pageContext, userDcid) => {
 			$scope.submitPayload[pageContext] = { users_dcid: userDcid }
-
-			//arguments for the PowerQuery
-			const pqData = { userDcid: userDcid }
 
 			// // getting staff List for current change type
 			if (userDcid && userDcid !== -1) {
-				//had to switch from using a PQ back to using tlist because PQ's data restriction framework removed staff not currently at the school. I left the PQ method commented out below
-				const res = await $http({
-					url: '/admin/cdol/staff_change/data/getExistingStaff.json',
-					method: 'GET',
-					params: pqData
+				const foundUser = $scope.userData.find(user => {
+					return user.user_dcid === userDcid
 				})
 
-				const exitstingStaff = res.data
-				exitstingStaff.pop()
-				$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], exitstingStaff[0])
+				$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], foundUser)
 
 				//PQ method below. Does not work because of DRF
 				// const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.existingstaff', pqData)
