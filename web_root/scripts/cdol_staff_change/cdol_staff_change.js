@@ -73,7 +73,13 @@ define([
 
 		$scope.updateScopeFromDropdown = (pageContext, resource, identifier) => {
 			if (resource === 'usersData') {
-				$scope.submitPayload[pageContext] = { users_dcid: identifier }
+				$scope.submitPayload[pageContext] = { users_dcid: userDcid }
+			}
+
+			if (resource === 'schoolsData') {
+				if (identifier == -1) {
+					$scope.submitPayload[pageContext].prev_school_name = ''
+				}
 			}
 
 			if (identifier && identifier != -1) {
@@ -83,9 +89,7 @@ define([
 
 				if (resource === 'schoolsData') {
 					$scope.submitPayload[pageContext].prev_school_name = foundItem.schoolname
-					if (identifier == -1) {
-						$scope.submitPayload[pageContext].prev_school_name = ''
-					}
+					
 				}
 
 				if (resource === 'usersData') {
@@ -101,7 +105,7 @@ define([
 						$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
 					}
 				}
-			}
+
 		}
 
 		$scope.submitStaffChange = async () => {
