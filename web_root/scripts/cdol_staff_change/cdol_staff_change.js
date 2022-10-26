@@ -54,13 +54,17 @@ define([
 
 		// pulls existing staff records and sets them to attributes on current page/from context scope
 		$scope.getSchool = async (pageContext, schoolDcid) => {
-			$scope.submitPayload[pageContext] = { prev_school_number: schoolDcid }
-
 			//arguments for the PowerQuery
 			const pqData = { schoolDcid: schoolDcid }
 
+			console.log(typeof schoolDcid)
+
+			if (schoolDcid == -1) {
+				$scope.submitPayload[pageContext].prev_school_name = ''
+			}
+
 			// // getting staff List for current change type
-			if (schoolDcid && schoolDcid !== -1) {
+			if (schoolDcid && schoolDcid != -1) {
 				//had to switch from using a PQ back to using tlist because PQ's data restriction framework removed staff not currently at the school. I left the PQ method commented out below
 				const res = await $http({
 					url: '/admin/cdol/staff_change/data/getSchools.json',
@@ -71,8 +75,6 @@ define([
 				const schoolData = res.data
 				schoolData.pop()
 				$scope.submitPayload[pageContext].prev_school_name = schoolData[0].schoolname
-
-
 				$scope.$digest()
 			}
 		}
