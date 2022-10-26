@@ -72,6 +72,10 @@ define([
 		}
 
 		$scope.updateScopeFromDropdown = (pageContext, resource, identifier) => {
+			if (resource === 'usersData') {
+				$scope.submitPayload[pageContext] = { users_dcid: identifier }
+			}
+
 			if (identifier && identifier != -1) {
 				const foundItem = $scope[resource].find(item => {
 					return item.identifier === identifier
