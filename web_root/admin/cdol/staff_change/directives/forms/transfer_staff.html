@@ -2,7 +2,7 @@
     prevContext: {{userContext.prevContext}} | pageContext: {{userContext.pageContext}} <br>
     submitPayload: {{submitPayload}}
     <div class="card">
-        <div class="card-header bg-secondary text-bg-secondary bg-gradient fs-6 fw-semibold">Transferring Staff:</div>
+        <div class="card-header bg-primary text-bg-primary bg-gradient fs-6 fw-semibold">Transferring Staff:</div>
         <div class="card-body">
             <form name="transferringStaffForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
@@ -65,7 +65,8 @@
                             submitPayload.transferringStaff.last_name}}'s previously employed?</label>
                         <select class="form-select form-select-sm" id="prev_school_number"
                             aria-label="Where previously employed?"
-                            data-ng-model="submitPayload.transferringStaff.prev_school_number" data-ng-required="true">
+                            data-ng-model="submitPayload.transferringStaff.prev_school_number" data-ng-required="true"
+                            data-ng-change="getSchool(userContext.pageContext, submitPayload.transferringStaff.prev_school_number)">
                             <option selected></option>
                             ~[tlist_sql;SELECT SCHOOLS.School_number, SCHOOLS.name
                             FROM SCHOOLS
@@ -80,9 +81,11 @@
                 <div class="row align-items-center mb-3"
                     data-ng-if="submitPayload.transferringStaff.prev_school_number == -1">
                     <div class="col-6">
-                        <label for="transferring-staff-school-name" class="form-label form-label-sm label-reset req">Please
-                            Type Previous Employer</label>
-                        <input id="transferring-staff-school-name" class="form-control" type="text" data-ng-model="submitPayload.transferringStaff.prev_school_name">
+                        <label for="transferring-staff-school-name"
+                            class="form-label form-label-sm label-reset req">Please
+                            Type Name Previous Employer</label>
+                        <input id="transferring-staff-school-name" class="form-control" type="text"
+                            data-ng-model="submitPayload.transferringStaff.prev_school_name">
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
