@@ -266,6 +266,39 @@
                                     <div class="col">
                                         <label class="form-label form-label-sm label-reset req">Is {{
                                             submitPayload.transferringStaff.replace_first_name}} {{
+                                            submitPayload.transferringStaff.replace_last_name}} leaving
+                                            ~(schoolname)?</label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="leaving-radio-group"
+                                                id="leaving-radio-yes"
+                                                data-ng-model="submitPayload.transferringStaff.leaving_radio" value="1"
+                                                data-ng-required="!submitPayload.transferringStaff.leaving_radio"
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
+                                            <label class="form-check-label" for="leaving-radio-yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="leaving-radio-group"
+                                                id="leaving-radio-no"
+                                                data-ng-model="submitPayload.transferringStaff.leaving_radio" value="0"
+                                                data-ng-required="!submitPayload.transferringStaff.leaving_radio"
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
+                                            <label class="form-check-label" for="leaving-radio-no">No</label>
+                                        </div>
+                                        <div class="alert alert-warning" role="alert"
+                                            data-ng-if="submitPayload.transferringStaff.leaving_radio == 1"><i
+                                                class="bi bi-pencil-square"></i>
+                                            <strong><u>Please Note</u></strong>: Next, You will be taken to the Exiting
+                                            Staff screen to finish the Exiting Staff submission for {{
+                                            submitPayload.transferringStaff.replace_first_name}} {{
+                                            submitPayload.transferringStaff.replace_last_name}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-3"
+                                    data-ng-if="submitPayload.transferringStaff.leaving_radio == 0">
+                                    <div class="col">
+                                        <label class="form-label form-label-sm label-reset req">Is {{
+                                            submitPayload.transferringStaff.replace_first_name}} {{
                                             submitPayload.transferringStaff.replace_last_name}} changing positions/jobs
                                             within ~(schoolname)?</label><br>
                                         <div class="form-check form-check-inline">
@@ -291,39 +324,6 @@
                                             <strong><u>Please Note</u></strong>: Next, You will be taken to the
                                             Position/Job Change screen to finish the Position/Job Change submission for
                                             {{
-                                            submitPayload.transferringStaff.replace_first_name}} {{
-                                            submitPayload.transferringStaff.replace_last_name}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row align-items-center mb-3"
-                                    data-ng-if="submitPayload.transferringStaff.position_radio == 0">
-                                    <div class="col">
-                                        <label class="form-label form-label-sm label-reset req">Is {{
-                                            submitPayload.transferringStaff.replace_first_name}} {{
-                                            submitPayload.transferringStaff.replace_last_name}} leaving
-                                            ~(schoolname)?</label><br>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="leaving-radio-group"
-                                                id="leaving-radio-yes"
-                                                data-ng-model="submitPayload.transferringStaff.leaving_radio" value="1"
-                                                data-ng-required="!submitPayload.transferringStaff.leaving_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
-                                            <label class="form-check-label" for="leaving-radio-yes">Yes</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="leaving-radio-group"
-                                                id="leaving-radio-no"
-                                                data-ng-model="submitPayload.transferringStaff.leaving_radio" value="0"
-                                                data-ng-required="!submitPayload.transferringStaff.leaving_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
-                                            <label class="form-check-label" for="leaving-radio-no">No</label>
-                                        </div>
-                                        <div class="alert alert-warning" role="alert"
-                                            data-ng-if="submitPayload.transferringStaff.leaving_radio == 1"><i
-                                                class="bi bi-pencil-square"></i>
-                                            <strong><u>Please Note</u></strong>: Next, You will be taken to the Exiting
-                                            Staff screen to finish the Exiting Staff submission for {{
                                             submitPayload.transferringStaff.replace_first_name}} {{
                                             submitPayload.transferringStaff.replace_last_name}}
                                         </div>

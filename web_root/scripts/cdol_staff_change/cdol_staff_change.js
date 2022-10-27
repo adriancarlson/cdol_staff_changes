@@ -120,7 +120,7 @@ define([
 				}
 			}
 		}
-		$scope.updateAdditionalPayload = (pageContext) => {
+		$scope.updateAdditionalPayload = pageContext => {
 			console.log('leaving radio', $scope.submitPayload[pageContext].leaving_radio)
 			console.log('positionradio', $scope.submitPayload[pageContext].position_radio)
 		}
