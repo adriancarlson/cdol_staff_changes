@@ -11,7 +11,7 @@
                             changing?</label>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.nameChange.users_dcid" data-ng-required="true"
-                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.nameChange.users_dcid)">
+                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.nameChange.users_dcid, 'users_dcid')">
                             <option selected></option>
                             ~[tlist_sql;SELECT
                             users.dcid,

@@ -25,9 +25,9 @@ define([
 			pageContext: 'start',
 			prevContext: undefined
 		}
-
+		//initilazing empty payload
 		$scope.submitPayload = {}
-
+		// determining if today between Jan 1st and July 1st
 		const todayBeforeJuly = () => {
 			const curYear = new Date().getFullYear()
 			const firstDay = new Date(`01/01/${curYear}`)
@@ -36,7 +36,6 @@ define([
 			$scope.userContext.isTodayBeforeJuly = today >= firstDay && today < lastDay
 		}
 		todayBeforeJuly()
-
 		//had to switch from PQ's to pulling this data through t_list SQL and JSON files because of PowerSchools Data Restriction Framework on PQs
 		$scope.getJSONData = async resource => {
 			if (!$scope[resource]) {
@@ -53,14 +52,14 @@ define([
 		$scope.formDipslay = (pageContext, prevContext) => {
 			$scope.userContext.pageContext = pageContext
 			$scope.userContext.prevContext = prevContext
-
+			//only loading User data or school data if it is needed
 			if (pageContext !== 'newStaff') {
 				$scope.getJSONData('usersData')
 			}
 			if (pageContext === 'transferringStaff') {
 				$scope.getJSONData('schoolsData')
 			}
-
+			// resetting payload if user hit the back button and started a new submission type
 			if (
 				$scope.userContext.prevContext !== undefined &&
 				$scope.userContext.pageContext !== 'start' &&
@@ -70,10 +69,14 @@ define([
 				delete $scope.submitPayload[prevContext]
 			}
 		}
-
-		$scope.updateScopeFromDropdown = (pageContext, resource, identifier) => {
+		//this function is used on any dropdown. It updates many fields on the scope each time dropdown changes based on where it is called. Alot of conditional logic
+		//passing in the page context= which form, the resource=name of JSON file, identifier =usually field on scope that needs updated, field =name of filed (used for conditional logic in function)
+		$scope.updateScopeFromDropdown = (pageContext, resource, identifier, field) => {
+			console.log(field)
 			if (resource === 'usersData') {
-				$scope.submitPayload[pageContext] = { users_dcid: identifier }
+				if (field === 'users_dcid') {
+					$scope.submitPayload[pageContext] = { [field]: identifier }
+				}
 			}
 
 			if (resource === 'schoolsData') {
@@ -92,16 +95,22 @@ define([
 				}
 
 				if (resource === 'usersData') {
-					$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], foundItem)
+					if (field === 'users_dcid') {
+						$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], foundItem)
 
-					if (pageContext === 'nameChange') {
-						$scope.submitPayload[
-							pageContext
-						].old_name_placeholder = `${$scope.submitPayload[pageContext].title} ${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
+						if (pageContext === 'nameChange') {
+							$scope.submitPayload[
+								pageContext
+							].old_name_placeholder = `${$scope.submitPayload[pageContext].title} ${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
+						}
+						if (pageContext === 'transferringStaff') {
+							$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
+							$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
+						}
 					}
-					if (pageContext === 'transferringStaff') {
-						$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
-						$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
+
+					if (field === 'replace_dcid') {
+						console.log('What up Doc!')
 					}
 				}
 			}
@@ -120,10 +129,8 @@ define([
 			//loop though submitPayload object
 			Object.keys($scope.submitPayload).forEach(async (key, index) => {
 				let formPayload = $scope.submitPayload[key]
-
 				//add commonPayload to each object in submitPayload
 				formPayload = Object.assign(formPayload, commonPayload)
-
 				// constructing deadline
 				if (formPayload.hasOwnProperty('date_radio')) {
 					const today = new Date()
@@ -140,33 +147,32 @@ define([
 						formPayload.deadline = `06/30/${yyyy}`
 					}
 				}
-
-				// copying formPayload using spread. Then deleting any unneeded radio buttons key value pairs before sending to API call
+				// copying formPayload using spread. Then deleting any unneeded key value pairs before sending to API call
 				apiPayload = { ...formPayload }
 				// get all date fields ready for API call
 				apiPayload.deadline = dateService.formatDateForApi(apiPayload.deadline)
 				apiPayload.dob = dateService.formatDateForApi(apiPayload.dob)
 				// removing items from the object not needed for the submission Record
 				const keysToDelete = ['_radio', 'homeschool', 'identifier']
-
 				// get all the keys from the apiPayload object
 				const getApiPayloadKeys = Object.keys(apiPayload)
 				keysToDelete.forEach(item => {
 					// looping through first object
 					getApiPayloadKeys.forEach(keyName => {
-						// using index of to check if the object key name have a matched string
+						// using index of to check if the object key name have a matched string if so deleting it from the payload
 						if (keyName.indexOf(item) !== -1) {
 							delete apiPayload[keyName]
 						}
 					})
 				})
-
 				//submitting staff changes through api
 				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', apiPayload)
 			})
+			//sending to confirm screen after submission
 			$scope.formDipslay('confirm', $scope.userContext.pageContext)
 		}
 	})
+	//directives for each form
 	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }))
 	cdolStaffApp.directive('newStaff', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/new_staff.html' }))
 	cdolStaffApp.directive('transferStaff', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/transfer_staff.html' }))
