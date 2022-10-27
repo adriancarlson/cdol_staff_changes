@@ -58,8 +58,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid">
-                    <div class="col">
+                <div class="row align-items-center mb-3 gx-2" data-ng-if="submitPayload.transferringStaff.users_dcid">
+                    <div class="col-auto">
                         <label for="transferring-staff-type" class="form-label form-label-sm  label-reset req">Staff
                             Type</label>
                         <select id="transferring-staff-type" class="form-select form-select-sm"
@@ -72,14 +72,14 @@
                             <option value="4">Substitute</option>
                         </select>
                     </div>
-                    <div class="col">
+                    <div class="col-3">
                         <label for="transferring-position"
                             class="form-label form-label-sm  label-reset req">Position</label>
-                        <input id="transferring-position" type="text" class="form-control form-control-sm w-25"
-                            placeholder="Position" aria-label="Position"
+                        <input id="transferring-position" type="text" class="form-control form-control-sm"
+                            placeholder="Ex: 2nd Grade Teacher, or Principal" aria-label="Position"
                             data-ng-model="submitPayload.transferringStaff.position" data-ng-required="true">
                     </div>
-                    <div class="col">
+                    <div class="col-auto">
                         <label for="transferring-fte" class="form-label form-label-sm label-reset">FTE</label>
                         <select id="transferring-fte" class="form-select form-select-sm" aria-label="transferring-fte"
                             data-ng-model="submitPayload.transferringStaff.fte">
@@ -166,52 +166,197 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.first_name">
-                    <div class="col-xl-6">
-                        <div class="form-floating">
-                            <textarea class="form-control" style="height: 100px" placeholder="Additional Notes/Details?"
-                                id="exit-add-notes" spellcheck="true" wrap="absolute"
-                                ng-model="submitPayload.transferringStaff.notes"></textarea>
-                            <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i>
-                            <strong><u>Please Note</u></strong>: personal files (i.e. Documents, pictures, music and
-                            videos)
-                            should be moved by {{
-                            submitPayload.transferringStaff.first_name}} {{
-                            submitPayload.transferringStaff.last_name}}.<br> The Education
-                            Techonology
-                            Office is not
-                            responsible for any files after {{
-                            submitPayload.transferringStaff.first_name}} {{
-                            submitPayload.transferringStaff.last_name}} has been transferred.
+                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.users_dcid">
+                    <div class="col-auto">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-auto">
+                                        <label class="form-label form-label-sm label-reset req">Will {{
+                                            submitPayload.transferringStaff.first_name}} {{
+                                            submitPayload.transferringStaff.last_name}} be replacing a current staff
+                                            member at ~(schoolname)?</label>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="exit-radio-group"
+                                                id="exit-radio-yes"
+                                                data-ng-model="submitPayload.transferringStaff.exit_radio" value="1"
+                                                data-ng-required="!submitPayload.transferringStaff.exit_radio">
+                                            <label class="form-check-label" for="exit-radio-yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="exit-radio-group"
+                                                id="exit-radio-no"
+                                                data-ng-model="submitPayload.transferringStaff.exit_radio" value="0"
+                                                data-ng-required="!submitPayload.transferringStaff.exit_radio">
+                                            <label class="form-check-label" for="exit-radio-no">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-3"
+                                    data-ng-if="submitPayload.transferringStaff.exit_radio == 1">
+                                    <div class="col-auto">
+                                        <label for="replacing_dcid" class="form-label form-label-sm label-reset req">Who
+                                            is
+                                            {{
+                                            submitPayload.transferringStaff.first_name}} {{
+                                            submitPayload.transferringStaff.last_name}} replacing?</label>
+                                        <select class="form-select form-select-sm" id="replace_dcid"
+                                            aria-label="Who is not returning?"
+                                            data-ng-model="submitPayload.transferringStaff.replace_dcid"
+                                            data-ng-required="true"
+                                            data-ng-change="setAdditionalForms(userContext.pageContext, 'usersData', submitPayload.transferringStaff.replace_dcid)">
+                                            <option selected></option>
+                                            ~[tlist_sql;SELECT
+                                            users.dcid,
+                                            users.first_name,
+                                            users.last_name
+                                            FROM SCHOOLSTAFF
+                                            inner join users
+                                            on users.dcid = schoolstaff.users_dcid
+                                            WHERE schoolstaff.status = 1
+                                            ~[if.is.a.school]
+                                            AND schoolstaff.schoolid = ~(curschoolid)
+                                            [/if.is.a.school]
+                                            Order BY users.last_name , users.first_name]
+                                            <option value="~(dcid)">~(first) ~(last)</option>
+                                            [/tlist_sql]
+                                            <option value="-1">-- Other --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-3"
+                                    data-ng-if="submitPayload.transferringStaff.replace_dcid == -1">
+                                    <div class="col-6">
+                                        <label for="exiting-staff-name"
+                                            class="form-label form-label-sm  label-reset req">Name of the staff member
+                                            {{
+                                            submitPayload.transferringStaff.first_name}} {{
+                                            submitPayload.transferringStaff.last_name}} is replacing</label>
+                                        <div class="input-group">
+                                            <select class="form-select form-select-sm" aria-label="title"
+                                                data-ng-model="submitPayload.transferringStaff.replace_title"
+                                                data-ng-required="true"
+                                                data-ng-if="!['Fr.','Msgr.','Sr.','Br.'].includes(submitPayload.transferringStaff.replace_title)">
+                                                <option selected></option>
+                                                <option value="Mr.">Mr.</option>
+                                                <option value="Mrs.">Mrs.</option>
+                                                <option value="Ms.">Ms.</option>
+                                                <option value="Dr.">Dr.</option>
+                                                <option value="Fr.">Fr.</option>
+                                                <option value="Msgr.">Msgr.</option>
+                                                <option value="Sr.">Sr.</option>
+                                                <option value="Br.">Br.</option>
+                                            </select>
+                                            <input type="text" class="form-control form-control-sm w-25"
+                                                placeholder="First name" aria-label="First name"
+                                                data-ng-model="submitPayload.transferringStaff.replace_first_name"
+                                                data-ng-required="true">
+                                            <input type="text" class="form-control form-control-sm w-25"
+                                                placeholder="Middle name" aria-label="Middle name"
+                                                data-ng-model="submitPayload.transferringStaff.replace_middle_name">
+                                            <input type="text" class="form-control form-control-sm w-25"
+                                                placeholder="Last name" aria-label="Last name"
+                                                data-ng-model="submitPayload.transferringStaff.replace_last_name"
+                                                data-ng-required="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-3">
+                                    <div class="col">
+                                        <label class="form-label form-label-sm label-reset req">Is {{
+                                            submitPayload.transferringStaff.replace_first_name}} {{
+                                            submitPayload.transferringStaff.replace_last_name}} changing positions/jobs
+                                            within ~(schoolname)?</label>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="exit-radio-group"
+                                                id="exit-radio-yes"
+                                                data-ng-model="submitPayload.transferringStaff.position_radio" value="1"
+                                                data-ng-required="!submitPayload.transferringStaff.position_radio">
+                                            <label class="form-check-label" for="exit-radio-yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="exit-radio-group"
+                                                id="exit-radio-no"
+                                                data-ng-model="submitPayload.transferringStaff.position_radio" value="0"
+                                                data-ng-required="!submitPayload.transferringStaff.position_radio">
+                                            <label class="form-check-label" for="exit-radio-no">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-3"
+                                    data-ng-if="submitPayload.transferringStaff.position_radio == 1">
+                                    <div class="col">
+                                        <label class="form-label form-label-sm label-reset req">Is {{
+                                            submitPayload.transferringStaff.replace_first_name}} {{
+                                            submitPayload.transferringStaff.replace_last_name}} leaving
+                                            ~(schoolname)?</label>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="exit-radio-group"
+                                                id="exit-radio-yes"
+                                                data-ng-model="submitPayload.transferringStaff.leaving_radio" value="1"
+                                                data-ng-required="!submitPayload.transferringStaff.leaving_radio">
+                                            <label class="form-check-label" for="exit-radio-yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="exit-radio-group"
+                                                id="exit-radio-no"
+                                                data-ng-model="submitPayload.transferringStaff.leaving_radio" value="0"
+                                                data-ng-required="!submitPayload.transferringStaff.leaving_radio">
+                                            <label class="form-check-label" for="exit-radio-no">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </form>
         </div>
-        <div class="card-footer">
-            <div class="row">
-                <div class="col-auto me-auto"><button type="button" class="m-0 p-2 ps-1"
-                        data-ng-click="formDipslay('start',userContext.formType)"><i
-                            class="bi bi-chevron-left fw-bold"></i>
-                        Back</button>
+        <div class="row align-items-center mb-3"
+            data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.first_name">
+            <div class="col-xl-6">
+                <div class="form-floating">
+                    <textarea class="form-control" style="height: 100px" placeholder="Additional Notes/Details?"
+                        id="exit-add-notes" spellcheck="true" wrap="absolute"
+                        ng-model="submitPayload.transferringStaff.notes"></textarea>
+                    <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
                 </div>
-                <div class="col-auto"><span class="req-notation me-2"
-                        ng-if="(transferringStaffForm.$invalid && transferringStaffForm.$dirty) || !submitPayload.transferringStaff.users_dcid">Please
-                        fill all required fields prior to submitting.</span>
-                    <button type="button" id="subBtn" class="m-0 p-2" data-ng-disabled="transferringStaffForm.$invalid"
-                        data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
-                    <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
-                        data-ng-click="subConfirm = false">Cancel</button>
-                    <button type="button" id="confBtn" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
-                        data-ng-click="submitStaffChange()">Confirm Submit</button>
+            </div>
+            <div class="col">
+                <div class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i>
+                    <strong><u>Please Note</u></strong>: personal files (i.e. Documents, pictures, music and
+                    videos)
+                    should be moved by {{
+                    submitPayload.transferringStaff.first_name}} {{
+                    submitPayload.transferringStaff.last_name}}.<br> The Education
+                    Techonology
+                    Office is not
+                    responsible for any files after {{
+                    submitPayload.transferringStaff.first_name}} {{
+                    submitPayload.transferringStaff.last_name}} has been transferred.
                 </div>
             </div>
         </div>
+        </form>
     </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-auto me-auto"><button type="button" class="m-0 p-2 ps-1"
+                    data-ng-click="formDipslay('start',userContext.formType)"><i class="bi bi-chevron-left fw-bold"></i>
+                    Back</button>
+            </div>
+            <div class="col-auto"><span class="req-notation me-2"
+                    ng-if="(transferringStaffForm.$invalid && transferringStaffForm.$dirty) || !submitPayload.transferringStaff.users_dcid">Please
+                    fill all required fields prior to submitting.</span>
+                <button type="button" id="subBtn" class="m-0 p-2" data-ng-disabled="transferringStaffForm.$invalid"
+                    data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
+                <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
+                    data-ng-click="subConfirm = false">Cancel</button>
+                <button type="button" id="confBtn" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
+                    data-ng-click="submitStaffChange()">Confirm Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
 <!-- <form name="staffTransferForm" method="POST" novalidate>
