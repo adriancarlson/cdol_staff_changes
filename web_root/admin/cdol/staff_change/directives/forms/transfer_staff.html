@@ -58,7 +58,39 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3">
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid == -1">
+                    <div class="col">
+                        <label for="transferring-staff-type" class="form-label form-label-sm  label-reset req">Staff
+                            Type</label>
+                        <select id="transferring-staff-type" class="form-select form-select-sm"
+                            aria-label="transferring-staff-type"
+                            data-ng-model="submitPayload.transferringStaff.staff_type" data-ng-required="true">
+                            <option></option>
+                            <option value="1">Teacher</option>
+                            <option value="2">Staff</option>
+                            <option value="3">Lunch Staff</option>
+                            <option value="4">Substitute</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="transferring-position"
+                            class="form-label form-label-sm  label-reset req">Position</label>
+                        <input id="transferring-position" type="text" class="form-control form-control-sm w-25"
+                            placeholder="Position" aria-label="Position"
+                            data-ng-model="submitPayload.transferringStaff.position" data-ng-required="true">
+                    </div>
+                    <div class="col">
+                        <label for="transferring-fte" class="form-label form-label-sm label-reset">FTE</label>
+                        <select id="transferring-fte" class="form-select form-select-sm" aria-label="transferring-fte"
+                            data-ng-model="submitPayload.transferringStaff.fte">
+                            <option></option>
+                            <option value="FT">FT - Full-time</option>
+                            <option value="PT">PT - Part-time</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3"
+                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.users_dcid">
                     <div class="col-auto">
                         <label for="prev_school_number" class="form-label form-label-sm label-reset req">Where was {{
                             submitPayload.transferringStaff.first_name}} {{
@@ -89,7 +121,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.first_name">
+                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.users_dcid">
                     <div class="col-auto">
                         <div class="card">
                             <div class="card-header fw-semibold ps-1 req">{{
@@ -164,7 +196,8 @@
             <div class="row">
                 <div class="col-auto me-auto"><button type="button" class="m-0 p-2 ps-1"
                         data-ng-click="formDipslay('start',userContext.formType)"><i
-                            class="bi bi-chevron-left fw-bold"></i> Back</button>
+                            class="bi bi-chevron-left fw-bold"></i>
+                        Back</button>
                 </div>
                 <div class="col-auto"><span class="req-notation me-2"
                         ng-if="(transferringStaffForm.$invalid && transferringStaffForm.$dirty) || !submitPayload.transferringStaff.users_dcid">Please
