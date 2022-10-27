@@ -121,8 +121,36 @@ define([
 			}
 		}
 		$scope.updateAdditionalPayload = pageContext => {
-			console.log('leaving radio', $scope.submitPayload[pageContext].leaving_radio)
-			console.log('positionradio', $scope.submitPayload[pageContext].position_radio)
+			if ($scope.submitPayload[pageContext].leaving_radio === 1) {
+				$scope.submitPayload.exitingStaff.users_dcid = $scope.submitPayload[pageContext].replace_dcid
+				$scope.submitPayload.exitingStaff.title = $scope.submitPayload[pageContext].replace_title
+				$scope.submitPayload.exitingStaff.first_name = $scope.submitPayload[pageContext].replace_first_name
+				$scope.submitPayload.exitingStaff.middle_name = $scope.submitPayload[pageContext].replace_middle_name
+				$scope.submitPayload.exitingStaff.last_name = $scope.submitPayload[pageContext].replace_last_name
+				$scope.submitPayload.exitingStaff.replace_dcid = $scope.submitPayload[pageContext].user_dcid
+				$scope.submitPayload.exitingStaff.replace_title = $scope.submitPayload[pageContext].title
+				$scope.submitPayload.exitingStaff.replace_first_name = $scope.submitPayload[pageContext].first_name
+				$scope.submitPayload.exitingStaff.replace_middle_name = $scope.submitPayload[pageContext].middle_name
+				$scope.submitPayload.exitingStaff.replace_last_name = $scope.submitPayload[pageContext].last_name
+			}
+			if ($scope.submitPayload[pageContext].leaving_radio === 0) {
+				delete $scope.submitPayload.exitingStaff
+			}
+			if ($scope.submitPayload[pageContext].position_radio === 1) {
+				$scope.submitPayload.jobChange.users_dcid = $scope.submitPayload[pageContext].replace_dcid
+				$scope.submitPayload.jobChange.title = $scope.submitPayload[pageContext].replace_title
+				$scope.submitPayload.jobChange.first_name = $scope.submitPayload[pageContext].replace_first_name
+				$scope.submitPayload.jobChange.middle_name = $scope.submitPayload[pageContext].replace_middle_name
+				$scope.submitPayload.jobChange.last_name = $scope.submitPayload[pageContext].replace_last_name
+				$scope.submitPayload.jobChange.replace_dcid = $scope.submitPayload[pageContext].user_dcid
+				$scope.submitPayload.jobChange.replace_title = $scope.submitPayload[pageContext].title
+				$scope.submitPayload.jobChange.replace_first_name = $scope.submitPayload[pageContext].first_name
+				$scope.submitPayload.jobChange.replace_middle_name = $scope.submitPayload[pageContext].middle_name
+				$scope.submitPayload.jobChange.replace_last_name = $scope.submitPayload[pageContext].last_name
+			}
+			if ($scope.submitPayload[pageContext].position_radio === 0) {
+				delete $scope.submitPayload.jobChange
+			}
 		}
 
 		$scope.submitStaffChange = async () => {
