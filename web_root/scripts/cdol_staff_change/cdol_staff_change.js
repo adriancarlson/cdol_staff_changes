@@ -75,7 +75,7 @@ define([
 			if (resource === 'usersData') {
 				$scope.submitPayload[pageContext] = { users_dcid: identifier }
 			}
-			
+
 			if (resource === 'schoolsData') {
 				if (identifier == -1) {
 					$scope.submitPayload[pageContext].prev_school_name = ''
@@ -145,12 +145,22 @@ define([
 				// get all date fields ready for API call
 				apiPayload.deadline = dateService.formatDateForApi(apiPayload.deadline)
 				apiPayload.dob = dateService.formatDateForApi(apiPayload.dob)
-				delete apiPayload.identifier
-				delete apiPayload.date_radio
-				delete apiPayload.homeschoolid
+				const keysToDelete = ['date_radio', 'identifier', 'homeschoolid']
+				const deleteKeys = (obj, keys) => {
+					keys.forEach(key => {
+						delete obj[key]
+					})
+					return obj
+				}
+				const finalPayload = deleteKeys(apiPayload, keysToDelete)
+				// delete apiPayload.identifier
+				// delete apiPayload.date_radio
+				// delete apiPayload.homeschoolid
+
+				console.log(finalPayload)
 
 				//submitting staff changes through api
-				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', apiPayload)
+				// await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', apiPayload)
 			})
 			$scope.formDipslay('confirm', $scope.userContext.pageContext)
 		}
