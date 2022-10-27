@@ -86,7 +86,7 @@ define([
 			}
 
 			if (identifier && identifier != -1) {
-				const foundItem = $scope[resource].find(item => {
+				let foundItem = $scope[resource].find(item => {
 					return item.identifier === identifier
 				})
 
@@ -96,6 +96,7 @@ define([
 
 				if (resource === 'usersData') {
 					if (field === 'users_dcid') {
+						console.log(foundItem)
 						$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], foundItem)
 
 						if (pageContext === 'nameChange') {
@@ -110,7 +111,13 @@ define([
 					}
 
 					if (field === 'replace_dcid') {
-						console.log('What up Doc!')
+						const replaceObject = {}
+						for (key in foundItem) {
+							if (foundItem.hasOwnProperty(key)) {
+								replaceObject[`replace_${key}`] = foundItem[key]
+							}
+						}
+						Object.assign($scope.submitPayload[pageContext], replaceObject)
 					}
 				}
 			}

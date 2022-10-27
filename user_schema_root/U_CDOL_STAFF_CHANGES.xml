@@ -51,5 +51,10 @@
         <field name="prev_school_number" type="Integer" />
         <field name="prev_school_name" type="String" length="100" />
         <field name="calendar_year" type="Integer" />
+        <field name="replace_dcid" type="Integer" />
+        <field name="replace_title" type="String" length="5" />
+        <field name="replace_first_name" type="String" length="100" />
+        <field name="replace_middle_name" type="String" length="100" />
+        <field name="replace_last_name" type="String" length="100" />
     </extendedTable>
 </psExtension>
