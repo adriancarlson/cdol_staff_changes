@@ -140,27 +140,29 @@ define([
 						formPayload.deadline = `06/30/${yyyy}`
 					}
 				}
+
 				// copying formPayload using spread. Then deleting any unneeded radio buttons key value pairs before sending to API call
 				apiPayload = { ...formPayload }
 				// get all date fields ready for API call
 				apiPayload.deadline = dateService.formatDateForApi(apiPayload.deadline)
 				apiPayload.dob = dateService.formatDateForApi(apiPayload.dob)
-				const keysToDelete = ['date_radio', 'identifier', 'homeschoolid']
-				const deleteKeys = (obj, keys) => {
-					keys.forEach(key => {
-						delete obj[key]
-					})
-					return obj
-				}
-				const finalPayload = deleteKeys(apiPayload, keysToDelete)
-				// delete apiPayload.identifier
-				// delete apiPayload.date_radio
-				// delete apiPayload.homeschoolid
+				// removing items from the object not needed for the submission Record
+				const keysToDelete = ['_radio', 'homeschool', 'identifier']
 
-				console.log(finalPayload)
+				// get all the keys from the apiPayload object
+				const getApiPayloadKeys = Object.keys(apiPayload)
+				keysToDelete.forEach(item => {
+					// looping through first object
+					getApiPayloadKeys.forEach(keyName => {
+						// using index of to check if the object key name have a matched string
+						if (keyName.indexOf(item) !== -1) {
+							delete apiPayload[keyName]
+						}
+					})
+				})
 
 				//submitting staff changes through api
-				// await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', apiPayload)
+				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', apiPayload)
 			})
 			$scope.formDipslay('confirm', $scope.userContext.pageContext)
 		}
