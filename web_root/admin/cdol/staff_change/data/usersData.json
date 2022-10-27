@@ -2,6 +2,7 @@
 ~[tlist_sql;
     SELECT DISTINCT    
         users.dcid,
+        users.title,
         users.first_name,
         users.last_name,
         users.homeschoolid,
@@ -15,10 +16,11 @@
 ;]
     {
         "identifier": "~(1;JSON)",
-        "first_name":"~(2;JSON)",
-        "last_name":"~(3;JSON)",
-        "homeschoolid": "~(4;JSON)",
-        "homeschoolname": "~(5;JSON)"
+        "title": "~(2;JSON)",
+        "first_name":"~(3;JSON)",
+        "last_name":"~(4;JSON)",
+        "homeschoolid": "~(5;JSON)",
+        "homeschoolname": "~(6;JSON)"
     },
 [/tlist_sql]
 {}]
