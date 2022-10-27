@@ -72,7 +72,6 @@ define([
 		//this function is used on any dropdown. It updates many fields on the scope each time dropdown changes based on where it is called. Alot of conditional logic
 		//passing in the page context= which form, the resource=name of JSON file, identifier =usually field on scope that needs updated, field =name of filed (used for conditional logic in function)
 		$scope.updateScopeFromDropdown = (pageContext, resource, identifier, field) => {
-			console.log(field)
 			if (resource === 'usersData') {
 				if (field === 'users_dcid') {
 					$scope.submitPayload[pageContext] = { [field]: identifier }
@@ -96,7 +95,6 @@ define([
 
 				if (resource === 'usersData') {
 					if (field === 'users_dcid') {
-						console.log(foundItem)
 						$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], foundItem)
 
 						if (pageContext === 'nameChange') {
@@ -121,6 +119,10 @@ define([
 					}
 				}
 			}
+		}
+		$scope.updateAdditionalPayload = (pageContext) => {
+			console.log('leaving radio', $scope.submitPayload[pageContext].leaving_radio)
+			console.log('positionradio', $scope.submitPayload[pageContext].position_radio)
 		}
 
 		$scope.submitStaffChange = async () => {

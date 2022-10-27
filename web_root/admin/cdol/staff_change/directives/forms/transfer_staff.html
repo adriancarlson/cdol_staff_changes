@@ -272,14 +272,16 @@
                                             <input class="form-check-input" type="radio" name="position-radio-group"
                                                 id="position-radio-yes"
                                                 data-ng-model="submitPayload.transferringStaff.position_radio" value="1"
-                                                data-ng-required="!submitPayload.transferringStaff.position_radio">
+                                                data-ng-required="!submitPayload.transferringStaff.position_radio"
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
                                             <label class="form-check-label" for="position-radio-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="position-radio-group"
                                                 id="position-radio-no"
                                                 data-ng-model="submitPayload.transferringStaff.position_radio" value="0"
-                                                data-ng-required="!submitPayload.transferringStaff.position_radio">
+                                                data-ng-required="!submitPayload.transferringStaff.position_radio"
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
                                             <label class="form-check-label" for="position-radio-no">No</label>
 
                                         </div>
@@ -305,14 +307,16 @@
                                             <input class="form-check-input" type="radio" name="leaving-radio-group"
                                                 id="leaving-radio-yes"
                                                 data-ng-model="submitPayload.transferringStaff.leaving_radio" value="1"
-                                                data-ng-required="!submitPayload.transferringStaff.leaving_radio">
+                                                data-ng-required="!submitPayload.transferringStaff.leaving_radio"
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
                                             <label class="form-check-label" for="leaving-radio-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="leaving-radio-group"
                                                 id="leaving-radio-no"
                                                 data-ng-model="submitPayload.transferringStaff.leaving_radio" value="0"
-                                                data-ng-required="!submitPayload.transferringStaff.leaving_radio">
+                                                data-ng-required="!submitPayload.transferringStaff.leaving_radio"
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
                                             <label class="form-check-label" for="leaving-radio-no">No</label>
                                         </div>
                                         <div class="alert alert-warning" role="alert"
