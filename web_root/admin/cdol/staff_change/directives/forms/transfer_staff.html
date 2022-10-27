@@ -7,8 +7,8 @@
             <form name="transferringStaffForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
-                        <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is Transferring in
-                            to ~(schoolname)?</label>
+                        <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is Transferring
+                            into ~(schoolname)?</label>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.transferringStaff.users_dcid" data-ng-required="true"
                             data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.transferringStaff.users_dcid)">
@@ -58,7 +58,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid == -1">
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid">
                     <div class="col">
                         <label for="transferring-staff-type" class="form-label form-label-sm  label-reset req">Staff
                             Type</label>
@@ -87,37 +87,6 @@
                             <option value="FT">FT - Full-time</option>
                             <option value="PT">PT - Part-time</option>
                         </select>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.users_dcid">
-                    <div class="col-auto">
-                        <label for="prev_school_number" class="form-label form-label-sm label-reset req">Where was {{
-                            submitPayload.transferringStaff.first_name}} {{
-                            submitPayload.transferringStaff.last_name}}'s previously employed?</label>
-                        <select class="form-select form-select-sm" id="prev_school_number"
-                            aria-label="Where previously employed?"
-                            data-ng-model="submitPayload.transferringStaff.prev_school_number" data-ng-required="true"
-                            data-ng-change="updateScopeFromDropdown(userContext.pageContext,'schoolsData',submitPayload.transferringStaff.prev_school_number)">
-                            <option selected></option>
-                            ~[tlist_sql;SELECT SCHOOLS.School_number, SCHOOLS.name
-                            FROM SCHOOLS
-                            WHERE SCHOOLS.School_number NOT IN (888888,999999,79438)
-                            ORDER BY schools.name;]
-                            <option value="~(schnum)">~(schname)</option>
-                            [/tlist_sql]
-                            <option value="-1">-- Other --</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3"
-                    data-ng-if="submitPayload.transferringStaff.prev_school_number == -1">
-                    <div class="col-6">
-                        <label for="transferring-staff-school-name"
-                            class="form-label form-label-sm label-reset req">Please
-                            Type Name Previous Employer</label>
-                        <input id="transferring-staff-school-name" class="form-control" type="text"
-                            data-ng-model="submitPayload.transferringStaff.prev_school_name">
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
@@ -163,6 +132,37 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3"
+                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.users_dcid">
+                    <div class="col-auto">
+                        <label for="prev_school_number" class="form-label form-label-sm label-reset req">Where was {{
+                            submitPayload.transferringStaff.first_name}} {{
+                            submitPayload.transferringStaff.last_name}}'s previously employed?</label>
+                        <select class="form-select form-select-sm" id="prev_school_number"
+                            aria-label="Where previously employed?"
+                            data-ng-model="submitPayload.transferringStaff.prev_school_number" data-ng-required="true"
+                            data-ng-change="updateScopeFromDropdown(userContext.pageContext,'schoolsData',submitPayload.transferringStaff.prev_school_number)">
+                            <option selected></option>
+                            ~[tlist_sql;SELECT SCHOOLS.School_number, SCHOOLS.name
+                            FROM SCHOOLS
+                            WHERE SCHOOLS.School_number NOT IN (888888,999999,79438)
+                            ORDER BY schools.name;]
+                            <option value="~(schnum)">~(schname)</option>
+                            [/tlist_sql]
+                            <option value="-1">-- Other --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3"
+                    data-ng-if="submitPayload.transferringStaff.prev_school_number == -1">
+                    <div class="col-6">
+                        <label for="transferring-staff-school-name"
+                            class="form-label form-label-sm label-reset req">Please
+                            Type Name Previous Employer</label>
+                        <input id="transferring-staff-school-name" class="form-control" type="text"
+                            data-ng-model="submitPayload.transferringStaff.prev_school_name">
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
