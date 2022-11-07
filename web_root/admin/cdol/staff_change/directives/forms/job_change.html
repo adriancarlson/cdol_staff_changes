@@ -142,9 +142,19 @@
         </div>
         <div class="card-footer">
             <div class="row">
-                <div class="col-auto me-auto"><button type="button" class="m-0 p-2 ps-1"
-                        data-ng-click="formDipslay(userContext.prevContext, userContext.formType)"><i
-                            class="bi bi-chevron-left fw-bold"></i> Back</button>
+                <div class="col-auto me-auto">
+                    <div id="bk-btn-group">
+                        <!-- back to pev screen -->
+                        <button type="button" class="m-0 p-2 ps-1"
+                            data-ng-click="formDipslay(userContext.prevContext,userContext.formType)"
+                            data-ng-show="userContext.prevContext === 'newStaff' || userContext.prevContext === 'transferringStaff'"><i
+                                class="bi bi-chevron-left fw-bold"></i> Back</button>
+                        <!-- back to start -->
+                        <button type="button" class="m-0 p-2 ps-1"
+                            data-ng-click="formDipslay('start',userContext.formType)"
+                            data-ng-show="userContext.prevContext !== 'newStaff' || userContext.prevContext !== 'transferringStaff'"><i
+                                class="bi bi-chevron-left fw-bold"></i> Back</button>
+                    </div>
                 </div>
                 <div class="col-auto"><span class="req-notation me-2"
                         ng-if="(jobChangeForm.$invalid && jobChangeForm.$dirty) || !submitPayload.jobChange.users_dcid">Please

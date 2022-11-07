@@ -23,7 +23,7 @@ define([
 			curUserEmail: $attrs.ngCurUserEmail,
 			curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr,
 			pageContext: 'start',
-			prevContext: 'start'
+			prevContext: undefined
 		}
 		//initilazing empty payload
 		$scope.submitPayload = {}
@@ -61,6 +61,7 @@ define([
 			}
 			// resetting payload if user hit the back button and started a new submission type
 			if (
+				$scope.userContext.prevContext !== undefined &&
 				$scope.userContext.pageContext !== 'start' &&
 				$scope.userContext.pageContext !== 'confirm' &&
 				$scope.userContext.pageContext !== $scope.userContext.prevContext
