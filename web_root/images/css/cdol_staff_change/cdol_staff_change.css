@@ -14,9 +14,7 @@
 .mailTD {
 	border-left: 0 !important;
 }
-textarea.form-control {
-	height: 100px;
-}
+
 #tabOneContent td,
 #tabTwoContent td,
 #tabThreeContent td,
@@ -98,6 +96,10 @@ select.ng-invalid.ng-touched {
 
 .label-reset {
 	padding-left: 0;
+}
+
+textarea.form-control {
+	height: 100px !important;
 }
 
 .fluid-form > div:not(.button-row):nth-of-type(odd):not(.button-row),
