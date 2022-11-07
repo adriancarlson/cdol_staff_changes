@@ -125,7 +125,7 @@
                                     <div class="col">
                                         <label class="form-label form-label-sm label-reset req">Transfer
                                             Date</label><br>
-                                        <input title="transfer-date" type="text" class="psDateWidget"
+                                        <input title="Transfer Date" type="text" class="psDateWidget"
                                             ng-model="submitPayload.transferringStaff.deadline" ng-required="true">
                                         <script type="text/javascript">initBehaviors();</script>
                                     </div>
@@ -336,8 +336,8 @@
                     data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.first_name">
                     <div class="col-xl-6">
                         <div class="form-floating">
-                            <textarea class="form-control" placeholder="Additional Notes/Details?"
-                                id="exit-add-notes" spellcheck="true" wrap="absolute"
+                            <textarea class="form-control" placeholder="Additional Notes/Details?" id="exit-add-notes"
+                                spellcheck="true" wrap="absolute"
                                 ng-model="submitPayload.transferringStaff.notes"></textarea>
                             <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
                         </div>
@@ -366,32 +366,36 @@
                             class="bi bi-chevron-left fw-bold"></i>
                         Back</button>
                 </div>
-                <div class="col-auto"><span class="req-notation me-2"
-                        ng-if="(transferringStaffForm.$invalid && transferringStaffForm.$dirty) || !submitPayload.transferringStaff.users_dcid">Please
-                        fill all required fields prior to submitting.</span>
-                    <!-- if replacing someone show next button -->
-                    <div class="nxt-btn-group" data-ng-show="exit_radio == 1">
-                        <!-- Send to exiting staff -->
-                        <button type="button" id="nxtExtBtn" class="m-0 p-2"
-                            data-ng-disabled="transferringStaffForm.$invalid" data-ng-show="leaving_radio == 1"
-                            data-ng-click="formDipslay('exitingStaff',userContext.formType)">
-                            Continue to Exiting Staff<i class="bi bi-chevron-right fw-bold"></i></button>
-                        <!-- Send to job change -->
-                        <button type="button" id="nxtJobBtn" class="m-0 p-2"
-                            data-ng-disabled="transferringStaffForm.$invalid" data-ng-show="position_radio == 1"
-                            data-ng-click="formDipslay('jobChange',userContext.formType)">
-                            Continue to Position/Job Change<i class="bi bi-chevron-right fw-bold"></i></button>
-                    </div>
-                    <!-- if not replacing anyone show submit button -->
-                    <div class="sub-btn-group" data-ng-show="exit_radio != 1">
-                        <button type="button" id="subBtn" class="m-0 p-2"
-                            data-ng-disabled="transferringStaffForm.$invalid" data-ng-show="!subConfirm"
-                            data-ng-click="subConfirm = true">Submit</button>
-                        <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
-                            data-ng-click="subConfirm = false">Cancel</button>
-                        <button type="button" id="confBtn" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
-                            data-ng-click="submitStaffChange()">Confirm Submit</button>
-                    </div>
+                <div class="col-auto me-0 pe-0">
+                    <p class="req-notation text-end align-middle m-0 p-0 pt-1"
+                        ng-if="(transferringStaffForm.$invalid && transferringStaffForm.$dirty) || !submitPayload.transferringStaff.users_dcid">
+                        Please
+                        fill all required fields prior to submitting.</p>
+                </div>
+                <!-- if replacing someone show next button -->
+                <div id="nxt-btn-group" class="col-auto" data-ng-if="submitPayload.transferringStaff.exit_radio == 1">
+                    <!-- Send to exiting staff form -->
+                    <button type="button" id="nxtExtBtn" class="m-0 p-2"
+                        data-ng-disabled="transferringStaffForm.$invalid"
+                        data-ng-show="submitPayload.transferringStaff.leaving_radio == 1"
+                        data-ng-click="formDipslay('exitingStaff',userContext.formType)">
+                        Continue <i class="bi bi-chevron-right fw-bold"></i></button>
+                    <!-- Send to jobchange form -->
+                    <button type="button" id="nxtJobBtn" class="m-0 p-2"
+                        data-ng-disabled="transferringStaffForm.$invalid"
+                        data-ng-show="submitPayload.transferringStaff.position_radio == 1"
+                        data-ng-click="formDipslay('jobChange',userContext.formType)">
+                        Continue <i class="bi bi-chevron-right fw-bold"></i></button>
+                </div>
+                <!-- if not replacing anyone show submit button -->
+                <div id="sub-btn-group" class="col-auto"
+                    data-ng-if="submitPayload.transferringStaff.leaving_radio != 1 && submitPayload.transferringStaff.position_radio != 1">
+                    <button type="button" id="subBtn" class="m-0 p-2" data-ng-disabled="transferringStaffForm.$invalid"
+                        data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
+                    <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
+                        data-ng-click="subConfirm = false">Cancel</button>
+                    <button type="button" id="confBtn" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
+                        data-ng-click="submitStaffChange()">Confirm Submit</button>
                 </div>
             </div>
         </div>
