@@ -67,9 +67,8 @@
                             <div class="card-body">
                                 <div class="col mb-3">
                                     <div class="form-floating">
-                                        <textarea class="form-control" style="height: 100px"
-                                            placeholder="Previous Position/Job:" id="job-change-previous-position"
-                                            spellcheck="true" wrap="absolute"
+                                        <textarea class="form-control" placeholder="Previous Position/Job:"
+                                            id="job-change-previous-position" spellcheck="true" wrap="absolute"
                                             ng-model="submitPayload.jobChange.previous_position"></textarea>
                                         <label class="fw-semibold" for="job-change-previous-position">Previous
                                             Position/Job:</label>
@@ -77,9 +76,8 @@
                                 </div>
                                 <div class="col">
                                     <div class="form-floating">
-                                        <textarea class="form-control" style="height: 100px"
-                                            placeholder="New Position/Job:" id="job-change-previous-new"
-                                            spellcheck="true" wrap="absolute"
+                                        <textarea class="form-control" placeholder="New Position/Job:"
+                                            id="job-change-previous-new" spellcheck="true" wrap="absolute"
                                             ng-model="submitPayload.jobChange.new_position"></textarea>
                                         <label class="fw-semibold" for="job-change-previous-new">New
                                             Position/Job:</label>
@@ -121,7 +119,7 @@
                                     <div class="col">
                                         <label class="form-label form-label-sm label-reset req">Date of Position/Job
                                             Change</label><br>
-                                        <input type="text" class="psDateWidget"
+                                        <input type="text" title="deadline" class="psDateWidget"
                                             ng-model="submitPayload.jobChange.deadline" ng-required="true">
                                         <script type="text/javascript">initBehaviors();</script>
                                     </div>
@@ -134,9 +132,8 @@
                     data-ng-if="userContext.pageStatus =='Submit' && submitPayload.jobChange.first_name">
                     <div class="col-xl-6">
                         <div class="form-floating">
-                            <textarea class="form-control" style="height: 100px" placeholder="Additional Notes/Details?"
-                                id="exit-add-notes" spellcheck="true" wrap="absolute"
-                                ng-model="submitPayload.jobChange.notes"></textarea>
+                            <textarea class="form-control" placeholder="Additional Notes/Details?" id="exit-add-notes"
+                                spellcheck="true" wrap="absolute" ng-model="submitPayload.jobChange.notes"></textarea>
                             <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
                         </div>
                     </div>

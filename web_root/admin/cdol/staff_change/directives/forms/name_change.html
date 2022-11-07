@@ -91,7 +91,7 @@
                                     <div class="col">
                                         <label class="form-label form-label-sm label-reset req">Requested Name Change
                                             Date</label><br>
-                                        <input type="text" class="psDateWidget"
+                                        <input title="deadline" type="text" class="psDateWidget"
                                             ng-model="submitPayload.nameChange.deadline" ng-required="true">
                                         <script type="text/javascript">initBehaviors();</script>
                                     </div>
@@ -113,7 +113,7 @@
                     data-ng-if="userContext.pageStatus =='Submit' && submitPayload.nameChange.first_name">
                     <div class="col-xl-6">
                         <div class="form-floating">
-                            <textarea class="form-control" style="height: 100px"
+                            <textarea class="form-control"
                                 placeholder="Reason for Name Change and/or additional Notes/Details?"
                                 id="exit-add-notes" spellcheck="true" wrap="absolute"
                                 ng-model="submitPayload.nameChange.notes"></textarea>
