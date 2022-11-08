@@ -52,6 +52,10 @@ define([
 		$scope.formDipslay = (pageContext, prevContext, direction) => {
 			$scope.userContext.pageContext = pageContext
 			$scope.userContext.prevContext = prevContext
+			console.log('dierction', direction)
+			console.log('pageContext', pageContext)
+			console.log('prevContext', prevContext)
+
 			//only loading User data or school data if it is needed
 			if (pageContext !== 'newStaff') {
 				$scope.getJSONData('usersData')
@@ -59,23 +63,28 @@ define([
 			if (pageContext === 'transferringStaff') {
 				$scope.getJSONData('schoolsData')
 			}
-			if (direction === 'back' && pageContext !== 'start') {
+
+			if (pageContext === 'confirm') {
+				$scope.submitPayload = {}
+			}
+
+			if (direction === 'reset') {
 				if ($scope.userContext.pageContext !== $scope.userContext.prevContext) {
 					delete $scope.submitPayload[prevContext]
 				}
 			}
-			if ($scope.userContext.pageContext !== 'confirm') {
-				$scope.submitPayload = {}
-			}
-			// resetting payload if user hit the back button and started a new submission type
-			// if (
-			// 	$scope.userContext.prevContext !== undefined &&
-			// 	$scope.userContext.pageContext !== 'start' &&
-			// 	$scope.userContext.pageContext !== 'confirm' &&
-			// 	$scope.userContext.pageContext !== $scope.userContext.prevContext
-			// ) {
-			// 	delete $scope.submitPayload[prevContext]
-			// }
+
+			//     			// resetting payload if user hit the back button and started a new submission type
+			//     			if (
+			//     				$scope.userContext.prevContext !== undefined &&
+			//     				$scope.userContext.pageContext !== 'start' &&
+			//     				$scope.userContext.pageContext !== 'confirm' &&
+			//     				$scope.userContext.pageContext !== $scope.userContext.prevContext
+			//     			) {
+			//     			    console.log('I ran');
+			//     				delete $scope.submitPayload[prevContext]
+			//     			}
+			// 			}
 		}
 		//this function is used on any dropdown. It updates many fields on the scope each time dropdown changes based on where it is called. Alot of conditional logic
 		//passing in the page context= which form, the resource=name of JSON file, identifier =usually field on scope that needs updated, field =name of filed (used for conditional logic in function)

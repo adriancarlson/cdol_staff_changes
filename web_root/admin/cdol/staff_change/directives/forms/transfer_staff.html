@@ -378,13 +378,13 @@
                     <button type="button" id="nxtExtBtn" class="m-0 p-2"
                         data-ng-disabled="transferringStaffForm.$invalid"
                         data-ng-show="submitPayload.transferringStaff.leaving_radio == 1"
-                        data-ng-click="formDipslay('exitingStaff',userContext.formType)">
+                        data-ng-click="formDipslay('exitingStaff',userContext.formType, 'forward')">
                         Continue <i class="bi bi-chevron-right fw-bold"></i></button>
                     <!-- Send to jobchange form -->
                     <button type="button" id="nxtJobBtn" class="m-0 p-2"
                         data-ng-disabled="transferringStaffForm.$invalid"
                         data-ng-show="submitPayload.transferringStaff.position_radio == 1"
-                        data-ng-click="formDipslay('jobChange',userContext.formType)">
+                        data-ng-click="formDipslay('jobChange',userContext.formType, 'forward')">
                         Continue <i class="bi bi-chevron-right fw-bold"></i></button>
                 </div>
                 <!-- if not replacing anyone show submit button -->
