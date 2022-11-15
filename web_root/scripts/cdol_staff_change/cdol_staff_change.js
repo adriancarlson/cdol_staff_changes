@@ -63,31 +63,33 @@ define([
 			if (pageContext === 'transferringStaff') {
 				$scope.getJSONData('schoolsData')
 			}
-
+			//clearing payload after submission
 			if (pageContext === 'confirm') {
 				$scope.submitPayload = {}
 			}
-
-			if (direction === 'reset') {
-				if ($scope.userContext.pageContext !== $scope.userContext.prevContext) {
-					delete $scope.submitPayload[prevContext]
-				}
-			}
-			if (direction === 'back') {
-				if ($scope.userContext.pageContext === $scope.userContext.prevContext) {
-					if ($scope.submitPayload[pageContext].leaving_radio == 1) {
-						delete $scope.submitPayload.exitingStaff
+			//add and remove form payload objects based on directions of buttons
+			switch (direction) {
+				case 'reset':
+					if ($scope.userContext.pageContext !== $scope.userContext.prevContext) {
+						delete $scope.submitPayload[prevContext]
 					}
-					if ($scope.submitPayload[pageContext].position_radio == 1) {
-						delete $scope.submitPayload.jobChange
+					break
+				case 'back':
+					if ($scope.userContext.pageContext === $scope.userContext.prevContext) {
+						if ($scope.submitPayload[pageContext].leaving_radio == 1) {
+							delete $scope.submitPayload.exitingStaff
+						}
+						if ($scope.submitPayload[pageContext].position_radio == 1) {
+							delete $scope.submitPayload.jobChange
+						}
 					}
-				}
-			}
-
-			if (direction === 'forward') {
-				$scope.updateAdditionalPayload(prevContext)
+					break
+				case 'forward':
+					$scope.updateAdditionalPayload(prevContext)
+					break
 			}
 		}
+
 		$scope.updateScopeFromDropdown = (pageContext, resource, identifier, field) => {
 			if (resource === 'usersData') {
 				if (field === 'users_dcid') {
@@ -137,9 +139,8 @@ define([
 				}
 			}
 		}
+		
 		$scope.updateAdditionalPayload = pageContext => {
-			console.log('updateAdditionalPayload Ran')
-			console.log(pageContext)
 			if ($scope.submitPayload[pageContext].leaving_radio == 1) {
 				$scope.submitPayload.exitingStaff = {}
 				$scope.submitPayload.exitingStaff.users_dcid = $scope.submitPayload[pageContext].replace_dcid
