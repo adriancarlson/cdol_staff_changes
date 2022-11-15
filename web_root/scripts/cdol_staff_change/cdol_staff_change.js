@@ -68,7 +68,7 @@ define([
 				$scope.submitPayload = {}
 			}
 
-			if (direction === 'reset') {
+			if (direction === 'reset' || direction === 'back') {
 				if ($scope.userContext.pageContext !== $scope.userContext.prevContext) {
 					delete $scope.submitPayload[prevContext]
 				}
