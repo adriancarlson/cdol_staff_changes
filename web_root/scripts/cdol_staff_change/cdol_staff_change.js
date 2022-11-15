@@ -180,7 +180,6 @@ define([
 			const commonPayload = {
 				schoolid: $scope.userContext.curSchoolId,
 				calendar_year: new Date().getFullYear().toString(),
-				// change_type: $scope.userContext.pageContext,
 				submission_date: dateService.formatDateForApi($scope.userContext.curDate),
 				submission_time: $scope.userContext.curTime,
 				who_submitted: $scope.userContext.curUserId
@@ -188,7 +187,7 @@ define([
 			//loop though submitPayload object
 			Object.keys($scope.submitPayload).forEach(async (key, index) => {
 				let formPayload = $scope.submitPayload[key]
-				formPayload[key].change_type = key
+				formPayload.change_type = key
 				//add commonPayload to each object in submitPayload
 				formPayload = Object.assign(formPayload, commonPayload)
 				// constructing deadline
