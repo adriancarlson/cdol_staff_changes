@@ -131,6 +131,15 @@
                 <div class="row align-items-center mb-3"
                     data-ng-if="userContext.pageStatus =='Submit' && submitPayload.jobChange.first_name">
                     <div class="col-xl-6">
+                        <span class="req-notation"
+                            data-ng-show="(submitPayload.hasOwnProperty('transferringStaff') || submitPayload.hasOwnProperty('newStaff')) && submitPayload.jobChange.notes">
+                            Note coppied from {{
+                            submitPayload.transferringStaff.first_name}} {{
+                            submitPayload.transferringStaff.last_name}}{{
+                            submitPayload.newStaff.first_name}} {{
+                            submitPayload.newStaff.last_name}}'s form. Feel free to add, remove, or edit note for {{
+                            submitPayload.jobChange.first_name}} {{
+                            submitPayload.jobChange.last_name}} </span>
                         <div class="form-floating">
                             <textarea class="form-control" placeholder="Additional Notes/Details?" id="exit-add-notes"
                                 spellcheck="true" wrap="absolute" ng-model="submitPayload.jobChange.notes"></textarea>
