@@ -153,6 +153,7 @@ define([
 				$scope.submitPayload.exitingStaff.replace_first_name = $scope.submitPayload[pageContext].first_name
 				$scope.submitPayload.exitingStaff.replace_middle_name = $scope.submitPayload[pageContext].middle_name
 				$scope.submitPayload.exitingStaff.replace_last_name = $scope.submitPayload[pageContext].last_name
+				$scope.submitPayload.exitingStaff.notes = $scope.submitPayload[pageContext].notes
 			}
 			if ($scope.submitPayload[pageContext].leaving_radio == 0) {
 				delete $scope.submitPayload.exitingStaff
@@ -169,6 +170,7 @@ define([
 				$scope.submitPayload.jobChange.replace_first_name = $scope.submitPayload[pageContext].first_name
 				$scope.submitPayload.jobChange.replace_middle_name = $scope.submitPayload[pageContext].middle_name
 				$scope.submitPayload.jobChange.replace_last_name = $scope.submitPayload[pageContext].last_name
+				$scope.submitPayload.jobChange.notes = $scope.submitPayload[pageContext].notes
 			}
 			if ($scope.submitPayload[pageContext].position_radio == 0) {
 				delete $scope.submitPayload.jobChange
