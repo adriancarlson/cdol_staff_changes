@@ -56,11 +56,11 @@ define([
 			// console.log('pageContext', pageContext)
 			// console.log('prevContext', prevContext)
 
-			//only loading User data or school data if it is needed
-			if (pageContext !== 'newStaff') {
-				$scope.getJSONData('usersData')
-			}
-			if (pageContext === 'transferringStaff') {
+			//load user data
+			$scope.getJSONData('usersData')
+
+			//only loading school data if it is needed
+			if (pageContext === 'transferringStaff' || pageContext === 'newStaff') {
 				$scope.getJSONData('schoolsData')
 			}
 			//clearing payload after submission
@@ -122,6 +122,10 @@ define([
 							].old_name_placeholder = `${$scope.submitPayload[pageContext].title} ${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
 						}
 						if (pageContext === 'transferringStaff') {
+							$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
+							$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
+						}
+						if (pageContext === 'newStaff') {
 							$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
 							$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
 						}
