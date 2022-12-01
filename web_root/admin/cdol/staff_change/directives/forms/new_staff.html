@@ -1,14 +1,15 @@
 <div id="new-form-container" class="container-fluid">
     <div class="alert alert-warning" role="alert" ng-if="userContext.pageStatus =='Submit'"><i
-            class="bi bi-exclamation-triangle-fill"></i> Please spell new staff name correctly! If new staff member is
-        going to have a name change in the next 6 months for any reason please enter their anticipated name.
+            class="bi bi-exclamation-triangle-fill"></i> Please ensure staff name is spelled correctly! If you
+        anticipate a name change in the next few months, please enter their anticipated name.
     </div>
     prevContext: {{userContext.prevContext}} | pageContext: {{userContext.pageContext}} <br>
     submitPayload: {{submitPayload}}
     <div class="card">
-        <div class="card-header bg-primary text-bg-primary bg-gradient fs-6 fw-semibold">New Staff:</div>
+        <div class="card-header bg-success text-bg-success bg-gradient fs-6 fw-semibold">New Staff:</div>
         <div class="card-body">
             <form name="newStaffForm" method="POST" novalidate>
+
                 <div class="row align-items-center mb-3">
                     <div class="col-6">
                         <label for="transferring-staff-name" class="form-label form-label-sm  label-reset req">New Staff
@@ -37,25 +38,8 @@
                                 data-ng-required="true">
                         </div>
                     </div>
-                    <div class="row align-items-center mb-3">
-                        <div class="col-auto">
-                            <label for="new-staff-preferred-name"
-                                class="form-label form-label-sm  label-reset req">Preferred
-                                Name <span class="text-muted"><small><em>(chosen name that may differ from legal
-                                            name)</em></small></span></label>
-                            <input id="new-staff-preferred-name" type="text" class="form-control form-control-sm w-25"
-                                aria-label="Preferred Name" data-ng-model="submitPayload.newStaff.preferred_name">
-                        </div>
-                        <div class="col-auto"
-                            data-ng-if="submitPayload.newStaff.gender === 'F' && (submitPayload.newStaff.title ==='Mrs.' || submitPayload.newStaff.title ==='Dr.')">
-                            <label for="new-staff-maiden-name" class="form-label form-label-sm  label-reset req">Maiden
-                                Name</label>
-                            <input id="new-staff-maiden-name" type="text" class="form-control form-control-sm w-25"
-                                aria-label="maiden Name" data-ng-model="submitPayload.newStaff.maiden_name">
-                        </div>
-                    </div>
                 </div>
-                <div class="row align-items-center mb-3 gx-2">
+                <div class="row align-items-center mb-3 gx-3">
                     <div class="col-auto">
                         <label for="new-staff-gender" class="form-label form-label-sm  label-reset req">Gender</label>
                         <select id="new-staff-gender" class="form-select form-select-sm" aria-label="new-staff-gender"
@@ -64,16 +48,33 @@
                         </select>
                     </div>
                     <div class="col-auto">
-                        <label class="form-label form-label-sm label-reset req">Date of Birth</label><br>
+                        <label class="form-label form-label-sm label-reset">Date of Birth</label><br>
                         <input title="Date of Birth" type="text" class="psDateWidget"
                             ng-model="submitPayload.newStaff.dob">
                         <script type="text/javascript">initBehaviors();</script>
                     </div>
                 </div>
+                <div class="row align-items-center mb-3 gx-3">
+                    <div class="col-3">
+                        <label for="new-staff-preferred-name" class="form-label form-label-sm  label-reset">Preferred
+                            Name </label><span class="text-muted"><small><em> (Chosen name that may differ from legal
+                                    name)</em></small></span></label>
+                        <input id="new-staff-preferred-name" type="text" class="form-control form-control-sm"
+                            aria-label="Preferred Name" placeholder='ex: Bill instead of William'
+                            data-ng-model="submitPayload.newStaff.preferred_name">
+
+                    </div>
+                    <div class="col-2"
+                        data-ng-if="submitPayload.newStaff.gender === 'F' && (submitPayload.newStaff.title ==='Mrs.' || submitPayload.newStaff.title ==='Dr.')">
+                        <label for="new-staff-maiden-name" class="form-label form-label-sm  label-reset">Maiden
+                            Name </label>
+                        <input id="new-staff-maiden-name" type="text" class="form-control form-control-sm"
+                            aria-label="Maiden Name" data-ng-model="submitPayload.newStaff.maiden_name">
+                    </div>
+                </div>
                 <div class="row align-items-center mb-3 gx-2">
                     <div class="col-auto">
-                        <label for="new-staff-religion"
-                            class="form-label form-label-sm  label-reset req">Religion</label>
+                        <label for="new-staff-religion" class="form-label form-label-sm  label-reset">Religion</label>
                         <select id="new-staff-religion" class="form-select form-select-sm"
                             aria-label="new-staff-religion" data-ng-model="submitPayload.newStaff.religion">
                             <option></option>
@@ -83,7 +84,7 @@
                     </div>
                     <div class="col-auto">
                         <label for="new-staff-religiousclergylay"
-                            class="form-label form-label-sm  label-reset req">Religious, Clergy or Lay</label>
+                            class="form-label form-label-sm  label-reset req">Religious, Clergy, or Lay</label>
                         <select id="new-staff-religiousclergylay" class="form-select form-select-sm"
                             aria-label="new-staff-religiousclergylay"
                             data-ng-model="submitPayload.newStaff.religiousclergylay">
@@ -96,11 +97,12 @@
                 </div>
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
-                        <label for="new-staff-personal-email" class="form-label form-label-sm  label-reset req">Personal
+                        <label for="new-staff-personal-email" class="form-label form-label-sm  label-reset">Personal
                             Email <span class="text-muted"><small><em>(for communication during account setup and summer
                                         trainings)</em></small></span></label>
-                        <input id="new-staff-personal-email" type="text" class="form-control form-control-sm w-25"
-                            aria-label="Personal Email" data-ng-model="submitPayload.newStaff.personal_email">
+                        <input id="new-staff-personal-email" type="text" class="form-control form-control-sm"
+                            placeholder="newstaff@email.com" aria-label="Personal Email"
+                            data-ng-model="submitPayload.newStaff.personal_email">
                     </div>
                 </div>
                 <div class="row align-items-center mb-3 gx-2">
@@ -178,7 +180,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.newStaff.users_dcid">
+                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.newStaff.first_name">
                     <div class="col-auto">
                         <label for="prev_school_number" class="form-label form-label-sm label-reset req">Where was {{
                             submitPayload.newStaff.first_name}} {{
@@ -208,7 +210,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.newStaff.users_dcid">
+                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.newStaff.first_name">
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
