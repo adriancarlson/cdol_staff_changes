@@ -12,7 +12,8 @@
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
                         <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is not
-                            returning?</label>
+                            returning?</label><span class="text-muted"><small><em> (Choose --Other-- if staff member is
+                                    not listed)</em></small></span>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.exitingStaff.users_dcid" data-ng-required="true"
                             data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.exitingStaff.users_dcid,'users_dcid')">

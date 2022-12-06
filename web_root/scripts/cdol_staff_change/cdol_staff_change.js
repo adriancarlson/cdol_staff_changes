@@ -88,6 +88,7 @@ define([
 					$scope.updateAdditionalPayload(prevContext)
 					break
 			}
+			$window.scrollTo(0, 0)
 		}
 
 		$scope.updateScopeFromDropdown = (pageContext, resource, identifier, field) => {

@@ -6,7 +6,8 @@
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
                         <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is Transferring
-                            into ~(schoolname)?</label>
+                            into ~(schoolname)?</label><span class="text-muted"><small><em> (Choose --Other-- if staff
+                                    member is not listed)</em></small></span>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.transferringStaff.users_dcid" data-ng-required="true"
                             data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.transferringStaff.users_dcid, 'users_dcid')">
@@ -137,7 +138,9 @@
                     <div class="col-auto">
                         <label for="prev_school_number" class="form-label form-label-sm label-reset req">Where was {{
                             submitPayload.transferringStaff.first_name}} {{
-                            submitPayload.transferringStaff.last_name}}'s previously employed?</label>
+                            submitPayload.transferringStaff.last_name}}'s previously employed?</label><span
+                            class="text-muted"><small><em> (Choose --Other-- if employer is not
+                                    listed)</em></small></span>
                         <select class="form-select form-select-sm" id="prev_school_number"
                             aria-label="Where previously employed?"
                             data-ng-model="submitPayload.transferringStaff.prev_school_number" data-ng-required="true"
@@ -197,7 +200,9 @@
                                             is
                                             {{
                                             submitPayload.transferringStaff.first_name}} {{
-                                            submitPayload.transferringStaff.last_name}} replacing?</label>
+                                            submitPayload.transferringStaff.last_name}} replacing?</label><span
+                                            class="text-muted"><small><em> (Choose --Other-- if staff member is not
+                                                    listed)</em></small></span>
                                         <select class="form-select form-select-sm" id="replace_dcid"
                                             aria-label="Who is not returning?"
                                             data-ng-model="submitPayload.transferringStaff.replace_dcid"
