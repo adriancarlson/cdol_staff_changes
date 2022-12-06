@@ -20,8 +20,12 @@
             <tr data-ng-repeat="exitStaff in filteredExitingStaffList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap"><a
-                        href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{exitStaff.staffid}}">{{exitStaff.old_name_placeholder}}
-                        {{exitStaff.replacing_other}}</a>
+                        href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{exitStaff.staffid}}"><span
+                            data-ng-show="exitStaff.first_name === null">{{exitStaff.old_name_placeholder}}
+                            {{exitStaff.replacing_other}}</span><span
+                            data-ng-show="exitStaff.old_name_placeholder === null && exitStaff.replacing_other === null">{{exitStaff.title}}
+                            {{exitStaff.first_name}} {{exitStaff.title}}
+                            {{exitStaff.last_name}}</span></a>
                 </td>
                 <td class="nowrap">{{exitStaff.schname}}</td>
                 <td class="nowrap">{{exitStaff.submittedstaff}}</td>

@@ -118,6 +118,14 @@ define([
 						$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], foundItem)
 
 						if (pageContext === 'nameChange') {
+							if (
+								$scope.submitPayload[pageContext].title === 'Fr.' ||
+								$scope.submitPayload[pageContext].title === 'Msgr.' ||
+								$scope.submitPayload[pageContext].title === 'Sr.' ||
+								$scope.submitPayload[pageContext].title === 'Br.'
+							) {
+								$scope.submitPayload[pageContext].title = ''
+							}
 							$scope.submitPayload[
 								pageContext
 							].old_name_placeholder = `${$scope.submitPayload[pageContext].title} ${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
