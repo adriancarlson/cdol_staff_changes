@@ -82,7 +82,7 @@
                     </div>
                     <div class="col-auto">
                         <label for="new-staff-religiousclergylay"
-                            class="form-label form-label-sm  label-reset req">Religious, Clergy, or Lay</label>
+                            class="form-label form-label-sm label-reset">Religious, Clergy, or Lay</label>
                         <select id="new-staff-religiousclergylay" class="form-select form-select-sm"
                             aria-label="new-staff-religiousclergylay"
                             data-ng-model="submitPayload.newStaff.religiousclergylay">
@@ -210,7 +210,9 @@
                                         <label for="prev_school_number"
                                             class="form-label form-label-sm label-reset req">Where was {{
                                             submitPayload.newStaff.first_name}} {{
-                                            submitPayload.newStaff.last_name}}'s previously employed?</label><span class="text-muted"><small><em> (Choose --Other-- if employer is not listed)</em></small></span>
+                                            submitPayload.newStaff.last_name}}'s previously employed?</label><span
+                                            class="text-muted"><small><em> (Choose --Other-- if employer is not
+                                                    listed)</em></small></span>
                                         <select class="form-select form-select-sm" id="prev_school_number"
                                             aria-label="Where previously employed?"
                                             data-ng-model="submitPayload.newStaff.prev_school_number"
@@ -274,7 +276,9 @@
                                             is
                                             {{
                                             submitPayload.newStaff.first_name}} {{
-                                            submitPayload.newStaff.last_name}} replacing?</label><span class="text-muted"><small><em> (Choose --Other-- if staff member is not listed)</em></small></span>
+                                            submitPayload.newStaff.last_name}} replacing?</label><span
+                                            class="text-muted"><small><em> (Choose --Other-- if staff member is not
+                                                    listed)</em></small></span>
                                         <select class="form-select form-select-sm" id="replace_dcid"
                                             aria-label="Who is not returning?"
                                             data-ng-model="submitPayload.newStaff.replace_dcid" data-ng-required="true"
