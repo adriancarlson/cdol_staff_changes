@@ -1,7 +1,17 @@
-<div class="container-fluid">
-    <div class="card">
-        <div class="card-title">prevContext: {{userContext.prevContext}} | pageContext: {{userContext.pageContext}}
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-6">
+            <div class="ms-3">
+                <div class="card">
+                    <div class="card-header fw-semibold">
+                        <div class="col ps-1"><strong>prevContext</strong>: {{userContext.prevContext}} |
+                            <strong>pageContext</strong>: {{userContext.pageContext}}</div>
+                    </div>
+                    <div class="card-body">
+                        <strong>submitPayload</strong>: <br /> {{submitPayload}}
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-text">submitPayload: {{submitPayload}}</div>
     </div>
 </div>

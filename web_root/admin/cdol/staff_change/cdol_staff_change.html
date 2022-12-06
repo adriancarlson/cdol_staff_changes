@@ -39,8 +39,8 @@
                 <exit-staff data-ng-switch-when="exitingStaff"></exit-staff>
                 <confirm data-ng-switch-when="confirm"></confirm>
             </div>
-            ~[if#distCheck.security.inrole=9]~[if#prodCheck.is_prod][else]<tests></tests>[/if#prodCheck][/if#distCheck]
         </div>
+        ~[if#distCheck.security.inrole=9]~[if.is_prod][else]<tests></tests>[/if][/if#distCheck]
         ~[wc:admin_footer_css]
     </body>
 
