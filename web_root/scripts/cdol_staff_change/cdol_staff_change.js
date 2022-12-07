@@ -227,20 +227,48 @@ define([
 				apiPayload.deadline = dateService.formatDateForApi(apiPayload.deadline)
 				apiPayload.dob = dateService.formatDateForApi(apiPayload.dob)
 				//applying case formatting to text entry fields
-				apiPayload.first_name = camelService.camelize(apiPayload.first_name)
-				apiPayload.middle_name = camelService.camelize(apiPayload.middle_name)
-				apiPayload.last_name = camelService.camelize(apiPayload.last_name)
-				apiPayload.preferred_name = camelService.camelize(apiPayload.preferred_name)
-				apiPayload.maiden_name = camelService.camelize(apiPayload.maiden_name)
-				apiPayload.position = camelService.camelize(apiPayload.position)
-				apiPayload.notes = camelService.sentenceCase(apiPayload.notes)
-				apiPayload.old_name_placeholder = camelService.camelize(apiPayload.old_name_placeholder)
-				apiPayload.previous_position = camelService.sentenceCase(apiPayload.previous_position)
-				apiPayload.new_position = camelService.sentenceCase(apiPayload.new_position)
-				apiPayload.prev_school_name = camelService.camelize(apiPayload.prev_school_name)
-				apiPayload.replace_first_name = camelService.camelize(apiPayload.replace_first_name)
-				apiPayload.replace_middle_name = camelService.camelize(apiPayload.replace_middle_name)
-				apiPayload.replace_last_name = camelService.camelize(apiPayload.replace_last_name)
+				if (apiPayload.first_name) {
+					apiPayload.first_name = camelService.camelize(apiPayload.first_name)
+				}
+				if (apiPayload.middle_name) {
+					apiPayload.middle_name = camelService.camelize(apiPayload.middle_name)
+				}
+				if (apiPayload.last_name) {
+					apiPayload.last_name = camelService.camelize(apiPayload.last_name)
+				}
+				if (apiPayload.preferred_name) {
+					apiPayload.preferred_name = camelService.camelize(apiPayload.preferred_name)
+				}
+				if (apiPayload.maiden_name) {
+					apiPayload.maiden_name = camelService.camelize(apiPayload.maiden_name)
+				}
+				if (apiPayload.position) {
+					apiPayload.position = camelService.camelize(apiPayload.position)
+				}
+				if (apiPayload.notes) {
+					apiPayload.notes = camelService.sentenceCase(apiPayload.notes)
+				}
+				if (apiPayload.old_name_placeholder) {
+					apiPayload.old_name_placeholder = camelService.camelize(apiPayload.old_name_placeholder)
+				}
+				if (apiPayload.previous_position) {
+					apiPayload.previous_position = camelService.sentenceCase(apiPayload.previous_position)
+				}
+				if (apiPayload.new_position) {
+					apiPayload.new_position = camelService.sentenceCase(apiPayload.new_position)
+				}
+				if (apiPayload.prev_school_name) {
+					apiPayload.prev_school_name = camelService.camelize(apiPayload.prev_school_name)
+				}
+				if (apiPayload.replace_first_name) {
+					apiPayload.replace_first_name = camelService.camelize(apiPayload.replace_first_name)
+				}
+				if (apiPayload.replace_middle_name) {
+					apiPayload.replace_middle_name = camelService.camelize(apiPayload.replace_middle_name)
+				}
+				if (apiPayload.replace_last_name) {
+					apiPayload.replace_last_name = camelService.camelize(apiPayload.replace_last_name)
+				}
 				// removing items from the object not needed for the submission Record
 				const keysToDelete = ['_radio', 'homeschool', 'identifier']
 				// get all the keys from the apiPayload object
