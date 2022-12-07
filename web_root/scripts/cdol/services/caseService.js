@@ -1,7 +1,7 @@
 define(['angular'], function (angular) {
-	var myApp = angular.module('camelModule', [])
+	var myApp = angular.module('caseModule', [])
 
-	myApp.service('camelService', function () {
+	myApp.service('caseService', function () {
 		this.camelize = function (str) {
 			return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
 				if (+match === 0) return ''
@@ -20,6 +20,17 @@ define(['angular'], function (angular) {
 
 		this.sentenceCase = function (str) {
 			return str.replace(/(?<=(?:^|[.?!])\W*)[a-z]/g).trim()
+		}
+
+		this.titleCase = function (str) {
+			return str
+				.toLowerCase()
+				.split(' ')
+				.map(function (word) {
+					return word.charAt(0).toUpperCase() + word.slice(1)
+				})
+				.join(' ')
+				.trim()
 		}
 	})
 })
