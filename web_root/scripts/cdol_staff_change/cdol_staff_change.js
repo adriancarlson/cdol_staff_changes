@@ -226,6 +226,21 @@ define([
 				// get all date fields ready for API call
 				apiPayload.deadline = dateService.formatDateForApi(apiPayload.deadline)
 				apiPayload.dob = dateService.formatDateForApi(apiPayload.dob)
+				//applying case formatting to text entry fields
+				apiPayload.first_name = camelService.camelize(apiPayload.first_name)
+				apiPayload.middle_name = camelService.camelize(apiPayload.middle_name)
+				apiPayload.last_name = camelService.camelize(apiPayload.last_name)
+				apiPayload.preferred_name = camelService.camelize(apiPayload.preferred_name)
+				apiPayload.maiden_name = camelService.camelize(apiPayload.maiden_name)
+				apiPayload.position = camelService.camelize(apiPayload.position)
+				apiPayload.notes = camelService.sentenceCase(apiPayload.notes)
+				apiPayload.old_name_placeholder = camelService.camelize(apiPayload.old_name_placeholder)
+				apiPayload.previous_position = camelService.sentenceCase(apiPayload.previous_position)
+				apiPayload.new_position = camelService.sentenceCase(apiPayload.new_position)
+				apiPayload.prev_school_name = camelService.camelize(apiPayload.prev_school_name)
+				apiPayload.replace_first_name = camelService.camelize(apiPayload.replace_first_name)
+				apiPayload.replace_middle_name = camelService.camelize(apiPayload.replace_middle_name)
+				apiPayload.replace_last_name = camelService.camelize(apiPayload.replace_last_name)
 				// removing items from the object not needed for the submission Record
 				const keysToDelete = ['_radio', 'homeschool', 'identifier']
 				// get all the keys from the apiPayload object
