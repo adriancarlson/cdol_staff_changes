@@ -19,7 +19,11 @@ define(['angular'], function (angular) {
 		}
 
 		this.sentenceCase = function (str) {
-			return str.replace(/(?<=(?:^|[.?!])\W*)[a-z]/g).trim()
+			return clean(str)
+				.replace(/[a-z]/i, function (letter) {
+					return letter.toUpperCase()
+				})
+				.trim()
 		}
 
 		this.titleCase = function (str) {
