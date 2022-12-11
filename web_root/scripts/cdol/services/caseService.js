@@ -19,7 +19,7 @@ define(['angular'], function (angular) {
 		}
 
 		this.sentenceCase = function (str) {
-			var n = str.split('.')
+			var n = str.split(/[\\.!?]/)
 			var vfinal = ''
 			for (i = 0; i < n.length; i++) {
 				var spaceput = ''
