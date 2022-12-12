@@ -56,7 +56,7 @@ define([
 			// console.log('pageContext', pageContext)
 			// console.log('prevContext', prevContext)
 
-			//load user data
+			//load user data now needed on all forms
 			$scope.getJSONData('usersData')
 
 			//only loading school data if it is needed
@@ -88,32 +88,38 @@ define([
 					$scope.updateAdditionalPayload(prevContext)
 					break
 			}
+			//adding scroll to top when switching between forms
 			$window.scrollTo(0, 0)
 		}
 
 		$scope.updateScopeFromDropdown = (pageContext, resource, identifier, field) => {
+			//if dropdown source is user data
 			if (resource === 'usersData') {
+				//if the field is the users_dcid find all the fields related to that user and set them in the submit payload
 				if (field === 'users_dcid') {
 					$scope.submitPayload[pageContext] = { [field]: identifier }
 				}
 			}
-
+			//if dropdown source is school data
 			if (resource === 'schoolsData') {
+				//if the drop down is set to -1 aka --Other-- then set the prev_school_name to blank
 				if (identifier == -1) {
 					$scope.submitPayload[pageContext].prev_school_name = ''
 				}
 			}
-
+			// if the field being passed in is not null or -1 aka --Other--
 			if (identifier && identifier != -1) {
+				// find the field in the dataset (resource) passed in
 				let foundItem = $scope[resource].find(item => {
 					return item.identifier === identifier
 				})
-
+				//if the resource is school data then set the prev_school_name to the school name of the dataset (resource) passed in
 				if (resource === 'schoolsData') {
 					$scope.submitPayload[pageContext].prev_school_name = foundItem.schoolname
 				}
-
+				//if the resource is user data
 				if (resource === 'usersData') {
+					//and the field is users_dcid
 					if (field === 'users_dcid') {
 						$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], foundItem)
 
@@ -139,14 +145,17 @@ define([
 							$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
 						}
 					}
-
+					//if the resource is user data and the field is replace_dcid
 					if (field === 'replace_dcid') {
+						// set and empty object
 						const replaceObject = {}
+						// find all the keys in the found item and add the 'replace_' to the front of the key. keep same value. then set those key value pairs to replaceObject
 						for (key in foundItem) {
 							if (foundItem.hasOwnProperty(key)) {
 								replaceObject[`replace_${key}`] = foundItem[key]
 							}
 						}
+						// assign the replaceObject to the submitPayload
 						Object.assign($scope.submitPayload[pageContext], replaceObject)
 					}
 				}
@@ -226,71 +235,31 @@ define([
 				// get all date fields ready for API call
 				apiPayload.deadline = dateService.formatDateForApi(apiPayload.deadline)
 				apiPayload.dob = dateService.formatDateForApi(apiPayload.dob)
-				//applying case formatting to text entry fields
-				// if (apiPayload.first_name) {
-				// 	apiPayload.first_name = caseService.titleCase(apiPayload.first_name)
-				// }
-				// if (apiPayload.middle_name) {
-				// 	apiPayload.middle_name = caseService.titleCase(apiPayload.middle_name)
-				// }
-				// if (apiPayload.last_name) {
-				// 	apiPayload.last_name = caseService.titleCase(apiPayload.last_name)
-				// }
-				// if (apiPayload.preferred_name) {
-				// 	apiPayload.preferred_name = caseService.titleCase(apiPayload.preferred_name)
-				// }
-				// if (apiPayload.maiden_name) {
-				// 	apiPayload.maiden_name = caseService.titleCase(apiPayload.maiden_name)
-				// }
-				// if (apiPayload.position) {
-				// 	apiPayload.position = caseService.titleCase(apiPayload.position)
-				// }
-				// if (apiPayload.notes) {
-				// 	apiPayload.notes = caseService.sentenceCase(apiPayload.notes)
-				// }
-				// if (apiPayload.old_name_placeholder) {
-				// 	apiPayload.old_name_placeholder = caseService.titleCase(apiPayload.old_name_placeholder)
-				// }
-				// if (apiPayload.previous_position) {
-				// 	apiPayload.previous_position = caseService.sentenceCase(apiPayload.previous_position)
-				// }
-				// if (apiPayload.new_position) {
-				// 	apiPayload.new_position = caseService.sentenceCase(apiPayload.new_position)
-				// }
-				// if (apiPayload.prev_school_name) {
-				// 	apiPayload.prev_school_name = caseService.titleCase(apiPayload.prev_school_name)
-				// }
-				// if (apiPayload.replace_first_name) {
-				// 	apiPayload.replace_first_name = caseService.titleCase(apiPayload.replace_first_name)
-				// }
-				// if (apiPayload.replace_middle_name) {
-				// 	apiPayload.replace_middle_name = caseService.titleCase(apiPayload.replace_middle_name)
-				// }
-				// if (apiPayload.replace_last_name) {
-				// 	apiPayload.replace_last_name = caseService.titleCase(apiPayload.replace_last_name)
-				// }
 				// get all the keys from the apiPayload object
 				const getApiPayloadKeys = Object.keys(apiPayload)
-				// case formatting
+				//applying case formatting to text entry fields
 				//titlecase
-				const keysToTitle = ['_name', 'positon']
+				const keysToTitle = ['_name']
 				keysToTitle.forEach(item => {
 					// looping through first object
 					getApiPayloadKeys.forEach(keyName => {
 						// using index of to check if the object key name have a matched string if so deleting it from the payload
-						if (keyName.indexOf(item) !== -1) {
+						if (keyName.indexOf(item) !== -1 || keyName === 'position') {
+							console.log('title', keyName)
 							apiPayload[keyName] = caseService.titleCase(apiPayload[keyName])
 						}
 					})
 				})
 				//Sentence case
-				const keysToSentence = ['_positon', 'notes']
+				const keysToSentence = ['_position', 'notes']
 				keysToSentence.forEach(item => {
 					// looping through first object
 					getApiPayloadKeys.forEach(keyName => {
 						// using index of to check if the object key name have a matched string if so deleting it from the payload
 						if (keyName.indexOf(item) !== -1) {
-							apiPayload[keyName] = caseService.sentenceCase(apiPayload[keyName])
+							if (keyName !== 'position') {
+								apiPayload[keyName] = caseService.sentenceCase(apiPayload[keyName])
+							}
 						}
 					})
 				})
