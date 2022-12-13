@@ -4,7 +4,23 @@
         <div class="card-body">
             <div class="alert alert-success" role="alert"><i class="bi bi-check-circle-fill"></i> <strong><u>Thank you
                         for your submission!</u></strong>
-                <p data-ng-repeat="payload in submitPayload">{{$index +1}}. {{payload}}</p>
+                <p data-ng-repeat="payload in submitPayload"><span data-ng-if="index > 0"> Also, </span>Your
+                    {{payload.change_type}} submission for <span
+                        data-ng-if="payload.change_type ==='nameChange'">{{payload.old_name_placeholder}}</span><span
+                        data-ng-if="payload.change_type !=='nameChange'">{{payload.title}}
+                        {{payload.first_name}}
+                        {{payload.last_name}}</span> has been sent to the Education
+                    Technology Office. We will be in concact with you once the account <span data-ng-switch
+                        on="payload.change_type">
+                        <span data-ng-switch-when="newStaff">the account has been created.</span>
+                        <span data-ng-switch-when="transferringStaff">has been transferred.</span>
+                        <span data-ng-switch-when="jobChange">has been moved.</span>
+                        <span data-ng-switch-when="nameChange">name has been changed.</span>
+                        <span data-ng-switch-when="exitingStaff">has been deactivated.</span>
+                    </span>
+                </p>
+                <p>This will occur around {{payload.deadline}} unless specified
+                    otherwise.</p>
                 <!-- <p>Your submission for <span
                         data-ng-if="userContext.prevContext ==='nameChange'">{{submitPayload[userContext.prevContext].old_name_placeholder}}</span>
                     <span
