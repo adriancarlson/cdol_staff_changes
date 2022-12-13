@@ -34,7 +34,8 @@ define(['angular'], function (angular) {
 		}
 
 		this.titleCase = function (str) {
-			return str
+			const buildString = str || ''
+			return buildString
 				.toLowerCase()
 				.split(' ')
 				.map(function (word) {
