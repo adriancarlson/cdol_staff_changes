@@ -4,12 +4,22 @@
             <div class="ms-3">
                 <div class="card">
                     <div class="card-header">
-                        <div class="col ps-1"><strong>prevContext</strong>: {{userContext.prevContext}} |
-                            <strong>pageContext</strong>: {{userContext.pageContext}}
+                        <div class="col ps-1">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>pageStatus</strong>: {{userContext.pageStatus}}</li>
+                                <li class="list-group-item"><strong>prevContext</strong>: {{userContext.prevContext}}
+                                </li>
+                                <li class="list-group-item"><strong>pageContext</strong>: {{userContext.pageContext}}
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <div class="card-body">
-                        <strong>submitPayload</strong>: <br /> {{submitPayload}}
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>staffChangeId : {{userContext.staffChangeId}}</strong>
+                            </li>
+                            <li class="list-group-item"><strong>submitPayload</strong>: <br /> {{submitPayload}}
+                            </li>
                     </div>
                 </div>
             </div>
