@@ -4,40 +4,37 @@
         <div class="card-body">
             <div class="alert alert-success" role="alert"><i class="bi bi-check-circle-fill"></i> <strong><u>Thank you
                         for your submission!</u></strong>
-                <p data-ng-repeat="payload in submitPayload"><span data-ng-if="index > 0"> Also, </span>Your
-                    {{payload.change_type}} submission for <span
-                        data-ng-if="payload.change_type ==='nameChange'">{{payload.old_name_placeholder}}</span><span
-                        data-ng-if="payload.change_type !=='nameChange'">{{payload.title}}
-                        {{payload.first_name}}
-                        {{payload.last_name}}</span> has been sent to the Education
-                    Technology Office. We will be in concact with you once the account <span data-ng-switch
-                        on="payload.change_type">
-                        <span data-ng-switch-when="newStaff">the account has been created.</span>
-                        <span data-ng-switch-when="transferringStaff">has been transferred.</span>
-                        <span data-ng-switch-when="jobChange">has been moved.</span>
-                        <span data-ng-switch-when="nameChange">name has been changed.</span>
-                        <span data-ng-switch-when="exitingStaff">has been deactivated.</span>
-                    </span>
-                </p>
-                <p>This will occur around {{payload.deadline}} unless specified
-                    otherwise.</p>
-                <!-- <p>Your submission for <span
-                        data-ng-if="userContext.prevContext ==='nameChange'">{{submitPayload[userContext.prevContext].old_name_placeholder}}</span>
-                    <span
-                        data-ng-if="userContext.prevContext !=='nameChange'">{{submitPayload[userContext.prevContext].title}}
-                        {{submitPayload[userContext.prevContext].first_name}}
-                        {{submitPayload[userContext.prevContext].last_name}}</span> has been sent to the Education
-                    Technology Office. We will be in concact with you once the account <span data-ng-switch
-                        on="userContext.prevContext">
-                        <span data-ng-switch-when="newStaff">the account has been created.</span>
-                        <span data-ng-switch-when="transferringStaff">has been transferred.</span>
-                        <span data-ng-switch-when="jobChange">has been moved.</span>
-                        <span data-ng-switch-when="nameChange">name has been changed.</span>
-                        <span data-ng-switch-when="exitingStaff">has been deactivated.</span>
-                    </span>
-                </p>
-                <p>This will occur around {{submitPayload[userContext.prevContext].deadline}} unless specified
-                    otherwise.</p> -->
+                <div class='alert alert-success mt-2' data-ng-repeat="payload in submitPayload">
+                    <p class="h6"><span data-ng-if="$index > 0"> Also, </span> Your
+                        <span data-ng-switch on="payload.change_type">
+                            <span data-ng-switch-when="newStaff">New Staff</span>
+                            <span data-ng-switch-when="transferringStaff">Transferring Staff</span>
+                            <span data-ng-switch-when="jobChange">Job Change</span>
+                            <span data-ng-switch-when="nameChange">Name Change</span>
+                            <span data-ng-switch-when="exitingStaff">Exiting Staff</span>
+                        </span> submission for <span
+                            data-ng-if="payload.change_type ==='nameChange'">{{payload.old_name_placeholder}}</span><span
+                            data-ng-if="payload.change_type !=='nameChange'">{{payload.title}}
+                            {{payload.first_name}}
+                            {{payload.last_name}}</span> has been sent to the Education Technology Office.
+                    </p>
+                    <p> We will be in concact with you once the account <span data-ng-switch on="payload.change_type">
+                            <span data-ng-switch-when="newStaff">the account has been created.</span>
+                            <span data-ng-switch-when="transferringStaff">has been transferred.</span>
+                            <span data-ng-switch-when="jobChange">has been moved.</span>
+                            <span data-ng-switch-when="nameChange">name has been changed.</span>
+                            <span data-ng-switch-when="exitingStaff">has been deactivated.</span>
+                        </span>
+                    </p>
+                    <p>The <span data-ng-switch on="payload.change_type">
+                            <span data-ng-switch-when="newStaff">account will be created</span>
+                            <span data-ng-switch-when="transferringStaff">transfer will occur</span>
+                            <span data-ng-switch-when="jobChange">job change will occur</span>
+                            <span data-ng-switch-when="nameChange">name change will occur</span>
+                            <span data-ng-switch-when="exitingStaff">account will be deactivated</span>
+                        </span> around {{payload.deadline}} unless specified
+                        otherwise.</p>
+                </div>
             </div>
         </div>
         <div class="card-footer">
