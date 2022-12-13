@@ -63,10 +63,10 @@ define([
 			if (pageContext === 'transferringStaff' || pageContext === 'newStaff') {
 				$scope.getJSONData('schoolsData')
 			}
-			//clearing payload after submission
-			if (pageContext === 'confirm') {
-				$scope.submitPayload = {}
-			}
+			// //clearing payload after submission
+			// if (pageContext === 'confirm') {
+			// 	$scope.submitPayload = {}
+			// }
 			//add and remove form payload objects based on directions of buttons
 			switch (direction) {
 				case 'reset':

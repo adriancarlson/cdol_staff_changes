@@ -4,7 +4,8 @@
         <div class="card-body">
             <div class="alert alert-success" role="alert"><i class="bi bi-check-circle-fill"></i> <strong><u>Thank you
                         for your submission!</u></strong>
-                <p>Your submission for <span
+                <p data-ng-repeat="payload in submitPayload">{{$index +1}}. {{payload}}</p>
+                <!-- <p>Your submission for <span
                         data-ng-if="userContext.prevContext ==='nameChange'">{{submitPayload[userContext.prevContext].old_name_placeholder}}</span>
                     <span
                         data-ng-if="userContext.prevContext !=='nameChange'">{{submitPayload[userContext.prevContext].title}}
@@ -20,7 +21,7 @@
                     </span>
                 </p>
                 <p>This will occur around {{submitPayload[userContext.prevContext].deadline}} unless specified
-                    otherwise.</p>
+                    otherwise.</p> -->
             </div>
         </div>
         <div class="card-footer">
