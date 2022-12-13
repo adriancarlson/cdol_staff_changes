@@ -1,28 +1,19 @@
 <div class="container mt-3">
-    <div class="row">
-        <div class="col">
-            <div class="ms-3">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="col ps-1">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><strong>pageStatus</strong>: {{userContext.pageStatus}}</li>
-                                <li class="list-group-item"><strong>prevContext</strong>: {{userContext.prevContext}}
-                                </li>
-                                <li class="list-group-item"><strong>pageContext</strong>: {{userContext.pageContext}}
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><strong>staffChangeId : {{userContext.staffChangeId}}</strong>
-                            </li>
-                            <li class="list-group-item"><strong>submitPayload</strong>: <br /> {{submitPayload}}
-                            </li>
-                    </div>
-                </div>
-            </div>
+    <div class="card">
+        <div class="card-header ms-0">
+            <ul class="list-group list-group-horizontal ms-0">
+                <li class="list-group-item"><strong>pageStatus</strong>: {{userContext.pageStatus}}</li>
+                <li class="list-group-item"><strong>prevContext</strong>: {{userContext.prevContext}}
+                </li>
+                <li class="list-group-item"><strong>pageContext</strong>: {{userContext.pageContext}}
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group ms-0">
+                <li class="list-group-item"><strong>staffChangeId : {{userContext.staffChangeId}}</strong>
+                </li>
+                <li class="list-group-item"><strong>submitPayload</strong>: <br /> {{submitPayload}}
+                </li>
         </div>
     </div>
-</div>
