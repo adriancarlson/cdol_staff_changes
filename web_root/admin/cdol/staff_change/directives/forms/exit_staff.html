@@ -65,37 +65,40 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.exitingStaff.first_name">
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.first_name">
                     <div class="col-auto">
                         <div class="card">
                             <div class="card-header fw-semibold ps-1 req">{{ submitPayload.exitingStaff.first_name}} {{
                                 submitPayload.exitingStaff.last_name}}'s Deactivation
                                 Date</div>
                             <div class="card-body">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-today" data-ng-model="submitPayload.exitingStaff.date_radio"
-                                        value="today" data-ng-required="!submitPayload.exitingStaff.date_radio">
-                                    <label class="form-check-label" for="exit-date-today">Today
-                                        ({{ userContext.curDate}})</label>
-                                </div>
-                                <div class="form-check form-check-inline" data-ng-if="userContext.isTodayBeforeJuly">
-                                    <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-june30" data-ng-model="submitPayload.exitingStaff.date_radio"
-                                        value="june30" data-ng-required="!submitPayload.exitingStaff.date_radio">
-                                    <label class="form-check-label" for="exit-date-june30">June
-                                        30th</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-specific" data-ng-model="submitPayload.exitingStaff.date_radio"
-                                        value="other" data-ng-required="!submitPayload.exitingStaff.date_radio">
-                                    <label class="form-check-label" for="exit-date-specific">Specific
-                                        Date</label>
+                                <div data-ng-if="userContext.pageStatus =='Submit'">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="exit-date-group"
+                                            id="exit-date-today" data-ng-model="submitPayload.exitingStaff.date_radio"
+                                            value="today" data-ng-required="!submitPayload.exitingStaff.date_radio">
+                                        <label class="form-check-label" for="exit-date-today">Today
+                                            ({{ userContext.curDate}})</label>
+                                    </div>
+                                    <div class="form-check form-check-inline"
+                                        data-ng-if="userContext.isTodayBeforeJuly">
+                                        <input class="form-check-input" type="radio" name="exit-date-group"
+                                            id="exit-date-june30" data-ng-model="submitPayload.exitingStaff.date_radio"
+                                            value="june30" data-ng-required="!submitPayload.exitingStaff.date_radio">
+                                        <label class="form-check-label" for="exit-date-june30">June
+                                            30th</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="exit-date-group"
+                                            id="exit-date-specific"
+                                            data-ng-model="submitPayload.exitingStaff.date_radio" value="other"
+                                            data-ng-required="!submitPayload.exitingStaff.date_radio">
+                                        <label class="form-check-label" for="exit-date-specific">Specific
+                                            Date</label>
+                                    </div>
                                 </div>
                                 <div class="row row-cols-sm-auto align-items-center mt-2"
-                                    data-ng-if="submitPayload.exitingStaff.date_radio==='other'">
+                                    data-ng-if="submitPayload.exitingStaff.date_radio==='other' || userContext.pageStatus =='Edit'">
                                     <div class="col">
                                         <label class="form-label form-label-sm label-reset req">Deactivation
                                             Date</label><br>
@@ -132,8 +135,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.exitingStaff.first_name">
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.first_name">
                     <div class="col-xl-6">
                         <span class="req-notation"
                             data-ng-show="(submitPayload.hasOwnProperty('transferringStaff') || submitPayload.hasOwnProperty('newStaff')) && submitPayload.exitingStaff.notes">
@@ -152,7 +154,8 @@
                         </div>
                     </div>
                     <div class="col">
-                        <div class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i>
+                        <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary" role="alert"><i
+                                class="bi bi-chat-right-text-fill"></i>
                             <strong><u>Please Note</u></strong>: personal files (i.e. Documents, pictures, music and
                             videos)
                             should be removed by {{
