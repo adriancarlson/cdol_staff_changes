@@ -123,23 +123,6 @@
                 </div>
             </form>
         </div>
-        <div class="card-footer">
-            <div class="row">
-                <div class="col-auto me-auto"><button type="button" class="m-0 p-2 ps-1"
-                        data-ng-click="formDisplay('start', userContext.formType, 'back')"><i
-                            class="bi bi-chevron-left fw-bold"></i> Back</button>
-                </div>
-                <div class="col-auto"><span class="req-notation me-2"
-                        ng-if="(nameChangeForm.$invalid && nameChangeForm.$dirty) || !submitPayload.nameChange.users_dcid">Please
-                        fill all required fields prior to submitting.</span>
-                    <button type="button" id="subBtn" class="m-0 p-2" data-ng-disabled="nameChangeForm.$invalid "
-                        data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
-                    <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
-                        data-ng-click="subConfirm = false">Cancel</button>
-                    <button type="button" id="confBtn" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
-                        data-ng-click="submitStaffChange()">Confirm Submit</button>
-                </div>
-            </div>
-        </div>
+        <form-buttons></form-buttons>
     </div>
 </div>

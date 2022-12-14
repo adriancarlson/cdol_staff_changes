@@ -9,7 +9,8 @@
         <div class="card-header bg-secondary text-bg-secondary bg-gradient fs-6 fw-semibold">Exiting Staff:</div>
         <div class="card-body">
             <form name="staffChangeForm" method="POST" novalidate>
-                <div class="row align-items-center mb-3">
+                <div class="row align-items-center mb-3"
+                    data-ng-if="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && submitPayload.exitingStaff.users_dcid != -1)">
                     <div class="col-auto">
                         <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is not
                             returning?</label><span class="text-muted"><small><em> (Choose --Other-- if staff member is
