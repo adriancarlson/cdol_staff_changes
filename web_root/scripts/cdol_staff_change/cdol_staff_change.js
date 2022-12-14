@@ -39,8 +39,8 @@ define([
 		//pull existing Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
 		$scope.findStaffChangeRecord = async staffChangeId => {
 			if (staffChangeId) {
-				console.log(`Running findStaffChangeRecord with ${staffChangeId}`)
-				$scope.submitPayload = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES/${staffChangeId}`, `GET`, apiPayload)
+				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, staffChangeId)
+				$scope.submitPayload[res.change_type] = await res
 			}
 		}
 		//check if staffChangeId was provided through URL Params and then run findStaffChangeRecord function with that staffChangeId
