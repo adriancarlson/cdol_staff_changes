@@ -301,7 +301,6 @@ define([
 	cdolStaffApp.directive('nameChange', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/name_change.html' }))
 	cdolStaffApp.directive('exitStaff', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/exit_staff.html' }))
 	cdolStaffApp.directive('confirm', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/confirm.html' }))
-	cdolStaffApp.directive('formButtons', () => ({ templateUrl: '/admin/cdol/staff_change/directives/formButtons.html' }))
+	cdolStaffApp.directive('formButtons', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/form_buttons.html' }))
 	cdolStaffApp.directive('tests', () => ({ templateUrl: '/admin/cdol/staff_change/directives/tests.html' }))
-	
 })
