@@ -42,6 +42,7 @@ define([
 			if (staffChangeId) {
 				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, staffChangeId)
 				$scope.submitPayload[res.change_type] = await res
+				$scope.userContext.pageContext = await res.change_type
 			}
 			$scope.$digest()
 			closeLoading()
