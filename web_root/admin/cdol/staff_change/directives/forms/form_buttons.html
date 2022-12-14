@@ -1,7 +1,8 @@
 <div id='form-button-card-footer' class="card-footer">
     <div class="row">
         <div class="col-auto me-auto">
-            <button type="button" class="m-0 p-2 ps-1" data-ng-if="userContext.formType ==='nameChange'"
+            <button type="button" class="m-0 p-2 ps-1"
+                data-ng-if="userContext.formType ==='newStaff' || userContext.formType ==='transferringStaff'|| userContext.formType ==='nameChange'"
                 data-ng-click="formDipslay('start', userContext.formType, 'back')"><i
                     class="bi bi-chevron-left fw-bold"></i> Back</button>
             <div id="bk-btn-group"
@@ -17,6 +18,19 @@
                     data-ng-hide="submitPayload.hasOwnProperty('transferringStaff') || submitPayload.hasOwnProperty('newStaff')"><i
                         class="bi bi-chevron-left fw-bold"></i> Back</button>
             </div>
+        </div>
+        <div id="nxt-btn-group" class="col-auto"
+            data-ng-if="(userContext.formType ==='newStaff' || userContext.formType ==='transferringStaff') && submitPayload[userContext.formType]exit_radio == 1">
+            <!-- Send to exiting staff form -->
+            <button type="button" id="nxtExtBtn" class="m-0 p-2" data-ng-disabled="staffChangeForm.$invalid"
+                data-ng-show="submitPayload[userContext.formType]leaving_radio == 1"
+                data-ng-click="formDipslay('exitingStaff',userContext.formType, 'forward')">
+                Continue <i class="bi bi-chevron-right fw-bold"></i></button>
+            <!-- Send to jobchange form -->
+            <button type="button" id="nxtJobBtn" class="m-0 p-2" data-ng-disabled="staffChangeForm.$invalid"
+                data-ng-show="submitPayload[userContext.formType]position_radio == 1"
+                data-ng-click="formDipslay('jobChange',userContext.formType, 'forward')">
+                Continue <i class="bi bi-chevron-right fw-bold"></i></button>
         </div>
         <div class="col-auto"><span class="req-notation me-2"
                 ng-if="(staffChangeForm.$invalid && staffChangeForm.$dirty) || !submitPayload[userContext.formType]users_dcid">Please

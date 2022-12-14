@@ -362,46 +362,7 @@
                 </div>
             </form>
         </div>
-        <div class="card-footer">
-            <div class="row">
-                <div class="col-auto me-auto"><button type="button" class="m-0 p-2 ps-1"
-                        data-ng-click="formDisplay('start',userContext.formType, 'back')"><i
-                            class="bi bi-chevron-left fw-bold"></i>
-                        Back</button>
-                </div>
-                <div class="col-auto me-0 pe-0">
-                    <p class="req-notation text-end align-middle m-0 p-0 pt-1"
-                        ng-if="(transferringStaffForm.$invalid && transferringStaffForm.$dirty) || !submitPayload.transferringStaff.users_dcid">
-                        Please
-                        fill all required fields prior to submitting.</p>
-                </div>
-                <!-- if replacing someone show next button -->
-                <div id="nxt-btn-group" class="col-auto" data-ng-if="submitPayload.transferringStaff.exit_radio == 1">
-                    <!-- Send to exiting staff form -->
-                    <button type="button" id="nxtExtBtn" class="m-0 p-2"
-                        data-ng-disabled="transferringStaffForm.$invalid"
-                        data-ng-show="submitPayload.transferringStaff.leaving_radio == 1"
-                        data-ng-click="formDisplay('exitingStaff',userContext.formType, 'forward')">
-                        Continue <i class="bi bi-chevron-right fw-bold"></i></button>
-                    <!-- Send to jobchange form -->
-                    <button type="button" id="nxtJobBtn" class="m-0 p-2"
-                        data-ng-disabled="transferringStaffForm.$invalid"
-                        data-ng-show="submitPayload.transferringStaff.position_radio == 1"
-                        data-ng-click="formDisplay('jobChange',userContext.formType, 'forward')">
-                        Continue <i class="bi bi-chevron-right fw-bold"></i></button>
-                </div>
-                <!-- if not replacing anyone show submit button -->
-                <div id="sub-btn-group" class="col-auto"
-                    data-ng-if="submitPayload.transferringStaff.leaving_radio != 1 && submitPayload.transferringStaff.position_radio != 1">
-                    <button type="button" id="subBtn" class="m-0 p-2" data-ng-disabled="transferringStaffForm.$invalid"
-                        data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
-                    <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
-                        data-ng-click="subConfirm = false">Cancel</button>
-                    <button type="button" id="confBtn" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
-                        data-ng-click="submitStaffChange()">Confirm Submit</button>
-                </div>
-            </div>
-        </div>
+        <form-buttons></form-buttons>
     </div>
 </div>
 
