@@ -28,20 +28,23 @@ define([
 		//initilazing empty payload
 		$scope.submitPayload = {}
 		// determining if today between Jan 1st and July 1st
-		const todayBeforeJuly = () => {
+		$scope.todayBeforeJuly = () => {
 			const curYear = new Date().getFullYear()
 			const firstDay = new Date(`01/01/${curYear}`)
 			const lastDay = new Date(`06/30/${curYear}`)
 			const today = new Date()
 			$scope.userContext.isTodayBeforeJuly = today >= firstDay && today < lastDay
 		}
-		todayBeforeJuly()
+		$scope.todayBeforeJuly()
 		//pull existing Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
 		$scope.findStaffChangeRecord = async staffChangeId => {
+			loadingDialog()
 			if (staffChangeId) {
 				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, staffChangeId)
 				$scope.submitPayload[res.change_type] = await res
 			}
+			$scope.$digest()
+			closeLoading()
 		}
 		//check if staffChangeId was provided through URL Params and then run findStaffChangeRecord function with that staffChangeId
 		if ($scope.userContext.staffChangeId) {
