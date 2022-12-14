@@ -64,7 +64,7 @@ define([
 		}
 
 		// function to switch forms and set scope to hold form data
-		$scope.formDipslay = (pageContext, prevContext, direction) => {
+		$scope.formDisplay = (pageContext, prevContext, direction) => {
 			$scope.userContext.pageContext = pageContext
 			$scope.userContext.prevContext = prevContext
 			// console.log('direction', direction)
@@ -290,7 +290,7 @@ define([
 				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', apiPayload)
 			})
 			//sending to confirm screen after submission
-			$scope.formDipslay('confirm', $scope.userContext.pageContext)
+			$scope.formDisplay('confirm', $scope.userContext.pageContext)
 		}
 	})
 	//directives for each form
