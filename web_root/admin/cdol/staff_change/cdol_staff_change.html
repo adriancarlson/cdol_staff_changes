@@ -28,7 +28,7 @@
         &gt; {{userContext.pageStatus}} Staff Change
         ~[wc:admin_navigation_css]
 
-        <div data-ng-if="userContext.pageStatus !='Confirm'">
+        <div data-ng-if="userContext.pageStatus == 'Submit'">
             <h1 class="mb-1">{{userContext.pageStatus}} Staff Change</h1>
             <div id="form-container" data-ng-switch on="userContext.pageContext">
                 <start data-ng-switch-when="start"></start>

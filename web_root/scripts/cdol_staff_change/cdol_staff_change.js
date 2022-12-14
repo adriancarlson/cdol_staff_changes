@@ -36,6 +36,16 @@ define([
 			$scope.userContext.isTodayBeforeJuly = today >= firstDay && today < lastDay
 		}
 		todayBeforeJuly()
+		//pull existing Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
+		$scope.findStaffChangeRecord = async staffChangeId => {
+			if (staffChangeId) {
+				console.log(`Running findStaffChangeRecord with ${staffChangeId}`)
+			}
+		}
+		//check if staffChangeId was provided through URL Params and then run findStaffChangeRecord function with that staffChangeId
+		if ($scope.userContext.staffChangeId) {
+			$scope.findStaffChangeRecord($scope.userContext.staffChangeId)
+		}
 		//had to switch from PQ's to pulling this data through t_list SQL and JSON files because of PowerSchools Data Restriction Framework on PQs
 		$scope.getJSONData = async resource => {
 			if (!$scope[resource]) {
