@@ -2,7 +2,7 @@ define(['angular'], function (angular) {
 	angular.module('psApiModule', []).service('psApiService', function ($http, $q) {
 		this.psApiCall = (tableName, method, payload) => {
 			let deferredResponse = $q.defer()
-			const data = {}
+			let data = {}
 			switch (method) {
 				case 'GET':
 					data = { projection: '*' }
