@@ -40,6 +40,7 @@ define([
 		$scope.findStaffChangeRecord = async staffChangeId => {
 			if (staffChangeId) {
 				console.log(`Running findStaffChangeRecord with ${staffChangeId}`)
+				$scope.submitPayload = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES/${staffChangeId}`, `GET`, apiPayload)
 			}
 		}
 		//check if staffChangeId was provided through URL Params and then run findStaffChangeRecord function with that staffChangeId
