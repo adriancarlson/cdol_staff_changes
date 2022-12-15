@@ -1,38 +1,35 @@
 <div id='form-button-card-footer' class="card-footer">
     <div class="row">
         <div class="col-auto me-auto">
-            <button type="button" class="m-0 p-2 ps-1"
-                data-ng-if="userContext.formType ==='newStaff' || userContext.formType ==='transferringStaff'|| userContext.formType ==='nameChange'"
-                data-ng-click="formDipslay('start', userContext.formType, 'back')"><i
-                    class="bi bi-chevron-left fw-bold"></i> Back</button>
-            <div id="bk-btn-group"
-                data-ng-if="userContext.formType ==='exitingStaff' || userContext.formType ==='jobChange'">
+            <div id="bk-btn-group">
                 <!-- back to previous screen -->
                 <button type="button" class="m-0 p-2 ps-1"
-                    data-ng-click="formDisplay(userContext.prevContext,userContext.formType, 'back')"
-                    data-ng-show="submitPayload.hasOwnProperty('transferringStaff') || submitPayload.hasOwnProperty('newStaff')"><i
-                        class="bi bi-chevron-left fw-bold"></i> Previous</button>
+                    data-ng-show="userContext.prevContext != userContext.pageContext && (submitPayload[userContext.prevContext].leaving_radio == 1 || submitPayload[userContext.prevContext].position_radio == 1)"
+                    data-ng-click="formDisplay(userContext.prevContext,userContext.formType, 'back')"><i
+                        class="bi bi-chevron-left fw-bold"></i> Previous screen</button>
                 <!-- back to start -->
                 <button type="button" class="m-0 p-2 ps-1"
-                    data-ng-click="formDisplay('start',userContext.formType, 'back')"
-                    data-ng-hide="submitPayload.hasOwnProperty('transferringStaff') || submitPayload.hasOwnProperty('newStaff')"><i
-                        class="bi bi-chevron-left fw-bold"></i> Back</button>
+                    data-ng-hide="userContext.prevContext != userContext.pageContext && (submitPayload[userContext.prevContext].leaving_radio == 1 || submitPayload[userContext.prevContext].position_radio == 1)"
+                    data-ng-click="formDisplay('start',userContext.formType, 'back')"><i
+                        class="bi bi-chevron-left fw-bold"></i> Back to start</button>
             </div>
         </div>
         <div id="nxt-btn-group" class="col-auto"
-            data-ng-if="(userContext.formType ==='newStaff' || userContext.formType ==='transferringStaff') && submitPayload[userContext.formType].exit_radio == 1">
+            data-ng-if="(submitPayload[userContext.pageContext].leaving_radio == 1 || submitPayload[userContext.pageContext].position_radio == 1)">
             <!-- Send to exiting staff form -->
-            <button type="button" id="nxtExtBtn" class="m-0 p-2" data-ng-disabled="staffChangeForm.$invalid"
+            <button type="button" id="nxtExtBtn" class="m-0 p-2"
                 data-ng-show="submitPayload[userContext.formType].leaving_radio == 1"
-                data-ng-click="formDipslay('exitingStaff',userContext.formType, 'forward')">
+                data-ng-click="formDisplay('exitingStaff',userContext.formType, 'forward')">
                 Continue <i class="bi bi-chevron-right fw-bold"></i></button>
             <!-- Send to jobchange form -->
-            <button type="button" id="nxtJobBtn" class="m-0 p-2" data-ng-disabled="staffChangeForm.$invalid"
+            <button type="button" id="nxtJobBtn" class="m-0 p-2"
                 data-ng-show="submitPayload[userContext.formType].position_radio == 1"
-                data-ng-click="formDipslay('jobChange',userContext.formType, 'forward')">
+                data-ng-click="formDisplay('jobChange',userContext.formType, 'forward')">
                 Continue <i class="bi bi-chevron-right fw-bold"></i></button>
         </div>
-        <div class="col-auto"><span class="req-notation me-2"
+        <div class="col-auto" id="sub-btn-group"
+            data-ng-if="(submitPayload[userContext.pageContext].leaving_radio != 1 && submitPayload[userContext.pageContext].position_radio != 1)">
+            <span class="req-notation me-2"
                 ng-if="(staffChangeForm.$invalid && staffChangeForm.$dirty) || !submitPayload[userContext.formType].users_dcid">Please
                 fill all required fields prior to submitting.</span>
             <button type="button" id="subBtn" class="m-0 p-2" data-ng-disabled="staffChangeForm.$invalid"
