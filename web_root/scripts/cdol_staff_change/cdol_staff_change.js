@@ -37,6 +37,17 @@ define([
 		}
 		$scope.todayBeforeJuly()
 
+		//pull existing Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
+		$scope.getStaffChange = async staffChangeId => {
+			loadingDialog()
+			if (staffChangeId) {
+				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, staffChangeId)
+				$scope.submitPayload[res.change_type] = await res
+				$scope.userContext.pageContext = await res.change_type
+			}
+			$scope.$digest()
+			closeLoading()
+		}
 		//check if staffChangeId was provided through URL Params and then run getStaffChange function with that staffChangeId
 		if ($scope.userContext.staffChangeId) {
 			$scope.getStaffChange($scope.userContext.staffChangeId)
@@ -282,17 +293,7 @@ define([
 			//sending to confirm screen after submission
 			$scope.formDisplay('confirm', $scope.userContext.pageContext)
 		}
-		//pull existing Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
-		$scope.getStaffChange = async staffChangeId => {
-			loadingDialog()
-			if (staffChangeId) {
-				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, staffChangeId)
-				$scope.submitPayload[res.change_type] = await res
-				$scope.userContext.pageContext = await res.change_type
-			}
-			$scope.$digest()
-			closeLoading()
-		}
+
 		$scope.updateStaffChange = async form => {
 			console.log(`Running updateStaffChange from ${form}`)
 			if ($scope.userContext.staffChangeId) {
