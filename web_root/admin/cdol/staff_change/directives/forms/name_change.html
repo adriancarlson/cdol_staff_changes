@@ -58,12 +58,12 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.nameChange.first_name">
+                    data-ng-if="submitPayload.nameChange.first_name">
                     <div class="col-auto">
                         <div class="card">
                             <div class="card-header fw-semibold ps-1 req">Requested Name Change Date</div>
                             <div class="card-body">
-                                <div class="form-check form-check-inline">
+                                <div  data-ng-if="userContext.pageStatus =='Submit'" class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="exit-date-group"
                                         id="exit-date-today" data-ng-model="submitPayload.nameChange.date_radio"
                                         value="today" data-ng-required="!submitPayload.nameChange.date_radio">
@@ -85,7 +85,7 @@
                                         Date</label>
                                 </div>
                                 <div class="row row-cols-sm-auto align-items-center mt-2"
-                                    data-ng-if="submitPayload.nameChange.date_radio==='other'">
+                                    data-ng-if="submitPayload.nameChange.date_radio==='other' || userContext.pageStatus =='Edit'">
                                     <div class="col">
                                         <label class="form-label form-label-sm label-reset req">Requested Name Change
                                             Date</label><br>
