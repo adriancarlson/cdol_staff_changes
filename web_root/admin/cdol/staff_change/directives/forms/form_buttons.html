@@ -6,12 +6,12 @@
                 <button type="button" class="m-0 p-2 ps-1"
                     data-ng-show="userContext.prevContext != userContext.pageContext && (submitPayload[userContext.prevContext].leaving_radio == 1 || submitPayload[userContext.prevContext].position_radio == 1)"
                     data-ng-click="formDisplay(userContext.prevContext,userContext.formType, 'back')"><i
-                        class="bi bi-chevron-left fw-bold"></i> Previous screen</button>
+                        class="bi bi-chevron-left fw-bold"></i> Previous</button>
                 <!-- back to start -->
                 <button type="button" class="m-0 p-2 ps-1"
                     data-ng-hide="userContext.prevContext != userContext.pageContext && (submitPayload[userContext.prevContext].leaving_radio == 1 || submitPayload[userContext.prevContext].position_radio == 1)"
                     data-ng-click="formDisplay('start',userContext.formType, 'back')"><i
-                        class="bi bi-chevron-left fw-bold"></i> Back to start</button>
+                        class="bi bi-chevron-left fw-bold"></i> Back</button>
             </div>
         </div>
         <div id="nxt-btn-group" class="col-auto"
