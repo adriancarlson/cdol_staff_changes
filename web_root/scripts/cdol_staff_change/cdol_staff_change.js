@@ -36,20 +36,10 @@ define([
 			$scope.userContext.isTodayBeforeJuly = today >= firstDay && today < lastDay
 		}
 		$scope.todayBeforeJuly()
-		//pull existing Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
-		$scope.findStaffChangeRecord = async staffChangeId => {
-			loadingDialog()
-			if (staffChangeId) {
-				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, staffChangeId)
-				$scope.submitPayload[res.change_type] = await res
-				$scope.userContext.pageContext = await res.change_type
-			}
-			$scope.$digest()
-			closeLoading()
-		}
-		//check if staffChangeId was provided through URL Params and then run findStaffChangeRecord function with that staffChangeId
+
+		//check if staffChangeId was provided through URL Params and then run getStaffChange function with that staffChangeId
 		if ($scope.userContext.staffChangeId) {
-			$scope.findStaffChangeRecord($scope.userContext.staffChangeId)
+			$scope.getStaffChange($scope.userContext.staffChangeId)
 		}
 		//had to switch from PQ's to pulling this data through t_list SQL and JSON files because of PowerSchools Data Restriction Framework on PQs
 		$scope.getJSONData = async resource => {
@@ -211,7 +201,7 @@ define([
 			}
 		}
 
-		$scope.submitStaffChange = async () => {
+		$scope.createStaffChange = async () => {
 			//adding generic fields and values needed for any payload
 			const commonPayload = {
 				schoolid: $scope.userContext.curSchoolId,
@@ -292,16 +282,27 @@ define([
 			//sending to confirm screen after submission
 			$scope.formDisplay('confirm', $scope.userContext.pageContext)
 		}
+		//pull existing Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
+		$scope.getStaffChange = async staffChangeId => {
+			loadingDialog()
+			if (staffChangeId) {
+				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, staffChangeId)
+				$scope.submitPayload[res.change_type] = await res
+				$scope.userContext.pageContext = await res.change_type
+			}
+			$scope.$digest()
+			closeLoading()
+		}
 		$scope.updateStaffChange = async form => {
 			console.log(`Running updateStaffChange from ${form}`)
-			if ($scope.userContext.curStaffId) {
+			if ($scope.userContext.staffChangeId) {
 				$scope.toListRedirect(form)
 			}
 		}
 		$scope.deleteStaffChange = async form => {
 			console.log(`Running deleteStaffChange from ${form}`)
-			if ($scope.userContext.curStaffId) {
-				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', $scope.userContext.curStaffId)
+			if ($scope.userContext.staffChangeId) {
+				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', $scope.userContext.staffChangeId)
 				await $scope.toListRedirect(form)
 			}
 		}
