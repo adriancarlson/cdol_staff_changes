@@ -43,20 +43,23 @@
     <div class="row" data-ng-if="userContext.pageStatus =='Edit'">
         <div class="col-auto me-auto">
             <div id="bk-btn-group">
-                <a id="bkBtn" class="button" data-ng-show="!delUpdate"
-                    href="/admin/cdol/staff_change/cdol_staff_change_list.html">Back</a>
+                <button title="bkBtn" id="bkBtn" type="button" class="m-0 p-2 ps-1" data-ng-show="!delUpdate"
+                    data-ng-click="toListRedirect(userContext.pageContext)"><i class="bi bi-chevron-left fw-bold"></i>
+                    Back</button>
             </div>
         </div>
         <div class="col-auto" id="sub-btn-group">
             <span class="req-notation" data-ng-show="staffChangeForm.$invalid && staffChangeForm.$dirty">Please
                 fill all required fields prior to submitting.</span>
-            <button id="canBtn" type="button" data-ng-show="delUpdate" data-ng-click="delUpdate = false">Cancel</button>
-            <button id="conBtn" class="dark-orange" type="button" data-ng-show="delUpdate"
+            <button id="canBtn" class="m-0 p-2" type="button" data-ng-show="delUpdate"
+                data-ng-click="delUpdate = false">Cancel</button>
+            <button id="conBtn" class="m-0 p-2 dark-orange" type="button" data-ng-show="delUpdate"
                 data-ng-click="deleteStaffChange(userContext.pageContext)">Confirm Deletion</button>
-            <button id="delBtn" type="button" data-ng-show="!delUpdate" data-ng-click="delUpdate = true">Delete
+            <button id="delBtn" class="m-0 p-2" type="button" data-ng-show="!delUpdate"
+                data-ng-click="delUpdate = true">Delete
                 Submission</button>
-            <button id="upBtn" type="button" data-ng-disabled="staffChangeForm.$invalid" data-ng-show="!delUpdate"
-                data-ng-click="updateStaffChange(userContext.pageContext)">Submit
+            <button id="upBtn" class="m-0 p-2" type="button" data-ng-disabled="staffChangeForm.$invalid"
+                data-ng-show="!delUpdate" data-ng-click="updateStaffChange(userContext.pageContext)">Submit
                 Update</button>
         </div>
     </div>

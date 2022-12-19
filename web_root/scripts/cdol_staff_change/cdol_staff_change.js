@@ -294,12 +294,15 @@ define([
 		}
 		$scope.updateStaffChange = async form => {
 			console.log(`Running updateStaffChange from ${form}`)
+			if ($scope.userContext.curStaffId) {
+				$scope.toListRedirect(form)
+			}
 		}
 		$scope.deleteStaffChange = async form => {
 			console.log(`Running deleteStaffChange from ${form}`)
-			let redirectPath = '/admin/cdol/staff_change/cdol_staff_change_list.html'
 
 			if ($scope.userContext.curStaffId) {
+				$scope.toListRedirect(form)
 				// $http({
 				// 	url: '/ws/schema/table/U_CDOL_STAFF_CHANGES/' + $scope.userContext.curStaffId,
 				// 	method: 'DELETE',
@@ -308,24 +311,27 @@ define([
 				// 		'Content-Type': 'application/json'
 				// 	}
 				// })
-				switch (form) {
-					case 'transferringStaff':
-						redirectPath = redirectPath + '#tabTwoContent'
-						break
-					case 'jobChange':
-						redirectPath = redirectPath + '#tabThreeContent'
-						break
-					case 'nameChange':
-						redirectPath = redirectPath + '#tabFourContent'
-						break
-					case 'exitingStaff':
-						redirectPath = redirectPath + '#tabFiveContent'
-						break
-					default:
-						redirectPath
-				}
-				$window.location.href = redirectPath
 			}
+		}
+		$scope.toListRedirect = form => {
+			let redirectPath = '/admin/cdol/staff_change/cdol_staff_change_list.html'
+			switch (form) {
+				case 'transferringStaff':
+					redirectPath = redirectPath + '#tabTwoContent'
+					break
+				case 'jobChange':
+					redirectPath = redirectPath + '#tabThreeContent'
+					break
+				case 'nameChange':
+					redirectPath = redirectPath + '#tabFourContent'
+					break
+				case 'exitingStaff':
+					redirectPath = redirectPath + '#tabFiveContent'
+					break
+				default:
+					redirectPath
+			}
+			$window.location.href = redirectPath
 		}
 	})
 	//directives for each form
