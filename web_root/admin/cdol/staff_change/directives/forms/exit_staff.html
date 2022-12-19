@@ -101,7 +101,8 @@
                                 <div class="row row-cols-sm-auto align-items-center mt-2"
                                     data-ng-if="submitPayload.exitingStaff.date_radio==='other' || userContext.pageStatus =='Edit'">
                                     <div class="col">
-                                        <label class="form-label form-label-sm label-reset req">Deactivation
+                                        <label data-ng-if="userContext.pageStatus =='Submit'"
+                                            class="form-label form-label-sm label-reset req">Deactivation
                                             Date</label><br>
                                         <input title="deadline" type="text" class="psDateWidget"
                                             ng-model="submitPayload.exitingStaff.deadline" ng-required="true">
