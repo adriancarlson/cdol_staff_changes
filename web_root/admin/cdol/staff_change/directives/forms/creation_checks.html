@@ -1,10 +1,104 @@
-<div id="creation-checks-container" class="container-fluid">
+<div id="creation-checks-container" class="container-fluid p-0">
     <div class="card">
-        <div class="card-header bg-blue-200 text-bg-blue bg-gradient fw-semibold text-center">Diocesan Office Account
-            Creation
+        <div class="card-header bg-primary text-bg-primary text-dark bg-opacity-25 bg-gradient fw-semibold text-center">
+            Diocesan Office Account
+            Checks
         </div>
         <div class="card-body">
-            <p>this is the card body</p>
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div
+                            class="card-header bg-primary text-bg-primary text-dark bg-opacity-10 bg-gradient fw-semibold">
+                            <input class="form-check-input me-1" type="checkbox" value="" id="">
+                            <label class="form-check-label stretched-link" for="">PowerSchool
+                                Account
+                                <span data-ng-switch on="submitPayload[userContext.pageContext].change_type">
+                                    <span data-ng-switch-when="newStaff"> Created</span>
+                                    <span data-ng-switch-when="transferringStaff"> Moved</span>
+                                    <span data-ng-switch-when="jobChange"> Adjusted</span>
+                                    <span data-ng-switch-when="nameChange"> Updated</span>
+                                    <span data-ng-switch-when="exitingStaff"> Deactivated</span>
+                                </span>?
+                            </label>
+                        </div>
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush m-0">
+                                <li class="list-group-item">An item</li>
+                                <li class="list-group-item">A second item</li>
+                                <li class="list-group-item">A third item</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card">
+                        <div
+                            class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
+                            <input class="form-check-input me-1" type="checkbox" value="" id="">
+                            <label class="form-check-label stretched-link" for="">AD
+                                Account<span data-ng-switch on="submitPayload[userContext.pageContext].change_type">
+                                    <span data-ng-switch-when="newStaff"> Created</span>
+                                    <span data-ng-switch-when="transferringStaff"> Moved</span>
+                                    <span data-ng-switch-when="jobChange"> Adjusted</span>
+                                    <span data-ng-switch-when="nameChange"> Updated</span>
+                                    <span data-ng-switch-when="exitingStaff"> Disabled</span>
+                                </span>?</label>
+                        </div>
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush m-0">
+                                <li class="list-group-item">An item</li>
+                                <li class="list-group-item">A second item</li>
+                                <li class="list-group-item">A third item</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col"
+                    data-ng-hide="userContext.pageContext =='jobChange' || userContext.pageContext =='exitingStaff'">
+                    <div class="card">
+                        <div
+                            class="card-header bg-warning text-bg-warning text-dark bg-opacity-10 bg-gradient fw-semibold">
+                            <input class="form-check-input me-1" type="checkbox" value="" id="">
+                            <label class="form-check-label stretched-link" for="">O365
+                                Account<span data-ng-switch on="submitPayload[userContext.pageContext].change_type">
+                                    <span data-ng-switch-when="newStaff"> Created</span>
+                                    <span data-ng-switch-when="transferringStaff"> Verified</span>
+                                    <span data-ng-switch-when="nameChange"> Updated</span>
+                                </span>?</label>
+                        </div>
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush m-0">
+                                <li class="list-group-item">An item</li>
+                                <li class="list-group-item">A second item</li>
+                                <li class="list-group-item">A third item</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col"
+                    data-ng-hide="userContext.pageContext =='jobChange' || userContext.pageContext =='exitingStaff'">
+                    <div class="card">
+                        <div
+                            class="card-header bg-danger text-bg-danger text-dark bg-opacity-10 bg-gradient fw-semibold">
+                            <input class="form-check-input me-1" type="checkbox" value="" id="">
+                            <label class="form-check-label stretched-link" for="">LMS
+                                Account<span data-ng-switch on="submitPayload[userContext.pageContext].change_type">
+                                    <span data-ng-switch-when="newStaff"> Created</span>
+                                    <span data-ng-switch-when="transferringStaff"> Double Check</span>
+                                    <span data-ng-switch-when="nameChange"> Updated</span>
+                                </span>?</label>
+                        </div>
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush m-0">
+                                <li class="list-group-item">An item</li>
+                                <li class="list-group-item">A second item</li>
+                                <li class="list-group-item">A third item</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
