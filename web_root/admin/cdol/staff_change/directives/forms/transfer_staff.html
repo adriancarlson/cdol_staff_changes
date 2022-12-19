@@ -88,8 +88,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.users_dcid">
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid">
                     <div class="col-auto">
                         <div class="card">
                             <div class="card-header fw-semibold ps-1 req">{{
@@ -97,32 +96,39 @@
                                 submitPayload.transferringStaff.last_name}}'s Transfer
                                 Date</div>
                             <div class="card-body">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-today" data-ng-model="submitPayload.transferringStaff.date_radio"
-                                        value="today" data-ng-required="!submitPayload.transferringStaff.date_radio">
-                                    <label class="form-check-label" for="exit-date-today">Today
-                                        ({{ userContext.curDate}})</label>
-                                </div>
-                                <div class="form-check form-check-inline" data-ng-if="userContext.isTodayBeforeJuly">
-                                    <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-june30" data-ng-model="submitPayload.transferringStaff.date_radio"
-                                        value="june30" data-ng-required="!submitPayload.transferringStaff.date_radio">
-                                    <label class="form-check-label" for="exit-date-june30">June
-                                        30th</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="exit-date-group"
-                                        id="exit-date-specific"
-                                        data-ng-model="submitPayload.transferringStaff.date_radio" value="other"
-                                        data-ng-required="!submitPayload.transferringStaff.date_radio">
-                                    <label class="form-check-label" for="exit-date-specific">Specific
-                                        Date</label>
+                                <div data-ng-if="userContext.pageStatus =='Submit'">
+                                    <div class="form-check form-check-inline">
+
+                                        <input class="form-check-input" type="radio" name="exit-date-group"
+                                            id="exit-date-today"
+                                            data-ng-model="submitPayload.transferringStaff.date_radio" value="today"
+                                            data-ng-required="!submitPayload.transferringStaff.date_radio">
+                                        <label class="form-check-label" for="exit-date-today">Today
+                                            ({{ userContext.curDate}})</label>
+                                    </div>
+                                    <div class="form-check form-check-inline"
+                                        data-ng-if="userContext.isTodayBeforeJuly">
+                                        <input class="form-check-input" type="radio" name="exit-date-group"
+                                            id="exit-date-june30"
+                                            data-ng-model="submitPayload.transferringStaff.date_radio" value="june30"
+                                            data-ng-required="!submitPayload.transferringStaff.date_radio">
+                                        <label class="form-check-label" for="exit-date-june30">June
+                                            30th</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="exit-date-group"
+                                            id="exit-date-specific"
+                                            data-ng-model="submitPayload.transferringStaff.date_radio" value="other"
+                                            data-ng-required="!submitPayload.transferringStaff.date_radio">
+                                        <label class="form-check-label" for="exit-date-specific">Specific
+                                            Date</label>
+                                    </div>
                                 </div>
                                 <div class="row row-cols-sm-auto align-items-center mt-2"
-                                    data-ng-if="submitPayload.transferringStaff.date_radio==='other'">
+                                    data-ng-if="submitPayload.transferringStaff.date_radio==='other' || userContext.pageStatus =='Edit'">
                                     <div class="col">
-                                        <label class="form-label form-label-sm label-reset req">Transfer
+                                        <label data-ng-if="userContext.pageStatus =='Submit'"
+                                            class="form-label form-label-sm label-reset req">Transfer
                                             Date</label><br>
                                         <input title="Transfer Date" type="text" class="psDateWidget"
                                             ng-model="submitPayload.transferringStaff.deadline" ng-required="true">
@@ -133,8 +139,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.users_dcid">
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid">
                     <div class="col-auto">
                         <label for="prev_school_number" class="form-label form-label-sm label-reset req">Where was {{
                             submitPayload.transferringStaff.first_name}} {{
@@ -166,12 +171,11 @@
                             data-ng-model="submitPayload.transferringStaff.prev_school_name">
                     </div>
                 </div>
-                <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.users_dcid">
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid">
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
-                                <div class="row align-items-center mb-3">
+                                <div data-ng-if="userContext.pageStatus =='Submit'" class="row align-items-center mb-3">
                                     <div class="col-auto">
                                         <label class="form-label form-label-sm label-reset req">Will {{
                                             submitPayload.transferringStaff.first_name}} {{
@@ -194,7 +198,7 @@
                                     </div>
                                 </div>
                                 <div class="row align-items-center mb-3"
-                                    data-ng-if="submitPayload.transferringStaff.exit_radio == 1">
+                                    data-ng-if="submitPayload.transferringStaff.exit_radio == 1 || userContext.pageStatus =='Edit'">
                                     <div class="col-auto">
                                         <label for="replacing_dcid" class="form-label form-label-sm label-reset req">Who
                                             is
@@ -266,7 +270,7 @@
                                 </div>
                                 <div class="row align-items-center mb-3"
                                     data-ng-if="submitPayload.transferringStaff.replace_dcid">
-                                    <div class="col">
+                                    <div class="col" data-ng-if="userContext.pageStatus =='Submit'">
                                         <label class="form-label form-label-sm label-reset req">Is {{
                                             submitPayload.transferringStaff.replace_first_name}} {{
                                             submitPayload.transferringStaff.replace_last_name}} leaving
@@ -335,8 +339,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.transferringStaff.first_name">
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.first_name">
                     <div class="col-xl-6">
                         <div class="form-floating">
                             <textarea class="form-control" placeholder="Additional Notes/Details?" id="exit-add-notes"
@@ -345,7 +348,7 @@
                             <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col" data-ng-if="userContext.pageStatus =='Submit'">
                         <div class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i>
                             <strong><u>Please Note</u></strong>: personal files (i.e. Documents, pictures, music and
                             videos)
