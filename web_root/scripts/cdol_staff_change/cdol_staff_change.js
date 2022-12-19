@@ -292,6 +292,41 @@ define([
 			//sending to confirm screen after submission
 			$scope.formDisplay('confirm', $scope.userContext.pageContext)
 		}
+		$scope.updateStaffChange = async form => {
+			console.log(`Running updateStaffChange from ${form}`)
+		}
+		$scope.deleteStaffChange = async form => {
+			console.log(`Running deleteStaffChange from ${form}`)
+			let redirectPath = '/admin/cdol/staff_change/cdol_staff_change_list.html'
+
+			if ($scope.userContext.curStaffId) {
+				// $http({
+				// 	url: '/ws/schema/table/U_CDOL_STAFF_CHANGES/' + $scope.userContext.curStaffId,
+				// 	method: 'DELETE',
+				// 	headers: {
+				// 		Accept: 'application/json',
+				// 		'Content-Type': 'application/json'
+				// 	}
+				// })
+				switch (form) {
+					case 'transferringStaff':
+						redirectPath = redirectPath + '#tabTwoContent'
+						break
+					case 'jobChange':
+						redirectPath = redirectPath + '#tabThreeContent'
+						break
+					case 'nameChange':
+						redirectPath = redirectPath + '#tabFourContent'
+						break
+					case 'exitingStaff':
+						redirectPath = redirectPath + '#tabFiveContent'
+						break
+					default:
+						redirectPath
+				}
+				$window.location.href = redirectPath
+			}
+		}
 	})
 	//directives for each form
 	cdolStaffApp.directive('start', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/start.html' }))
