@@ -301,7 +301,6 @@ define([
 			}
 		}
 		$scope.deleteStaffChange = async form => {
-			console.log(`Running deleteStaffChange from ${form}`)
 			if ($scope.userContext.staffChangeId) {
 				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', $scope.userContext.staffChangeId)
 				await $scope.toListRedirect(form)
@@ -337,5 +336,6 @@ define([
 	cdolStaffApp.directive('exitStaff', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/exit_staff.html' }))
 	cdolStaffApp.directive('confirm', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/confirm.html' }))
 	cdolStaffApp.directive('formButtons', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/form_buttons.html' }))
+	cdolStaffApp.directive('creationChecks', () => ({ templateUrl: '/admin/cdol/staff_change/directives/forms/creation_checks.html' }))
 	cdolStaffApp.directive('tests', () => ({ templateUrl: '/admin/cdol/staff_change/directives/tests.html' }))
 })
