@@ -300,33 +300,25 @@ define([
 		}
 		$scope.deleteStaffChange = async form => {
 			console.log(`Running deleteStaffChange from ${form}`)
-
 			if ($scope.userContext.curStaffId) {
-				$scope.toListRedirect(form)
-				// $http({
-				// 	url: '/ws/schema/table/U_CDOL_STAFF_CHANGES/' + $scope.userContext.curStaffId,
-				// 	method: 'DELETE',
-				// 	headers: {
-				// 		Accept: 'application/json',
-				// 		'Content-Type': 'application/json'
-				// 	}
-				// })
+				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', $scope.userContext.curStaffId)
+				await $scope.toListRedirect(form)
 			}
 		}
 		$scope.toListRedirect = form => {
 			let redirectPath = '/admin/cdol/staff_change/cdol_staff_change_list.html'
 			switch (form) {
 				case 'transferringStaff':
-					redirectPath = redirectPath + '#tabTwoContent'
+					redirectPath = `${redirectPath}#tabTwoContent`
 					break
 				case 'jobChange':
-					redirectPath = redirectPath + '#tabThreeContent'
+					redirectPath = `${redirectPath}#tabThreeContent`
 					break
 				case 'nameChange':
-					redirectPath = redirectPath + '#tabFourContent'
+					redirectPath = `${redirectPath}#tabFourContent`
 					break
 				case 'exitingStaff':
-					redirectPath = redirectPath + '#tabFiveContent'
+					redirectPath = `${redirectPath}#tabFiveContent`
 					break
 				default:
 					redirectPath

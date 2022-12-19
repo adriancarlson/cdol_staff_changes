@@ -8,24 +8,9 @@ define(['angular'], function (angular) {
 				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			}
+			// CRUD
 			switch (method) {
-				case 'GET':
-					$http({
-						url: `/ws/schema/table/${tableName}/${payload}`,
-						method: 'GET',
-						params: {
-							projection: '*'
-						}
-					}).then(
-						res => {
-							deferredResponse.resolve(res.data.tables[tableName])
-						},
-						res => {
-							psAlert({ message: `There was an error ${method}ing the data from ${table}`, title: `${method} Error` })
-						}
-					)
-					return deferredResponse.promise
-					break
+				//Create
 				case 'POST':
 					const data = { tables: {} }
 					data.tables[tableName] = payload
@@ -41,6 +26,41 @@ define(['angular'], function (angular) {
 						},
 						res => {
 							psAlert({ message: `There was an error ${method}ing the data to ${table}`, title: `${method} Error` })
+						}
+					)
+					return deferredResponse.promise
+					break
+				//READ
+				case 'GET':
+					$http({
+						url: `/ws/schema/table/${tableName}/${payload}`,
+						method: method,
+						params: {
+							projection: '*'
+						}
+					}).then(
+						res => {
+							deferredResponse.resolve(res.data.tables[tableName])
+						},
+						res => {
+							psAlert({ message: `There was an error ${method}ing the data from ${table}`, title: `${method} Error` })
+						}
+					)
+					return deferredResponse.promise
+					break
+				//UPDATE
+				// DELETE
+				case 'DELETE':
+					$http({
+						url: `/ws/schema/table/${tableName}/${payload}`,
+						method: method,
+						headers: service.headers
+					}).then(
+						res => {
+							deferredResponse.resolve(res)
+						},
+						res => {
+							psAlert({ message: `There was an error ${method}ing the data from ${table}`, title: `${method} Error` })
 						}
 					)
 					return deferredResponse.promise

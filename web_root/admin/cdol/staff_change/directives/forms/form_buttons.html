@@ -51,14 +51,14 @@
         <div class="col-auto" id="sub-btn-group">
             <span class="req-notation" data-ng-show="staffChangeForm.$invalid && staffChangeForm.$dirty">Please
                 fill all required fields prior to submitting.</span>
-            <button id="canBtn" class="m-0 p-2" type="button" data-ng-show="delUpdate"
+            <button id="canBtn" class="ms-2 p-2" type="button" data-ng-show="delUpdate"
                 data-ng-click="delUpdate = false">Cancel</button>
-            <button id="conBtn" class="m-0 p-2 dark-orange" type="button" data-ng-show="delUpdate"
+            <button id="conBtn" class="ms-2 p-2 dark-orange" type="button" data-ng-show="delUpdate"
                 data-ng-click="deleteStaffChange(userContext.pageContext)">Confirm Deletion</button>
-            <button id="delBtn" class="m-0 p-2" type="button" data-ng-show="!delUpdate"
+            <button id="delBtn" class="ms-2 p-2" type="button" data-ng-show="!delUpdate"
                 data-ng-click="delUpdate = true">Delete
                 Submission</button>
-            <button id="upBtn" class="m-0 p-2" type="button" data-ng-disabled="staffChangeForm.$invalid"
+            <button id="upBtn" class="ms-2 p-2" type="button" data-ng-disabled="staffChangeForm.$invalid"
                 data-ng-show="!delUpdate" data-ng-click="updateStaffChange(userContext.pageContext)">Submit
                 Update</button>
         </div>
