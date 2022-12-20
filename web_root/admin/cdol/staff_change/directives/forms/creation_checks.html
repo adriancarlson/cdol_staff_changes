@@ -1,9 +1,7 @@
 <div id="creation-checks-container" class="container-fluid p-0">
     <div class="card">
         <div class="card-header bg-primary text-bg-primary text-dark bg-opacity-25 bg-gradient fw-semibold text-center">
-            Diocesan Office Account
-            Checks
-        </div>
+            Diocesan Office Account Checks</div>
         <div class="card-body">
             <div class="row">
                 <div class="col">
@@ -22,11 +20,32 @@
                                 </span>?
                             </label>
                         </div>
-                        <div class="card-body p-0">
-                            <ul class="list-group list-group-flush m-0">
-                                <li class="list-group-item">An item</li>
-                                <li class="list-group-item">A second item</li>
-                                <li class="list-group-item">A third item</li>
+                        <div class="card-body p-0" data-ng-switch
+                            on="submitPayload[userContext.pageContext].change_type">
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="newStaff">
+                                <li class="list-group-item">Created account?</li>
+                                <li class="list-group-item">Assigned Security Group?</li>
+                                <li class="list-group-item">Assigned Email?</li>
+                                <li class="list-group-item">Assigned IDP?</li>
+                                <li class="list-group-item">NCEA?</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="transferringStaff">
+                                <li class="list-group-item">New School added and Activated?</li>
+                                <li class="list-group-item">Old School Deactivated?</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="jobChange">
+                                <li class="list-group-item">Security Group Updated? (If Applicable)</li>
+                                <li class="list-group-item">Send instructions on switching lead teacher</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="nameChange">
+                                <li class="list-group-item">User Name Updated?</li>
+                                <li class="list-group-item">IDP Updated?</li>
+                                <li class="list-group-item">Email Address Updated?</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="exitingStaff">
+                                <li class="list-group-item">School(s) Deactivated?</li>
+                                <li class="list-group-item">Sign ins Deavtivated?</li>
+                                <li class="list-group-item">IDP Diabled?</li>
                             </ul>
                         </div>
                     </div>
@@ -35,21 +54,55 @@
                     <div class="card">
                         <div
                             class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
-                            <input class="form-check-input me-1" type="checkbox" value="" id="">
-                            <label class="form-check-label stretched-link" for="">AD
-                                Account<span data-ng-switch on="submitPayload[userContext.pageContext].change_type">
-                                    <span data-ng-switch-when="newStaff"> Created</span>
-                                    <span data-ng-switch-when="transferringStaff"> Moved</span>
-                                    <span data-ng-switch-when="jobChange"> Adjusted</span>
-                                    <span data-ng-switch-when="nameChange"> Updated</span>
-                                    <span data-ng-switch-when="exitingStaff"> Disabled</span>
-                                </span>?</label>
+                            <div class="row">
+                                <div class="col-auto me-auto"><input class="form-check-input me-1" type="checkbox"
+                                        value="" id="">
+                                    <label class="form-check-label stretched-link" for="">AD
+                                        Account<span data-ng-switch
+                                            on="submitPayload[userContext.pageContext].change_type">
+                                            <span data-ng-switch-when="newStaff"> Created</span>
+                                            <span data-ng-switch-when="transferringStaff"> Moved</span>
+                                            <span data-ng-switch-when="jobChange"> Adjusted</span>
+                                            <span data-ng-switch-when="nameChange"> Updated</span>
+                                            <span data-ng-switch-when="exitingStaff"> Disabled</span>
+                                        </span>?</label>
+                                </div>
+                                <div class="col-auto"><input class="form-check-input me-1" type="checkbox" value=""
+                                        id="">
+                                    <label class="form-check-label stretched-link text-muted" for=""><em>Not
+                                            Applicable</em></label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body p-0">
-                            <ul class="list-group list-group-flush m-0">
-                                <li class="list-group-item">An item</li>
-                                <li class="list-group-item">A second item</li>
-                                <li class="list-group-item">A third item</li>
+                        <div class="card-body p-0" data-ng-switch
+                            on="submitPayload[userContext.pageContext].change_type">
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="newStaff">
+                                <li class="list-group-item">Exchange email mailbox created?</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="transferringStaff">
+                                <li class="list-group-item">Groups and other fields changed reflecting the move?</li>
+                                <li class="list-group-item">E-mailbox moved to the new school?</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="jobChange">
+                                <li class="list-group-item">Groups and other fields changed reflecting the move?</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="nameChange">
+                                <li class="list-group-item">Exchange email updated?</li>
+                                <li class="list-group-item">UPN updated?</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="exitingStaff">
+                                <li class="list-group-item">Email account noted as "disabled"?
+                                    <ul>
+                                        <li>(which sends an autoreply that the user will not receive the
+                                            message)</li>
+                                        <li>Removed from distribution groups and "Office" field deleted</li>
+                                    </ul>
+                                </li>
+                                <li class="list-group-item">Office 365 login disabled with AD account?
+                                    <ul>
+                                        <li>The account will be fully deleted six months later</li>
+                                    </ul>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -58,20 +111,35 @@
                     data-ng-hide="userContext.pageContext =='jobChange' || userContext.pageContext =='exitingStaff'">
                     <div class="card">
                         <div
-                            class="card-header bg-warning text-bg-warning text-dark bg-opacity-10 bg-gradient fw-semibold">
-                            <input class="form-check-input me-1" type="checkbox" value="" id="">
-                            <label class="form-check-label stretched-link" for="">O365
-                                Account<span data-ng-switch on="submitPayload[userContext.pageContext].change_type">
-                                    <span data-ng-switch-when="newStaff"> Created</span>
-                                    <span data-ng-switch-when="transferringStaff"> Verified</span>
-                                    <span data-ng-switch-when="nameChange"> Updated</span>
-                                </span>?</label>
+                            class="card-header bg-primary text-bg-primary text-dark bg-opacity-10 bg-gradient fw-semibold">
+                            <div class="row">
+                                <div class="col-auto me-auto"><input class="form-check-input me-1" type="checkbox"
+                                        value="" id="">
+                                    <label class="form-check-label stretched-link" for="">O365
+                                        Account<span data-ng-switch
+                                            on="submitPayload[userContext.pageContext].change_type">
+                                            <span data-ng-switch-when="newStaff"> Created</span>
+                                            <span data-ng-switch-when="transferringStaff"> Verified</span>
+                                            <span data-ng-switch-when="nameChange"> Updated</span>
+                                        </span>?</label>
+                                </div>
+                                <div class="col-auto"><input class="form-check-input me-1" type="checkbox" value=""
+                                        id="">
+                                    <label class="form-check-label stretched-link text-muted" for=""><em>Not
+                                            Applicable</em></label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body p-0">
-                            <ul class="list-group list-group-flush m-0">
-                                <li class="list-group-item">An item</li>
-                                <li class="list-group-item">A second item</li>
-                                <li class="list-group-item">A third item</li>
+                        <div class="card-body p-0" data-ng-switch
+                            on="submitPayload[userContext.pageContext].change_type">
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="newStaff">
+                                <li class="list-group-item">Office 365 licensed (incl. Teams) assigned?</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="transferringStaff">
+                                <li class="list-group-item">Verify Teams and Office 365 groups</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="nameChange">
+                                <li class="list-group-item">Office 365 updated?</li>
                             </ul>
                         </div>
                     </div>
@@ -80,7 +148,7 @@
                     data-ng-hide="userContext.pageContext =='jobChange' || userContext.pageContext =='exitingStaff'">
                     <div class="card">
                         <div
-                            class="card-header bg-danger text-bg-danger text-dark bg-opacity-10 bg-gradient fw-semibold">
+                            class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
                             <input class="form-check-input me-1" type="checkbox" value="" id="">
                             <label class="form-check-label stretched-link" for="">LMS
                                 Account<span data-ng-switch on="submitPayload[userContext.pageContext].change_type">
@@ -89,11 +157,26 @@
                                     <span data-ng-switch-when="nameChange"> Updated</span>
                                 </span>?</label>
                         </div>
-                        <div class="card-body p-0">
-                            <ul class="list-group list-group-flush m-0">
-                                <li class="list-group-item">An item</li>
-                                <li class="list-group-item">A second item</li>
-                                <li class="list-group-item">A third item</li>
+                        <div class="card-body p-0" data-ng-switch
+                            on="submitPayload[userContext.pageContext].change_type">
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="newStaff">
+                                <li class="list-group-item">Imported from PS-SIS?</li>
+                                <li class="list-group-item">Matches O365 Login?</li>
+                                <li class="list-group-item">If Tech Liasion or School Administrator
+                                    <ul>
+                                        <li>Setup permissions in Canvas as a sub-account administrator</li>
+                                        <li>Setup account to be member of appropriate team or channel in MS Teams</li>
+                                        <li>Add account membership to appropriate class in canvas</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="transferringStaff">
+                                <li class="list-group-item">Re-assign class ownership (if applicable)</li>
+                                <li class="list-group-item">Check UPN (if transfering to or from Pius)</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="nameChange">
+                                <li class="list-group-item">LMS name Updated?</li>
+                                <li class="list-group-item">Matches O365 Login?</li>
                             </ul>
                         </div>
                     </div>
