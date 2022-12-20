@@ -8,8 +8,9 @@
                     <div class="card">
                         <div
                             class="card-header bg-primary text-bg-primary text-dark bg-opacity-10 bg-gradient fw-semibold">
-                            <input class="form-check-input me-1" type="checkbox" value="" id="">
-                            <label class="form-check-label stretched-link" for="">PowerSchool
+                            <input class="form-check-input me-1" id="ps_created" type="checkbox"
+                                data-ng-model="submitPayload[userContext.pageContext].ps_created">
+                            <label class="form-check-label stretched-link" for="ps_created">PowerSchool
                                 Account
                                 <span data-ng-switch on="submitPayload[userContext.pageContext].change_type">
                                     <span data-ng-switch-when="newStaff"> Created</span>
@@ -55,9 +56,11 @@
                         <div
                             class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
                             <div class="row">
-                                <div class="col-auto me-auto"><input class="form-check-input me-1" type="checkbox"
-                                        value="" id="">
-                                    <label class="form-check-label stretched-link" for="">AD
+                                <div class="col-auto me-auto">
+                                    <input class="form-check-input me-1" id="ad_created" type="checkbox"
+                                        data-ng-model="submitPayload[userContext.pageContext].ad_created"
+                                        data-ng-disabled="submitPayload[userContext.pageContext].ad_ignored">
+                                    <label class="form-check-label" for="ad_created">AD
                                         Account<span data-ng-switch
                                             on="submitPayload[userContext.pageContext].change_type">
                                             <span data-ng-switch-when="newStaff"> Created</span>
@@ -67,9 +70,11 @@
                                             <span data-ng-switch-when="exitingStaff"> Disabled</span>
                                         </span>?</label>
                                 </div>
-                                <div class="col-auto"><input class="form-check-input me-1" type="checkbox" value=""
-                                        id="">
-                                    <label class="form-check-label stretched-link text-muted" for=""><em>Not
+                                <div class="col-auto">
+                                    <input class="form-check-input me-1" id="ad_ignored" type="checkbox"
+                                        data-ng-model="submitPayload[userContext.pageContext].ad_ignored"
+                                        data-ng-disabled="submitPayload[userContext.pageContext].ad_created">
+                                    <label class="form-check-label" for="ad_ignored"><em>Not
                                             Applicable</em></label>
                                 </div>
                             </div>
@@ -113,9 +118,11 @@
                         <div
                             class="card-header bg-primary text-bg-primary text-dark bg-opacity-10 bg-gradient fw-semibold">
                             <div class="row">
-                                <div class="col-auto me-auto"><input class="form-check-input me-1" type="checkbox"
-                                        value="" id="">
-                                    <label class="form-check-label stretched-link" for="">O365
+                                <div class="col-auto me-auto">
+                                    <input class="form-check-input me-1" id="o365_created" type="checkbox"
+                                        data-ng-model="submitPayload[userContext.pageContext].o365_created"
+                                        data-ng-disabled="submitPayload[userContext.pageContext].o365_ignored">
+                                    <label class="form-check-label" for="o365_created">O365
                                         Account<span data-ng-switch
                                             on="submitPayload[userContext.pageContext].change_type">
                                             <span data-ng-switch-when="newStaff"> Created</span>
@@ -123,9 +130,11 @@
                                             <span data-ng-switch-when="nameChange"> Updated</span>
                                         </span>?</label>
                                 </div>
-                                <div class="col-auto"><input class="form-check-input me-1" type="checkbox" value=""
-                                        id="">
-                                    <label class="form-check-label stretched-link text-muted" for=""><em>Not
+                                <div class="col-auto">
+                                    <input class="form-check-input me-1" id="o365_ignored" type="checkbox"
+                                        data-ng-model="submitPayload[userContext.pageContext].o365_ignored"
+                                        data-ng-disabled="submitPayload[userContext.pageContext].o365_created">
+                                    <label class="form-check-label" for="o365_ignored"><em>Not
                                             Applicable</em></label>
                                 </div>
                             </div>
@@ -149,8 +158,9 @@
                     <div class="card">
                         <div
                             class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
-                            <input class="form-check-input me-1" type="checkbox" value="" id="">
-                            <label class="form-check-label stretched-link" for="">LMS
+                            <input class="form-check-input me-1" type="checkbox" id="lms_created"
+                                data-ng-model="submitPayload[userContext.pageContext].lms_created">
+                            <label class="form-check-label stretched-link" for="lms_created">LMS
                                 Account<span data-ng-switch on="submitPayload[userContext.pageContext].change_type">
                                     <span data-ng-switch-when="newStaff"> Created</span>
                                     <span data-ng-switch-when="transferringStaff"> Double Check</span>
@@ -162,17 +172,13 @@
                             <ul class="list-group list-group-flush m-0" data-ng-switch-when="newStaff">
                                 <li class="list-group-item">Imported from PS-SIS?</li>
                                 <li class="list-group-item">Matches O365 Login?</li>
-                                <li class="list-group-item">If Tech Liasion or School Administrator
-                                    <ul>
-                                        <li>Setup permissions in Canvas as a sub-account administrator</li>
-                                        <li>Setup account to be member of appropriate team or channel in MS Teams</li>
-                                        <li>Add account membership to appropriate class in canvas</li>
-                                    </ul>
+                                <li class="list-group-item">If Tech Liasion or School Administrator, setup permissions.
                                 </li>
                             </ul>
                             <ul class="list-group list-group-flush m-0" data-ng-switch-when="transferringStaff">
                                 <li class="list-group-item">Re-assign class ownership (if applicable)</li>
-                                <li class="list-group-item">Check UPN (if transfering to or from Pius)</li>
+                                <li class="list-group-item">If Tech Liasion or School Administrator, update permissions.
+                                </li>
                             </ul>
                             <ul class="list-group list-group-flush m-0" data-ng-switch-when="nameChange">
                                 <li class="list-group-item">LMS name Updated?</li>
