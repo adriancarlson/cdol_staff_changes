@@ -43,7 +43,7 @@ define(['angular'], function (angular) {
 					}
 				},
 				res => {
-					psAlert({ message: `There was an error ${method}ing the data to ${table}`, title: `${method} Error` })
+					psAlert({ message: `There was an error ${method}ing the data to ${tableName}`, title: `${method} Error` })
 				}
 			)
 			return deferredResponse.promise
