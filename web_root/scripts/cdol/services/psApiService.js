@@ -14,15 +14,16 @@ define(['angular'], function (angular) {
 				method: method,
 				headers: headers
 			}
-			if (payload.dateKeys) {
-				const dateKeys = payload.dateKeys
-				delete payload.dateKeys
-			}
+
+			const keysToIterate = ['_date', 'dob', 'deadline']
 			// Unique Headers
 			switch (method) {
 				//Create
 				case 'POST':
-					payload = formatService.objIterator(payload, dateKeys, 'formatDateForApi')
+					if (payload.dateKeys) {
+						payload = formatService.objIterator(payload, payload.dateKeys, 'formatDateForApi')
+					}
+					delete payload.dateKeys
 					const data = { tables: {} }
 					data.tables[tableName] = payload
 					httpObject['data'] = data
@@ -43,7 +44,7 @@ define(['angular'], function (angular) {
 							break
 						case 'GET':
 							resData = res.data.tables[tableName]
-							resData = formatService.objIterator(resData, dateKeys, 'formatDateFromApi')
+							resData = formatService.objIterator(resData, keysToIterate, 'formatDateFromApi')
 							deferredResponse.resolve(resData)
 							break
 						case 'DELETE':
