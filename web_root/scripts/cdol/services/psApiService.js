@@ -20,7 +20,6 @@ define(['angular'], function (angular) {
 				case 'POST':
 					const data = { tables: {} }
 					data.tables[tableName] = payload
-					httpObject['data'] = data
 					const keysToIterate = ['_date', 'dob', 'deadline']
 					data.forEach(keyName => {
 						keysToIterate.forEach(iterKey => {
@@ -29,15 +28,13 @@ define(['angular'], function (angular) {
 							}
 						})
 					})
+					httpObject['data'] = data
 					break
 				//READ
 				case 'GET':
-					console.log('url', url)
-
 					httpObject['params'] = {
 						projection: '*'
 					}
-					console.log('httpObject', httpObject)
 					break
 			}
 
