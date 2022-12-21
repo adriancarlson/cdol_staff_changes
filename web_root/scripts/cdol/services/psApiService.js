@@ -41,16 +41,7 @@ define(['angular'], function (angular) {
 							break
 						case 'GET':
 							resData = res.data.tables[tableName]
-							const resDataKeys = Object.keys(resData)
-							// WET code for keys rething a way to make it DRY code later
-							const keysToIterate = ['_date', 'dob', 'deadline']
-							resDataKeys.forEach(keyName => {
-								keysToIterate.forEach(iterKey => {
-									if (keyName.indexOf(iterKey) !== -1) {
-										resData[keyName] = formatService.formatDateFromApi(resData[keyName])
-									}
-								})
-							})
+							resData = formatService.objIterator(resData, keysToIterate, 'formatDateFromApi')
 							deferredResponse.resolve(resData)
 							break
 						case 'DELETE':

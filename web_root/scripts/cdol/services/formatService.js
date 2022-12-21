@@ -144,7 +144,7 @@ define(['angular'], function (angular) {
 		}
 		// object iterator
 		this.objIterator = function (obj, iterKeys, iterType) {
-			const objKeys = Object.keys(obj)
+            const objKeys = Object.keys(obj)
 			objKeys.forEach(keyName => {
 				iterKeys.forEach(iterKey => {
 					if (keyName.indexOf(iterKey) !== -1) {
