@@ -1,21 +1,5 @@
 define(['angular'], function (angular) {
 	angular.module('formatService', []).service('formatService', function () {
-		// object iterator
-		this.objIterator = function (obj, iterKeys, iterType) {
-			const objKeys = Object.keys(obj)
-			objKeys.forEach(keyName => {
-				iterKeys.forEach(iterKey => {
-					if (keyName.indexOf(iterKey) !== -1) {
-						switch (iterType) {
-							case 'formatDateForApi':
-								obj[keyName] = formatDateForApi(obj[keyName])
-								break
-						}
-					}
-				})
-			})
-            return obj
-		}
 		//dateformats
 		var dateSvc = this
 		dateSvc.dateFormat = 'mm/dd/yyyy'
@@ -157,6 +141,22 @@ define(['angular'], function (angular) {
 				val = false
 			}
 			return val
+		}
+		// object iterator
+		this.objIterator = function (obj, iterKeys, iterType) {
+			const objKeys = Object.keys(obj)
+			objKeys.forEach(keyName => {
+				iterKeys.forEach(iterKey => {
+					if (keyName.indexOf(iterKey) !== -1) {
+						switch (iterType) {
+							case 'formatDateForApi':
+								obj[keyName] = this.formatDateForApi(obj[keyName])
+								break
+						}
+					}
+				})
+			})
+			return obj
 		}
 	}) // End formatService
 }) // End define
