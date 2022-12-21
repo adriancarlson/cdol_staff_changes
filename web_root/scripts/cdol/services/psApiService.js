@@ -14,19 +14,13 @@ define(['angular'], function (angular) {
 				method: method,
 				headers: headers
 			}
+
+			const keysToIterate = ['_date', 'dob', 'deadline']
 			// Unique Headers
 			switch (method) {
 				//Create
 				case 'POST':
-					const payDataKeys = Object.keys(payload)
-					const keysToIterate = ['_date', 'dob', 'deadline']
-					payDataKeys.forEach(keyName => {
-						keysToIterate.forEach(iterKey => {
-							if (keyName.indexOf(iterKey) !== -1) {
-								payload[keyName] = formatService.formatDateForApi(payload[keyName])
-							}
-						})
-					})
+					payload = formatService.objIterator(payload, keysToIterate, 'formatDateForApi')
 					const data = { tables: {} }
 					data.tables[tableName] = payload
 					httpObject['data'] = data

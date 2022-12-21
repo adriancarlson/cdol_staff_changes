@@ -1,5 +1,22 @@
 define(['angular'], function (angular) {
 	angular.module('formatService', []).service('formatService', function () {
+		// object iterator
+		this.objIterator = function (obj, iterKeys, iterType) {
+			const objKeys = Object.keys(obj)
+			objKeys.forEach(keyName => {
+				iterKeys.forEach(iterKey => {
+					if (keyName.indexOf(iterKey) !== -1) {
+						switch (iterType) {
+							case 'formatDateForApi':
+								obj[keyName] = formatDateForApi(obj[keyName])
+								break
+						}
+					}
+				})
+			})
+            return obj
+		}
+		//dateformats
 		var dateSvc = this
 		dateSvc.dateFormat = 'mm/dd/yyyy'
 		dateSvc.monthIndex = 0
@@ -84,7 +101,7 @@ define(['angular'], function (angular) {
 			dateVal.setDate(dateVal.getDate() + increment)
 			return this.dateToString(dateVal)
 		}
-
+		//case formats
 		this.camelize = function (str) {
 			return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
 				if (+match === 0) return ''
@@ -127,7 +144,7 @@ define(['angular'], function (angular) {
 				.join(' ')
 				.trim()
 		}
-
+		//checkmark formats
 		this.formatChecksForApi = function (val) {
 			val = val.toString()
 			return val
