@@ -15,12 +15,15 @@ define(['angular'], function (angular) {
 				headers: headers
 			}
 
-			const keysToIterate = ['_date', 'dob', 'deadline']
 			// Unique Headers
 			switch (method) {
 				//Create
 				case 'POST':
-					payload = formatService.objIterator(payload, keysToIterate, 'formatDateForApi')
+					//payload.hasOwnProperty('dateKeys')
+					if (payload.dateKeys) {
+						payload = formatService.objIterator(payload, payload.dateKeys, 'formatDateForApi')
+					}
+
 					const data = { tables: {} }
 					data.tables[tableName] = payload
 					httpObject['data'] = data

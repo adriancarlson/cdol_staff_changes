@@ -211,7 +211,8 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				calendar_year: new Date().getFullYear().toString(),
 				submission_date: $scope.userContext.curDate,
 				submission_time: $scope.userContext.curTime,
-				who_submitted: $scope.userContext.curUserId
+				who_submitted: $scope.userContext.curUserId,
+				dateKeys: ['_date', 'dob', 'deadline']
 			}
 			//loop though submitPayload object
 			Object.keys($scope.submitPayload).forEach(async (key, index) => {
