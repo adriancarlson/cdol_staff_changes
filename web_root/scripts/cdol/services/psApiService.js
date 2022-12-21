@@ -18,16 +18,17 @@ define(['angular'], function (angular) {
 			switch (method) {
 				//Create
 				case 'POST':
-					const data = { tables: {} }
-					data.tables[tableName] = payload
+					const payDataKeys = Object.keys(payload)
 					const keysToIterate = ['_date', 'dob', 'deadline']
-					data.forEach(keyName => {
+					payDataKeys.forEach(keyName => {
 						keysToIterate.forEach(iterKey => {
 							if (keyName.indexOf(iterKey) !== -1) {
-								data[keyName] = dateService.formatDateForApi(data[keyName])
+								payload[keyName] = dateService.formatDateForApi(payload[keyName])
 							}
 						})
 					})
+					const data = { tables: {} }
+					data.tables[tableName] = payload
 					httpObject['data'] = data
 					break
 				//READ
