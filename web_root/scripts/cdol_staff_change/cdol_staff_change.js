@@ -245,9 +245,6 @@ define([
 				}
 				// copying formPayload using spread. Then deleting any unneeded key value pairs before sending to API call
 				apiPayload = { ...formPayload }
-				// get all date fields ready for API call
-				apiPayload.deadline = dateService.formatDateForApi(apiPayload.deadline)
-				apiPayload.dob = dateService.formatDateForApi(apiPayload.dob)
 				// get all the keys from the apiPayload object
 				const getApiPayloadKeys = Object.keys(apiPayload)
 				//applying case formatting to text entry fields

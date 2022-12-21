@@ -21,6 +21,14 @@ define(['angular'], function (angular) {
 					const data = { tables: {} }
 					data.tables[tableName] = payload
 					httpObject['data'] = data
+					const keysToIterate = ['_date', 'dob', 'deadline']
+					data.forEach(keyName => {
+						keysToIterate.forEach(iterKey => {
+							if (keyName.indexOf(iterKey) !== -1) {
+								data[keyName] = dateService.formatDateForApi(data[keyName])
+							}
+						})
+					})
 					break
 				//READ
 				case 'GET':
@@ -43,10 +51,12 @@ define(['angular'], function (angular) {
 							resData = res.data.tables[tableName]
 							const resDataKeys = Object.keys(resData)
 							// WET code for keys rething a way to make it DRY code later
-							const keysToDateFormat = ['_date', 'dob', 'deadline']
-							keysToDateFormat.forEach(item => {
-								resDataKeys.forEach(keyName => {
-									resDataKeys[keyName] = dateService.formatDateFromApi(resDataKeys[keyName])
+							const keysToIterate = ['_date', 'dob', 'deadline']
+							resDataKeys.forEach(keyName => {
+								keysToIterate.forEach(iterKey => {
+									if (keyName.indexOf(iterKey) !== -1) {
+										resData[keyName] = dateService.formatDateFromApi(resData[keyName])
+									}
 								})
 							})
 							deferredResponse.resolve(resData)
