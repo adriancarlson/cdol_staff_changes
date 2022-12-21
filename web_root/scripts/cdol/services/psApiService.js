@@ -1,71 +1,52 @@
 define(['angular'], function (angular) {
 	angular.module('psApiModule', []).service('psApiService', function ($http, $q) {
-		this.psApiCall = (tableName, method, payload) => {
+		this.psApiCall = (tableName, method, payload, recId) => {
 			let deferredResponse = $q.defer()
 			tableName = tableName.toLowerCase()
-			const service = this
-			service.headers = {
+			let path = `/ws/schema/table/${tableName}`
+			let url = `${path}${recId ? `/${recId}` : ''}`
+			headers = {
 				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			}
-			// CRUD
+			let httpObject = {
+				url: `${url}`,
+				method: method,
+				headers: headers
+			}
+			// Unique Headers
 			switch (method) {
 				//Create
 				case 'POST':
 					const data = { tables: {} }
 					data.tables[tableName] = payload
-
-					$http({
-						url: `/ws/schema/table/${tableName}`,
-						method: method,
-						data: data || {},
-						headers: service.headers
-					}).then(
-						res => {
-							deferredResponse.resolve(res.data.record || [])
-						},
-						res => {
-							psAlert({ message: `There was an error ${method}ing the data to ${table}`, title: `${method} Error` })
-						}
-					)
-					return deferredResponse.promise
+					httpObject['data'] = data
 					break
 				//READ
 				case 'GET':
-					$http({
-						url: `/ws/schema/table/${tableName}/${payload}`,
-						method: method,
-						params: {
-							projection: '*'
-						}
-					}).then(
-						res => {
-							deferredResponse.resolve(res.data.tables[tableName])
-						},
-						res => {
-							psAlert({ message: `There was an error ${method}ing the data from ${table}`, title: `${method} Error` })
-						}
-					)
-					return deferredResponse.promise
-					break
-				//UPDATE
-				// DELETE
-				case 'DELETE':
-					$http({
-						url: `/ws/schema/table/${tableName}/${payload}`,
-						method: method,
-						headers: service.headers
-					}).then(
-						res => {
-							deferredResponse.resolve(res)
-						},
-						res => {
-							psAlert({ message: `There was an error ${method}ing the data from ${table}`, title: `${method} Error` })
-						}
-					)
-					return deferredResponse.promise
+					httpObject['projection'] = '*'
 					break
 			}
+
+			$http(httpObject).then(
+				res => {
+					switch (method) {
+						case 'POST':
+							deferredResponse.resolve(res.data.record || [])
+							break
+						case 'GET':
+							deferredResponse.resolve(res.data.tables[tableName])
+							break
+						case 'DELETE':
+							deferredResponse.resolve(res)
+							break
+					}
+				},
+				res => {
+					psAlert({ message: `There was an error ${method}ing the data to ${table}`, title: `${method} Error` })
+				}
+			)
+			return deferredResponse.promise
 		}
 	})
 })

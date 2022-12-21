@@ -41,7 +41,7 @@ define([
 		$scope.getStaffChange = async staffChangeId => {
 			loadingDialog()
 			if (staffChangeId) {
-				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, staffChangeId)
+				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, {}, staffChangeId)
 				$scope.submitPayload[res.change_type] = await res
 				$scope.userContext.pageContext = await res.change_type
 			}
@@ -302,7 +302,7 @@ define([
 		}
 		$scope.deleteStaffChange = async form => {
 			if ($scope.userContext.staffChangeId) {
-				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', $scope.userContext.staffChangeId)
+				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, $scope.userContext.staffChangeId)
 				await $scope.toListRedirect(form)
 			}
 		}
