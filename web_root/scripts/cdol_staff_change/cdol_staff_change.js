@@ -1,14 +1,6 @@
-define([
-	'angular',
-	'components/shared/index',
-	'/scripts/cdol/services/dateService.js',
-	'/scripts/cdol/services/checkboxService.js',
-	'/scripts/cdol/services/caseService.js',
-	'/scripts/cdol/services/pqService.js',
-	'/scripts/cdol/services/psApiService.js'
-], function (angular) {
-	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'dateService', 'checkboxModule', 'caseModule', 'pqModule', 'psApiModule'])
-	cdolStaffApp.controller('cdolStaffAppCtrl', function ($scope, $http, $attrs, $q, $window, dateService, checkboxService, caseService, pqService, psApiService) {
+define(['angular', 'components/shared/index', '/scripts/cdol/services/formatService.js', '/scripts/cdol/services/psApiService.js'], function (angular) {
+	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'formatService', 'pqModule', 'psApiModule'])
+	cdolStaffApp.controller('cdolStaffAppCtrl', function ($scope, $http, $attrs, $window, formatService, psApiService) {
 		//initializing overall form data
 		$scope.userContext = {
 			pageStatus: $attrs.ngStatus,
@@ -217,7 +209,7 @@ define([
 			const commonPayload = {
 				schoolid: $scope.userContext.curSchoolId,
 				calendar_year: new Date().getFullYear().toString(),
-				submission_date: dateService.formatDateForApi($scope.userContext.curDate),
+				submission_date: $scope.userContext.curDate,
 				submission_time: $scope.userContext.curTime,
 				who_submitted: $scope.userContext.curUserId
 			}
@@ -256,7 +248,7 @@ define([
 						// using index of to check if the object key name have a matched string if so deleting it from the payload
 						if (keyName.indexOf(item) !== -1 || keyName === 'position') {
 							console.log('title', keyName)
-							apiPayload[keyName] = caseService.titleCase(apiPayload[keyName])
+							apiPayload[keyName] = formatService.titleCase(apiPayload[keyName])
 						}
 					})
 				})
@@ -268,7 +260,7 @@ define([
 						// using index of to check if the object key name have a matched string if so deleting it from the payload
 						if (keyName.indexOf(item) !== -1) {
 							if (keyName !== 'position') {
-								apiPayload[keyName] = caseService.sentenceCase(apiPayload[keyName])
+								apiPayload[keyName] = formatService.sentenceCase(apiPayload[keyName])
 							}
 						}
 					})

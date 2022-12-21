@@ -1,5 +1,5 @@
 define(['angular'], function (angular) {
-	angular.module('psApiModule', ['dateService']).service('psApiService', function ($http, $q, dateService) {
+	angular.module('psApiModule', ['formatService']).service('psApiService', function ($http, $q, formatService) {
 		this.psApiCall = (tableName, method, payload, recId) => {
 			let deferredResponse = $q.defer()
 			tableName = tableName.toLowerCase()
@@ -23,7 +23,7 @@ define(['angular'], function (angular) {
 					payDataKeys.forEach(keyName => {
 						keysToIterate.forEach(iterKey => {
 							if (keyName.indexOf(iterKey) !== -1) {
-								payload[keyName] = dateService.formatDateForApi(payload[keyName])
+								payload[keyName] = formatService.formatDateForApi(payload[keyName])
 							}
 						})
 					})
@@ -53,7 +53,7 @@ define(['angular'], function (angular) {
 							resDataKeys.forEach(keyName => {
 								keysToIterate.forEach(iterKey => {
 									if (keyName.indexOf(iterKey) !== -1) {
-										resData[keyName] = dateService.formatDateFromApi(resData[keyName])
+										resData[keyName] = formatService.formatDateFromApi(resData[keyName])
 									}
 								})
 							})
