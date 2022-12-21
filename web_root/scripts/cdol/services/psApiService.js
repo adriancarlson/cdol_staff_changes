@@ -42,6 +42,7 @@ define(['angular'], function (angular) {
 						case 'GET':
 							resData = res.data.tables[tableName]
 							const resDataKeys = Object.keys(resData)
+							// WET code for keys rething a way to make it DRY code later
 							const keysToDateFormat = ['_date', 'dob', 'deadline']
 							keysToDateFormat.forEach(item => {
 								resDataKeys.forEach(keyName => {
