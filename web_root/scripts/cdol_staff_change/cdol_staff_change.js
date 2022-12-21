@@ -32,6 +32,9 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 		//pull existing Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
 		$scope.getStaffChange = async staffChangeId => {
 			loadingDialog()
+			formatKeys = {
+				dateKeys: ['_date', 'dob', 'deadline']
+			}
 			if (staffChangeId) {
 				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, {}, staffChangeId)
 				$scope.submitPayload[res.change_type] = await res
