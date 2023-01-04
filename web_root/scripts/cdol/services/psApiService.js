@@ -26,7 +26,12 @@ define(['angular'], function (angular) {
 					if (payload.titleKeys) {
 						payload = formatService.objIterator(payload, payload.titleKeys, 'titleCase')
 					}
-					delete payload.titleKeys
+					delete payload.sentenceKeys
+					if (payload.sentenceKeys) {
+						console.log(payload.sentenceKeys)
+						//if sentenceKeys includes 'position' delete is before passing it into objIterator delete payload.sentenceKeys[position]
+						payload = formatService.objIterator(payload, payload.sentenceKeys, 'titleCase')
+					}
 					const data = { tables: {} }
 					data.tables[tableName] = payload
 					httpObject['data'] = data
