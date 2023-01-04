@@ -36,7 +36,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				dateKeys: ['_date', 'dob', 'deadline']
 			}
 			if (staffChangeId) {
-				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, {}, staffChangeId)
+				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, formatKeys, staffChangeId)
 				$scope.submitPayload[res.change_type] = await res
 				$scope.userContext.pageContext = await res.change_type
 			}

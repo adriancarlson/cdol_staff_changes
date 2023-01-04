@@ -15,7 +15,6 @@ define(['angular'], function (angular) {
 				headers: headers
 			}
 
-			const keysToIterate = ['_date', 'dob', 'deadline']
 			// Unique Headers
 			switch (method) {
 				//Create
@@ -44,7 +43,9 @@ define(['angular'], function (angular) {
 							break
 						case 'GET':
 							resData = res.data.tables[tableName]
-							resData = formatService.objIterator(resData, keysToIterate, 'formatDateFromApi')
+							if (payload.dateKeys) {
+								resData = formatService.objIterator(resData, payload.dateKeys, 'formatDateFromApi')
+							}
 							deferredResponse.resolve(resData)
 							break
 						case 'DELETE':
