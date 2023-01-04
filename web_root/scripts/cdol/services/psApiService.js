@@ -23,6 +23,10 @@ define(['angular'], function (angular) {
 						payload = formatService.objIterator(payload, payload.dateKeys, 'formatDateForApi')
 					}
 					delete payload.dateKeys
+					if (payload.titleKeys) {
+						payload = formatService.objIterator(payload, payload.titleKeys, 'titleCase')
+					}
+					delete payload.titleKeys
 					const data = { tables: {} }
 					data.tables[tableName] = payload
 					httpObject['data'] = data

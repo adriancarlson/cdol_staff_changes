@@ -215,7 +215,8 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				submission_date: $scope.userContext.curDate,
 				submission_time: $scope.userContext.curTime,
 				who_submitted: $scope.userContext.curUserId,
-				dateKeys: ['_date', 'dob', 'deadline']
+				dateKeys: ['_date', 'dob', 'deadline'],
+				titleKeys: ['_name']
 			}
 			//loop though submitPayload object
 			Object.keys($scope.submitPayload).forEach(async (key, index) => {
@@ -244,18 +245,6 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				// get all the keys from the apiPayload object
 				const getApiPayloadKeys = Object.keys(apiPayload)
 				//applying case formatting to text entry fields
-				//titlecase
-				const keysToTitle = ['_name']
-				keysToTitle.forEach(item => {
-					// looping through first object
-					getApiPayloadKeys.forEach(keyName => {
-						// using index of to check if the object key name have a matched string if so deleting it from the payload
-						if (keyName.indexOf(item) !== -1 || keyName === 'position') {
-							console.log('title', keyName)
-							apiPayload[keyName] = formatService.titleCase(apiPayload[keyName])
-						}
-					})
-				})
 				//Sentence case
 				const keysToSentence = ['_position', 'notes']
 				keysToSentence.forEach(item => {
