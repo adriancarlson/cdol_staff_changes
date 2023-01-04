@@ -217,8 +217,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				who_submitted: $scope.userContext.curUserId,
 				dateKeys: ['_date', 'dob', 'deadline'],
 				titleKeys: ['_name'],
-				sentenceKeys: ['_position', 'notes'],
-				ignoreKeys: ['position']
+				sentenceKeys: ['position', 'notes']
 			}
 			//loop though submitPayload object
 			Object.keys($scope.submitPayload).forEach(async (key, index) => {
@@ -247,7 +246,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				// get all the keys from the apiPayload object
 				const getApiPayloadKeys = Object.keys(apiPayload)
 				//applying case formatting to text entry fields
-				
+
 				// removing items from the object not needed for the submission Record
 				const keysToDelete = ['_radio', 'homeschool', 'identifier']
 				keysToDelete.forEach(item => {
