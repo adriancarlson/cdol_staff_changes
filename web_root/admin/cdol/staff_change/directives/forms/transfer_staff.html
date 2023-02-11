@@ -171,7 +171,8 @@
                             data-ng-model="submitPayload.transferringStaff.prev_school_name">
                     </div>
                 </div>
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid">
+                <div class="row align-items-center mb-3"
+                    data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.transferringStaff.users_dcid) || (userContext.pageStatus =='Edit' && submitPayload.transferringStaff.replace_dcid)">
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
@@ -198,7 +199,7 @@
                                     </div>
                                 </div>
                                 <div class="row align-items-center mb-3"
-                                    data-ng-if="submitPayload.transferringStaff.exit_radio == 1 || userContext.pageStatus =='Edit'">
+                                    data-ng-if="submitPayload.transferringStaff.exit_radio == 1 || (userContext.pageStatus =='Edit' && submitPayload.transferringStaff.replace_dcid)">
                                     <div class="col-auto">
                                         <label for="replacing_dcid" class="form-label form-label-sm label-reset req">Who
                                             is
@@ -363,7 +364,8 @@
                         </div>
                     </div>
                 </div>
-                ~[if#distCheck.security.inrole=9]<creation-checks data-ng-if="userContext.pageStatus =='Edit'"></creation-checks>[/if#distCheck]
+                ~[if#distCheck.security.inrole=9]<creation-checks
+                    data-ng-if="userContext.pageStatus =='Edit'"></creation-checks>[/if#distCheck]
             </form>
         </div>
         <form-buttons></form-buttons>
