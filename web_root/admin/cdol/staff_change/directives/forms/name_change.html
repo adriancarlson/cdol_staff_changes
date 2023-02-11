@@ -3,7 +3,7 @@
         <div class="card-header bg-warning text-bg-warning bg-gradient fs-6 fw-semibold">Name Change:</div>
         <div class="card-body">
             <form name="staffChangeForm" method="POST" novalidate>
-                <div class="row align-items-center mb-3">
+                <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">
                     <div class="col-auto">
                         <label for="users_dcid" class="form-label form-label-sm label-reset req">Who's name is
                             changing?</label>
@@ -28,10 +28,21 @@
                         </select>
                     </div>
                 </div>
+                <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Edit'">
+                    <div class="col-auto">
+                        <label for="users_dcid" class="form-label form-label-sm label-reset req">Previous
+                            Name:</label><br />
+                        {{submitPayload.nameChange.old_name_placeholder}}
+                    </div>
+                </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.users_dcid">
                     <div class="col-6">
-                        <label for="name-change-staff-name" class="form-label form-label-sm  label-reset req">Please
-                            <mark>change name below</mark> to {{submitPayload.nameChange.old_name_placeholder}}'s new name</label>
+                        <label for="name-change-staff-name" class="form-label form-label-sm  label-reset req"
+                            data-ng-if="userContext.pageStatus =='Submit'">Please
+                            <mark>change name below</mark> to {{submitPayload.nameChange.old_name_placeholder}}'s new
+                            name</label>
+                        <label for="name-change-staff-name" class="form-label form-label-sm  label-reset req"
+                            data-ng-if="userContext.pageStatus =='Edit'">New Name:</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
                                 data-ng-model="submitPayload.nameChange.title" data-ng-required="true"
@@ -123,7 +134,8 @@
                         </div>
                     </div>
                 </div>
-                ~[if#distCheck.security.inrole=9]<creation-checks data-ng-if="userContext.pageStatus =='Edit'"></creation-checks>[/if#distCheck]
+                ~[if#distCheck.security.inrole=9]<creation-checks
+                    data-ng-if="userContext.pageStatus =='Edit'"></creation-checks>[/if#distCheck]
             </form>
         </div>
         <form-buttons></form-buttons>
