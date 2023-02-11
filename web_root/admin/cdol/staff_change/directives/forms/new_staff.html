@@ -137,7 +137,7 @@
                         <div class="card">
                             <div class="card-header fw-semibold ps-1 req">{{
                                 submitPayload.newStaff.first_name}} {{
-                                submitPayload.newStaff.last_name}}'s Transfer
+                                submitPayload.newStaff.last_name}}'s Requested Account Creation
                                 Date</div>
                             <div class="card-body">
                                 <div data-ng-if="userContext.pageStatus =='Submit'">
@@ -168,7 +168,7 @@
                                     data-ng-if="submitPayload.newStaff.date_radio==='other' || userContext.pageStatus =='Edit'">
                                     <div class="col">
                                         <label data-ng-if="userContext.pageStatus =='Submit'"
-                                            class="form-label form-label-sm label-reset req">Transfer
+                                            class="form-label form-label-sm label-reset req">Requested Account Creation
                                             Date</label><br>
                                         <input title="Transfer Date" type="text" class="psDateWidget"
                                             ng-model="submitPayload.newStaff.deadline" ng-required="true">
@@ -179,7 +179,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.newStaff.first_name">
+                <div class="row align-items-center mb-3" data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.newStaff.first_name) || (userContext.pageStatus =='Edit' && submitPayload.newStaff.prev_school_number)">
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
@@ -206,7 +206,7 @@
                                     </div>
                                 </div>
                                 <div class="row align-items-center mb-3"
-                                    data-ng-if="submitPayload.newStaff.prev_school_radio == 1 || userContext.pageStatus =='Edit'">
+                                    data-ng-if="submitPayload.newStaff.prev_school_radio == 1 || (userContext.pageStatus =='Edit' && submitPayload.newStaff.prev_school_number)">
                                     <div class="col-auto">
                                         <label for="prev_school_number"
                                             class="form-label form-label-sm label-reset req">Where was {{
@@ -244,7 +244,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.newStaff.first_name">
+                <div class="row align-items-center mb-3" data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.newStaff.first_name) || (userContext.pageStatus =='Edit' && submitPayload.newStaff.replace_dcid)">
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
@@ -269,7 +269,7 @@
                                     </div>
                                 </div>
                                 <div class="row align-items-center mb-3"
-                                    data-ng-if="submitPayload.newStaff.exit_radio == 1 || userContext.pageStatus =='Edit'">
+                                    data-ng-if="submitPayload.newStaff.exit_radio == 1 || (userContext.pageStatus =='Edit' && submitPayload.newStaff.replace_dcid)">
                                     <div class="col-auto">
                                         <label for="replacing_dcid" class="form-label form-label-sm label-reset req">Who
                                             is
