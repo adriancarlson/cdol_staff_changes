@@ -1,6 +1,6 @@
 define(['angular', 'components/shared/index', '/scripts/cdol/services/formatService.js', '/scripts/cdol/services/psApiService.js'], function (angular) {
-	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'formatService', 'psApiModule'])
-	cdolStaffApp.controller('cdolStaffAppCtrl', function ($scope, $http, $attrs, $window, formatService, psApiService) {
+	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'psApiModule'])
+	cdolStaffApp.controller('cdolStaffAppCtrl', function ($scope, $http, $attrs, $window, psApiService) {
 		//initializing overall form data
 		$scope.userContext = {
 			pageStatus: $attrs.ngStatus,
