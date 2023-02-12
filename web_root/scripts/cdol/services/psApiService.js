@@ -14,7 +14,7 @@ define(['angular'], function (angular) {
 				method: method,
 				headers: headers
 			}
-			// copying payload using spread, to keep original payload object in tact. apiPayload is what will be submitted with any API call below. 
+			// copying payload using spread, to keep original payload object in tact. apiPayload is what will be submitted with any API call below.
 			let apiPayload = { ...payload }
 			// Unique Headers
 			switch (method) {
@@ -58,6 +58,9 @@ define(['angular'], function (angular) {
 							resData = res.data.tables[tableName]
 							if (apiPayload.dateKeys) {
 								resData = formatService.objIterator(resData, apiPayload.dateKeys, 'formatDateFromApi')
+							}
+							if (apiPayload.checkBoxKeys) {
+								resData = formatService.objIterator(resData, apiPayload.checkBoxKeys, 'formatChecksFromApi')
 							}
 							deferredResponse.resolve(resData)
 							break

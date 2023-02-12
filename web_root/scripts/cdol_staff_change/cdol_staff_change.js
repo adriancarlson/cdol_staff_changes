@@ -33,7 +33,8 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 		$scope.getStaffChange = async staffChangeId => {
 			loadingDialog()
 			formatKeys = {
-				dateKeys: ['_date', 'dob', 'deadline']
+				dateKeys: ['_date', 'dob', 'deadline'],
+				checkBoxKeys: ['_created', '_ignored']
 			}
 			if (staffChangeId) {
 				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, formatKeys, staffChangeId)
