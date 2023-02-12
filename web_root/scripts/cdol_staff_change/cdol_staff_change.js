@@ -261,28 +261,12 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				formPayload.change_type = key
 				//add commonPayload to each object in submitPayload
 				formPayload = Object.assign(formPayload, formatKeys)
-				// constructing deadline
-				if (formPayload.hasOwnProperty('date_radio')) {
-					const today = new Date()
-					const yyyy = today.getFullYear()
-					let mm = today.getMonth() + 1 // Months start at 0!
-					let dd = today.getDate()
-					if (dd < 10) dd = '0' + dd
-					if (mm < 10) mm = '0' + mm
-					todayFormated = mm + '/' + dd + '/' + yyyy
 
-					if (formPayload.date_radio === 'today') {
-						formPayload.deadline = todayFormated
-					} else if (formPayload.date_radio === 'june30') {
-						formPayload.deadline = `06/30/${yyyy}`
-					}
+				if ($scope.userContext.staffChangeId) {
+					await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', formPayload, $scope.userContext.staffChangeId)
+					$scope.toListRedirect(form)
 				}
 			})
-
-			if ($scope.userContext.staffChangeId) {
-				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', formPayload, $scope.userContext.staffChangeId)
-				$scope.toListRedirect(form)
-			}
 		}
 		$scope.deleteStaffChange = async form => {
 			if ($scope.userContext.staffChangeId) {

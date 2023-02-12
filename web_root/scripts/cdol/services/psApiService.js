@@ -26,7 +26,7 @@ define(['angular'], function (angular) {
 					}
 					delete apiPayload.dateKeys
 					if (apiPayload.checkBoxKeys) {
-						resData = formatService.objIterator(resData, apiPayload.checkBoxKeys, 'formatChecksForApi')
+						apiPayload = formatService.objIterator(apiPayload, apiPayload.checkBoxKeys, 'formatChecksForApi')
 					}
 					delete apiPayload.checkBoxKeys
 					if (apiPayload.titleKeys) {
