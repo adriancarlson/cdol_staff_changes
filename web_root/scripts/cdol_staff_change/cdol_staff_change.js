@@ -254,7 +254,9 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 			console.log(`Running updateStaffChange from ${form}`)
 			formatKeys = {
 				dateKeys: ['_date', 'dob', 'deadline'],
-				checkBoxKeys: ['_created', '_ignored']
+				checkBoxKeys: ['_created', '_ignored'],
+				titleKeys: ['_name'],
+				sentenceKeys: ['position', 'notes']
 			}
 			Object.keys($scope.submitPayload).forEach(async (key, index) => {
 				let formPayload = $scope.submitPayload[key]
