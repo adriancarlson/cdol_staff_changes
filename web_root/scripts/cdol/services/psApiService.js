@@ -20,10 +20,15 @@ define(['angular'], function (angular) {
 			switch (method) {
 				//Create
 				case 'POST':
+				case 'PUT':
 					if (apiPayload.dateKeys) {
 						apiPayload = formatService.objIterator(apiPayload, apiPayload.dateKeys, 'formatDateForApi')
 					}
 					delete apiPayload.dateKeys
+					if (apiPayload.checkBoxKeys) {
+						resData = formatService.objIterator(resData, apiPayload.checkBoxKeys, 'formatChecksForApi')
+					}
+					delete apiPayload.checkBoxKeys
 					if (apiPayload.titleKeys) {
 						apiPayload = formatService.objIterator(apiPayload, apiPayload.titleKeys, 'titleCase')
 					}
@@ -52,6 +57,7 @@ define(['angular'], function (angular) {
 				res => {
 					switch (method) {
 						case 'POST':
+						case 'PUT':
 							deferredResponse.resolve(res.data.record || [])
 							break
 						case 'GET':
