@@ -3,6 +3,19 @@
             class="bi bi-exclamation-triangle-fill"></i> Please ensure staff name is spelled correctly! If you
         anticipate a name change in the next few months, please enter their anticipated name.
     </div>
+    <div data-ng-if="userContext.pageStatus =='Edit'">
+        <!-- ng-show="userContext.pageStatus =='Edit' && dupList.length >0 && newStaff.ps_created !=1" -->
+        <div class="container mt-3">
+            <div class="card">
+                <div class="card-header ms-0">
+                    Potential matches for username
+                </div>
+                <div class="card-body">
+                    card body
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="card">
         <div class="card-header bg-success text-bg-success bg-gradient fs-6 fw-semibold">New Staff:</div>
         <div class="card-body">
@@ -179,7 +192,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3" data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.newStaff.first_name) || (userContext.pageStatus =='Edit' && submitPayload.newStaff.prev_school_number)">
+                <div class="row align-items-center mb-3"
+                    data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.newStaff.first_name) || (userContext.pageStatus =='Edit' && submitPayload.newStaff.prev_school_number)">
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
@@ -244,7 +258,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3" data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.newStaff.first_name) || (userContext.pageStatus =='Edit' && submitPayload.newStaff.replace_dcid)">
+                <div class="row align-items-center mb-3"
+                    data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.newStaff.first_name) || (userContext.pageStatus =='Edit' && submitPayload.newStaff.replace_dcid)">
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
@@ -418,8 +433,9 @@
                             <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
                         </div>
                     </div>
-                </div> 
-                ~[if#distCheck.security.inrole=9]<creation-checks data-ng-if="userContext.pageStatus =='Edit'"></creation-checks>[/if#distCheck]
+                </div>
+                ~[if#distCheck.security.inrole=9]<creation-checks
+                    data-ng-if="userContext.pageStatus =='Edit'"></creation-checks>[/if#distCheck]
             </form>
         </div>
         <form-buttons></form-buttons>

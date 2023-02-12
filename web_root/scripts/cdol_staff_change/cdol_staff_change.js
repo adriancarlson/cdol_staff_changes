@@ -40,8 +40,11 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, formatKeys, staffChangeId)
 				$scope.submitPayload[res.change_type] = await res
 				$scope.userContext.pageContext = await res.change_type
+				if ($scope.userContext.pageContext === 'newStaff') {
+					await $scope.searchForDups(res)
+				}
 			}
-			$scope.searchForDups()
+
 			$scope.$digest()
 			closeLoading()
 		}
@@ -59,14 +62,14 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				})
 				$scope[resource] = res.data
 				$scope[resource].pop()
-				console.log('getJSONDataResponse', $scope[resource])
 			}
 		}
-		$scope.searchForDups = () => {
+
+		$scope.searchForDups = async staffToSearch => {
 			let staffDupParams = {
-				lastName: $scope.submitPayload[pageContext].last_name.toLowerCase(),
-				maidenName: $scope.submitPayload[pageContext].middle_name.toLowerCase(),
-				firstNameSubString: $scope.submitPayload[pageContext].first_name.substring(0, 3).toLowerCase()
+				lastName: staffToSearch.last_name.toLowerCase(),
+				maidenName: staffToSearch.middle_name.toLowerCase(),
+				firstNameSubString: staffToSearch.first_name.substring(0, 3).toLowerCase()
 			}
 			$scope.getJSONData('staffDupData', staffDupParams)
 		}
