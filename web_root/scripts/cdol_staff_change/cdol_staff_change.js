@@ -41,6 +41,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				$scope.submitPayload[res.change_type] = await res
 				$scope.userContext.pageContext = await res.change_type
 			}
+			$scope.searchForDups()
 			$scope.$digest()
 			closeLoading()
 		}
@@ -49,15 +50,25 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 			$scope.getStaffChange($scope.userContext.staffChangeId)
 		}
 		//had to switch from PQ's to pulling this data through t_list SQL and JSON files because of PowerSchools Data Restriction Framework on PQs
-		$scope.getJSONData = async resource => {
+		$scope.getJSONData = async (resource, params = {}) => {
 			if (!$scope[resource]) {
 				const res = await $http({
 					url: `/admin/cdol/staff_change/data/${resource}.json`,
-					method: 'GET'
+					method: 'GET',
+					params: params
 				})
 				$scope[resource] = res.data
 				$scope[resource].pop()
+				console.log('getJSONDataResponse', $scope[resource])
 			}
+		}
+		$scope.searchForDups = () => {
+			let staffDupParams = {
+				lastName: $scope.submitPayload[pageContext].last_name.toLowerCase(),
+				maidenName: $scope.submitPayload[pageContext].middle_name.toLowerCase(),
+				firstNameSubString: $scope.submitPayload[pageContext].first_name.substring(0, 3).toLowerCase()
+			}
+			$scope.getJSONData('staffDupData', staffDupParams)
 		}
 
 		// function to switch forms and set scope to hold form data
