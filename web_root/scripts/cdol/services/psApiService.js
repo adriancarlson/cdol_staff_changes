@@ -31,6 +31,10 @@ define(['angular'], function (angular) {
 						payload = formatService.objIterator(payload, payload.sentenceKeys, 'sentenceCase')
 					}
 					delete payload.sentenceKeys
+					if (payload.deleteKeys) {
+						payload = formatService.objIterator(payload, payload.deleteKeys, 'deleteKeys')
+					}
+					delete payload.deleteKeys
 					const data = { tables: {} }
 					data.tables[tableName] = payload
 					httpObject['data'] = data

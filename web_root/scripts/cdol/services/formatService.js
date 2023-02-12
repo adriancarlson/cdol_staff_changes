@@ -146,9 +146,17 @@ define(['angular'], function (angular) {
 		this.objIterator = function (obj, iterKeys, iterType) {
 			const objKeys = Object.keys(obj)
 			objKeys.forEach(keyName => {
+				// looping through first object
 				iterKeys.forEach(iterKey => {
+					// using index of to check if the object key name have a matched string if so deleting it from the payload
 					if (keyName.indexOf(iterKey) !== -1) {
-						obj[keyName] = this[iterType](obj[keyName])
+						// if iterType contains delete than delete the key
+						if (iterType.includes('delete')) {
+							delete obj[keyName]
+							// else perfore an iterType function on the key
+						} else {
+							obj[keyName] = this[iterType](obj[keyName])
+						}
 					}
 				})
 			})

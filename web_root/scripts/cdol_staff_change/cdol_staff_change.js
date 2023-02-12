@@ -217,7 +217,8 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				who_submitted: $scope.userContext.curUserId,
 				dateKeys: ['_date', 'dob', 'deadline'],
 				titleKeys: ['_name'],
-				sentenceKeys: ['position', 'notes']
+				sentenceKeys: ['position', 'notes'],
+				deleteKeys: ['_radio', 'homeschool', 'identifier']
 			}
 			//loop though submitPayload object
 			Object.keys($scope.submitPayload).forEach(async (key, index) => {
@@ -248,16 +249,16 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				//applying case formatting to text entry fields
 
 				// removing items from the object not needed for the submission Record
-				const keysToDelete = ['_radio', 'homeschool', 'identifier']
-				keysToDelete.forEach(item => {
-					// looping through first object
-					getApiPayloadKeys.forEach(keyName => {
-						// using index of to check if the object key name have a matched string if so deleting it from the payload
-						if (keyName.indexOf(item) !== -1) {
-							delete apiPayload[keyName]
-						}
-					})
-				})
+				// const keysToDelete = ['_radio', 'homeschool', 'identifier']
+				// keysToDelete.forEach(item => {
+				// 	// looping through first object
+				// 	getApiPayloadKeys.forEach(keyName => {
+				// 		// using index of to check if the object key name have a matched string if so deleting it from the payload
+				// 		if (keyName.indexOf(item) !== -1) {
+				// 			delete apiPayload[keyName]
+				// 		}
+				// 	})
+				// })
 				//submitting staff changes through api
 				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', apiPayload)
 			})
@@ -268,6 +269,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 		$scope.updateStaffChange = async form => {
 			console.log(`Running updateStaffChange from ${form}`)
 			if ($scope.userContext.staffChangeId) {
+				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'UPDATE', {}, $scope.userContext.staffChangeId)
 				$scope.toListRedirect(form)
 			}
 		}
