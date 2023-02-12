@@ -14,29 +14,30 @@ define(['angular'], function (angular) {
 				method: method,
 				headers: headers
 			}
-
+			// copying payload using spread, to keep original payload object in tact. apiPayload is what will be submitted with any API call below. 
+			let apiPayload = { ...payload }
 			// Unique Headers
 			switch (method) {
 				//Create
 				case 'POST':
-					if (payload.dateKeys) {
-						payload = formatService.objIterator(payload, payload.dateKeys, 'formatDateForApi')
+					if (apiPayload.dateKeys) {
+						apiPayload = formatService.objIterator(apiPayload, apiPayload.dateKeys, 'formatDateForApi')
 					}
-					delete payload.dateKeys
-					if (payload.titleKeys) {
-						payload = formatService.objIterator(payload, payload.titleKeys, 'titleCase')
+					delete apiPayload.dateKeys
+					if (apiPayload.titleKeys) {
+						apiPayload = formatService.objIterator(apiPayload, apiPayload.titleKeys, 'titleCase')
 					}
-					delete payload.titleKeys
-					if (payload.sentenceKeys) {
-						payload = formatService.objIterator(payload, payload.sentenceKeys, 'sentenceCase')
+					delete apiPayload.titleKeys
+					if (apiPayload.sentenceKeys) {
+						apiPayload = formatService.objIterator(apiPayload, apiPayload.sentenceKeys, 'sentenceCase')
 					}
-					delete payload.sentenceKeys
-					if (payload.deleteKeys) {
-						payload = formatService.objIterator(payload, payload.deleteKeys, 'deleteKeys')
+					delete apiPayload.sentenceKeys
+					if (apiPayload.deleteKeys) {
+						apiPayload = formatService.objIterator(apiPayload, apiPayload.deleteKeys, 'deleteKeys')
 					}
-					delete payload.deleteKeys
+					delete apiPayload.deleteKeys
 					const data = { tables: {} }
-					data.tables[tableName] = payload
+					data.tables[tableName] = apiPayload
 					httpObject['data'] = data
 					break
 				//READ
@@ -55,8 +56,8 @@ define(['angular'], function (angular) {
 							break
 						case 'GET':
 							resData = res.data.tables[tableName]
-							if (payload.dateKeys) {
-								resData = formatService.objIterator(resData, payload.dateKeys, 'formatDateFromApi')
+							if (apiPayload.dateKeys) {
+								resData = formatService.objIterator(resData, apiPayload.dateKeys, 'formatDateFromApi')
 							}
 							deferredResponse.resolve(resData)
 							break

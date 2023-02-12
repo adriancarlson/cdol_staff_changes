@@ -242,25 +242,8 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 						formPayload.deadline = `06/30/${yyyy}`
 					}
 				}
-				// copying formPayload using spread. Then deleting any unneeded key value pairs before sending to API call
-				apiPayload = { ...formPayload }
-				// get all the keys from the apiPayload object
-				const getApiPayloadKeys = Object.keys(apiPayload)
-				//applying case formatting to text entry fields
-
-				// removing items from the object not needed for the submission Record
-				// const keysToDelete = ['_radio', 'homeschool', 'identifier']
-				// keysToDelete.forEach(item => {
-				// 	// looping through first object
-				// 	getApiPayloadKeys.forEach(keyName => {
-				// 		// using index of to check if the object key name have a matched string if so deleting it from the payload
-				// 		if (keyName.indexOf(item) !== -1) {
-				// 			delete apiPayload[keyName]
-				// 		}
-				// 	})
-				// })
 				//submitting staff changes through api
-				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', apiPayload)
+				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
 			})
 			//sending to confirm screen after submission
 			$scope.formDisplay('confirm', $scope.userContext.pageContext)
