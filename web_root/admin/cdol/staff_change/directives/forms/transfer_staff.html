@@ -25,6 +25,14 @@
                             [/tlist_sql]
                             <option value="-1">-- Other --</option>
                         </select>
+                        <select class="form-select" id="basic-usage" data-placeholder="Choose one thing">
+                            <option></option>
+                            <option>Reactive</option>
+                            <option>Solution</option>
+                            <option>Conglomeration</option>
+                            <option>Algoritm</option>
+                            <option>Holistic</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid == -1">
@@ -371,7 +379,13 @@
         <form-buttons></form-buttons>
     </div>
 </div>
-
+<script>
+    $j('#basic-usage').select2({
+        theme: "bootstrap-5",
+        width: $j(this).data('width') ? $j(this).data('width') : $j(this).hasClass('w-100') ? '100%' : 'style',
+        placeholder: $j(this).data('placeholder'),
+    });
+</script>
 <!-- <form name="staffTransferForm" method="POST" novalidate>
     <script type="text/javascript">initBehaviors();</script>
     <div class="fluid-form">
