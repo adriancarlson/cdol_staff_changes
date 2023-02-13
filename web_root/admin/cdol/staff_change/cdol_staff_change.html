@@ -11,6 +11,9 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
         <link href="/images/css/screen.css" rel="stylesheet" media="screen">
         <link href="/images/css/print.css" rel="stylesheet" media="print">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
         <link href="/images/css/cdol_staff_change/cdol_staff_change.css" rel="stylesheet">
     </head>
 
@@ -43,6 +46,16 @@
         </div>
         ~[if#distCheck.security.inrole=9]~[if.is_prod][else]<tests></tests>[/if][/if#distCheck]
         ~[wc:admin_footer_css]
+        <script>
+            require(['https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js'], function () {
+                // Replace this selector with your actual <select> selector...
+                $j('#basic-usage').select2({
+                    theme: "bootstrap-5",
+                    width: $j(this).data('width') ? $j(this).data('width') : $j(this).hasClass('w-100') ? '100%' : 'style',
+                    placeholder: $j(this).data('placeholder'),
+                });
+            })
+        </script>
     </body>
 
 </html>
