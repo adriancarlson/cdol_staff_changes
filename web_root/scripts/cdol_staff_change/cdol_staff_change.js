@@ -86,10 +86,6 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 		$scope.formDisplay = (pageContext, prevContext, direction) => {
 			$scope.userContext.pageContext = pageContext
 			$scope.userContext.prevContext = prevContext
-			// console.log('direction', direction)
-			// console.log('pageContext', pageContext)
-			// console.log('prevContext', prevContext)
-
 			//load user data now needed on all forms
 			$scope.getJSONData('usersData')
 

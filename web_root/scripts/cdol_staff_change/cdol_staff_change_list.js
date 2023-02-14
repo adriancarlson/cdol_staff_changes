@@ -12,14 +12,8 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 
 		$scope.loadData = async (changeType) => {
 			loadingDialog();
-
-			// 			console.log('Before $scope.staffList', $scope.staffList);
-			// 			console.log('Before API Calls', $scope.staffList.hasOwnProperty(camelChangeType));
-			//             console.log('$scope.selectedTab', $scope.selectedTab);
-
 			//only make API call to get the data if
 			if (!$scope.staffList.hasOwnProperty(changeType)) {
-				console.log(`Running ... API call for ${changeType}`);
 				//setting up arguments for PQ call
 				const pqData = { curSchoolID: $scope.curSchoolId, calendarYear: $scope.calendarYear };
 
@@ -44,8 +38,6 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 				//setting left nav count
 				$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`);
 			}
-			// 			console.log('After $scope.staffList', $scope.staffList);
-			// 			console.log('After API Calls', $scope.staffList.hasOwnProperty(camelChangeType));
 			closeLoading();
 		};
 
@@ -56,8 +48,6 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/pqService.
 		$scope.reloadData = () => {
 			$scope.staffChangeCounts = [];
 			$scope.staffList = {};
-			// 			console.log('Reloading ... $scope.staffChangeCounts', $scope.staffChangeCounts);
-			// 			console.log('Reloading ... $scope.staffList', $scope.staffList);
 			$scope.loadData($scope.selectedTab);
 		};
 	});
