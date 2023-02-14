@@ -46,16 +46,6 @@
         </div>
         ~[if#distCheck.security.inrole=9]~[if.is_prod][else]<tests></tests>[/if][/if#distCheck]
         ~[wc:admin_footer_css]
-        <script>
-            require(['https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js'], function () {
-                // Replace this selector with your actual <select> selector...
-                $j('#basic-usage').select2({
-                    theme: "bootstrap-5",
-                    width: $j(this).data('width') ? $j(this).data('width') : $j(this).hasClass('w-100') ? '100%' : 'style',
-                    placeholder: $j(this).data('placeholder'),
-                });
-            })
-        </script>
     </body>
 
 </html>

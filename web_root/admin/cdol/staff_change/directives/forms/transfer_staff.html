@@ -6,9 +6,10 @@
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
                         <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is Transferring
-                            into ~(schoolname)?</label><span class="text-muted"><small><em> (Choose --Other-- if staff
-                                    member is not listed)</em></small></span>
+                            into ~(schoolname)?</label><span class="text-muted"><small><em> (Type Other if staff
+                                    member is not listed in the dropdown)</em></small></span>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
+                            data-placeholder="Type Name of Transferring Staff Member"
                             data-ng-model="submitPayload.transferringStaff.users_dcid" data-ng-required="true"
                             data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.transferringStaff.users_dcid, 'users_dcid')">
                             <option selected></option>
@@ -23,15 +24,7 @@
                             Order BY users.last_name , users.first_name]
                             <option value="~(dcid)">~(first) ~(last)</option>
                             [/tlist_sql]
-                            <option value="-1">-- Other --</option>
-                        </select>
-                        <select class="form-select" id="basic-usage" data-placeholder="Choose one thing">
-                            <option></option>
-                            <option>Reactive</option>
-                            <option>Solution</option>
-                            <option>Conglomeration</option>
-                            <option>Algoritm</option>
-                            <option>Holistic</option>
+                            <option value="-1">Other</option>
                         </select>
                     </div>
                 </div>
@@ -379,6 +372,17 @@
         <form-buttons></form-buttons>
     </div>
 </div>
+<script>
+    require(['https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js'], function () {
+        $j('#users_dcid').select2({
+            theme: "bootstrap-5",
+            width: $j(this).data('width') ? $j(this).data('width') : $j(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $j(this).data('placeholder'),
+            selectionCssClass: 'select2--small',
+            dropdownCssClass: 'select2--small',
+        });
+    })
+</script>
 <!-- <form name="staffTransferForm" method="POST" novalidate>
     <script type="text/javascript">initBehaviors();</script>
     <div class="fluid-form">
