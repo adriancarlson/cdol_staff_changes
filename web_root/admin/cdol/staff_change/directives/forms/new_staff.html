@@ -48,7 +48,7 @@
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
                                 data-ng-model="submitPayload.newStaff.title" data-ng-required="true"
-                                data-ng-if="!['Fr.','Msgr.','Sr.','Br.'].includes(submitPayload.newStaff.title)">
+                                data-ng-if="!['Fr.','Msgr.','Sr.','Br.'].includes(submitPayload.newStaff.title)" tabindex="0">
                                 <option selected></option>
                                 <option value="Mr.">Mr.</option>
                                 <option value="Mrs.">Mrs.</option>
@@ -61,12 +61,12 @@
                             </select>
                             <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
                                 aria-label="First name" data-ng-model="submitPayload.newStaff.first_name"
-                                data-ng-required="true">
+                                data-ng-required="true" tabindex="1">
                             <input type="text" class="form-control form-control-sm w-25" placeholder="Middle name"
-                                aria-label="Middle name" data-ng-model="submitPayload.newStaff.middle_name">
+                                aria-label="Middle name" data-ng-model="submitPayload.newStaff.middle_name" tabindex="2">
                             <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
                                 aria-label="Last name" data-ng-model="submitPayload.newStaff.last_name"
-                                data-ng-required="true">
+                                data-ng-required="true" tabindex="3">
                         </div>
                     </div>
                 </div>
@@ -75,13 +75,13 @@
                         <label for="new-staff-gender" class="form-label form-label-sm  label-reset req">Gender</label>
                         <select id="new-staff-gender" class="form-select form-select-sm" aria-label="new-staff-gender"
                             data-ng-model="submitPayload.newStaff.gender"
-                            data-ng-required="true">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]gender)]
+                            data-ng-required="true" tabindex="4">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]gender)]
                         </select>
                     </div>
                     <div class="col-auto">
                         <label class="form-label form-label-sm label-reset">Date of Birth</label><br>
                         <input title="Date of Birth" type="text" class="psDateWidget"
-                            ng-model="submitPayload.newStaff.dob">
+                            ng-model="submitPayload.newStaff.dob" tabindex="5">
                         <script type="text/javascript">initBehaviors();</script>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                                     name)</em></small></span></label>
                         <input id="new-staff-preferred-name" type="text" class="form-control form-control-sm"
                             aria-label="Preferred Name" placeholder='ex: Bill instead of William'
-                            data-ng-model="submitPayload.newStaff.preferred_name">
+                            data-ng-model="submitPayload.newStaff.preferred_name" tabindex="6">
 
                     </div>
                     <div class="col-2"
@@ -100,14 +100,14 @@
                         <label for="new-staff-maiden-name" class="form-label form-label-sm  label-reset">Maiden
                             Name </label>
                         <input id="new-staff-maiden-name" type="text" class="form-control form-control-sm"
-                            aria-label="Maiden Name" data-ng-model="submitPayload.newStaff.maiden_name">
+                            aria-label="Maiden Name" data-ng-model="submitPayload.newStaff.maiden_name" tabindex="7">
                     </div>
                 </div>
                 <div class="row align-items-center mb-3 gx-2">
                     <div class="col-auto">
                         <label for="new-staff-religion" class="form-label form-label-sm  label-reset">Religion</label>
                         <select id="new-staff-religion" class="form-select form-select-sm"
-                            aria-label="new-staff-religion" data-ng-model="submitPayload.newStaff.religion">
+                            aria-label="new-staff-religion" data-ng-model="submitPayload.newStaff.religion" tabindex="8">
                             <option></option>
                             <option value="C">C - Catholic</option>
                             <option value="N">N - Non-Catholic</option>
@@ -118,7 +118,7 @@
                             class="form-label form-label-sm label-reset">Religious, Clergy, or Lay</label>
                         <select id="new-staff-religiousclergylay" class="form-select form-select-sm"
                             aria-label="new-staff-religiousclergylay"
-                            data-ng-model="submitPayload.newStaff.religiousclergylay">
+                            data-ng-model="submitPayload.newStaff.religiousclergylay" tabindex="9">
                             <option></option>
                             <option value="R">R - Religious</option>
                             <option value="C">C - Clergy</option>
@@ -133,7 +133,7 @@
                                         trainings)</em></small></span></label>
                         <input id="new-staff-personal-email" type="text" class="form-control form-control-sm"
                             placeholder="newstaff@email.com" aria-label="Personal Email"
-                            data-ng-model="submitPayload.newStaff.personal_email">
+                            data-ng-model="submitPayload.newStaff.personal_email" tabindex="10">
                     </div>
                 </div>
                 <div class="row align-items-center mb-3 gx-2">
@@ -141,7 +141,7 @@
                         <label for="new-staff-type" class="form-label form-label-sm  label-reset req">Staff
                             Type</label>
                         <select id="new-staff-type" class="form-select form-select-sm" aria-label="new-staff-type"
-                            data-ng-model="submitPayload.newStaff.staff_type" data-ng-required="true">
+                            data-ng-model="submitPayload.newStaff.staff_type" data-ng-required="true" tabindex="11">
                             <option></option>
                             <option value="1">Teacher</option>
                             <option value="2">Staff</option>
@@ -154,12 +154,12 @@
                             class="form-label form-label-sm  label-reset req">Position</label>
                         <input id="new-staff-position" type="text" class="form-control form-control-sm"
                             placeholder="Ex: 2nd Grade Teacher, or Principal" aria-label="Position"
-                            data-ng-model="submitPayload.newStaff.position" data-ng-required="true">
+                            data-ng-model="submitPayload.newStaff.position" data-ng-required="true" tabindex="12">
                     </div>
                     <div class="col-auto">
                         <label for="new-staff-fte" class="form-label form-label-sm label-reset">FTE</label>
                         <select id="new-staff-fte" class="form-select form-select-sm" aria-label="new-staff-fte"
-                            data-ng-model="submitPayload.newStaff.fte">
+                            data-ng-model="submitPayload.newStaff.fte" tabindex="13">
                             <option></option>
                             <option value="FT">FT - Full-time</option>
                             <option value="PT">PT - Part-time</option>
@@ -178,7 +178,7 @@
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="exit-date-group"
                                             id="exit-date-today" data-ng-model="submitPayload.newStaff.date_radio"
-                                            value="today" data-ng-required="!submitPayload.newStaff.date_radio">
+                                            value="today" data-ng-required="!submitPayload.newStaff.date_radio" tabindex="14">
                                         <label class="form-check-label" for="exit-date-today">Today
                                             ({{ userContext.curDate}})</label>
                                     </div>
@@ -186,14 +186,14 @@
                                         data-ng-if="userContext.isTodayBeforeJuly">
                                         <input class="form-check-input" type="radio" name="exit-date-group"
                                             id="exit-date-june30" data-ng-model="submitPayload.newStaff.date_radio"
-                                            value="june30" data-ng-required="!submitPayload.newStaff.date_radio">
+                                            value="june30" data-ng-required="!submitPayload.newStaff.date_radio" tabindex="15">
                                         <label class="form-check-label" for="exit-date-june30">June
                                             30th</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="exit-date-group"
                                             id="exit-date-specific" data-ng-model="submitPayload.newStaff.date_radio"
-                                            value="other" data-ng-required="!submitPayload.newStaff.date_radio">
+                                            value="other" data-ng-required="!submitPayload.newStaff.date_radio" tabindex="16">
                                         <label class="form-check-label" for="exit-date-specific">Specific
                                             Date</label>
                                     </div>
@@ -205,7 +205,7 @@
                                             class="form-label form-label-sm label-reset req">Requested Account Creation
                                             Date</label><br>
                                         <input title="Transfer Date" type="text" class="psDateWidget"
-                                            ng-model="submitPayload.newStaff.deadline" ng-required="true">
+                                            ng-model="submitPayload.newStaff.deadline" ng-required="true" tabindex="17">
                                         <script type="text/javascript">initBehaviors();</script>
                                     </div>
                                 </div>
@@ -228,14 +228,14 @@
                                             <input class="form-check-input" type="radio" name="prev-school-radio-group"
                                                 id="prev-school-radio-yes"
                                                 data-ng-model="submitPayload.newStaff.prev_school_radio" value="1"
-                                                data-ng-required="!submitPayload.newStaff.prev_school_radio">
+                                                data-ng-required="!submitPayload.newStaff.prev_school_radio" tabindex="18">
                                             <label class="form-check-label" for="prev-school-radio-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="prev-school-radio-group"
                                                 id="prev-school-radio-no"
                                                 data-ng-model="submitPayload.newStaff.prev_school_radio" value="0"
-                                                data-ng-required="!submitPayload.newStaff.prev_school_radio">
+                                                data-ng-required="!submitPayload.newStaff.prev_school_radio" tabindex="19">
                                             <label class="form-check-label" for="prev-school-radio-no">No</label>
                                         </div>
                                     </div>
@@ -253,7 +253,7 @@
                                             aria-label="Where previously employed?"
                                             data-ng-model="submitPayload.newStaff.prev_school_number"
                                             data-ng-required="true"
-                                            data-ng-change="updateScopeFromDropdown(userContext.pageContext,'schoolsData',submitPayload.newStaff.prev_school_number)">
+                                            data-ng-change="updateScopeFromDropdown(userContext.pageContext,'schoolsData',submitPayload.newStaff.prev_school_number)" tabindex="20">
                                             <option selected></option>
                                             ~[tlist_sql;SELECT SCHOOLS.School_number, SCHOOLS.name
                                             FROM SCHOOLS
@@ -272,7 +272,7 @@
                                             class="form-label form-label-sm label-reset req">Please
                                             Type Name Previous Employer</label>
                                         <input id="transferring-staff-school-name" class="form-control" type="text"
-                                            data-ng-model="submitPayload.newStaff.prev_school_name">
+                                            data-ng-model="submitPayload.newStaff.prev_school_name" tabindex="21">
                                     </div>
                                 </div>
                             </div>
@@ -293,13 +293,13 @@
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="exit-radio-group"
                                                 id="exit-radio-yes" data-ng-model="submitPayload.newStaff.exit_radio"
-                                                value="1" data-ng-required="!submitPayload.newStaff.exit_radio">
+                                                value="1" data-ng-required="!submitPayload.newStaff.exit_radio" tabindex="22">
                                             <label class="form-check-label" for="exit-radio-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="exit-radio-group"
                                                 id="exit-radio-no" data-ng-model="submitPayload.newStaff.exit_radio"
-                                                value="0" data-ng-required="!submitPayload.newStaff.exit_radio">
+                                                value="0" data-ng-required="!submitPayload.newStaff.exit_radio" tabindex="23">
                                             <label class="form-check-label" for="exit-radio-no">No</label>
                                         </div>
                                     </div>
@@ -317,7 +317,7 @@
                                         <select class="form-select form-select-sm" id="replace_dcid"
                                             aria-label="Who is not returning?"
                                             data-ng-model="submitPayload.newStaff.replace_dcid" data-ng-required="true"
-                                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.newStaff.replace_dcid, 'replace_dcid')">
+                                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.newStaff.replace_dcid, 'replace_dcid')" tabindex="24">
                                             <option selected></option>
                                             ~[tlist_sql;SELECT
                                             users.dcid,
@@ -350,7 +350,7 @@
                                             <select class="form-select form-select-sm" aria-label="title"
                                                 data-ng-model="submitPayload.newStaff.replace_title"
                                                 data-ng-required="true"
-                                                data-ng-if="!['Fr.','Msgr.','Sr.','Br.'].includes(submitPayload.newStaff.replace_title)">
+                                                data-ng-if="!['Fr.','Msgr.','Sr.','Br.'].includes(submitPayload.newStaff.replace_title)" tabindex="25">
                                                 <option selected></option>
                                                 <option value="Mr.">Mr.</option>
                                                 <option value="Mrs.">Mrs.</option>
@@ -364,14 +364,14 @@
                                             <input type="text" class="form-control form-control-sm w-25"
                                                 placeholder="First name" aria-label="First name"
                                                 data-ng-model="submitPayload.newStaff.replace_first_name"
-                                                data-ng-required="true">
+                                                data-ng-required="true" tabindex="26">
                                             <input type="text" class="form-control form-control-sm w-25"
                                                 placeholder="Middle name" aria-label="Middle name"
-                                                data-ng-model="submitPayload.newStaff.replace_middle_name">
+                                                data-ng-model="submitPayload.newStaff.replace_middle_name" tabindex="27">
                                             <input type="text" class="form-control form-control-sm w-25"
                                                 placeholder="Last name" aria-label="Last name"
                                                 data-ng-model="submitPayload.newStaff.replace_last_name"
-                                                data-ng-required="true">
+                                                data-ng-required="true" tabindex="28">
                                         </div>
                                     </div>
                                 </div>
@@ -387,7 +387,7 @@
                                                 id="leaving-radio-yes"
                                                 data-ng-model="submitPayload.newStaff.leaving_radio" value="1"
                                                 data-ng-required="!submitPayload.newStaff.leaving_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)" tabindex="29">
                                             <label class="form-check-label" for="leaving-radio-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -395,7 +395,7 @@
                                                 id="leaving-radio-no"
                                                 data-ng-model="submitPayload.newStaff.leaving_radio" value="0"
                                                 data-ng-required="!submitPayload.newStaff.leaving_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)" tabindex="30">
                                             <label class="form-check-label" for="leaving-radio-no">No</label>
                                         </div>
                                         <div class="alert alert-warning" role="alert"
@@ -420,7 +420,7 @@
                                                 id="position-radio-yes"
                                                 data-ng-model="submitPayload.newStaff.position_radio" value="1"
                                                 data-ng-required="!submitPayload.newStaff.position_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)" tabindex="31">
                                             <label class="form-check-label" for="position-radio-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -428,7 +428,7 @@
                                                 id="position-radio-no"
                                                 data-ng-model="submitPayload.newStaff.position_radio" value="0"
                                                 data-ng-required="!submitPayload.newStaff.position_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)" tabindex="32">
                                             <label class="form-check-label" for="position-radio-no">No</label>
                                         </div>
                                         <div class="alert alert-warning" role="alert"
@@ -450,7 +450,7 @@
                     <div class="col-xl-6">
                         <div class="form-floating">
                             <textarea class="form-control" placeholder="Additional Notes/Details?" id="exit-add-notes"
-                                spellcheck="true" wrap="absolute" ng-model="submitPayload.newStaff.notes"></textarea>
+                                spellcheck="true" wrap="absolute" ng-model="submitPayload.newStaff.notes" tabindex="33"></textarea>
                             <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
                         </div>
                     </div>
