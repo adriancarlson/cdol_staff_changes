@@ -56,5 +56,6 @@
         <field name="replace_first_name" type="String" length="100" />
         <field name="replace_middle_name" type="String" length="100" />
         <field name="replace_last_name" type="String" length="100" />
+        <field name="additional_schoolid" type="Integer" />
     </extendedTable>
 </psExtension>
