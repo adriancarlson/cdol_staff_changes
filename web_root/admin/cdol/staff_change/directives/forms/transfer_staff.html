@@ -103,7 +103,7 @@
                                         <input class="form-check-input" type="radio" name="exit-date-group"
                                             id="exit-date-today"
                                             data-ng-model="submitPayload.transferringStaff.date_radio" value="today"
-                                            data-ng-required="!submitPayload.transferringStaff.date_radio">
+                                            data-ng-required="!submitPayload.transferringStaff.date_radio" tabindex="0">
                                         <label class="form-check-label" for="exit-date-today">Today
                                             ({{ userContext.curDate}})</label>
                                     </div>
@@ -112,7 +112,7 @@
                                         <input class="form-check-input" type="radio" name="exit-date-group"
                                             id="exit-date-june30"
                                             data-ng-model="submitPayload.transferringStaff.date_radio" value="june30"
-                                            data-ng-required="!submitPayload.transferringStaff.date_radio">
+                                            data-ng-required="!submitPayload.transferringStaff.date_radio" tabindex="0">
                                         <label class="form-check-label" for="exit-date-june30">June
                                             30th</label>
                                     </div>
@@ -120,7 +120,7 @@
                                         <input class="form-check-input" type="radio" name="exit-date-group"
                                             id="exit-date-specific"
                                             data-ng-model="submitPayload.transferringStaff.date_radio" value="other"
-                                            data-ng-required="!submitPayload.transferringStaff.date_radio">
+                                            data-ng-required="!submitPayload.transferringStaff.date_radio" tabindex="0">
                                         <label class="form-check-label" for="exit-date-specific">Specific
                                             Date</label>
                                     </div>
@@ -187,14 +187,14 @@
                                             <input class="form-check-input" type="radio" name="exit-radio-group"
                                                 id="exit-radio-yes"
                                                 data-ng-model="submitPayload.transferringStaff.exit_radio" value="1"
-                                                data-ng-required="!submitPayload.transferringStaff.exit_radio">
+                                                data-ng-required="!submitPayload.transferringStaff.exit_radio" tabindex="0">
                                             <label class="form-check-label" for="exit-radio-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="exit-radio-group"
                                                 id="exit-radio-no"
                                                 data-ng-model="submitPayload.transferringStaff.exit_radio" value="0"
-                                                data-ng-required="!submitPayload.transferringStaff.exit_radio">
+                                                data-ng-required="!submitPayload.transferringStaff.exit_radio" tabindex="0">
                                             <label class="form-check-label" for="exit-radio-no">No</label>
                                         </div>
                                     </div>
@@ -282,7 +282,7 @@
                                                 id="leaving-radio-yes"
                                                 data-ng-model="submitPayload.transferringStaff.leaving_radio" value="1"
                                                 data-ng-required="!submitPayload.transferringStaff.leaving_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)" tabindex="0"> 
                                             <label class="form-check-label" for="leaving-radio-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -290,7 +290,7 @@
                                                 id="leaving-radio-no"
                                                 data-ng-model="submitPayload.transferringStaff.leaving_radio" value="0"
                                                 data-ng-required="!submitPayload.transferringStaff.leaving_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)" tabindex="0">
                                             <label class="form-check-label" for="leaving-radio-no">No</label>
                                         </div>
                                         <div class="alert alert-warning" role="alert"
@@ -315,7 +315,7 @@
                                                 id="position-radio-yes"
                                                 data-ng-model="submitPayload.transferringStaff.position_radio" value="1"
                                                 data-ng-required="!submitPayload.transferringStaff.position_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)" tabindex="0">
                                             <label class="form-check-label" for="position-radio-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -323,7 +323,7 @@
                                                 id="position-radio-no"
                                                 data-ng-model="submitPayload.transferringStaff.position_radio" value="0"
                                                 data-ng-required="!submitPayload.transferringStaff.position_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)">
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)" tabindex="0">
                                             <label class="form-check-label" for="position-radio-no">No</label>
                                         </div>
                                         <div class="alert alert-warning" role="alert"
