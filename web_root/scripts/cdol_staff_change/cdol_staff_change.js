@@ -17,6 +17,14 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 			pageContext: 'start',
 			prevContext: undefined
 		}
+		// setting up universal formatKeys that will be used in API calls to format fields or delete feidls
+		$scope.formatKeys = {
+			dateKeys: ['_date', 'dob', 'deadline'],
+			checkBoxKeys: ['_created', '_ignored'],
+			titleKeys: ['_name'],
+			sentenceKeys: ['position', 'notes'],
+			deleteKeys: ['_radio', 'homeschool', 'identifier']
+		}
 		//initilazing empty payload
 		$scope.submitPayload = {}
 		// determining if today between Jan 1st and July 1st
@@ -32,12 +40,13 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 		//pull existing Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
 		$scope.getStaffChange = async staffChangeId => {
 			loadingDialog()
-			formatKeys = {
-				dateKeys: ['_date', 'dob', 'deadline'],
-				checkBoxKeys: ['_created', '_ignored']
-			}
+			//copyFormatKeys
+			let getFomatKeys = await { ...$scope.formatKeys }
+			//remove formatKeys that are not needed for the GET API call
+			await ['titleKeys', 'sentenceKeys', 'deleteKeys'].forEach(key => delete getFomatKeys[key])
+
 			if (staffChangeId) {
-				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, formatKeys, staffChangeId)
+				const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, getFomatKeys, staffChangeId)
 				$scope.submitPayload[res.change_type] = await res
 				$scope.userContext.pageContext = await res.change_type
 				if ($scope.userContext.pageContext === 'newStaff') {
@@ -228,18 +237,20 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				calendar_year: new Date().getFullYear().toString(),
 				submission_date: $scope.userContext.curDate,
 				submission_time: $scope.userContext.curTime,
-				who_submitted: $scope.userContext.curUserId,
-				dateKeys: ['_date', 'dob', 'deadline'],
-				titleKeys: ['_name'],
-				sentenceKeys: ['position', 'notes'],
-				deleteKeys: ['_radio', 'homeschool', 'identifier']
+				who_submitted: $scope.userContext.curUserId
 			}
+			// copy formatKeys
+			let createFomatKeys = { ...$scope.formatKeys }
+			// delete formatKeys key that is not needed for POST API Call
+			delete createFomatKeys['checkBoxKeys']
 			//loop though submitPayload object
 			Object.keys($scope.submitPayload).forEach(async (key, index) => {
 				let formPayload = $scope.submitPayload[key]
 				formPayload.change_type = key
 				//add commonPayload to each object in submitPayload
 				formPayload = Object.assign(formPayload, commonPayload)
+				//add createFomatKeys to each object in submitPayload
+				formPayload = Object.assign(formPayload, createFomatKeys)
 				// constructing deadline
 				if (formPayload.hasOwnProperty('date_radio')) {
 					const today = new Date()
@@ -264,18 +275,16 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 		}
 
 		$scope.updateStaffChange = async form => {
-			console.log(`Running updateStaffChange from ${form}`)
-			formatKeys = {
-				dateKeys: ['_date', 'dob', 'deadline'],
-				checkBoxKeys: ['_created', '_ignored'],
-				titleKeys: ['_name'],
-				sentenceKeys: ['position', 'notes']
-			}
+			// copy formatKeys
+			let updateFomatKeys = { ...$scope.formatKeys }
+			//delete updateFomatKeys key not needed for PUT API Call
+			delete updateFomatKeys['deleteKeys']
+
 			Object.keys($scope.submitPayload).forEach(async (key, index) => {
 				let formPayload = $scope.submitPayload[key]
 				formPayload.change_type = key
-				//add commonPayload to each object in submitPayload
-				formPayload = Object.assign(formPayload, formatKeys)
+				//add updateFomatKeys to each object in submitPayload
+				formPayload = Object.assign(formPayload, updateFomatKeys)
 
 				if ($scope.userContext.staffChangeId) {
 					await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', formPayload, $scope.userContext.staffChangeId)
