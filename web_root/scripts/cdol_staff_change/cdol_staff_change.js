@@ -68,12 +68,11 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 		$scope.searchForDups = async staffToSearch => {
 			let staffDupParams = {
 				lastName: staffToSearch.last_name.toLowerCase(),
-				maidenName: staffToSearch.middle_name.toLowerCase(),
+				maidenName: `${staffToSearch.middle_name ? staffToSearch.middle_name.toLowerCase() : ''}`,
 				firstNameSubString: staffToSearch.first_name.substring(0, 3).toLowerCase()
 			}
 			$scope.getJSONData('staffDupData', staffDupParams)
 		}
-
 		// function to switch forms and set scope to hold form data
 		$scope.formDisplay = (pageContext, prevContext, direction) => {
 			$scope.userContext.pageContext = pageContext

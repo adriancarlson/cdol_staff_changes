@@ -458,69 +458,80 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
-                    data-ng-if="[130,131,160,189,210,211,264,437].indexof(userContext.curSchoolId) != -1">
+                    data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.newStaff.first_name && (userContext.pageStatus =='Edit' &&userContext.curSchoolId == 130 || userContext.curSchoolId == 131 || userContext.curSchoolId == 160 || userContext.curSchoolId == 189 || userContext.curSchoolId == 210 || userContext.curSchoolId == 211 || userContext.curSchoolId == 264 || userContext.curSchoolId == 437)) || (userContext.pageStatus =='Edit' && submitPayload.newStaff.additional_schoolid)">
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row align-items-center mb-3">
                                     <div class="col-auto">
-                                        <label class="form-label form-label-sm label-reset req">Will {{
+                                        <label class="form-label form-label-sm label-reset req"><span
+                                                data-ng-if="userContext.pageStatus =='Submit'">Will</span> {{
                                             submitPayload.newStaff.first_name}} {{
-                                            submitPayload.newStaff.last_name}} need an accout created at
-                                            <span data-ng-if="130">Lourdes Central Catholic Elementary School</span>
-                                            <span data-ng-if="131">Lourdes Central Catholic Middle/High School</span>
-                                            <span data-ng-if="160">Aquinas Catholic Elementary</span>
-                                            <span data-ng-if="189">St. Michael Hastings</span>
-                                            <span data-ng-if="210">Falls City Sacred Heart Elementary</span>
-                                            <span data-ng-if="211">Falls City Sacred Heart Jr/Sr High School</span>
-                                            <span data-ng-if="264">Aquinas Catholic Middle/High</span>
-                                            <span data-ng-if="437">St. Cecilia Middle & High School</span>
-                                            as well?</label><br>
+                                            submitPayload.newStaff.last_name}} need<span
+                                                data-ng-if="userContext.pageStatus =='Edit'">s</span> access to
+                                            <span data-ng-if="userContext.curSchoolId == 130">Lourdes Central Catholic
+                                                Elementary School</span>
+                                            <span data-ng-if="userContext.curSchoolId == 131">Lourdes Central Catholic
+                                                Middle/High School</span>
+                                            <span data-ng-if="userContext.curSchoolId == 160">Aquinas Catholic
+                                                Elementary</span>
+                                            <span data-ng-if="userContext.curSchoolId == 189">St. Michael
+                                                Hastings</span>
+                                            <span data-ng-if="userContext.curSchoolId == 210">Falls City Sacred Heart
+                                                Elementary</span>
+                                            <span data-ng-if="userContext.curSchoolId == 211">Falls City Sacred Heart
+                                                Jr/Sr High School</span>
+                                            <span data-ng-if="userContext.curSchoolId == 264">Aquinas Catholic
+                                                Middle/High</span>
+                                            <span data-ng-if="userContext.curSchoolId == 437">St. Cecilia Middle & High
+                                                School</span>
+                                            <span data-ng-if="userContext.pageStatus =='Submit'">as
+                                                well?</span></label><br>
                                         <div class="form-check form-check-inline">
-                                            <input data-ng-if="130" class="form-check-input" type="radio"
-                                                name="additional-schoolid-radio-group"
+                                            <input data-ng-if="userContext.curSchoolId == 130" class="form-check-input"
+                                                type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
                                                 data-ng-model="submitPayload.newStaff.additional_schoolid" value="131"
                                                 data-ng-required="!submitPayload.newStaff.additional_schoolid"
                                                 tabindex="0">
-                                            <input data-ng-if="131" class="form-check-input" type="radio"
-                                                name="additional-schoolid-radio-group"
+                                            <input data-ng-if=" userContext.curSchoolId ==131" class="form-check-input"
+                                                type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
                                                 data-ng-model="submitPayload.newStaff.additional_schoolid" value="130"
                                                 data-ng-required="!submitPayload.newStaff.additional_schoolid"
                                                 tabindex="0">
-                                            <input data-ng-if="160" class="form-check-input" type="radio"
-                                                name="additional-schoolid-radio-group"
+                                            <input data-ng-if="userContext.curSchoolId == 160" class="form-check-input"
+                                                type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
                                                 data-ng-model="submitPayload.newStaff.additional_schoolid" value="264"
                                                 data-ng-required="!submitPayload.newStaff.additional_schoolid"
                                                 tabindex="0">
-                                            <input data-ng-if="189" class="form-check-input" type="radio"
-                                                name="additional-schoolid-radio-group"
+                                            <input data-ng-if="userContext.curSchoolId == 189" class="form-check-input"
+                                                type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
                                                 data-ng-model="submitPayload.newStaff.additional_schoolid" value="437"
                                                 data-ng-required="!submitPayload.newStaff.additional_schoolid"
                                                 tabindex="0">
-                                            <input data-ng-if="210" class="form-check-input" type="radio"
-                                                name="additional-schoolid-radio-group"
+                                            <input data-ng-if="userContext.curSchoolId == 210" class="form-check-input"
+                                                type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
                                                 data-ng-model="submitPayload.newStaff.additional_schoolid" value="211"
                                                 data-ng-required="!submitPayload.newStaff.additional_schoolid"
                                                 tabindex="0">
-                                            <input data-ng-if="211" class="form-check-input" type="radio"
-                                                name="additional-schoolid-radio-group"
+                                            <input data-ng-if="userContext.curSchoolId == 211" class="form-check-input"
+                                                type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
                                                 data-ng-model="submitPayload.newStaff.additional_schoolid" value="210"
                                                 data-ng-required="!submitPayload.newStaff.additional_schoolid"
                                                 tabindex="0">
-                                            <input data-ng-if="264" class="form-check-input" type="radio"
-                                                name="additional-schoolid-radio-group"
+                                            <input data-ng-if="userContext.curSchoolId == 264" class="form-check-input"
+                                                type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
                                                 data-ng-model="submitPayload.newStaff.additional_schoolid" value="160"
                                                 data-ng-required="!submitPayload.newStaff.additional_schoolid"
                                                 tabindex="0">
-                                            <input data-ng-if="437" class="form-check-input" type="radio"
-                                                name="additional-schoolid-radio-group"
+                                            <input data-ng-if="userContext.curSchoolId == 437" class="form-check-input"
+                                                type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
                                                 data-ng-model="submitPayload.newStaff.additional_schoolid" value="189"
                                                 data-ng-required="!submitPayload.newStaff.additional_schoolid"
