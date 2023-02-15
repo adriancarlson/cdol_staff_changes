@@ -32,7 +32,7 @@
                     <div class="col-auto">
                         <label for="users_dcid" class="form-label form-label-sm label-reset req">Previous
                             Name:</label><br />
-                        {{submitPayload.nameChange.old_name_placeholder}}
+                        <span class="blockquote ms-2 mt-1">{{submitPayload.nameChange.old_name_placeholder}}</span>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.users_dcid">
@@ -45,8 +45,7 @@
                             data-ng-if="userContext.pageStatus =='Edit'">New Name:</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
-                                data-ng-model="submitPayload.nameChange.title" data-ng-required="true"
-                                data-ng-if="!['Fr.','Msgr.','Sr.','Br.'].includes(submitPayload.nameChange.title)">
+                                data-ng-model="submitPayload.nameChange.title" data-ng-required="true">
                                 <option selected></option>
                                 <option value="Mr.">Mr.</option>
                                 <option value="Mrs.">Mrs.</option>
@@ -77,7 +76,8 @@
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="exit-date-group"
                                             id="exit-date-today" data-ng-model="submitPayload.nameChange.date_radio"
-                                            value="today" data-ng-required="!submitPayload.nameChange.date_radio" tabindex="0">
+                                            value="today" data-ng-required="!submitPayload.nameChange.date_radio"
+                                            tabindex="0">
                                         <label class="form-check-label" for="exit-date-today">Today
                                             ({{ userContext.curDate}})</label>
                                     </div>
@@ -85,14 +85,16 @@
                                         data-ng-if="userContext.isTodayBeforeJuly">
                                         <input class="form-check-input" type="radio" name="exit-date-group"
                                             id="exit-date-june30" data-ng-model="submitPayload.nameChange.date_radio"
-                                            value="june30" data-ng-required="!submitPayload.nameChange.date_radio" tabindex="0">
+                                            value="june30" data-ng-required="!submitPayload.nameChange.date_radio"
+                                            tabindex="0">
                                         <label class="form-check-label" for="exit-date-june30">June
                                             30th</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="exit-date-group"
                                             id="exit-date-specific" data-ng-model="submitPayload.nameChange.date_radio"
-                                            value="other" data-ng-required="!submitPayload.nameChange.date_radio" tabindex="0">
+                                            value="other" data-ng-required="!submitPayload.nameChange.date_radio"
+                                            tabindex="0">
                                         <label class="form-check-label" for="exit-date-specific">Specific
                                             Date</label>
                                     </div>

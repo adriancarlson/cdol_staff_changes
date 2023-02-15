@@ -9,9 +9,8 @@
                 <div class="col-5">
                     <div class="card">
                         <div class="card-header alert alert-danger fw-semibold p-2 mb-0">
-                            <i class="bi bi-exclamation-octagon-fill"></i> Potential matches for <span
-                                data-ng-if="!['Fr.','Msgr.','Sr.','Br.'].includes(submitPayload.newStaff.title)">{{submitPayload.newStaff.title}}
-                            </span>{{submitPayload.newStaff.first_name}} {{submitPayload.newStaff.last_name}}
+                            <i class="bi bi-exclamation-octagon-fill"></i> Potential matches for {{submitPayload.newStaff.title}}
+                            {{submitPayload.newStaff.first_name}} {{submitPayload.newStaff.last_name}}
                         </div>
                         <div class="card-body p-2">
                             <table class="table table-sm table-striped table-hover table-bordered table-responsive m-0">
@@ -47,8 +46,7 @@
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
-                                data-ng-model="submitPayload.newStaff.title" data-ng-required="true"
-                                data-ng-if="!['Fr.','Msgr.','Sr.','Br.'].includes(submitPayload.newStaff.title)">
+                                data-ng-model="submitPayload.newStaff.title" data-ng-required="true">
                                 <option selected></option>
                                 <option value="Mr.">Mr.</option>
                                 <option value="Mrs.">Mrs.</option>
@@ -356,8 +354,7 @@
                                         <div class="input-group">
                                             <select class="form-select form-select-sm" aria-label="title"
                                                 data-ng-model="submitPayload.newStaff.replace_title"
-                                                data-ng-required="true"
-                                                data-ng-if="!['Fr.','Msgr.','Sr.','Br.'].includes(submitPayload.newStaff.replace_title)">
+                                                data-ng-required="true">
                                                 <option selected></option>
                                                 <option value="Mr.">Mr.</option>
                                                 <option value="Mrs.">Mrs.</option>

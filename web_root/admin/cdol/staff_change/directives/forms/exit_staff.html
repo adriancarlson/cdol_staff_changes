@@ -12,7 +12,8 @@
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
                         <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is not
-                            returning?</label><span class="text-muted"><small><em> (Choose --Other-- if staff member is
+                            returning?</label><span data-ng-if="userContext.pageStatus =='Submit'"
+                            class="text-muted"><small><em>(Choose --Other-- if staff member is
                                     not listed)</em></small></span>
                         <select data-ng-if="userContext.pageStatus =='Submit'" class="form-select form-select-sm"
                             id="users_dcid" aria-label="Who is not returning?"
@@ -35,7 +36,7 @@
                             [/tlist_sql]
                             <option value="-1">-- Other --</option>
                         </select>
-                        <div data-ng-if="userContext.pageStatus =='Edit'">
+                        <div data-ng-if="userContext.pageStatus =='Edit'" class="blockquote ms-2 mt-1">
                             {{submitPayload.exitingStaff.old_name_placeholder}}
                         </div>
                     </div>
@@ -47,8 +48,7 @@
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
-                                data-ng-model="submitPayload.exitingStaff.title" data-ng-required="true"
-                                data-ng-if="!['Fr.','Msgr.','Sr.','Br.'].includes(submitPayload.exitingStaff.title)">
+                                data-ng-model="submitPayload.exitingStaff.title" data-ng-required="true">
                                 <option selected></option>
                                 <option value="Mr.">Mr.</option>
                                 <option value="Mrs.">Mrs.</option>
