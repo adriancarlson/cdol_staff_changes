@@ -6,7 +6,7 @@
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
                         <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is Transferring
-                            into ~(schoolname)?</label><span class="text-muted"><small><em> (Type Other if staff
+                            into ~(schoolname)?</label><span class="text-muted" data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Type Other if staff
                                     member is not listed in the dropdown)</em></small></span>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-placeholder="Type Name of Transferring Staff Member"
@@ -144,7 +144,7 @@
                         <label for="prev_school_number" class="form-label form-label-sm label-reset req">Where was {{
                             submitPayload.transferringStaff.first_name}} {{
                             submitPayload.transferringStaff.last_name}}'s previously employed?</label><span
-                            class="text-muted"><small><em> (Choose --Other-- if employer is not
+                            class="text-muted" data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose --Other-- if employer is not
                                     listed)</em></small></span>
                         <select class="form-select form-select-sm" id="prev_school_number"
                             aria-label="Where previously employed?"
@@ -208,7 +208,7 @@
                                             {{
                                             submitPayload.transferringStaff.first_name}} {{
                                             submitPayload.transferringStaff.last_name}} replacing?</label><span
-                                            class="text-muted"><small><em> (Choose --Other-- if staff member is not
+                                            class="text-muted" data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose --Other-- if staff member is not
                                                     listed)</em></small></span>
                                         <select class="form-select form-select-sm" id="replace_dcid"
                                             aria-label="Who is not returning?"
