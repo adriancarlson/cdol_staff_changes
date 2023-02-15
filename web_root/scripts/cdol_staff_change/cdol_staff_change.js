@@ -1,6 +1,6 @@
 define(['angular', 'components/shared/index', '/scripts/cdol/services/formatService.js', '/scripts/cdol/services/psApiService.js'], function (angular) {
-	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'psApiModule'])
-	cdolStaffApp.controller('cdolStaffAppCtrl', function ($scope, $http, $attrs, $window, psApiService) {
+	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'psApiModule', 'emailModule'])
+	cdolStaffApp.controller('cdolStaffAppCtrl', function ($scope, $http, $attrs, $window, psApiService, emailService) {
 		//initializing overall form data
 		$scope.userContext = {
 			pageStatus: $attrs.ngStatus,
@@ -270,6 +270,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				}
 				//submitting staff changes through api
 				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
+				await emailService.emailSubmission('/admin/cdol/staff_change/data/emailfields.html', formPayload)
 			})
 			//sending to confirm screen after submission
 			$scope.formDisplay('confirm', $scope.userContext.pageContext)
