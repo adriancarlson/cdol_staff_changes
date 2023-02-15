@@ -1,51 +1,43 @@
-define(['angular', 'components/shared/index'], function (angular) {
-	angular.module('emailModule', ['powerSchoolModule']).service('emailService', function ($http, $httpParamSerializer) {
+define(['angular', 'components/shared/index', '/scripts/cdol/services/formatService.js'], function (angular) {
+	angular.module('emailModule', ['powerSchoolModule', 'formatService']).service('emailService', function ($http, $httpParamSerializer, formatService) {
 		this.emailSubmission = (helperPath, data) => {
 			console.log('helperPath', helperPath)
 			console.log('data', data)
+			let readableChangeType = formatService.decamelize(data.change_type)
+			let header = {
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+			}
+			const emailData = {
+				curDate: data.curDate,
+				curTime: data.curTime,
+				emailFrom: data.curUserEmail,
+				emailTo: 'ps-support@cdolinc.net',
+				emailSubject: `${readableChangeType} Submission from ${data.curUserName} (${data.curUserSchoolAbbr}) | ${data.curUserEmail}`,
+				emailBody: `${readableChangeType} Name: ${data.old_name_placeholder ? `${data.old_name_placeholder}` : `${data.title} ${data.first_name} ${data.last_name}`}`
+			}
 
-			// const emailData = {
-			// 	curDate: $scope.userContext.CurDate,
-			// 	curTime: $scope.userContext.CurTime,
-			// 	emailFrom: $scope.userContext.curUserEmail,
-			// 	emailTo: 'ps-support@cdolinc.net',
-			// 	emailSubject: $scope.newStaff.name_change + ' Submission from ' + $scope.userContext.curUserName + ' (' + $scope.userContext.curUserSchoolAbbr + ') | ' + $scope.userContext.curUserEmail,
-			// 	emailBody: $scope.emailBody
-			// }
+			console.log('emailData', emailData)
 
-			// $j.ajax({
-			// 	url: '/admin/cdol/staff_change/data/emailfields.html',
-			// 	method: 'POST',
-			// 	contentType: 'application/x-www-form-urlencoded',
-			// 	data: {
-			// 		curDate: $scope.userContext.CurDate,
-			// 		curTime: $scope.userContext.CurTime,
-			// 		emailFrom: $scope.userContext.curUserEmail,
-			// 		emailTo: 'ps-support@cdolinc.net',
-			// 		emailSubject: 'Exiting Staff Submission from ' + $scope.userContext.curUserName + ' (' + $scope.userContext.curUserSchoolAbbr + ') | ' + $scope.userContext.curUserEmail,
-			// 		emailBody: 'Exiting Staff Name: ' + $scope.exitingRecord.first_name + ' ' + $scope.exitingRecord.last_name
-			// 	},
-			// 	success: function (result) {
-			// 		$j('#exitHoldingDiv').append(result)
-			// 	},
-			// 	complete: function () {
-			// 		var data = {
-			// 			ac: 'prim'
-			// 		}
-			// 		$j('#exitHoldingDiv')
-			// 			.find('.fireaway')
-			// 			.each(function () {
-			// 				data[$j(this).attr('name')] = $j(this).val()
-			// 			})
-			// 		$j.ajax({
-			// 			method: 'POST',
-			// 			data: data,
-			// 			complete: function () {
-			// 				$j('#exitHoldingDiv').html('')
-			// 			}
-			// 		})
-			// 	}
-			// })
+			$http.get(helperPath, { params: emailData }).then(function (response) {
+				console.log(response.data)
+				let data = $j(response.data)
+				let getData = { ac: 'prim' }
+				data.each(function (element) {
+					getData[$j(this).attr('name')] = $j(this).attr('value')
+				})
+				console.log(getData)
+				let postData = $httpParamSerializer(getData)
+
+				$http.post(helperPath, postData, header).then(function (response) {
+					if (response.status == 200) {
+						console.log('post success')
+					} else {
+						//FAIL
+						console.log('post failed')
+					}
+					// end of post function
+				})
+			})
 		}
 	})
 })

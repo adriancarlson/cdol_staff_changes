@@ -1,4 +1,4 @@
-define(['angular', 'components/shared/index', '/scripts/cdol/services/formatService.js', '/scripts/cdol/services/psApiService.js'], function (angular) {
+define(['angular', 'components/shared/index', '/scripts/cdol/services/formatService.js', '/scripts/cdol/services/psApiService.js', '/scripts/cdol/services/emailService.js'], function (angular) {
 	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'psApiModule', 'emailModule'])
 	cdolStaffApp.controller('cdolStaffAppCtrl', function ($scope, $http, $attrs, $window, psApiService, emailService) {
 		//initializing overall form data
@@ -248,6 +248,9 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 			Object.keys($scope.submitPayload).forEach(async (key, index) => {
 				let formPayload = $scope.submitPayload[key]
 				formPayload.change_type = key
+				//create payload of fields needed for email
+				let emailPayload = { ...formPayload }
+				emailPayload = Object.assign(emailPayload, $scope.userContext)
 				//add commonPayload to each object in submitPayload
 				formPayload = Object.assign(formPayload, commonPayload)
 				//add createFomatKeys to each object in submitPayload
@@ -270,7 +273,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				}
 				//submitting staff changes through api
 				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
-				await emailService.emailSubmission('/admin/cdol/staff_change/data/emailfields.html', formPayload)
+				await emailService.emailSubmission('/admin/cdol/staff_change/data/emailfields.html', emailPayload)
 			})
 			//sending to confirm screen after submission
 			$scope.formDisplay('confirm', $scope.userContext.pageContext)
