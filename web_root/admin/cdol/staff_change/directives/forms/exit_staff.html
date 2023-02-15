@@ -11,7 +11,9 @@
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
-                        <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is not
+                        <label for="users_dcid" class="form-label form-label-sm label-reset req"
+                            data-ng-if="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && submitPayload.exitingStaff.users_dcid != -1)">Who
+                            is not
                             returning?</label><span data-ng-if="userContext.pageStatus =='Submit'"
                             class="text-muted"><small><em>(Choose --Other-- if staff member is
                                     not listed)</em></small></span>
@@ -36,19 +38,19 @@
                             [/tlist_sql]
                             <option value="-1">-- Other --</option>
                         </select>
-                        <div data-ng-if="userContext.pageStatus =='Edit'" class="blockquote ms-2 mt-1">
+                        <div data-ng-if="userContext.pageStatus =='Edit' && submitPayload.exitingStaff.users_dcid != -1"
+                            class="blockquote ms-2 mt-1">
                             {{submitPayload.exitingStaff.old_name_placeholder}}
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.exitingStaff.users_dcid == -1">
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.users_dcid == -1">
                     <div class="col-6">
                         <label for="exiting-staff-name" class="form-label form-label-sm  label-reset req">Exiting Staff
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
-                                data-ng-model="submitPayload.exitingStaff.title" data-ng-required="true">
+                                data-ng-model="submitPayload.exitingStaff.title">
                                 <option selected></option>
                                 <option value="Mr.">Mr.</option>
                                 <option value="Mrs.">Mrs.</option>

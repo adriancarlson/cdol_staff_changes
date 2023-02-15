@@ -3,10 +3,11 @@
         <div class="card-header bg-primary text-bg-primary bg-gradient fs-6 fw-semibold">Transferring Staff:</div>
         <div class="card-body">
             <form name="staffChangeForm" method="POST" novalidate>
-                <div class="row align-items-center mb-3">
+                <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">
                     <div class="col-auto">
                         <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is Transferring
-                            into ~(schoolname)?</label><span class="text-muted" data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Type Other if staff
+                            into ~(schoolname)?</label><span class="text-muted"
+                            data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Type Other if staff
                                     member is not listed in the dropdown)</em></small></span>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-placeholder="Type Name of Transferring Staff Member"
@@ -28,14 +29,15 @@
                         </select>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid == -1">
+                <div class="row align-items-center mb-3"
+                    data-ng-if="submitPayload.transferringStaff.users_dcid == -1 || userContext.pageStatus =='Edit'">
                     <div class="col-6">
                         <label for="transferring-staff-name"
                             class="form-label form-label-sm  label-reset req">Transferring Staff
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
-                                data-ng-model="submitPayload.transferringStaff.title" data-ng-required="true">
+                                data-ng-model="submitPayload.transferringStaff.title">
                                 <option selected></option>
                                 <option value="Mr.">Mr.</option>
                                 <option value="Mrs.">Mrs.</option>
@@ -144,7 +146,8 @@
                         <label for="prev_school_number" class="form-label form-label-sm label-reset req">Where was {{
                             submitPayload.transferringStaff.first_name}} {{
                             submitPayload.transferringStaff.last_name}}'s previously employed?</label><span
-                            class="text-muted" data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose --Other-- if employer is not
+                            class="text-muted" data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose
+                                    --Other-- if employer is not
                                     listed)</em></small></span>
                         <select class="form-select form-select-sm" id="prev_school_number"
                             aria-label="Where previously employed?"
@@ -157,6 +160,7 @@
                             ORDER BY schools.name;]
                             <option value="~(schnum)">~(schname)</option>
                             [/tlist_sql]
+                            <option value="0">Diocesan Office</option>
                             <option value="-1">-- Other --</option>
                         </select>
                     </div>
@@ -208,7 +212,9 @@
                                             {{
                                             submitPayload.transferringStaff.first_name}} {{
                                             submitPayload.transferringStaff.last_name}} replacing?</label><span
-                                            class="text-muted" data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose --Other-- if staff member is not
+                                            class="text-muted"
+                                            data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose --Other--
+                                                    if staff member is not
                                                     listed)</em></small></span>
                                         <select class="form-select form-select-sm" id="replace_dcid"
                                             aria-label="Who is not returning?"
@@ -379,49 +385,57 @@
                                             <input data-ng-if="userContext.curSchoolId == 130" class="form-check-input"
                                                 type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid" value="131"
+                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid"
+                                                value="131"
                                                 data-ng-required="!submitPayload.transferringStaff.additional_schoolid"
                                                 tabindex="0">
                                             <input data-ng-if=" userContext.curSchoolId ==131" class="form-check-input"
                                                 type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid" value="130"
+                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid"
+                                                value="130"
                                                 data-ng-required="!submitPayload.transferringStaff.additional_schoolid"
                                                 tabindex="0">
                                             <input data-ng-if="userContext.curSchoolId == 160" class="form-check-input"
                                                 type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid" value="264"
+                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid"
+                                                value="264"
                                                 data-ng-required="!submitPayload.transferringStaff.additional_schoolid"
                                                 tabindex="0">
                                             <input data-ng-if="userContext.curSchoolId == 189" class="form-check-input"
                                                 type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid" value="437"
+                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid"
+                                                value="437"
                                                 data-ng-required="!submitPayload.transferringStaff.additional_schoolid"
                                                 tabindex="0">
                                             <input data-ng-if="userContext.curSchoolId == 210" class="form-check-input"
                                                 type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid" value="211"
+                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid"
+                                                value="211"
                                                 data-ng-required="!submitPayload.transferringStaff.additional_schoolid"
                                                 tabindex="0">
                                             <input data-ng-if="userContext.curSchoolId == 211" class="form-check-input"
                                                 type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid" value="210"
+                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid"
+                                                value="210"
                                                 data-ng-required="!submitPayload.transferringStaff.additional_schoolid"
                                                 tabindex="0">
                                             <input data-ng-if="userContext.curSchoolId == 264" class="form-check-input"
                                                 type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid" value="160"
+                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid"
+                                                value="160"
                                                 data-ng-required="!submitPayload.transferringStaff.additional_schoolid"
                                                 tabindex="0">
                                             <input data-ng-if="userContext.curSchoolId == 437" class="form-check-input"
                                                 type="radio" name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid" value="189"
+                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid"
+                                                value="189"
                                                 data-ng-required="!submitPayload.transferringStaff.additional_schoolid"
                                                 tabindex="0">
                                             <label class="form-check-label"
@@ -430,7 +444,8 @@
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
                                                 name="additional-schoolid-radio-group" id="additional-schoolid-radio-no"
-                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid" value="0"
+                                                data-ng-model="submitPayload.transferringStaff.additional_schoolid"
+                                                value="0"
                                                 data-ng-required="!submitPayload.transferringStaff.additional_schoolid"
                                                 tabindex="0">
                                             <label class="form-check-label"
