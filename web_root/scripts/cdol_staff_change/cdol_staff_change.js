@@ -171,6 +171,11 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 							$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
 							$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
 						}
+						if (pageContext === 'exitingStaff') {
+							$scope.submitPayload[
+								pageContext
+							].old_name_placeholder = `${$scope.submitPayload[pageContext].title} ${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
+						}
 					}
 					//if the resource is user data and the field is replace_dcid
 					if (field === 'replace_dcid') {
