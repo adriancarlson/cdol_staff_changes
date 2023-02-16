@@ -19,7 +19,6 @@ define(['angular', 'components/shared/index'], function (angular) {
 				data.each(function (element) {
 					getData[$j(this).attr('name')] = $j(this).attr('value')
 				})
-				console.log(getData)
 				let postData = $httpParamSerializer(getData)
 
 				$http.post(helperPath, postData, header).then(
