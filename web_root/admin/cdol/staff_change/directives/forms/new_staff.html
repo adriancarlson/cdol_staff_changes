@@ -3,6 +3,7 @@
             class="bi bi-exclamation-triangle-fill"></i> Please ensure staff name is spelled correctly! If you
         anticipate a name change in the next few months, please enter their anticipated name.
     </div>
+    ~[if#distCheck.security.inrole=9]
     <div data-ng-if="userContext.pageStatus =='Edit' && staffDupData.length > 0 && !submitPayload.newStaff.ps_created">
         <div class="container-fluid mb-2">
             <div class="row">
@@ -36,6 +37,7 @@
             </div>
         </div>
     </div>
+    [/if#distCheck]
     <div class="card">
         <div class="card-header bg-success text-bg-success bg-gradient fs-6 fw-semibold">New Staff:</div>
         <div class="card-body">
