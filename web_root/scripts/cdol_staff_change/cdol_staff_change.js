@@ -1,6 +1,6 @@
 define(['angular', 'components/shared/index', '/scripts/cdol/services/formatService.js', '/scripts/cdol/services/psApiService.js', '/scripts/cdol/services/emailService.js'], function (angular) {
-	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'psApiModule', 'emailModule'])
-	cdolStaffApp.controller('cdolStaffAppCtrl', function ($scope, $http, $attrs, $window, psApiService, emailService) {
+	var cdolStaffApp = angular.module('cdolStaffAppMod', ['powerSchoolModule', 'formatService', 'psApiModule', 'emailModule'])
+	cdolStaffApp.controller('cdolStaffAppCtrl', function ($scope, $http, $attrs, $window, formatService, psApiService, emailService) {
 		//initializing overall form data
 		$scope.userContext = {
 			pageStatus: $attrs.ngStatus,
@@ -249,8 +249,15 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				let formPayload = $scope.submitPayload[key]
 				formPayload.change_type = key
 				//create payload of fields needed for email
-				let emailPayload = { ...formPayload }
-				emailPayload = Object.assign(emailPayload, $scope.userContext)
+				let readableChangeType = formatService.decamelize(formPayload.change_type)
+				const emailData = {
+					curDate: $scope.userContext.curDate,
+					curTime: $scope.userContext.curTime,
+					emailFrom: $scope.userContext.curUserEmail,
+					emailTo: 'ps-support@cdolinc.net',
+					emailSubject: `${readableChangeType} Submission from ${$scope.userContext.curUserName} (${$scope.userContext.curUserSchoolAbbr}) | ${$scope.userContext.curUserEmailcurUserEmail}`,
+					emailBody: `${readableChangeType} Name: ${data.title} ${data.first_name} ${data.last_name}`
+				}
 				//add commonPayload to each object in submitPayload
 				formPayload = Object.assign(formPayload, commonPayload)
 				//add createFomatKeys to each object in submitPayload
@@ -273,7 +280,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				}
 				//submitting staff changes through api
 				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
-				await emailService.emailSubmission('/admin/cdol/staff_change/data/emailfields.html', emailPayload)
+				await emailService.emailSubmission('/admin/cdol/staff_change/data/emailfields.html', emailData)
 			})
 			//sending to confirm screen after submission
 			$scope.formDisplay('confirm', $scope.userContext.pageContext)

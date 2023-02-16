@@ -3,7 +3,7 @@ define(['angular'], function (angular) {
 		//query - the name of the PowerQuery
 		//data - JavaScript Object including any parameters that must be passed to the query
 		this.getPQResults = (query, data) => {
-			var deferredResponse = $q.defer();
+			var deferredResponse = $q.defer()
 			$http({
 				url: '/ws/schema/query/' + query,
 				method: 'POST',
@@ -11,17 +11,17 @@ define(['angular'], function (angular) {
 				params: { pagesize: 0 },
 				headers: {
 					Accept: 'application/json',
-					'Content-Type': 'application/json',
-				},
+					'Content-Type': 'application/json'
+				}
 			}).then(
-				(res) => {
-					deferredResponse.resolve(res.data.record || []);
+				res => {
+					deferredResponse.resolve(res.data.record || [])
 				},
-				(res) => {
-					psAlert({ message: `There was an error loading the data from ${query}`, title: 'Error Loading Data' });
-				},
-			);
-			return deferredResponse.promise;
-		};
-	});
-});
+				res => {
+					psAlert({ message: `There was an error loading the data from ${query}`, title: 'Error Loading Data' })
+				}
+			)
+			return deferredResponse.promise
+		}
+	})
+})
