@@ -248,20 +248,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 			Object.keys($scope.submitPayload).forEach(async (key, index) => {
 				let formPayload = $scope.submitPayload[key]
 				formPayload.change_type = key
-				//create payload of fields needed for email
-				let readableChangeType = formatService.decamelize(formPayload.change_type)
-				const emailData = {
-					curDate: $scope.userContext.curDate,
-					curTime: $scope.userContext.curTime,
-					emailFrom: $scope.userContext.curUserEmail,
-					emailTo: 'ps-support@cdolinc.net',
-					emailSubject: `${readableChangeType} Submission from ${$scope.userContext.curUserName} (${$scope.userContext.curUserSchoolAbbr}) | ${$scope.userContext.curUserEmailcurUserEmail}`,
-					emailBody: `${readableChangeType} Name: ${data.title} ${data.first_name} ${data.last_name}`
-				}
-				//add commonPayload to each object in submitPayload
-				formPayload = Object.assign(formPayload, commonPayload)
-				//add createFomatKeys to each object in submitPayload
-				formPayload = Object.assign(formPayload, createFomatKeys)
+
 				// constructing deadline
 				if (formPayload.hasOwnProperty('date_radio')) {
 					const today = new Date()
@@ -278,6 +265,20 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 						formPayload.deadline = `06/30/${yyyy}`
 					}
 				}
+				//create payload of fields needed for email
+				let readableChangeType = formatService.decamelize(formPayload.change_type)
+				const emailData = {
+					curDate: $scope.userContext.curDate,
+					curTime: $scope.userContext.curTime,
+					emailFrom: $scope.userContext.curUserEmail,
+					emailSubject: `${readableChangeType} Submission from ${$scope.userContext.curUserName} (${$scope.userContext.curUserSchoolAbbr}) | ${$scope.userContext.curUserEmail}`,
+					emailBody: `${readableChangeType} Name: ${formPayload.title} ${formPayload.first_name} ${formPayload.last_name}    Due Date:${formPayload.deadline}    Notes: ${formPayload.notes}`
+				}
+				//add commonPayload to each object in submitPayload
+				formPayload = Object.assign(formPayload, commonPayload)
+				//add createFomatKeys to each object in submitPayload
+				formPayload = Object.assign(formPayload, createFomatKeys)
+
 				//submitting staff changes through api
 				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
 				await emailService.emailSubmission('/admin/cdol/staff_change/data/emailfields.html', emailData)
