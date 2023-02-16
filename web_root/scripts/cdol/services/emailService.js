@@ -14,10 +14,12 @@ define(['angular', 'components/shared/index'], function (angular) {
 			}
 
 			$http.get(helperPath, { params: emailData }).then(res => {
+				let data = $j(res.data)
 				let getData = { ac: 'prim' }
 				data.each(function (element) {
 					getData[$j(this).attr('name')] = $j(this).attr('value')
 				})
+				console.log(getData)
 				let postData = $httpParamSerializer(getData)
 
 				$http.post(helperPath, postData, header).then(
