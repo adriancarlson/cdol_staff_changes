@@ -1,8 +1,6 @@
 define(['angular', 'components/shared/index'], function (angular) {
 	angular.module('emailModule', ['powerSchoolModule']).service('emailService', function ($http, $httpParamSerializer) {
 		this.emailSubmission = (helperPath, data) => {
-			console.log('helperPath', helperPath)
-			console.log('data', data)
 			let header = {
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}
@@ -15,16 +13,11 @@ define(['angular', 'components/shared/index'], function (angular) {
 				emailBody: data.emailBody
 			}
 
-			console.log('emailData', emailData)
-
 			$http.get(helperPath, { params: emailData }).then(res => {
-				console.log(res.data)
-				let data = $j(res.data)
 				let getData = { ac: 'prim' }
 				data.each(function (element) {
 					getData[$j(this).attr('name')] = $j(this).attr('value')
 				})
-				console.log(getData)
 				let postData = $httpParamSerializer(getData)
 
 				$http.post(helperPath, postData, header).then(

@@ -249,6 +249,10 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				let formPayload = $scope.submitPayload[key]
 				formPayload.change_type = key
 
+				if (formPayload.change_type == 'exitingStaff') {
+					formPayload.old_name_placeholder = `${formPayload.title} ${formPayload.first_name} ${formPayload.last_name}`
+				}
+
 				// constructing deadline
 				if (formPayload.hasOwnProperty('date_radio')) {
 					const today = new Date()
