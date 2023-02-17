@@ -229,6 +229,15 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 			if ($scope.submitPayload[pageContext].position_radio == 0) {
 				delete $scope.submitPayload.jobChange
 			}
+
+			if ($scope.submitPayload[pageContext].prev_school_radio == 0) {
+				delete $scope.submitPayload[pageContext].prev_school_number
+				delete $scope.submitPayload[pageContext].prev_school_name
+			}
+
+			if ($scope.submitPayload[pageContext].exit_radio == 0) {
+				formatService.objIterator($scope.submitPayload[pageContext], ['replace_'], 'deleteKeys')
+			}
 		}
 
 		$scope.createStaffChange = async () => {

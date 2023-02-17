@@ -191,6 +191,7 @@
                                                 id="exit-radio-yes"
                                                 data-ng-model="submitPayload.transferringStaff.exit_radio" value="1"
                                                 data-ng-required="!submitPayload.transferringStaff.exit_radio"
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
                                                 tabindex="0">
                                             <label class="form-check-label" for="exit-radio-yes">Yes</label>
                                         </div>
@@ -199,6 +200,7 @@
                                                 id="exit-radio-no"
                                                 data-ng-model="submitPayload.transferringStaff.exit_radio" value="0"
                                                 data-ng-required="!submitPayload.transferringStaff.exit_radio"
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
                                                 tabindex="0">
                                             <label class="form-check-label" for="exit-radio-no">No</label>
                                         </div>

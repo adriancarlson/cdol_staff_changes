@@ -10,7 +10,8 @@
                 <div class="col-5">
                     <div class="card">
                         <div class="card-header alert alert-danger fw-semibold p-2 mb-0">
-                            <i class="bi bi-exclamation-octagon-fill"></i> Potential matches for {{submitPayload.newStaff.title}}
+                            <i class="bi bi-exclamation-octagon-fill"></i> Potential matches for
+                            {{submitPayload.newStaff.title}}
                             {{submitPayload.newStaff.first_name}} {{submitPayload.newStaff.last_name}}
                         </div>
                         <div class="card-body p-2">
@@ -232,6 +233,7 @@
                                                 id="prev-school-radio-yes"
                                                 data-ng-model="submitPayload.newStaff.prev_school_radio" value="1"
                                                 data-ng-required="!submitPayload.newStaff.prev_school_radio"
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
                                                 tabindex="0">
                                             <label class="form-check-label" for="prev-school-radio-yes">Yes</label>
                                         </div>
@@ -240,6 +242,7 @@
                                                 id="prev-school-radio-no"
                                                 data-ng-model="submitPayload.newStaff.prev_school_radio" value="0"
                                                 data-ng-required="!submitPayload.newStaff.prev_school_radio"
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
                                                 tabindex="0">
                                             <label class="form-check-label" for="prev-school-radio-no">No</label>
                                         </div>
@@ -252,7 +255,9 @@
                                             class="form-label form-label-sm label-reset req">Where was {{
                                             submitPayload.newStaff.first_name}} {{
                                             submitPayload.newStaff.last_name}}'s previously employed?</label><span
-                                            class="text-muted" data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose --Other-- if employer is not
+                                            class="text-muted"
+                                            data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose --Other--
+                                                    if employer is not
                                                     listed)</em></small></span>
                                         <select class="form-select form-select-sm" id="prev_school_number"
                                             aria-label="Where previously employed?"
@@ -299,6 +304,7 @@
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="exit-radio-group"
                                                 id="exit-radio-yes" data-ng-model="submitPayload.newStaff.exit_radio"
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
                                                 value="1" data-ng-required="!submitPayload.newStaff.exit_radio"
                                                 tabindex="0">
                                             <label class="form-check-label" for="exit-radio-yes">Yes</label>
@@ -306,6 +312,7 @@
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="exit-radio-group"
                                                 id="exit-radio-no" data-ng-model="submitPayload.newStaff.exit_radio"
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
                                                 value="0" data-ng-required="!submitPayload.newStaff.exit_radio"
                                                 tabindex="0">
                                             <label class="form-check-label" for="exit-radio-no">No</label>
@@ -320,7 +327,9 @@
                                             {{
                                             submitPayload.newStaff.first_name}} {{
                                             submitPayload.newStaff.last_name}} replacing?</label><span
-                                            class="text-muted" data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose --Other-- if staff member is not
+                                            class="text-muted"
+                                            data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose --Other--
+                                                    if staff member is not
                                                     listed)</em></small></span>
                                         <select class="form-select form-select-sm" id="replace_dcid"
                                             aria-label="Who is not returning?"
