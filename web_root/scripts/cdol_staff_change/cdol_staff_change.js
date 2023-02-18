@@ -309,8 +309,25 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 			Object.keys($scope.submitPayload).forEach(async (key, index) => {
 				let formPayload = $scope.submitPayload[key]
 				formPayload.change_type = key
+
 				//add updateFomatKeys to each object in submitPayload
 				formPayload = Object.assign(formPayload, updateFomatKeys)
+
+				if (key != 'exitingStaff') {
+					if (
+						formPayload.final_completion_date === undefined &&
+						formPayload.ps_created &&
+						(formPayload.ad_created || formPayload.ad_ignored) &&
+						(formPayload.o365_created || formPayload.o365_ignored) &&
+						formPayload.lms_created
+					) {
+						formPayload.final_completion_date = $scope.userContext.curDate
+					}
+				} else {
+					if (formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored)) {
+						formPayload.final_completion_date = $scope.userContext.curDate
+					}
+				}
 
 				if ($scope.userContext.staffChangeId) {
 					await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', formPayload, $scope.userContext.staffChangeId)
