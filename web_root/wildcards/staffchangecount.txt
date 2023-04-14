@@ -1,0 +1,43 @@
+<style>
+    #container.new #btnNotifications #staffCountSpan {
+        margin-inline-start: 22px;
+        padding: 2px 4px;
+    }
+</style>
+
+
+<div id='staffCount' class='hide'>
+    <li id='dupLi' class="pds-app-action">
+        <a id="btnNotifications" href="/admin/cdol/staff_change/cdol_staff_change_list.html" title="Staff Changes">
+            <pds-icon name="rolodex" class="style-scope x-scope pds-icon-0 pds-widget"
+                pds-widget="pds-widget"></pds-icon>
+            <span id="staffCountSpan"></span>
+            <div class="screen_readers_only"><span class="screen_readers_only">Staff Changes</span></div>
+        </a>
+    </li>
+</div>
+
+<script type="text/javascript">
+    $j(() =>
+        (async () => {
+
+            let staffCount
+            try {
+                staffCount = await $j.ajax({
+                    url: '/ws/schema/query/net.cdolinc.staffChanges.staff.counts?pagesize=0',
+                    method: 'POST',
+                    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+                    data: JSON.stringify({ curSchoolID: '~(curschoolid)', calendarYear: '~(f.currentdate;format= YYYY)' })
+                })
+            } catch (err) {
+                console.log(err)
+            }
+            staffCount = Number(staffCount.record[0].total_remaining)
+            if (staffCount > 0) {
+                $j('#staffCountSpan').text(staffCount)
+                $j('#tools2').before($j('#staffCount').html())
+                $j('#staffCount').remove()
+            }
+        })()
+    )
+</script>
