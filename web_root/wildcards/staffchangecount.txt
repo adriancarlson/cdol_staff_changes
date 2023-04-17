@@ -1,30 +1,46 @@
 <style>
-    #container.new #btnNotifications #staffCountSpan {
-        margin-inline-start: 22px;
+    #container.new #cdolBtnNotifications #staffCountSpan {
+        margin-inline-start: 20px;
         padding: 2px 4px;
     }
-    
+
+    #container-frame.new #cdolBtnNotifications,
+    #container.new #cdolBtnNotifications {
+        display: flex;
+    }
+
+    #cdolBtnNotifications span {
+        background-color: #C84C59;
+        line-height: 1em;
+        font-size: 80%;
+        color: #FFFFFF;
+        position: absolute;
+        border-radius: 10px;
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+        padding: 2px 4px;
+    }
+
     .countMargin {
-        margin-right: 10px;
+        margin-right: 8px;
     }
 </style>
 
 
-<div id='staffCount' class='hide'>
+<ul id='staffCount' class='hide'>
     <li id='staffCountLi' class="pds-app-action countMargin">
-        <a id="btnNotifications" href="/admin/cdol/staff_change/cdol_staff_change_list.html" title="Staff Changes">
+        <a id="cdolBtnNotifications" class="badge-adjust" href="/admin/cdol/staff_change/cdol_staff_change_list.html"
+            title="Staff Changes">
             <pds-icon name="rolodex" class="style-scope x-scope pds-icon-0 pds-widget"
                 pds-widget="pds-widget"></pds-icon>
             <span id="staffCountSpan"></span>
             <div class="screen_readers_only"><span class="screen_readers_only">Staff Changes</span></div>
         </a>
     </li>
-</div>
+</ul>
 
 <script type="text/javascript">
     $j(() =>
         (async () => {
-
             let staffCount
             try {
                 staffCount = await $j.ajax({
@@ -39,13 +55,12 @@
             staffCount = Number(staffCount.record[0].total_remaining)
             if (staffCount > 0) {
                 $j('#staffCountSpan').text(staffCount)
-            }else {
+            } else {
                 $j('#staffCountSpan').remove()
                 $j('#staffCountLi').removeClass('countMargin')
             }
-                $j('#tools2').before($j('#staffCount').html())
-                $j('#staffCount').remove()
-         
+            $j('#tools2').prepend($j('#staffCount').html())
+            $j('#staffCount').remove()
         })()
     )
 </script>
