@@ -9,8 +9,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 			curDate: $attrs.ngCurDate,
 			curTime: $attrs.ngCurTime,
 			staffChangeId: $attrs.ngStaffChangeId,
-			curUserId: $attrs.ngCurUserId,
-			curStaffId: $attrs.ngCurUserId,
+			curUserDcid: $attrs.ngCurUserDcid,
 			curUserName: $attrs.ngCurUserName,
 			curUserEmail: $attrs.ngCurUserEmail,
 			curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr,
@@ -247,7 +246,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				calendar_year: new Date().getFullYear().toString(),
 				submission_date: $scope.userContext.curDate,
 				submission_time: $scope.userContext.curTime,
-				who_submitted: $scope.userContext.curUserId
+				who_submitted: $scope.userContext.curUserDcid
 			}
 			// copy formatKeys
 			let createFomatKeys = { ...$scope.formatKeys }
