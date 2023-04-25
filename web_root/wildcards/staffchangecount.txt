@@ -61,6 +61,42 @@
             }
             $j('#tools2').prepend($j('#staffCount').html())
             $j('#staffCount').remove()
+
+            const check4LeftNav = () => {
+                let leftNav = document.querySelector('#nav-main-menu')
+
+                if (leftNav) {
+                    console.log('yep')
+                    clearInterval(leftNavLoaded)
+
+                    const peopleBtn = document.querySelector('#navPeopleSection');
+                    peopleBtn.addEventListener('click', function (event) {
+                        const check4StaffMenu = () => {
+                            const staffChangeList = document.querySelector('#cdol-staff-changes-list')
+                            if (staffChangeList) {
+                                console.log('staff Button Clicked');
+                                clearInterval(staffMenuLoaded)
+                            } else {
+                                console.log('notclicked')
+                                const countDown = setTimeout(function () {
+                                    console.log('clearingstaffwatch')
+                                    clearInterval(staffMenuLoaded)
+                                }, 15000);
+
+                            }
+                        }
+                        const staffMenuLoaded = setInterval(check4StaffMenu, 1000)
+                        console.log('People Button Clicked');
+
+                    });
+
+                } else {
+                    console.log('Nope')
+                }
+            }
+            const leftNavLoaded = setInterval(check4LeftNav, 1000)
+
         })()
     )
+
 </script>

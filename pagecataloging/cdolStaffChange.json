@@ -1,0 +1,30 @@
+{
+	"pages": [
+		{
+			"htmlID": "cdol-staff-changes-header",
+			"title": "Staff Changes",
+			"version": "0",
+			"contextType": "main",
+			"sortOrder": 150,
+			"parentHTMLID": "navPeopleStaff",
+			"children": [
+				{
+					"htmlID": "cdol-staff-changes-submit",
+					"title": "Submit Staff Change",
+					"version": "0",
+					"contextType": "main",
+					"sortOrder": 0,
+					"pageURL": "/admin/cdol/staff_change/cdol_staff_change.html?status=Submit"
+				},
+				{
+					"htmlID": "cdol-staff-changes-list",
+					"title": "Staff Change List",
+					"version": "0",
+					"contextType": "main",
+					"sortOrder": 100,
+					"pageURL": "/admin/cdol/staff_change/cdol_staff_change_list.html"
+				}
+			]
+		}
+	]
+}
