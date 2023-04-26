@@ -38,6 +38,7 @@
     </li>
 </ul>
 
+~[if.admin_pds_uptake_access]
 <script type="text/javascript">
     $j(() =>
         (async () => {
@@ -64,6 +65,10 @@
 
             const checkForLeftNav = () => {
                 const leftNav = document.querySelector('#nav-main-menu');
+                if (!leftNav) {
+                    console.log('No left nav found.');
+                    return;
+                }
                 clearInterval(leftNavLoaded);
                 const peopleBtn = document.querySelector('#navPeopleSection');
                 peopleBtn.addEventListener('click', () => {
@@ -85,5 +90,33 @@
             const leftNavLoaded = setInterval(checkForLeftNav, 1000);
         })()
     )
+</script>
+[else]
+<script type="text/javascript">
+    $j(() =>
+        (async () => {
+            let staffCount
+            try {
+                staffCount = await $j.ajax({
+                    url: '/ws/schema/query/net.cdolinc.staffChanges.staff.counts?pagesize=0',
+                    method: 'POST',
+                    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+                    data: JSON.stringify({ curSchoolID: '~(curschoolid)', calendarYear: '~(f.currentdate;format= YYYY)' })
+                })
+            } catch (err) {
+                console.log(err)
+            }
+            staffCount = Number(staffCount.record[0].total_remaining)
+            if (staffCount > 0) {
+                $j('#staffCountSpan').text(staffCount)
+            } else {
+                $j('#staffCountSpan').remove()
+                $j('#staffCountLi').removeClass('countMargin')
+            }
+            $j('#tools2').prepend($j('#staffCount').html())
+            $j('#staffCount').remove()
+        })()
+    )
 
 </script>
+[/if]
