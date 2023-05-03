@@ -63,31 +63,33 @@
             $j('#tools2').prepend($j('#staffCount').html())
             $j('#staffCount').remove()
 
-            const checkForLeftNav = () => {
-                const leftNav = document.querySelector('#nav-main-menu');
-                if (!leftNav) {
-                    console.log('No left nav found.');
-                    return;
-                }
-                clearInterval(leftNavLoaded);
-                const peopleBtn = document.querySelector('#navPeopleSection');
-                peopleBtn.addEventListener('click', () => {
-                    const checkForStaffMenu = () => {
-                        const staffChangeList = document.querySelector('#cdol-staff-changes-list');
-                        if (staffChangeList) {
-                            const staffChangeListSpan = $j('a#cdol-staff-changes-list span.pds-nav-name');
-                            staffChangeListSpan.append(` (${staffCount})`);
-                            clearInterval(staffMenuLoaded);
-                        } else {
-                            const countDown = setTimeout(() => {
-                                clearInterval(staffMenuLoaded);
-                            }, 9000);
-                        }
-                    };
-                    const staffMenuLoaded = setInterval(checkForStaffMenu, 1000);
-                });
-            };
-            const leftNavLoaded = setInterval(checkForLeftNav, 1000);
+            // const checkForLeftNav = () => {
+            //     const leftNav = document.getElementById('nav-main-menu');
+            //     if (!leftNav) {
+            //         console.log('No left nav found.');
+            //         return;
+            //     }
+            //     clearInterval(leftNavLoaded);
+            //     const peopleBtn = document.getElementById('navPeopleSection');
+            //     peopleBtn.addEventListener('click', () => {
+            //         const checkForStaffMenu = () => {
+            //             const staffChangeList = document.getElementById('cdol-staff-changes-list');
+            //             if (staffChangeList) {
+            //                 const staffChangeListSpan = staffChangeList.getElementsByTagName('span')[0];
+            //                 console.log(staffChangeListSpan)
+            //                 staffChangeListSpan.textContent = "New Text";
+            //                 // staffChangeListSpan[0].innerHTML= `Staff Change List (${staffCount})`
+            //                 clearInterval(staffMenuLoaded);
+            //             } else {
+            //                 const countDown = setTimeout(() => {
+            //                     clearInterval(staffMenuLoaded);
+            //                 }, 9000);
+            //             }
+            //         };
+            //         const staffMenuLoaded = setInterval(checkForStaffMenu, 1000);
+            //     });
+            // };
+            // const leftNavLoaded = setInterval(checkForLeftNav, 1000);
         })()
     )
 </script>
