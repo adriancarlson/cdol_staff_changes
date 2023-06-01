@@ -92,7 +92,6 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 			if (pageContext === 'transferringStaff' || pageContext === 'newStaff') {
 				$scope.getJSONData('schoolsData')
 			}
-
 			//add and remove form payload objects based on directions of buttons
 			switch (direction) {
 				case 'reset':
@@ -118,6 +117,11 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 			$window.scrollTo(0, 0)
 		}
 
+		$scope.updateLicensing = pageContext => {
+			if (!$scope.submitPayload[pageContext].hasOwnProperty('license_microsoft')) {
+				$scope.submitPayload[pageContext].license_microsoft = 'A1'
+			}
+		}
 		$scope.updateScopeFromDropdown = (pageContext, resource, identifier, field) => {
 			//if dropdown source is user data
 			if (resource === 'usersData') {
