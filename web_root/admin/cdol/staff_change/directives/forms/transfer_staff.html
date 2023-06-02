@@ -98,25 +98,20 @@
                                 submitPayload.transferringStaff.first_name}} {{
                                 submitPayload.transferringStaff.last_name}}'s Licensing</div>
                             <div class="card-body">
-                                <div><label class="form-label form-label-sm label-reset req">Microsoft 365</label><br>
-                                    <select id="new-staff-license-microsoft" class="form-select form-select-sm"
-                                        aria-label="new-staff-license-microsoft"
-                                        data-ng-model="submitPayload.transferringStaff.license_microsoft"
-                                        data-ng-required="!submitPayload.transferringStaff.license_microsoft">
-                                        <option value="A1">A1 (Free)</option>
-                                        <option value="A3">A3 (Paid)</option>
-                                    </select>
-                                </div>
-                                <!-- <div class="py-2"><label
-                                        class="form-label form-label-sm label-reset req">Adobe</label><br>
-                                    <select id="new-staff-license-adobe" class="form-select form-select-sm"
-                                        aria-label="new-staff-license-adobe"
-                                        data-ng-model="submitPayload.transferringStaff.license_adobe"
+                                <label class="form-label form-label-sm label-reset req">Microsoft 365</label><br>
+                                <select id="new-staff-license-microsoft" class="form-select form-select-sm"
+                                    aria-label="new-staff-license-microsoft"
+                                    data-ng-model="submitPayload.transferringStaff.license_microsoft"
+                                    data-ng-required="!submitPayload.transferringStaff.license_microsoft">
+                                    <option value="A1">A1 (Free)</option>
+                                    <option value="A3">A3 (Paid)</option>
+                                </select>
+                                <div class="py-3">
+                                    <label class="form-label form-label-sm label-reset req">Adobe License?</label>
+                                    <input class="form-check-input" id="license_adobe" title="license_adobe"
+                                        type="checkbox" data-ng-model="submitPayload.transferringStaff.license_adobe"
                                         data-ng-required="!submitPayload.transferringStaff.license_adobe">
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
-                                    </select>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                     </div>

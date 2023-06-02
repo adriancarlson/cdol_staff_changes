@@ -19,7 +19,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 		// setting up universal formatKeys that will be used in API calls to format fields or delete feidls
 		$scope.formatKeys = {
 			dateKeys: ['_date', 'dob', 'deadline'],
-			checkBoxKeys: ['_created', '_ignored'],
+			checkBoxKeys: ['_created', '_ignored', 'license_adobe'],
 			titleKeys: ['_name'],
 			sentenceKeys: ['position', 'notes'],
 			deleteKeys: ['_radio', 'homeschool', 'identifier']
@@ -256,6 +256,10 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 			let createFomatKeys = { ...$scope.formatKeys }
 			// delete formatKeys key that is not needed for POST API Call
 			delete createFomatKeys['checkBoxKeys']
+			// add back in license checkbox could be handled better later
+			const checkBoxKeys = ['license_adobe']
+			createFomatKeys = { ...createFomatKeys, checkBoxKeys }
+			console.log('createFomatKeys', createFomatKeys)
 			//loop though submitPayload object
 			Object.keys($scope.submitPayload).forEach(async (key, index) => {
 				let formPayload = $scope.submitPayload[key]

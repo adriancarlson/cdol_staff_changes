@@ -59,5 +59,6 @@
         <field name="replace_last_name" type="String" length="100" />
         <field name="additional_schoolid" type="Integer" />
         <field name="license_microsoft" type="String" length="100" />
+        <field name="license_adobe" type="Boolean" />
     </extendedTable>
 </psExtension>
