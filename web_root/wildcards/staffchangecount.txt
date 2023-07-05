@@ -40,6 +40,37 @@
 
 ~[if.admin_pds_uptake_access]
 <script type="text/javascript">
+    const findStaffNavItemById = (itemId, startWith) => {
+        if (typeof appNavItems == 'undefined') return
+        let items = startWith ? startWith.children || [] : appNavItems
+        let matchedItem
+        items.forEach(item => {
+            if (item.id == itemId) matchedItem = item
+        })
+        if (matchedItem) return matchedItem
+        //if not found, search children
+        else {
+            items.forEach(item => {
+                if (item.children && !matchedItem) matchedItem = findStaffNavItemById(itemId, item)
+            })
+            if (matchedItem) return matchedItem
+        }
+    }
+    //update count on link and add icon
+    const updateStaffCount = (linkId, count) => {
+        let navItem = findStaffNavItemById(linkId)
+        if (!navItem || count == 0) {
+            $j('#staffCountSpan').remove()
+            $j('#staffCountLi').removeClass('countMargin')
+        } else {
+            navItem.name = `${navItem.name} (${count})`
+            $j('#staffCountSpan').text(count)
+            $j('#tools2').prepend($j('#staffCount').html())
+        }
+        $j('#staffCount').remove()
+    }
+
+
     $j(() =>
         (async () => {
             let staffCount
@@ -53,43 +84,9 @@
             } catch (err) {
                 console.log(err)
             }
-            staffCount = Number(staffCount.record[0].total_remaining)
-            if (staffCount > 0) {
-                $j('#staffCountSpan').text(staffCount)
-            } else {
-                $j('#staffCountSpan').remove()
-                $j('#staffCountLi').removeClass('countMargin')
-            }
-            $j('#tools2').prepend($j('#staffCount').html())
-            $j('#staffCount').remove()
 
-            // const checkForLeftNav = () => {
-            //     const leftNav = document.getElementById('nav-main-menu');
-            //     if (!leftNav) {
-            //         console.log('No left nav found.');
-            //         return;
-            //     }
-            //     clearInterval(leftNavLoaded);
-            //     const peopleBtn = document.getElementById('navPeopleSection');
-            //     peopleBtn.addEventListener('click', () => {
-            //         const checkForStaffMenu = () => {
-            //             const staffChangeList = document.getElementById('cdol-staff-changes-list');
-            //             if (staffChangeList) {
-            //                 const staffChangeListSpan = staffChangeList.getElementsByTagName('span')[0];
-            //                 console.log(staffChangeListSpan)
-            //                 staffChangeListSpan.textContent = "New Text";
-            //                 // staffChangeListSpan[0].innerHTML= `Staff Change List (${staffCount})`
-            //                 clearInterval(staffMenuLoaded);
-            //             } else {
-            //                 const countDown = setTimeout(() => {
-            //                     clearInterval(staffMenuLoaded);
-            //                 }, 9000);
-            //             }
-            //         };
-            //         const staffMenuLoaded = setInterval(checkForStaffMenu, 1000);
-            //     });
-            // };
-            // const leftNavLoaded = setInterval(checkForLeftNav, 1000);
+            staffCount = Number(staffCount.record[0].total_remaining)
+            updateStaffCount('cdol-staff-changes-list', staffCount)
         })()
     )
 </script>
