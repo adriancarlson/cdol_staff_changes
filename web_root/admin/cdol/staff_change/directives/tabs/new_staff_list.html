@@ -1,6 +1,5 @@
-<div id="new-staff-grid" data-pss-grid-widget data-data="staffList.newStaff"
-    data-filtered-data="filteredNewStaffList" data-client-side-pagination="false"
-    data-filter-constraint="no-filters">
+<div id="new-staff-grid" data-pss-grid-widget data-data="staffList.newStaff" data-filtered-data="filteredNewStaffList"
+    data-client-side-pagination="false" data-filter-constraint="no-filters">
     <table class="grid">
         <thead>
             <tr>
@@ -40,7 +39,8 @@
                 </td>
                 <td>
                     <span data-ng-show="newStaff.o365_created != 1 && newStaff.o365_ignored != 1">&#10060;</span>
-                    <span data-ng-show="newStaff.o365_created == 1 || newStaff.o365_ignored == 1">&#10004;&#65039;</span>
+                    <span
+                        data-ng-show="newStaff.o365_created == 1 || newStaff.o365_ignored == 1">&#10004;&#65039;</span>
                 </td>
                 <td><span data-ng-show="newStaff.lms_created != 1">&#10060;</span><span
                         data-ng-show="newStaff.lms_created == 1">&#10004;&#65039;</span></td>

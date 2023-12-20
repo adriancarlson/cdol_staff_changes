@@ -46,6 +46,7 @@
                 <div class="row align-items-center mb-3">
                     <div class="col-6">
                         <label for="transferring-staff-name" class="form-label form-label-sm  label-reset req">New Staff
+                            Preferred
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
@@ -70,6 +71,41 @@
                                 data-ng-required="true">
                         </div>
                     </div>
+                    <div class="col">
+                        <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary" role="alert"><i
+                                class="bi bi-chat-right-text-fill"></i>
+                            <strong><u>Preferred Name</u></strong>: is how the staff name will appear on reports and in
+                            the gradebook.<br>It is also used to create username and email address.
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="transferring-staff-legal-name" class="form-label form-label-sm  label-reset req">New
+                            Staff Legal
+                            Name</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="Legal first name"
+                                aria-label="Legal First name" data-ng-model="submitPayload.newStaff.legal_first_name"
+                                data-ng-required="true">
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="Legal middle name"
+                                aria-label="Legal middle name" data-ng-model="submitPayload.newStaff.legal_middle_name">
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="Legal last name"
+                                aria-label="Legal last name" data-ng-model="submitPayload.newStaff.legal_last_name"
+                                data-ng-required="true">
+                            <button type="button" class="m-0 p-2 ps-1" data-ng-if="userContext.pageStatus =='Submit'"
+                                data-ng-click="copyNames(userContext.pageContext)">Copy from above</button>
+                        </div>
+
+
+                    </div>
+                    <div class="col">
+                        <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary" role="alert"><i
+                                class="bi bi-chat-right-text-fill"></i>
+                            <strong><u>Legal Name</u></strong>: exactly how the staff' name appears on teaching
+                            certificate or legal documentation
+                        </div>
+                    </div>
                 </div>
                 <div class="row align-items-center mb-3 gx-3">
                     <div class="col-auto">
@@ -86,18 +122,9 @@
                         <script type="text/javascript">initBehaviors();</script>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3 gx-3">
-                    <div class="col-3">
-                        <label for="new-staff-preferred-name" class="form-label form-label-sm  label-reset">Preferred
-                            Name </label><span class="text-muted"><small><em> (Chosen name that may differ from legal
-                                    name)</em></small></span></label>
-                        <input id="new-staff-preferred-name" type="text" class="form-control form-control-sm"
-                            aria-label="Preferred Name" placeholder='ex: Bill instead of William'
-                            data-ng-model="submitPayload.newStaff.preferred_name">
-
-                    </div>
-                    <div class="col-2"
-                        data-ng-if="submitPayload.newStaff.gender === 'F' && (submitPayload.newStaff.title ==='Mrs.' || submitPayload.newStaff.title ==='Dr.')">
+                <div class="row align-items-center mb-3 gx-3"
+                    data-ng-if="submitPayload.newStaff.gender === 'F' && (submitPayload.newStaff.title ==='Mrs.' || submitPayload.newStaff.title ==='Dr.')">
+                    <div class="col-2">
                         <label for="new-staff-maiden-name" class="form-label form-label-sm  label-reset">Maiden
                             Name </label>
                         <input id="new-staff-maiden-name" type="text" class="form-control form-control-sm"

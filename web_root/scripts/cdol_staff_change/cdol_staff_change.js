@@ -193,6 +193,12 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 			}
 		}
 
+		$scope.copyNames = pageContext => {
+			$scope.submitPayload[pageContext].legal_first_name = $scope.submitPayload[pageContext].first_name
+			$scope.submitPayload[pageContext].legal_middle_name = $scope.submitPayload[pageContext].middle_name
+			$scope.submitPayload[pageContext].legal_last_name = $scope.submitPayload[pageContext].last_name
+		}
+
 		$scope.updateAdditionalPayload = pageContext => {
 			if ($scope.submitPayload[pageContext].leaving_radio == 1) {
 				$scope.submitPayload.exitingStaff = {}

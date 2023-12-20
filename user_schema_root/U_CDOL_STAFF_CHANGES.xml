@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<psExtension xmlns="http://www.powerschool.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.powerschool.com psextension.xsd">
+<psExtension xmlns="http://www.powerschool.com"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.powerschool.com psextension.xsd">
     <extensionname>U_CDOL_STAFF_CHANGES</extensionname>
     <extendedTable type="standalone" dbTableName="U_CDOL_STAFF_CHANGES" childName="U_CDOL_STAFF_CHANGES" comment="table for tracking yearly staff changes">
         <field name="schoolid" type="Integer" />
@@ -33,7 +34,7 @@
         <field name="fte" type="String" length="2" />
         <field name="religion" type="String" length="1" />
         <field name="religiousclergylay" type="String" length="1" />
-        <field name="submission_time" type="String"  length="10"/>
+        <field name="submission_time" type="String" length="10"/>
         <field name="replacing_other" type="String" length="100" />
         <field name="final_completion_date" type="Date" />
         <field name="old_name_placeholder" type="String" length="100" />
@@ -57,5 +58,8 @@
         <field name="replace_middle_name" type="String" length="100" />
         <field name="replace_last_name" type="String" length="100" />
         <field name="additional_schoolid" type="Integer" />
+        <field name="legal_first_name" type="String" length="100" />
+        <field name="legal_middle_name" type="String" length="100" />
+        <field name="legal_last_name" type="String" length="100" />
     </extendedTable>
 </psExtension>
