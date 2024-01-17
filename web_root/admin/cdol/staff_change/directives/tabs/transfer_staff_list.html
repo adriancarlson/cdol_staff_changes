@@ -24,7 +24,11 @@
                 <td>{{$index +1}}</td>
                 <td class="nowrap"><a
                         href="/admin/cdol/staff_change/cdol_staff_change.html?status=Edit&id={{transferringStaff.staffid}}">
-                        {{transferringStaff.title}} {{transferringStaff.first_name}}
+                        <span data-ng-show="transferringStaff.title !== 'Fr.' &&
+                        transferringStaff.title !== 'Msgr.' &&
+								transferringStaff.title !== 'Sr.' &&
+								transferringStaff.title !== 'Br.' "> {{transferringStaff.title}}</span>
+                        {{transferringStaff.first_name}}
                         {{transferringStaff.last_name}}</a></td>
                 <td class="nowrap">{{transferringStaff.schname}}</td>
                 <td class="nowrap">{{transferringStaff.prev_school_name}}</td>

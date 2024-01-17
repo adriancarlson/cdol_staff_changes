@@ -290,9 +290,8 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 					curTime: $scope.userContext.curTime,
 					emailFrom: $scope.userContext.curUserEmail,
 					emailSubject: `${readableChangeType} Submission from ${$scope.userContext.curUserName} (${$scope.userContext.curUserSchoolAbbr}) | ${$scope.userContext.curUserEmail}`,
-					emailBody: `${readableChangeType} Name: ${typeof formPayload.title === 'undefined' ? '' : formPayload.title} ${formPayload.first_name} ${formPayload.last_name}    Due Date:${
-						formPayload.deadline
-					}  ${typeof formPayload.notes === 'undefined' ? '' : `Notes: ${formPayload.notes}`}`
+					emailBody: `${readableChangeType} Name: ${typeof formPayload.title === 'undefined' || ['Fr.', 'Msgr.', 'Sr.', 'Br.'].includes(formPayload.title) ? '' : formPayload.title}
+					${formPayload.first_name} ${formPayload.last_name}    Due Date:${formPayload.deadline}  ${typeof formPayload.notes === 'undefined' ? '' : `Notes: ${formPayload.notes}`}`
 				}
 				//add commonPayload to each object in submitPayload
 				formPayload = Object.assign(formPayload, commonPayload)
