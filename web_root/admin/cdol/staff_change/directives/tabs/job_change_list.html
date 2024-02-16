@@ -14,8 +14,6 @@
                 <th data-pss-sort-fields="completion_date | date">Deadline</th>
                 <th data-pss-sort-fields="ps_created | number">PS Created</th>
                 <th data-pss-sort-fields="ad_created, ad_ignored | number">AD Created</th>
-                <th data-pss-sort-fields="o365_created, o365_ignored | number">O365 Created</th>
-                <th data-pss-sort-fields="lms_created | number">LMS Created</th>
                 <th data-pss-sort-fields="final_completion_date | date">Completed</th>
             </tr>
         </thead>
@@ -41,13 +39,6 @@
                     <span data-ng-show="jobChange.ad_created != 1 && jobChange.ad_ignored != 1">&#10060;</span>
                     <span data-ng-show="jobChange.ad_created == 1 || jobChange.ad_ignored == 1">&#10004;&#65039;</span>
                 </td>
-                <td>
-                    <span data-ng-show="jobChange.o365_created != 1 && jobChange.o365_ignored != 1">&#10060;</span>
-                    <span
-                        data-ng-show="jobChange.o365_created == 1 || jobChange.o365_ignored == 1">&#10004;&#65039;</span>
-                </td>
-                <td><span data-ng-show="jobChange.lms_created != 1">&#10060;</span><span
-                        data-ng-show="jobChange.lms_created == 1">&#10004;&#65039;</span></td>
                 <td>{{jobChange.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
         </tbody>
