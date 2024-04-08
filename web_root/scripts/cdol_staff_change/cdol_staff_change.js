@@ -16,7 +16,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 			pageContext: 'start',
 			prevContext: undefined
 		}
-		// setting up universal formatKeys that will be used in API calls to format fields or delete feidls
+		// setting up universal formatKeys that will be used in API calls to format fields or delete fields
 		$scope.formatKeys = {
 			dateKeys: ['_date', 'dob', 'deadline'],
 			checkBoxKeys: ['_created', '_ignored'],
@@ -150,17 +150,10 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 						$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], foundItem)
 
 						if (pageContext === 'nameChange') {
-							if (
-								$scope.submitPayload[pageContext].title === 'Fr.' ||
-								$scope.submitPayload[pageContext].title === 'Msgr.' ||
-								$scope.submitPayload[pageContext].title === 'Sr.' ||
-								$scope.submitPayload[pageContext].title === 'Br.'
-							) {
+							if ($scope.submitPayload[pageContext].title === 'Fr.' || $scope.submitPayload[pageContext].title === 'Msgr.' || $scope.submitPayload[pageContext].title === 'Sr.' || $scope.submitPayload[pageContext].title === 'Br.') {
 								$scope.submitPayload[pageContext].title = ''
 							}
-							$scope.submitPayload[
-								pageContext
-							].old_name_placeholder = `${$scope.submitPayload[pageContext].title} ${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
+							$scope.submitPayload[pageContext].old_name_placeholder = `${$scope.submitPayload[pageContext].title} ${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
 						}
 						if (pageContext === 'transferringStaff') {
 							$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
@@ -171,9 +164,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 							$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
 						}
 						if (pageContext === 'exitingStaff') {
-							$scope.submitPayload[
-								pageContext
-							].old_name_placeholder = `${$scope.submitPayload[pageContext].title} ${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
+							$scope.submitPayload[pageContext].old_name_placeholder = `${$scope.submitPayload[pageContext].title} ${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
 						}
 					}
 					//if the resource is user data and the field is replace_dcid
@@ -320,13 +311,7 @@ define(['angular', 'components/shared/index', '/scripts/cdol/services/formatServ
 				formPayload = Object.assign(formPayload, updateFomatKeys)
 
 				if (key != 'exitingStaff' && key != 'jobChange') {
-					if (
-						formPayload.final_completion_date === undefined &&
-						formPayload.ps_created &&
-						(formPayload.ad_created || formPayload.ad_ignored) &&
-						(formPayload.o365_created || formPayload.o365_ignored) &&
-						formPayload.lms_created
-					) {
+					if (formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored) && (formPayload.o365_created || formPayload.o365_ignored) && formPayload.lms_created) {
 						formPayload.final_completion_date = $scope.userContext.curDate
 					}
 				} else {
