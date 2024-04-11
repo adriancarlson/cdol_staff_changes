@@ -1,0 +1,51 @@
+<div id="new-staff-grid" data-pss-grid-widget data-data="staffList.newStaff" data-filtered-data="filteredNewStaffList"
+    data-client-side-pagination="false" data-filter-constraint="no-filters">
+    <table class="grid">
+        <thead class="sticky-header">
+            <tr>
+                <th></th>
+                <th data-pss-sort-fields="last_name|text" class="nowrap">New Staff</th>
+                <th data-pss-sort-fields="schname|text">School</th>
+                <th data-pss-sort-fields="who_submitted|number">Submitted By</th>
+                <th data-pss-sort-fields="submission_date, submission_time" data-primary-sort="descending">
+                    Submission Date</th>
+                <th data-pss-sort-fields="completion_date | date">Deadline</th>
+                <th data-pss-sort-fields="ps_created | number">PS Created</th>
+                <th data-pss-sort-fields="ad_created, ad_ignored | number">AD Created</th>
+                <th data-pss-sort-fields="o365_created, o365_ignored | number">O365 Created</th>
+                <th data-pss-sort-fields="lms_created | number">LMS Created</th>
+                <th data-pss-sort-fields="final_completion_date | date">Completed</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="newStaff in filteredNewStaffList">
+                <td>{{$index +1}}</td>
+                <td class="nowrap"><a
+                        href="/admin/staff_change/submit.html?status=Edit&id={{newStaff.staffid}}">{{newStaff.title}}
+                        {{newStaff.first_name}}
+                        {{newStaff.last_name}}</a></td>
+                <td class="nowrap">{{newStaff.schname}}</td>
+                <td class="nowrap">{{newStaff.submittedstaff}}</td>
+                <td class="nowrap">{{newStaff.submission_date | date : 'MM/dd/yyyy'}}
+                    {{newStaff.submission_time}}</td>
+                <td
+                    data-ng-class="{'req-notation': (newStaff.completion_date | date : 'MM/dd/yyyy'  < curDate | date : 'MM/dd/yyyy') && (newStaff.ps_created != 1  || (newStaff.ad_created != 1 && newStaff.ad_ignored != 1) || newStaff.lms_created != 1 || (newStaff.o365_created != 1 && newStaff.o365_ignored != 1))}">
+                    {{newStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td><span data-ng-show="newStaff.ps_created != 1">&#10060;</span><span
+                        data-ng-show="newStaff.ps_created == 1">&#10004;&#65039;</span></td>
+                <td>
+                    <span data-ng-show="newStaff.ad_created != 1 && newStaff.ad_ignored != 1">&#10060;</span>
+                    <span data-ng-show="newStaff.ad_created == 1 || newStaff.ad_ignored == 1">&#10004;&#65039;</span>
+                </td>
+                <td>
+                    <span data-ng-show="newStaff.o365_created != 1 && newStaff.o365_ignored != 1">&#10060;</span>
+                    <span
+                        data-ng-show="newStaff.o365_created == 1 || newStaff.o365_ignored == 1">&#10004;&#65039;</span>
+                </td>
+                <td><span data-ng-show="newStaff.lms_created != 1">&#10060;</span><span
+                        data-ng-show="newStaff.lms_created == 1">&#10004;&#65039;</span></td>
+                <td>{{newStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -28,7 +28,7 @@
 
 <ul id='staffCount' class='hide'>
     <li id='staffCountLi' class="pds-app-action countMargin">
-        <a id="cdolBtnNotifications" class="badge-adjust" href="/admin/cdol/staff_change/cdol_staff_change_list.html"
+        <a id="cdolBtnNotifications" class="badge-adjust" href="/admin/staff_change/list.html"
             title="Staff Changes">
             <pds-icon name="rolodex" class="style-scope x-scope pds-icon-0 pds-widget"
                 pds-widget="pds-widget"></pds-icon>
@@ -70,7 +70,6 @@
         $j('#staffCount').remove()
     }
 
-
     $j(() =>
         (async () => {
             let staffCount
@@ -84,7 +83,6 @@
             } catch (err) {
                 console.log(err)
             }
-
             staffCount = Number(staffCount.record[0].total_remaining)
             updateStaffCount('cdol-staff-changes-list', staffCount)
         })()

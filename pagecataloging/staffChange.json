@@ -1,0 +1,30 @@
+{
+	"pages": [
+		{
+			"htmlID": "staff-changes-header",
+			"title": "Staff Changes",
+			"version": "0",
+			"contextType": "main",
+			"sortOrder": 150,
+			"parentHTMLID": "navPeopleStaff",
+			"children": [
+				{
+					"htmlID": "staff-changes-submit",
+					"title": "Submit Staff Change",
+					"version": "0",
+					"contextType": "main",
+					"sortOrder": 0,
+					"pageURL": "/admin/staff_change/submit.html?status=Submit"
+				},
+				{
+					"htmlID": "staff-changes-list",
+					"title": "Staff Change List",
+					"version": "0",
+					"contextType": "main",
+					"sortOrder": 100,
+					"pageURL": "/admin/staff_change/list.html"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,54 @@
+<div id="job-change-grid" data-pss-grid-widget data-data="staffList.jobChange"
+    data-filtered-data="filteredJobChangeList" data-client-side-pagination="false" data-filter-constraint="no-filters">
+    <table class="grid">
+        <thead class="sticky-header">
+            <tr>
+                <th></th>
+                <th data-pss-sort-fields="last_name|text" class="nowrap">Staff</th>
+                <th data-pss-sort-fields="previous_position|text" class="nowrap">Previous Position/Job</th>
+                <th data-pss-sort-fields="new_position|text" class="nowrap">New Position/Job</th>
+                <th data-pss-sort-fields="schname|text">School</th>
+                <th data-pss-sort-fields="who_submitted|number">Submitted By</th>
+                <th data-pss-sort-fields="submission_date, submission_time" data-primary-sort="descending">
+                    Submission Date</th>
+                <th data-pss-sort-fields="completion_date | date">Deadline</th>
+                <th data-pss-sort-fields="ps_created | number">PS Change</th>
+                <th data-pss-sort-fields="ad_created, ad_ignored | number">AD Change</th>
+                <th data-pss-sort-fields="o365_created, o365_ignored | number">O365 Change</th>
+                <th data-pss-sort-fields="lms_created | number">LMS Change</th>
+                <th data-pss-sort-fields="final_completion_date | date">Completed</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="jobChange in filteredJobChangeList">
+                <td>{{$index +1}}</td>
+                <td class="nowrap"><a href="/admin/staff_change/submit.html?status=Edit&id={{jobChange.staffid}}">
+                        {{jobChange.first_name}}
+                        {{jobChange.last_name}}</a></td>
+                <td class="text-start text-break">{{jobChange.previous_position}}</td>
+                <td class="text-start text-break">{{jobChange.new_position}}</td>
+                <td class="nowrap">{{jobChange.schname}}</td>
+                <td class="nowrap">{{jobChange.submittedstaff}}</td>
+                <td class="nowrap">{{jobChange.submission_date | date : 'MM/dd/yyyy'}}
+                    {{jobChange.submission_time}}</td>
+                <td
+                    data-ng-class="{'req-notation': (jobChange.completion_date | date : 'MM/dd/yyyy'  < curDate | date : 'MM/dd/yyyy') && (jobChange.ps_created != 1  || (jobChange.ad_created != 1 && jobChange.ad_ignored != 1) || jobChange.lms_created != 1 || (jobChange.o365_created != 1 && jobChange.o365_ignored != 1))}">
+                    {{jobChange.completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td><span data-ng-show="jobChange.ps_created != 1">&#10060;</span><span
+                        data-ng-show="jobChange.ps_created == 1">&#10004;&#65039;</span></td>
+                <td>
+                    <span data-ng-show="jobChange.ad_created != 1 && jobChange.ad_ignored != 1">&#10060;</span>
+                    <span data-ng-show="jobChange.ad_created == 1 || jobChange.ad_ignored == 1">&#10004;&#65039;</span>
+                </td>
+                <td>
+                    <span data-ng-show="jobChange.o365_created != 1 && jobChange.o365_ignored != 1">&#10060;</span>
+                    <span
+                        data-ng-show="jobChange.o365_created == 1 || jobChange.o365_ignored == 1">&#10004;&#65039;</span>
+                </td>
+                <td><span data-ng-show="jobChange.lms_created != 1">&#10060;</span><span
+                        data-ng-show="jobChange.lms_created == 1">&#10004;&#65039;</span></td>
+                <td>{{jobChange.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
