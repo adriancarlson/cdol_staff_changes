@@ -97,7 +97,6 @@ define(function (require) {
 							})
 
 							if (item.final_completion_date) {
-								console.log(typeof item.final_completion_date)
 								item.completed = true
 							} else {
 								item.completed = false
