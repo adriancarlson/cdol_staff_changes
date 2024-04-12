@@ -321,7 +321,7 @@ define(function (require) {
 					//add updateFomatKeys to each object in submitPayload
 					formPayload = Object.assign(formPayload, updateFomatKeys)
 
-					if (key != 'exitingStaff') {
+					if (key !== 'exitingStaff' && key !== 'jobChange') {
 						if (formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored) && (formPayload.o365_created || formPayload.o365_ignored) && formPayload.lms_created) {
 							formPayload.final_completion_date = $scope.userContext.curDate
 						}

@@ -34,6 +34,7 @@ define(function (require) {
 				'Bishop Neumann Catholic Jr/Sr High School': 'Bishop Neumann Catholic Jr/Sr High School',
 				'Blessed Sacrament School': 'Blessed Sacrament School',
 				'Cathedral of the Risen Christ School': 'Cathedral of the Risen Christ School',
+				'Diocesan Office': 'Diocesan Office',
 				'Falls City Sacred Heart Elementary': 'Falls City Sacred Heart Elementary',
 				'Falls City Sacred Heart Jr/Sr High School': 'Falls City Sacred Heart Jr/Sr High School',
 				'Lourdes Central Catholic Elementary School': 'Lourdes Central Catholic Elementary School',

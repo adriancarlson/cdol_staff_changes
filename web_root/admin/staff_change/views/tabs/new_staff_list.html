@@ -25,7 +25,7 @@
                 <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">AD Created</th>
                 <th data-pss-sort-fields="o365_created, o365_ignored" data-exclude-from-filter="true">O365 Created</th>
                 <th data-pss-sort-fields="lms_created" data-exclude-from-filter="true">LMS Created</th>
-                <th data-pss-sort-fields="final_completion_date|date">Completed Date</th>
+                <th data-pss-sort-fields="final_completion_date|date">Completion Date</th>
             </tr>
         </thead>
         <tbody>
@@ -40,7 +40,7 @@
                 <td class="nowrap">{{newStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{newStaff.submission_time}}</td>
                 <td
-                    data-ng-class="{'req-notation': (newStaff.completion_date | date : 'MM/dd/yyyy'  < curDate | date : 'MM/dd/yyyy') && (newStaff.ps_created != 1  || (newStaff.ad_created != 1 && newStaff.ad_ignored != 1) || newStaff.lms_created != 1 || (newStaff.o365_created != 1 && newStaff.o365_ignored != 1))}">
+                    data-ng-class="{'req-notation': (newStaff.completion_date | date : 'MM/dd/yyyy'  < curDate | date : 'MM/dd/yyyy') && (!newStaff.ps_complete || !newStaff.ad_complete || !newStaff.o365_complete || !newStaff.lms_complete)}">
                     {{newStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
                 <td><span
                         ng-class="{'mark-complete': newStaff.ps_complete, 'mark-incomplete': !newStaff.ps_complete}"></span>

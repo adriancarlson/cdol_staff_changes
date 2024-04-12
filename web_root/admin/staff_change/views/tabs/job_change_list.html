@@ -1,22 +1,27 @@
 <div id="job-change-grid" data-pss-grid-widget data-data="staffList.jobChange"
-    data-filtered-data="filteredJobChangeList" data-client-side-pagination="false" data-filter-constraint="no-filters">
+    data-filtered-data="filteredJobChangeList" data-client-side-pagination="false">
+    <!-- Adding before the table so it will put this filter at the top of the list in the drop down -->
+    <label data-pss-filter-field="ad_complete|multiselect" data-filter-info="booleanMap">Active Directory
+        Complete?</label>
+    <label data-pss-filter-field="ps_complete|multiselect" data-filter-info="booleanMap">PowerSchool Complete?</label>
+    <label data-pss-filter-field="completed|multiselect" data-filter-info="booleanMap">All Completed?</label>
+    <label data-pss-filter-field="first_name">First Name</label>
+    <label data-pss-filter-field="last_name">Last Name</label>
     <table class="grid">
         <thead class="sticky-header">
             <tr>
                 <th></th>
-                <th data-pss-sort-fields="last_name|text" class="nowrap">Staff</th>
-                <th data-pss-sort-fields="previous_position|text" class="nowrap">Previous Position/Job</th>
-                <th data-pss-sort-fields="new_position|text" class="nowrap">New Position/Job</th>
-                <th data-pss-sort-fields="schname|text">School</th>
-                <th data-pss-sort-fields="who_submitted|number">Submitted By</th>
-                <th data-pss-sort-fields="submission_date, submission_time" data-primary-sort="descending">
+                <th data-pss-sort-fields="last_name" class="nowrap">Staff</th>
+                <th data-pss-sort-fields="previous_position" class="nowrap">Previous Position/Job</th>
+                <th data-pss-sort-fields="new_position" class="nowrap">New Position/Job</th>
+                <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">School</th>
+                <th data-pss-sort-fields="submittedstaff">Submitted By</th>
+                <th data-pss-sort-fields="submission_date|date, submission_time" data-primary-sort="descending">
                     Submission Date</th>
-                <th data-pss-sort-fields="completion_date | date">Deadline</th>
-                <th data-pss-sort-fields="ps_created | number">PS Change</th>
-                <th data-pss-sort-fields="ad_created, ad_ignored | number">AD Change</th>
-                <th data-pss-sort-fields="o365_created, o365_ignored | number">O365 Change</th>
-                <th data-pss-sort-fields="lms_created | number">LMS Change</th>
-                <th data-pss-sort-fields="final_completion_date | date">Completed</th>
+                <th data-pss-sort-fields="completion_date|date">Deadline</th>
+                <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">PS Changed</th>
+                <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">AD Changed</th>
+                <th data-pss-sort-fields="final_completion_date|date">Completion Date</th>
             </tr>
         </thead>
         <tbody>
@@ -32,21 +37,14 @@
                 <td class="nowrap">{{jobChange.submission_date | date : 'MM/dd/yyyy'}}
                     {{jobChange.submission_time}}</td>
                 <td
-                    data-ng-class="{'req-notation': (jobChange.completion_date | date : 'MM/dd/yyyy'  < curDate | date : 'MM/dd/yyyy') && (jobChange.ps_created != 1  || (jobChange.ad_created != 1 && jobChange.ad_ignored != 1) || jobChange.lms_created != 1 || (jobChange.o365_created != 1 && jobChange.o365_ignored != 1))}">
+                    data-ng-class="{'req-notation': (jobChange.completion_date | date : 'MM/dd/yyyy'  < curDate | date : 'MM/dd/yyyy') && (!jobChange.ps_complete || !jobChange.ad_complete)}">
                     {{jobChange.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <td><span data-ng-show="jobChange.ps_created != 1">&#10060;</span><span
-                        data-ng-show="jobChange.ps_created == 1">&#10004;&#65039;</span></td>
-                <td>
-                    <span data-ng-show="jobChange.ad_created != 1 && jobChange.ad_ignored != 1">&#10060;</span>
-                    <span data-ng-show="jobChange.ad_created == 1 || jobChange.ad_ignored == 1">&#10004;&#65039;</span>
+                <td><span
+                        ng-class="{'mark-complete': jobChange.ps_complete, 'mark-incomplete': !jobChange.ps_complete}"></span>
                 </td>
-                <td>
-                    <span data-ng-show="jobChange.o365_created != 1 && jobChange.o365_ignored != 1">&#10060;</span>
-                    <span
-                        data-ng-show="jobChange.o365_created == 1 || jobChange.o365_ignored == 1">&#10004;&#65039;</span>
+                <td><span
+                        ng-class="{'mark-complete': jobChange.ad_complete, 'mark-incomplete': !jobChange.ad_complete}"></span>
                 </td>
-                <td><span data-ng-show="jobChange.lms_created != 1">&#10060;</span><span
-                        data-ng-show="jobChange.lms_created == 1">&#10004;&#65039;</span></td>
                 <td>{{jobChange.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
         </tbody>
