@@ -33,8 +33,11 @@
         <tbody>
             <tr data-ng-repeat="allStaff in filteredAllStaffList">
                 <td>{{$index +1}}</td>
-                <td class="nowrap"><a
-                        href="/admin/staff_change/submit.html?status=Edit&id={{allStaff.staffid}}">{{allStaff.title}}
+                <td class="nowrap"><a href="/admin/staff_change/submit.html?status=Edit&id={{allStaff.staffid}}"><span
+                            data-ng-show="allStaff.title !== 'Fr.' &&
+                        allStaff.title !== 'Msgr.' &&
+                        allStaff.title !== 'Sr.' &&
+                        allStaff.title !== 'Br.' ">{{allStaff.title}}</span>
                         {{allStaff.first_name}}
                         {{allStaff.last_name}}</a></td>
                 <td class="nowrap fw-semibold" data-ng-class="{
