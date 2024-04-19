@@ -27,6 +27,13 @@ define(function (require) {
 				'Sr.': 'Sr.',
 				'Br.': 'Br.'
 			}
+			$scope.changeMap = {
+				'New Staff': 'newStaff',
+				'Existing Staff': 'exitingStaff',
+				'Name Change': 'nameChange',
+				'Job Change': 'jobChange',
+				'Transferring Staff': 'transferringStaff'
+			}
 			$scope.schoolMap = {
 				'All Saints Catholic School Holdrege': 'All Saints Catholic School Holdrege',
 				'Aquinas Catholic Elementary': 'Aquinas Catholic Elementary',
@@ -128,4 +135,25 @@ define(function (require) {
 			}
 		}
 	])
+	module.filter('changeTypeFilter', function () {
+		// Define the filter function that takes the input value and returns the transformed value
+		return function (input) {
+			// Check if input is a valid string
+			if (typeof input === 'string') {
+				// Split the input string by uppercase letters
+				var words = input.split(/(?=[A-Z])/)
+
+				// Capitalize the first letter of each word
+				var capitalizedWords = words.map(function (word) {
+					return word.charAt(0).toUpperCase() + word.slice(1)
+				})
+
+				// Join the capitalized words with space
+				return capitalizedWords.join(' ')
+			} else {
+				// Return input unchanged if it's not a string
+				return input
+			}
+		}
+	})
 })

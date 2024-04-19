@@ -16,7 +16,8 @@
             <tr>
                 <th></th>
                 <th data-pss-sort-fields="last_name" class="nowrap">Staff</th>
-                <th data-pss-sort-fields="change_type" class="nowrap">Change Type</th>
+                <th data-pss-sort-fields="change_type|multiselect" data-filter-info="changeMap" class="nowrap">Change
+                    Type</th>
                 <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">School</th>
                 <th data-pss-sort-fields="submittedstaff">Submitted By</th>
                 <th data-pss-sort-fields="submission_date|date, submission_time" data-primary-sort="descending">
@@ -36,13 +37,19 @@
                         href="/admin/staff_change/submit.html?status=Edit&id={{allStaff.staffid}}">{{allStaff.title}}
                         {{allStaff.first_name}}
                         {{allStaff.last_name}}</a></td>
-                <td class="nowrap">{{allStaff.change_type}}</td>
+                <td class="nowrap fw-semibold" data-ng-class="{
+        'text-success': allStaff.change_type === 'newStaff',
+        'text-primary': allStaff.change_type  === 'transferringStaff',
+        'text-info': allStaff.change_type  === 'jobChange',
+        'text-warning': allStaff.change_type  === 'nameChange',
+        'text-secondary': allStaff.change_type  === 'exitingStaff'
+    }">{{ allStaff.change_type | changeTypeFilter }}</td>
                 <td class="nowrap">{{allStaff.schname}}</td>
                 <td class="nowrap">{{allStaff.submittedstaff}}</td>
                 <td class="nowrap">{{allStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{allStaff.submission_time}}</td>
                 <td
-                    data-ng-class="{'req-notation': (allStaff.completion_date < curDate) && (!allStaff.ps_complete || !allStaff.ad_complete || !allStaff.o365_complete || !allStaff.lms_complete)}">
+                    data-ng-class="{ 'req-notation': (allStaff.completion_date < curDate) && ((allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange') ? (!allStaff.ps_complete || !allStaff.ad_complete) : (!allStaff.ps_complete || !allStaff.ad_complete || !allStaff.o365_complete || !allStaff.lms_complete)) }">
                     {{allStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
                 <td><span
                         ng-class="{'mark-complete': allStaff.ps_complete, 'mark-incomplete': !allStaff.ps_complete}"></span>
@@ -50,11 +57,15 @@
                 <td><span
                         ng-class="{'mark-complete': allStaff.ad_complete, 'mark-incomplete': !allStaff.ad_complete}"></span>
                 </td>
-                <td><span
+                <td><span data-ng-if="allStaff.change_type !== 'exitingStaff' && allStaff.change_type !== 'jobChange'"
                         ng-class="{'mark-complete': allStaff.o365_complete, 'mark-incomplete': !allStaff.o365_complete}"></span>
+                    <span data-ng-if="allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange'"
+                        class="text-primary fs-6 fw-medium">- - -</span>
                 </td>
-                <td><span
+                <td><span data-ng-if="allStaff.change_type !== 'exitingStaff' && allStaff.change_type !== 'jobChange'"
                         ng-class="{'mark-complete': allStaff.lms_complete, 'mark-incomplete': !allStaff.lms_complete}"></span>
+                    <span data-ng-if="allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange'"
+                        class="text-primary fs-6 fw-medium">- - -</span>
                 </td>
                 <td>{{allStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
