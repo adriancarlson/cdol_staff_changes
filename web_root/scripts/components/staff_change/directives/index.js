@@ -15,4 +15,5 @@ define(function (require) {
 	require('components/staff_change/directives/tabs/name_change_list')
 	require('components/staff_change/directives/tabs/new_staff_list')
 	require('components/staff_change/directives/tabs/transfer_staff_list')
+	require('components/staff_change/directives/tabs/all_staff_list')
 })
