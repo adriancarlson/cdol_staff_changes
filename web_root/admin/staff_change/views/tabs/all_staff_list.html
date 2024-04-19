@@ -42,7 +42,7 @@
                 <td class="nowrap">{{allStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{allStaff.submission_time}}</td>
                 <td
-                    data-ng-class="{'req-notation': (allStaff.completion_date | date : 'MM/dd/yyyy'  < curDate | date : 'MM/dd/yyyy') && (!allStaff.ps_complete || !allStaff.ad_complete || !allStaff.o365_complete || !allStaff.lms_complete)}">
+                    data-ng-class="{'req-notation': (allStaff.completion_date < curDate) && (!allStaff.ps_complete || !allStaff.ad_complete || !allStaff.o365_complete || !allStaff.lms_complete)}">
                     {{allStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
                 <td><span
                         ng-class="{'mark-complete': allStaff.ps_complete, 'mark-incomplete': !allStaff.ps_complete}"></span>

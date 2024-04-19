@@ -37,7 +37,7 @@
                 <td class="nowrap">{{jobChange.submission_date | date : 'MM/dd/yyyy'}}
                     {{jobChange.submission_time}}</td>
                 <td
-                    data-ng-class="{'req-notation': (jobChange.completion_date | date : 'MM/dd/yyyy'  < curDate | date : 'MM/dd/yyyy') && (!jobChange.ps_complete || !jobChange.ad_complete)}">
+                    data-ng-class="{'req-notation': (jobChange.completion_date < curDate) && (!jobChange.ps_complete || !jobChange.ad_complete)}">
                     {{jobChange.completion_date | date : 'MM/dd/yyyy'}}</td>
                 <td><span
                         ng-class="{'mark-complete': jobChange.ps_complete, 'mark-incomplete': !jobChange.ps_complete}"></span>

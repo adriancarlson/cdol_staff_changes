@@ -13,7 +13,7 @@ define(function (require) {
 			$scope.staffList = {}
 			$scope.curSchoolId = $attrs.ngCurSchoolId
 			$scope.curYearId = $attrs.ngCurYearId
-			$scope.curDate = $attrs.ngCurDate
+			$scope.curDate = new Date($attrs.ngCurDate)
 			$scope.calendarYear = new Date().getFullYear()
 			$scope.selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context')
 			$scope.booleanMap = { Yes: true, No: false }
