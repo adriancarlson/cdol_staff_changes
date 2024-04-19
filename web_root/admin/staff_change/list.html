@@ -39,6 +39,7 @@
                                 ~(calendar_year)
                             </option>
                             [/tlist_sql]
+                            <option value="0">All</option>
                         </select>
                     </div>
                     <div class="col-auto me-2"><a class="button" href="staff_change.html?status=Submit">Submit
@@ -63,12 +64,17 @@
                     <li data-ng-click="loadData('exitingStaff')" data-context="exitingStaff"><a
                             href="#tabFiveContent">Exiting Staff <span class="badge text-bg-secondary ms-1">{{
                                 staffChangeCounts.total_exit_remaining }}</span></a></li>
+                    <li data-ng-click="loadData('allStaff')" data-context="allStaff"><a href="#tabSixContent">All Staff
+                            Changes
+                            <span class="badge text-bg-secondary ms-1">{{
+                                staffChangeCounts.total_remaining }}</span></a></li>
                 </ul>
                 <new-staff-list id="tabOneContent"></new-staff-list>
                 <transfer-staff-list id="tabTwoContent"></transfer-staff-list>
                 <job-change-list id="tabThreeContent"></job-change-list>
                 <name-change-list id="tabFourContent"></name-change-list>
                 <exit-staff-list id="tabFiveContent"></exit-staff-list>
+                <all-staff-list id="tabsixContent"></all-staff-list>
             </div>
         </div>
         ~[wc:admin_footer_css]
