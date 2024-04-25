@@ -2,7 +2,6 @@
 define(function (require) {
 	var module = require('components/staff_change/module')
 
-	//defining our controller and naming it serviceHourCtrl and loading $scope as a dependency
 	module.controller('staffChangeListCtrl', [
 		'$scope',
 		'$attrs',

@@ -84,7 +84,7 @@
                 console.log(err)
             }
             staffCount = Number(staffCount.record[0].total_remaining)
-            updateStaffCount('cdol-staff-changes-list', staffCount)
+            updateStaffCount('staff-changes-list', staffCount)
         })()
     )
 </script>
