@@ -12,7 +12,7 @@ define(function (require) {
 					tableName = tableName.toLowerCase()
 					let path = `/ws/schema/table/${tableName}`
 					let url = `${path}${recId ? `/${recId}` : ''}`
-					headers = {
+					let headers = {
 						Accept: 'application/json',
 						'Content-Type': 'application/json'
 					}
@@ -68,7 +68,7 @@ define(function (require) {
 									deferredResponse.resolve(res.data.record || [])
 									break
 								case 'GET':
-									resData = res.data.tables[tableName]
+									let resData = res.data.tables[tableName]
 									if (apiPayload.dateKeys) {
 										resData = formatService.objIterator(resData, apiPayload.dateKeys, 'formatDateFromApi')
 									}
