@@ -5,7 +5,7 @@
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
-                        <label for="users_dcid" class="form-label form-label-sm label-reset req">Who is changing
+                        <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Who is changing
                             Positions/Jobs?</label>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.jobChange.users_dcid" data-ng-required="true"
@@ -31,7 +31,7 @@
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.users_dcid == -1">
                     <div class="col-6">
-                        <label for="job-change-name" class="form-label form-label-sm  label-reset req">Exiting Staff
+                        <label for="job-change-name" class="form-label form-label-sm  label-reset staff-change-req">Exiting Staff
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
@@ -60,7 +60,7 @@
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.users_dcid">
                     <div class="col-xl-6">
                         <div class="card">
-                            <div class="card-header fw-semibold ps-1 req">Position/Job Change Information</div>
+                            <div class="card-header fw-semibold ps-1 staff-change-req">Position/Job Change Information</div>
                             <div class="card-body">
                                 <div class="col mb-3">
                                     <div class="form-floating">
@@ -89,7 +89,7 @@
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.first_name">
                     <div class="col-auto">
                         <div class="card">
-                            <div class="card-header fw-semibold ps-1 req">Date of Position/Job Change</div>
+                            <div class="card-header fw-semibold ps-1 staff-change-req">Date of Position/Job Change</div>
                             <div class="card-body">
                                 <div data-ng-if="userContext.pageStatus =='Submit'">
                                     <div class="form-check form-check-inline">
@@ -119,7 +119,7 @@
                                     data-ng-if="submitPayload.jobChange.date_radio==='other'|| userContext.pageStatus =='Edit'">
                                     <div class="col">
                                         <label data-ng-if="userContext.pageStatus =='Submit'"
-                                            class="form-label form-label-sm label-reset req">Date of Position/Job
+                                            class="form-label form-label-sm label-reset staff-change-req">Date of Position/Job
                                             Change</label><br>
                                         <input type="text" title="deadline" class="psDateWidget"
                                             ng-model="submitPayload.jobChange.deadline" ng-required="true">

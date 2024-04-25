@@ -45,7 +45,7 @@
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
                     <div class="col-6">
-                        <label for="transferring-staff-name" class="form-label form-label-sm  label-reset req">New Staff
+                        <label for="transferring-staff-name" class="form-label form-label-sm  label-reset staff-change-req">New Staff
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
@@ -73,7 +73,7 @@
                 </div>
                 <div class="row align-items-center mb-3 gx-3">
                     <div class="col-auto">
-                        <label for="new-staff-gender" class="form-label form-label-sm  label-reset req">Gender</label>
+                        <label for="new-staff-gender" class="form-label form-label-sm  label-reset staff-change-req">Gender</label>
                         <select id="new-staff-gender" class="form-select form-select-sm" aria-label="new-staff-gender"
                             data-ng-model="submitPayload.newStaff.gender"
                             data-ng-required="true">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]gender)]
@@ -139,7 +139,7 @@
                 </div>
                 <div class="row align-items-center mb-3 gx-2">
                     <div class="col-auto">
-                        <label for="new-staff-type" class="form-label form-label-sm  label-reset req">Staff
+                        <label for="new-staff-type" class="form-label form-label-sm  label-reset staff-change-req">Staff
                             Type</label>
                         <select id="new-staff-type" class="form-select form-select-sm" aria-label="new-staff-type"
                             data-ng-model="submitPayload.newStaff.staff_type"
@@ -153,7 +153,7 @@
                     </div>
                     <div class="col-3">
                         <label for="new-staff-position"
-                            class="form-label form-label-sm  label-reset req">Position</label>
+                            class="form-label form-label-sm  label-reset staff-change-req">Position</label>
                         <input id="new-staff-position" type="text" class="form-control form-control-sm"
                             placeholder="Ex: 2nd Grade Teacher, or Principal" aria-label="Position"
                             data-ng-model="submitPayload.newStaff.position" data-ng-required="true">
@@ -171,11 +171,11 @@
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.newStaff.staff_type">
                     <div class="col-auto">
                         <div class="card">
-                            <div class="card-header fw-semibold ps-1 req">{{
+                            <div class="card-header fw-semibold ps-1 staff-change-req">{{
                                 submitPayload.newStaff.first_name}} {{
                                 submitPayload.newStaff.last_name}}'s Licensing</div>
                             <div class="card-body">
-                                <label class="form-label form-label-sm label-reset req">Microsoft 365</label><br>
+                                <label class="form-label form-label-sm label-reset staff-change-req">Microsoft 365</label><br>
                                 <select id="new-staff-license-microsoft" class="form-select form-select-sm"
                                     aria-label="new-staff-license-microsoft"
                                     data-ng-model="submitPayload.newStaff.license_microsoft"
@@ -184,7 +184,7 @@
                                     <option value="A3">A3 (Paid)</option>
                                 </select>
                                 <div class="py-3">
-                                    <label class="form-label form-label-sm label-reset req">Adobe License?</label>
+                                    <label class="form-label form-label-sm label-reset staff-change-req">Adobe License?</label>
                                     <select id="new-staff-license-adobe" class="form-select form-select-sm"
                                         aria-label="new-staff-license-adobe"
                                         data-ng-model="submitPayload.newStaff.license_adobe"
@@ -214,7 +214,7 @@
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.newStaff.first_name">
                     <div class="col-auto">
                         <div class="card">
-                            <div class="card-header fw-semibold ps-1 req">{{
+                            <div class="card-header fw-semibold ps-1 staff-change-req">{{
                                 submitPayload.newStaff.first_name}} {{
                                 submitPayload.newStaff.last_name}}'s Requested Account Creation
                                 Date</div>
@@ -250,7 +250,7 @@
                                     data-ng-if="submitPayload.newStaff.date_radio==='other' || userContext.pageStatus =='Edit'">
                                     <div class="col">
                                         <label data-ng-if="userContext.pageStatus =='Submit'"
-                                            class="form-label form-label-sm label-reset req">Requested Account Creation
+                                            class="form-label form-label-sm label-reset staff-change-req">Requested Account Creation
                                             Date</label><br>
                                         <input title="Transfer Date" type="text" class="psDateWidget"
                                             ng-model="submitPayload.newStaff.deadline" ng-required="true">
@@ -268,7 +268,7 @@
                             <div class="card-body">
                                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">
                                     <div class="col-auto">
-                                        <label class="form-label form-label-sm label-reset req">Has {{
+                                        <label class="form-label form-label-sm label-reset staff-change-req">Has {{
                                             submitPayload.newStaff.first_name}} {{
                                             submitPayload.newStaff.last_name}} previously worked for ~(schoolname) or
                                             another Diocese of Lincoln School?</label><br>
@@ -296,7 +296,7 @@
                                     data-ng-if="submitPayload.newStaff.prev_school_radio == 1 || (userContext.pageStatus =='Edit' && submitPayload.newStaff.prev_school_number)">
                                     <div class="col-auto">
                                         <label for="prev_school_number"
-                                            class="form-label form-label-sm label-reset req">Where was {{
+                                            class="form-label form-label-sm label-reset staff-change-req">Where was {{
                                             submitPayload.newStaff.first_name}} {{
                                             submitPayload.newStaff.last_name}}'s previously employed?</label><span
                                             class="text-muted"
@@ -324,7 +324,7 @@
                                     data-ng-if="submitPayload.newStaff.prev_school_number == -1">
                                     <div class="col-auto">
                                         <label for="transferring-staff-school-name"
-                                            class="form-label form-label-sm label-reset req">Please
+                                            class="form-label form-label-sm label-reset staff-change-req">Please
                                             Type Name Previous Employer</label>
                                         <input id="transferring-staff-school-name" class="form-control" type="text"
                                             data-ng-model="submitPayload.newStaff.prev_school_name">
@@ -341,7 +341,7 @@
                             <div class="card-body">
                                 <div data-ng-if="userContext.pageStatus =='Submit'" class="row align-items-center mb-3">
                                     <div class="col-auto">
-                                        <label class="form-label form-label-sm label-reset req">Will {{
+                                        <label class="form-label form-label-sm label-reset staff-change-req">Will {{
                                             submitPayload.newStaff.first_name}} {{
                                             submitPayload.newStaff.last_name}} be replacing a current staff
                                             member at ~(schoolname)?</label><br>
@@ -366,7 +366,7 @@
                                 <div class="row align-items-center mb-3"
                                     data-ng-if="submitPayload.newStaff.exit_radio == 1 || (userContext.pageStatus =='Edit' && submitPayload.newStaff.replace_dcid)">
                                     <div class="col-auto">
-                                        <label for="replacing_dcid" class="form-label form-label-sm label-reset req">Who
+                                        <label for="replacing_dcid" class="form-label form-label-sm label-reset staff-change-req">Who
                                             is
                                             {{
                                             submitPayload.newStaff.first_name}} {{
@@ -402,7 +402,7 @@
                                     data-ng-if="submitPayload.newStaff.replace_dcid == -1">
                                     <div class="col-6">
                                         <label for="exiting-staff-name"
-                                            class="form-label form-label-sm  label-reset req">Name
+                                            class="form-label form-label-sm  label-reset staff-change-req">Name
                                             of the staff member
                                             {{
                                             submitPayload.newStaff.first_name}} {{
@@ -437,7 +437,7 @@
                                 <div class="row align-items-center mb-3"
                                     data-ng-if="submitPayload.newStaff.replace_dcid">
                                     <div class="col" data-ng-if="userContext.pageStatus =='Submit'">
-                                        <label class="form-label form-label-sm label-reset req">Is {{
+                                        <label class="form-label form-label-sm label-reset staff-change-req">Is {{
                                             submitPayload.newStaff.replace_first_name}} {{
                                             submitPayload.newStaff.replace_last_name}} leaving
                                             ~(schoolname)?</label><br>
@@ -516,7 +516,7 @@
                             <div class="card-body">
                                 <div class="row align-items-center mb-3">
                                     <div class="col-auto">
-                                        <label class="form-label form-label-sm label-reset req"><span
+                                        <label class="form-label form-label-sm label-reset staff-change-req"><span
                                                 data-ng-if="userContext.pageStatus =='Submit'">Will</span> {{
                                             submitPayload.newStaff.first_name}} {{
                                             submitPayload.newStaff.last_name}} need<span

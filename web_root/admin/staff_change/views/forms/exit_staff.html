@@ -11,7 +11,7 @@
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
-                        <label for="users_dcid" class="form-label form-label-sm label-reset req"
+                        <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req"
                             data-ng-if="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && submitPayload.exitingStaff.users_dcid != -1)">Who
                             is not
                             returning?</label><span data-ng-if="userContext.pageStatus =='Submit'"
@@ -46,7 +46,7 @@
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.users_dcid == -1">
                     <div class="col-6">
-                        <label for="exiting-staff-name" class="form-label form-label-sm  label-reset req">Exiting Staff
+                        <label for="exiting-staff-name" class="form-label form-label-sm  label-reset staff-change-req">Exiting Staff
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
@@ -75,7 +75,7 @@
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.first_name">
                     <div class="col-auto">
                         <div class="card">
-                            <div class="card-header fw-semibold ps-1 req">{{ submitPayload.exitingStaff.first_name}} {{
+                            <div class="card-header fw-semibold ps-1 staff-change-req">{{ submitPayload.exitingStaff.first_name}} {{
                                 submitPayload.exitingStaff.last_name}}'s Deactivation
                                 Date</div>
                             <div class="card-body">
@@ -110,7 +110,7 @@
                                     data-ng-if="submitPayload.exitingStaff.date_radio==='other' || userContext.pageStatus =='Edit'">
                                     <div class="col">
                                         <label data-ng-if="userContext.pageStatus =='Submit'"
-                                            class="form-label form-label-sm label-reset req">Deactivation
+                                            class="form-label form-label-sm label-reset staff-change-req">Deactivation
                                             Date</label><br>
                                         <input title="deadline" type="text" class="psDateWidget"
                                             ng-model="submitPayload.exitingStaff.deadline" ng-required="true">
@@ -152,7 +152,7 @@
                             <div class="card-body">
                                 <div class="row align-items-center mb-3">
                                     <div class="col-auto">
-                                        <label class="form-label form-label-sm label-reset req"><span
+                                        <label class="form-label form-label-sm label-reset staff-change-req"><span
                                                 data-ng-if="userContext.pageStatus =='Submit'">Will</span> {{
                                             submitPayload.exitingStaff.first_name}} {{
                                             submitPayload.exitingStaff.last_name}} need<span
