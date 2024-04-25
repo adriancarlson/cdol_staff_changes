@@ -45,7 +45,8 @@
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
                     <div class="col-6">
-                        <label for="transferring-staff-name" class="form-label form-label-sm  label-reset staff-change-req">New Staff
+                        <label for="transferring-staff-name"
+                            class="form-label form-label-sm  label-reset staff-change-req">New Staff
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
@@ -73,7 +74,8 @@
                 </div>
                 <div class="row align-items-center mb-3 gx-3">
                     <div class="col-auto">
-                        <label for="new-staff-gender" class="form-label form-label-sm  label-reset staff-change-req">Gender</label>
+                        <label for="new-staff-gender"
+                            class="form-label form-label-sm  label-reset staff-change-req">Gender</label>
                         <select id="new-staff-gender" class="form-select form-select-sm" aria-label="new-staff-gender"
                             data-ng-model="submitPayload.newStaff.gender"
                             data-ng-required="true">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]gender)]
@@ -168,6 +170,7 @@
                         </select>
                     </div>
                 </div>
+                <!-- Licensing to be added after submission restructure 
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.newStaff.staff_type">
                     <div class="col-auto">
                         <div class="card">
@@ -211,6 +214,7 @@
                         </div>
                     </div>
                 </div>
+                -->
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.newStaff.first_name">
                     <div class="col-auto">
                         <div class="card">
@@ -250,7 +254,8 @@
                                     data-ng-if="submitPayload.newStaff.date_radio==='other' || userContext.pageStatus =='Edit'">
                                     <div class="col">
                                         <label data-ng-if="userContext.pageStatus =='Submit'"
-                                            class="form-label form-label-sm label-reset staff-change-req">Requested Account Creation
+                                            class="form-label form-label-sm label-reset staff-change-req">Requested
+                                            Account Creation
                                             Date</label><br>
                                         <input title="Transfer Date" type="text" class="psDateWidget"
                                             ng-model="submitPayload.newStaff.deadline" ng-required="true">
@@ -366,7 +371,8 @@
                                 <div class="row align-items-center mb-3"
                                     data-ng-if="submitPayload.newStaff.exit_radio == 1 || (userContext.pageStatus =='Edit' && submitPayload.newStaff.replace_dcid)">
                                     <div class="col-auto">
-                                        <label for="replacing_dcid" class="form-label form-label-sm label-reset staff-change-req">Who
+                                        <label for="replacing_dcid"
+                                            class="form-label form-label-sm label-reset staff-change-req">Who
                                             is
                                             {{
                                             submitPayload.newStaff.first_name}} {{
