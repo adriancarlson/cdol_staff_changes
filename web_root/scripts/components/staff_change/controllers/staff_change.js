@@ -29,8 +29,6 @@ define(function (require) {
 			$scope.formatKeys = {
 				dateKeys: ['_date', 'dob', 'deadline'],
 				checkBoxKeys: ['_created', '_ignored'],
-				titleKeys: ['_name'],
-				sentenceKeys: ['position', 'notes'],
 				deleteKeys: ['_radio', 'homeschool', 'identifier']
 			}
 			//initilazing empty payload
@@ -45,42 +43,17 @@ define(function (require) {
 			}
 			$scope.todayBeforeJuly()
 
-			$scope.toSentenceCase = function (input) {
-				if (!input) return ''
-
-				// Split the input string by periods and map each sentence to sentence case
-				const result = input
-					.split('.')
-					.map(sentence => {
-						// Trim any leading and trailing spaces
-						const trimmedSentence = sentence.trim()
-						// Capitalize the first letter and convert the rest to lowercase
-						return `${trimmedSentence.charAt(0).toUpperCase()}${trimmedSentence.slice(1).toLowerCase()}`
-					})
-					.join('. ')
-
-				return result
-			}
-
-			$scope.toTitleCase = function (str = '') {
-				return str
-					.toLowerCase()
-					.split(' ')
-					.map(word => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
-					.join(' ')
-					.trim()
-			}
-
 			//pull existing Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
 			$scope.getStaffChange = async staffChangeId => {
 				loadingDialog()
 				//copyFormatKeys
-				let getFomatKeys = await { ...$scope.formatKeys }
-				//remove formatKeys that are not needed for the GET API call
-				await ['titleKeys', 'sentenceKeys', 'deleteKeys'].forEach(key => delete getFomatKeys[key])
+				let getFormatKeys = await { ...$scope.formatKeys }[
+					//remove formatKeys that are not needed for the GET API call
+					'deleteKeys'
+				].forEach(key => delete getFormatKeys[key])
 
 				if (staffChangeId) {
-					const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, getFomatKeys, staffChangeId)
+					const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, getFormatKeys, staffChangeId)
 					$scope.submitPayload[res.change_type] = await res
 					$scope.userContext.pageContext = await res.change_type
 					if ($scope.userContext.pageContext === 'newStaff') {
@@ -152,15 +125,16 @@ define(function (require) {
 				$window.scrollTo(0, 0)
 			}
 
-			$scope.updateLicensing = pageContext => {
-				if (!$scope.submitPayload[pageContext].hasOwnProperty('license_microsoft')) {
-					$scope.submitPayload[pageContext].license_microsoft = 'A1'
-				}
+			// $scope.updateLicensing = pageContext => {
+			// 	if (!$scope.submitPayload[pageContext].hasOwnProperty('license_microsoft')) {
+			// 		$scope.submitPayload[pageContext].license_microsoft = 'A1'
+			// 	}
 
-				if (!$scope.submitPayload[pageContext].hasOwnProperty('license_adobe')) {
-					$scope.submitPayload[pageContext].license_adobe = 'No'
-				}
-			}
+			// 	if (!$scope.submitPayload[pageContext].hasOwnProperty('license_adobe')) {
+			// 		$scope.submitPayload[pageContext].license_adobe = 'No'
+			// 	}
+			// }
+
 			$scope.updateScopeFromDropdown = (pageContext, resource, identifier, field) => {
 				//if dropdown source is user data
 				if (resource === 'usersData') {
@@ -283,9 +257,9 @@ define(function (require) {
 					who_submitted: $scope.userContext.curUserDcid
 				}
 				// copy formatKeys
-				let createFomatKeys = { ...$scope.formatKeys }
+				let createFormatKeys = { ...$scope.formatKeys }
 				// delete formatKeys key that is not needed for POST API Call
-				delete createFomatKeys['checkBoxKeys']
+				delete createFormatKeys['checkBoxKeys']
 				//loop though submitPayload object
 				Object.keys($scope.submitPayload).forEach(async (key, index) => {
 					let formPayload = $scope.submitPayload[key]
@@ -313,21 +287,16 @@ define(function (require) {
 					}
 					//create payload of fields needed for email
 					let readableChangeType = formatService.decamelize(formPayload.change_type)
-					const emailData = {
-						curDate: $scope.userContext.curDate,
-						curTime: $scope.userContext.curTime,
-						emailFrom: $scope.userContext.curUserEmail,
-						emailSubject: `${readableChangeType} Submission from ${$scope.userContext.curUserName} (${$scope.userContext.curUserSchoolAbbr}) | ${$scope.userContext.curUserEmail}`,
-						emailBody: `${readableChangeType} Name: ${typeof formPayload.title === 'undefined' ? '' : formPayload.title} ${formPayload.first_name} ${formPayload.last_name}    Due Date:${formPayload.deadline}  ${typeof formPayload.notes === 'undefined' ? '' : `Notes: ${formPayload.notes}`}`
-					}
+
 					//add commonPayload to each object in submitPayload
 					formPayload = Object.assign(formPayload, commonPayload)
-					//add createFomatKeys to each object in submitPayload
-					formPayload = Object.assign(formPayload, createFomatKeys)
+					//add createFormatKeys to each object in submitPayload
+					formPayload = Object.assign(formPayload, createFormatKeys)
 					console.log('formPayload', formPayload)
 					//submitting staff changes through api
-					// await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
-					// await emailService.emailSubmission('/admin/staff_change/data/emailfields.html', emailData)
+					await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
+
+					//jitbit call here
 				})
 				//sending to confirm screen after submission
 				$scope.formDisplay('confirm', $scope.userContext.pageContext)
@@ -335,16 +304,16 @@ define(function (require) {
 
 			$scope.updateStaffChange = async form => {
 				// copy formatKeys
-				let updateFomatKeys = { ...$scope.formatKeys }
-				//delete updateFomatKeys key not needed for PUT API Call
-				delete updateFomatKeys['deleteKeys']
+				let updateFormatKeys = { ...$scope.formatKeys }
+				//delete updateFormatKeys key not needed for PUT API Call
+				delete updateFormatKeys['deleteKeys']
 
 				Object.keys($scope.submitPayload).forEach(async (key, index) => {
 					let formPayload = $scope.submitPayload[key]
 					formPayload.change_type = key
 
-					//add updateFomatKeys to each object in submitPayload
-					formPayload = Object.assign(formPayload, updateFomatKeys)
+					//add updateFormatKeys to each object in submitPayload
+					formPayload = Object.assign(formPayload, updateFormatKeys)
 
 					if (key !== 'exitingStaff' && key !== 'jobChange') {
 						if (formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored) && (formPayload.o365_created || formPayload.o365_ignored) && formPayload.lms_created) {
