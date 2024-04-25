@@ -45,6 +45,32 @@ define(function (require) {
 			}
 			$scope.todayBeforeJuly()
 
+			$scope.toSentenceCase = function (input) {
+				if (!input) return ''
+
+				// Split the input string by periods and map each sentence to sentence case
+				const result = input
+					.split('.')
+					.map(sentence => {
+						// Trim any leading and trailing spaces
+						const trimmedSentence = sentence.trim()
+						// Capitalize the first letter and convert the rest to lowercase
+						return `${trimmedSentence.charAt(0).toUpperCase()}${trimmedSentence.slice(1).toLowerCase()}`
+					})
+					.join('. ')
+
+				return result
+			}
+
+			$scope.toTitleCase = function (str = '') {
+				return str
+					.toLowerCase()
+					.split(' ')
+					.map(word => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
+					.join(' ')
+					.trim()
+			}
+
 			//pull existing Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
 			$scope.getStaffChange = async staffChangeId => {
 				loadingDialog()
@@ -277,7 +303,7 @@ define(function (require) {
 						let dd = today.getDate()
 						if (dd < 10) dd = '0' + dd
 						if (mm < 10) mm = '0' + mm
-						todayFormated = mm + '/' + dd + '/' + yyyy
+						let todayFormated = mm + '/' + dd + '/' + yyyy
 
 						if (formPayload.date_radio === 'today') {
 							formPayload.deadline = todayFormated
@@ -364,4 +390,31 @@ define(function (require) {
 			}
 		}
 	])
+
+	module.filter('titleCase', function () {
+		return function (input) {
+			if (!input) return ''
+			return input
+				.toLowerCase()
+				.split(' ')
+				.map(word => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
+				.join(' ')
+				.trim()
+		}
+	})
+	module.filter('sentenceCase', function () {
+		return function (input) {
+			if (!input) return ''
+			// Split the input string by periods and map each sentence to sentence case
+			return input
+				.split('.')
+				.map(sentence => {
+					// Trim any leading and trailing spaces
+					const trimmedSentence = sentence.trim()
+					// Capitalize the first letter and convert the rest to lowercase
+					return `${trimmedSentence.charAt(0).toUpperCase()}${trimmedSentence.slice(1).toLowerCase()}`
+				})
+				.join('. ')
+		}
+	})
 })
