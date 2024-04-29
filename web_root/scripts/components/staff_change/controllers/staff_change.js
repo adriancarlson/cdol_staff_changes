@@ -290,7 +290,8 @@ define(function (require) {
 					//add createFormatKeys to each object in submitPayload
 					formPayload = Object.assign(formPayload, createFormatKeys)
 					//submitting staff changes through api
-					await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
+					let staffChangeId = await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
+					console.log('staffChangeID', staffChangeId)
 
 					//jitbit call here
 					let jitbitPayload = {
@@ -303,7 +304,11 @@ define(function (require) {
 						readableChangeType: formatService.decamelize(formPayload.change_type)
 					}
 
-					jitbitPayload = await jitbitService.createJitbitTicket(jitbitPayload)
+					let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
+
+					console.log('jitbitTicketId', jitbitTicketId)
+
+					await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
 				})
 				//sending to confirm screen after submission
 				$scope.formDisplay('confirm', $scope.userContext.pageContext)

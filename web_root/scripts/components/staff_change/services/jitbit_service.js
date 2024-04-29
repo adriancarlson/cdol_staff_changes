@@ -37,7 +37,6 @@ define(function (require) {
 				},
 				createJitbitTicket: async function (formPayload) {
 					let userData = await this.gitJitbitUser(formPayload.userEmail)
-					console.log('formPayload', formPayload)
 
 					let ticketPayload = {
 						categoryId: 588445,
@@ -45,11 +44,28 @@ define(function (require) {
 						origin: 3,
 						assignedToUserId: 14088108,
 						userId: userData.UserID,
-						subject: `${formPayload.readableChangeType} Submission ${typeof formPayload.title === 'undefined' || ['Fr.', 'Msgr.', 'Sr.', 'Br.'].includes(formPayload.title) ? '' : formPayload.title}
-						${formPayload.first_name} ${formPayload.last_name} | Due Date: ${formPayload.deadline}`,
-						body: `${formPayload.readableChangeType}: ${typeof formPayload.title === 'undefined' || ['Fr.', 'Msgr.', 'Sr.', 'Br.'].includes(formPayload.title) ? '' : formPayload.title}
-						${formPayload.first_name} ${formPayload.last_name}\nDue Date: ${formPayload.deadline}\n${typeof formPayload.notes === 'undefined' ? '' : `Notes: ${formPayload.notes}`}\nSubmission from ${formPayload.curUserName} (${formPayload.curUserSchoolAbbr}) | ${formPayload.curUserEmail}`
+						subject: `${formPayload.readableChangeType} Submission ${formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name} | Due Date: ${formPayload.deadline}`,
+						body: `Position: ${formPayload.position}\n\nDue Date: ${formPayload.deadline}\n\n${typeof formPayload.notes === 'undefined' ? '' : `Notes: ${formPayload.notes}`}\n\nSubmission from ${formPayload.curUserName} (${formPayload.curUserSchoolAbbr}) | ${formPayload.userEmail}`
 					}
+
+					let deferredResponse = $q.defer()
+					let createTicketUrl = `${JITBIT_API_URL}/ticket`
+
+					$http({
+						method: 'POST',
+						url: createTicketUrl,
+						params: ticketPayload,
+						headers: jibit_headers
+					}).then(
+						res => {
+							deferredResponse.resolve(res.data || [])
+						},
+						res => {
+							psAlert({ message: `There was an error hitting ${getUserUrl}`, title: 'Error getting user' })
+						}
+					)
+
+					return deferredResponse.promise
 				},
 				updateJitbitTicket: function (ticket_id) {
 					console.log(ticket_id)
