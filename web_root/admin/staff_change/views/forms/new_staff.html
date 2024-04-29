@@ -87,7 +87,7 @@
                     <div class="col-auto">
                         <label class="form-label form-label-sm label-reset">Date of Birth</label><br>
                         <input title="Date of Birth" type="text" class="psDateWidget"
-                            ng-model="submitPayload.newStaff.dob">
+                            data-ng-model="submitPayload.newStaff.dob">
                         <script type="text/javascript">initBehaviors();</script>
                     </div>
                 </div>
@@ -265,7 +265,7 @@
                                             Account Creation
                                             Date</label><br>
                                         <input title="Transfer Date" type="text" class="psDateWidget"
-                                            ng-model="submitPayload.newStaff.deadline" ng-required="true">
+                                            data-ng-model="submitPayload.newStaff.deadline" data-ng-required="true">
                                         <script type="text/javascript">initBehaviors();</script>
                                     </div>
                                 </div>
@@ -627,7 +627,7 @@
                     <div class="col-xl-6">
                         <div class="form-floating">
                             <textarea class="form-control" placeholder="Additional Notes/Details?" id="exit-add-notes"
-                                spellcheck="true" wrap="absolute" ng-model="submitPayload.newStaff.notes"
+                                spellcheck="true" wrap="absolute" data-ng-model="submitPayload.newStaff.notes"
                                 data-ng-blur="submitPayload.newStaff.notes = (submitPayload.newStaff.notes | sentenceCase)"></textarea>
                             <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
                         </div>

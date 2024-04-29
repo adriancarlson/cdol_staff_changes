@@ -43,16 +43,16 @@
                     data-ng-class="{'req-notation': (newStaff.completion_date < curDate) && (!newStaff.ps_complete || !newStaff.ad_complete || !newStaff.o365_complete || !newStaff.lms_complete)}">
                     {{newStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
                 <td><span
-                        ng-class="{'mark-complete': newStaff.ps_complete, 'mark-incomplete': !newStaff.ps_complete}"></span>
+                        data-ng-class="{'mark-complete': newStaff.ps_complete, 'mark-incomplete': !newStaff.ps_complete}"></span>
                 </td>
                 <td><span
-                        ng-class="{'mark-complete': newStaff.ad_complete, 'mark-incomplete': !newStaff.ad_complete}"></span>
+                        data-ng-class="{'mark-complete': newStaff.ad_complete, 'mark-incomplete': !newStaff.ad_complete}"></span>
                 </td>
                 <td><span
-                        ng-class="{'mark-complete': newStaff.o365_complete, 'mark-incomplete': !newStaff.o365_complete}"></span>
+                        data-ng-class="{'mark-complete': newStaff.o365_complete, 'mark-incomplete': !newStaff.o365_complete}"></span>
                 </td>
                 <td><span
-                        ng-class="{'mark-complete': newStaff.lms_complete, 'mark-incomplete': !newStaff.lms_complete}"></span>
+                        data-ng-class="{'mark-complete': newStaff.lms_complete, 'mark-incomplete': !newStaff.lms_complete}"></span>
                 </td>
                 <td>{{newStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>

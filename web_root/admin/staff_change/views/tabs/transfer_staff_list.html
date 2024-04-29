@@ -48,16 +48,16 @@
                     data-ng-class="{'req-notation': (transferringStaff.completion_date < curDate) && (!transferringStaff.ps_complete || !transferringStaff.ad_complete || !transferringStaff.o365_complete || !transferringStaff.lms_complete)}">
                     {{transferringStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
                 <td><span
-                        ng-class="{'mark-complete': transferringStaff.ps_complete, 'mark-incomplete': !transferringStaff.ps_complete}"></span>
+                        data-ng-class="{'mark-complete': transferringStaff.ps_complete, 'mark-incomplete': !transferringStaff.ps_complete}"></span>
                 </td>
                 <td><span
-                        ng-class="{'mark-complete': transferringStaff.ad_complete, 'mark-incomplete': !transferringStaff.ad_complete}"></span>
+                        data-ng-class="{'mark-complete': transferringStaff.ad_complete, 'mark-incomplete': !transferringStaff.ad_complete}"></span>
                 </td>
                 <td><span
-                        ng-class="{'mark-complete': transferringStaff.o365_complete, 'mark-incomplete': !transferringStaff.o365_complete}"></span>
+                        data-ng-class="{'mark-complete': transferringStaff.o365_complete, 'mark-incomplete': !transferringStaff.o365_complete}"></span>
                 </td>
                 <td><span
-                        ng-class="{'mark-complete': transferringStaff.lms_complete, 'mark-incomplete': !transferringStaff.lms_complete}"></span>
+                        data-ng-class="{'mark-complete': transferringStaff.lms_complete, 'mark-incomplete': !transferringStaff.lms_complete}"></span>
                 </td>
                 <td>{{transferringStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>

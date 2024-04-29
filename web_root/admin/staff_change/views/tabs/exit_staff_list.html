@@ -42,10 +42,10 @@
                     data-ng-class="{'req-notation': (exitStaff.completion_date < curDate) && (!exitStaff.ps_complete || !exitStaff.ad_complete)}">
                     {{exitStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
                 <td><span
-                        ng-class="{'mark-complete': exitStaff.ps_complete, 'mark-incomplete': !exitStaff.ps_complete}"></span>
+                        data-ng-class="{'mark-complete': exitStaff.ps_complete, 'mark-incomplete': !exitStaff.ps_complete}"></span>
                 </td>
                 <td><span
-                        ng-class="{'mark-complete': exitStaff.ad_complete, 'mark-incomplete': !exitStaff.ad_complete}"></span>
+                        data-ng-class="{'mark-complete': exitStaff.ad_complete, 'mark-incomplete': !exitStaff.ad_complete}"></span>
                 </td>
                 <td>{{exitStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>

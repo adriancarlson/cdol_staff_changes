@@ -5,7 +5,8 @@
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
-                        <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Who is changing
+                        <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Who is
+                            changing
                             Positions/Jobs?</label>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.jobChange.users_dcid" data-ng-required="true"
@@ -31,11 +32,12 @@
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.users_dcid == -1">
                     <div class="col-6">
-                        <label for="job-change-name" class="form-label form-label-sm  label-reset staff-change-req">Exiting Staff
+                        <label for="job-change-name"
+                            class="form-label form-label-sm  label-reset staff-change-req">Exiting Staff
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
-                                data-ng-model="submitPayload.jobChange.title" >
+                                data-ng-model="submitPayload.jobChange.title">
                                 <option selected></option>
                                 <option value="Mr.">Mr.</option>
                                 <option value="Mrs.">Mrs.</option>
@@ -48,11 +50,14 @@
                             </select>
                             <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
                                 aria-label="First name" data-ng-model="submitPayload.jobChange.first_name"
+                                data-ng-blur="submitPayload.jobChange.first_name = (submitPayload.jobChange.first_name | titleCase)"
                                 data-ng-required="true">
                             <input type="text" class="form-control form-control-sm w-25" placeholder="Middle name"
-                                aria-label="Middle name" data-ng-model="submitPayload.jobChange.middle_name">
+                                aria-label="Middle name" data-ng-model="submitPayload.jobChange.middle_name"
+                                data-ng-blur="submitPayload.jobChange.middle_name = (submitPayload.jobChange.middle_name | titleCase)">
                             <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
                                 aria-label="Last name" data-ng-model="submitPayload.jobChange.last_name"
+                                data-ng-blur="submitPayload.jobChange.last_name = (submitPayload.jobChange.last_name | titleCase)"
                                 data-ng-required="true">
                         </div>
                     </div>
@@ -60,13 +65,15 @@
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.users_dcid">
                     <div class="col-xl-6">
                         <div class="card">
-                            <div class="card-header fw-semibold ps-1 staff-change-req">Position/Job Change Information</div>
+                            <div class="card-header fw-semibold ps-1 staff-change-req">Position/Job Change Information
+                            </div>
                             <div class="card-body">
                                 <div class="col mb-3">
                                     <div class="form-floating">
                                         <textarea class="form-control" placeholder="Previous Position/Job:"
                                             id="job-change-previous-position" spellcheck="true" wrap="absolute"
-                                            ng-model="submitPayload.jobChange.previous_position"
+                                            data-ng-model="submitPayload.jobChange.previous_position"
+                                            data-ng-blur="submitPayload.jobChange.previous_position = (submitPayload.jobChange.previous_position | sentenceCase)"
                                             data-ng-required="true"></textarea>
                                         <label class="fw-semibold" for="job-change-previous-position">Previous
                                             Position/Job:</label>
@@ -76,7 +83,8 @@
                                     <div class="form-floating">
                                         <textarea class="form-control" placeholder="New Position/Job:"
                                             id="job-change-previous-new" spellcheck="true" wrap="absolute"
-                                            ng-model="submitPayload.jobChange.new_position"
+                                            data-ng-model="submitPayload.jobChange.new_position"
+                                            data-ng-blur="submitPayload.jobChange.new_position = (submitPayload.jobChange.new_position | sentenceCase)"
                                             data-ng-required="true"></textarea>
                                         <label class="fw-semibold" for="job-change-previous-new">New
                                             Position/Job:</label>
@@ -95,7 +103,8 @@
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="exit-date-group"
                                             id="exit-date-today" data-ng-model="submitPayload.jobChange.date_radio"
-                                            value="today" data-ng-required="!submitPayload.jobChange.date_radio" tabindex="0">
+                                            value="today" data-ng-required="!submitPayload.jobChange.date_radio"
+                                            tabindex="0">
                                         <label class="form-check-label" for="exit-date-today">Today
                                             ({{ userContext.curDate}})</label>
                                     </div>
@@ -103,14 +112,16 @@
                                         data-ng-if="userContext.isTodayBeforeJuly">
                                         <input class="form-check-input" type="radio" name="exit-date-group"
                                             id="exit-date-june30" data-ng-model="submitPayload.jobChange.date_radio"
-                                            value="june30" data-ng-required="!submitPayload.jobChange.date_radio" tabindex="0">
+                                            value="june30" data-ng-required="!submitPayload.jobChange.date_radio"
+                                            tabindex="0">
                                         <label class="form-check-label" for="exit-date-june30">June
                                             30th</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="exit-date-group"
                                             id="exit-date-specific" data-ng-model="submitPayload.jobChange.date_radio"
-                                            value="other" data-ng-required="!submitPayload.jobChange.date_radio" tabindex="0">
+                                            value="other" data-ng-required="!submitPayload.jobChange.date_radio"
+                                            tabindex="0">
                                         <label class="form-check-label" for="exit-date-specific">Specific
                                             Date</label>
                                     </div>
@@ -119,10 +130,11 @@
                                     data-ng-if="submitPayload.jobChange.date_radio==='other'|| userContext.pageStatus =='Edit'">
                                     <div class="col">
                                         <label data-ng-if="userContext.pageStatus =='Submit'"
-                                            class="form-label form-label-sm label-reset staff-change-req">Date of Position/Job
+                                            class="form-label form-label-sm label-reset staff-change-req">Date of
+                                            Position/Job
                                             Change</label><br>
                                         <input type="text" title="deadline" class="psDateWidget"
-                                            ng-model="submitPayload.jobChange.deadline" ng-required="true">
+                                            data-ng-model="submitPayload.jobChange.deadline" data-ng-required="true">
                                         <script type="text/javascript">initBehaviors();</script>
                                     </div>
                                 </div>
@@ -143,12 +155,14 @@
                             submitPayload.jobChange.last_name}} </span>
                         <div class="form-floating">
                             <textarea class="form-control" placeholder="Additional Notes/Details?" id="exit-add-notes"
-                                spellcheck="true" wrap="absolute" ng-model="submitPayload.jobChange.notes"></textarea>
+                                spellcheck="true" wrap="absolute" data-ng-model="submitPayload.jobChange.notes"
+                                data-ng-blur="submitPayload.jobChange.notes = (submitPayload.jobChange.notes | sentenceCase)"></textarea>
                             <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
                         </div>
                     </div>
                 </div>
-                ~[if#distCheck.security.inrole=9]<creation-checks data-ng-if="userContext.pageStatus =='Edit'"></creation-checks>[/if#distCheck]
+                ~[if#distCheck.security.inrole=9]<creation-checks
+                    data-ng-if="userContext.pageStatus =='Edit'"></creation-checks>[/if#distCheck]
             </form>
         </div>
         <form-buttons></form-buttons>

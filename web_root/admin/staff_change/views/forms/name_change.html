@@ -5,7 +5,8 @@
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">
                     <div class="col-auto">
-                        <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Who's name is
+                        <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Who's name
+                            is
                             changing?</label>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.nameChange.users_dcid" data-ng-required="true"
@@ -37,11 +38,13 @@
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.users_dcid">
                     <div class="col-6">
-                        <label for="name-change-staff-name" class="form-label form-label-sm  label-reset staff-change-req"
+                        <label for="name-change-staff-name"
+                            class="form-label form-label-sm  label-reset staff-change-req"
                             data-ng-if="userContext.pageStatus =='Submit'">Please
                             <mark>change name below</mark> to {{submitPayload.nameChange.old_name_placeholder}}'s new
                             name</label>
-                        <label for="name-change-staff-name" class="form-label form-label-sm  label-reset staff-change-req"
+                        <label for="name-change-staff-name"
+                            class="form-label form-label-sm  label-reset staff-change-req"
                             data-ng-if="userContext.pageStatus =='Edit'">New Name:</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
@@ -58,11 +61,14 @@
                             </select>
                             <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
                                 aria-label="First name" data-ng-model="submitPayload.nameChange.first_name"
+                                data-ng-blur="submitPayload.nameChange.first_name = (submitPayload.nameChange.first_name | titleCase)"
                                 data-ng-required="true">
                             <input type="text" class="form-control form-control-sm w-25" placeholder="Middle name"
-                                aria-label="Middle name" data-ng-model="submitPayload.nameChange.middle_name">
+                                aria-label="Middle name" data-ng-model="submitPayload.nameChange.middle_name"
+                                data-ng-blur="submitPayload.nameChange.middle_name = (submitPayload.nameChange.middle_name | titleCase)">
                             <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
                                 aria-label="Last name" data-ng-model="submitPayload.nameChange.last_name"
+                                data-ng-blur="submitPayload.nameChange.last_name = (submitPayload.nameChange.last_name | titleCase)"
                                 data-ng-required="true">
                         </div>
                     </div>
@@ -103,10 +109,11 @@
                                     data-ng-if="submitPayload.nameChange.date_radio==='other' || userContext.pageStatus =='Edit'">
                                     <div class="col">
                                         <label data-ng-if="userContext.pageStatus =='Submit'"
-                                            class="form-label form-label-sm label-reset staff-change-req">Requested Name Change
+                                            class="form-label form-label-sm label-reset staff-change-req">Requested Name
+                                            Change
                                             Date</label><br>
                                         <input title="deadline" type="text" class="psDateWidget"
-                                            ng-model="submitPayload.nameChange.deadline" ng-required="true">
+                                            data-ng-model="submitPayload.nameChange.deadline" data-ng-required="true">
                                         <script type="text/javascript">initBehaviors();</script>
                                     </div>
                                 </div>
@@ -130,7 +137,8 @@
                             <textarea class="form-control"
                                 placeholder="Reason for Name Change and/or additional Notes/Details?"
                                 id="exit-add-notes" spellcheck="true" wrap="absolute"
-                                ng-model="submitPayload.nameChange.notes"></textarea>
+                                data-ng-model="submitPayload.nameChange.notes"
+                                data-ng-blur="submitPayload.nameChange.notes = (submitPayload.nameChange.notes | sentenceCase)"></textarea>
                             <label class="fw-semibold" for="exit-add-notes">Reason for Name Change and/or additional
                                 Notes/Details?</label>
                         </div>

@@ -40,10 +40,10 @@
                     data-ng-class="{'req-notation': (jobChange.completion_date < curDate) && (!jobChange.ps_complete || !jobChange.ad_complete)}">
                     {{jobChange.completion_date | date : 'MM/dd/yyyy'}}</td>
                 <td><span
-                        ng-class="{'mark-complete': jobChange.ps_complete, 'mark-incomplete': !jobChange.ps_complete}"></span>
+                        data-ng-class="{'mark-complete': jobChange.ps_complete, 'mark-incomplete': !jobChange.ps_complete}"></span>
                 </td>
                 <td><span
-                        ng-class="{'mark-complete': jobChange.ad_complete, 'mark-incomplete': !jobChange.ad_complete}"></span>
+                        data-ng-class="{'mark-complete': jobChange.ad_complete, 'mark-incomplete': !jobChange.ad_complete}"></span>
                 </td>
                 <td>{{jobChange.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
