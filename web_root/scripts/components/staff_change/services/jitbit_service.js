@@ -37,6 +37,7 @@ define(function (require) {
 				},
 				createJitbitTicket: async function (formPayload) {
 					let userData = await this.gitJitbitUser(formPayload.userEmail)
+					let staffChangeName = `${formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name}`
 
 					let ticketPayload = {
 						categoryId: 588445,
@@ -44,8 +45,9 @@ define(function (require) {
 						origin: 3,
 						assignedToUserId: 14088108,
 						userId: userData.UserID,
-						subject: `TEST ${formPayload.readableChangeType} Submission ${formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name} | Due Date: ${formPayload.deadline}`,
-						body: `Position: ${formPayload.position}\n\nDue Date: ${formPayload.deadline}\n\n${typeof formPayload.notes === 'undefined' ? '' : `Notes: ${formPayload.notes}`}\n\nSubmission from ${formPayload.curUserName} (${formPayload.curUserSchoolAbbr}) | ${formPayload.userEmail}`
+						subject: `TEST ${formPayload.readableChangeType} Submission ${staffChangeName} | Due Date: ${formPayload.deadline}`,
+						body: `Position: ${formPayload.position}\n\nDue Date: ${formPayload.deadline}\n\n${typeof formPayload.notes === 'undefined' ? '' : `Notes: ${formPayload.notes}`}\n\nSubmission from ${formPayload.curUserName} (${formPayload.curUserSchoolAbbr}) | ${formPayload.userEmail}`,
+						customFields: { 59314: `${staffChangeName}` }
 					}
 
 					let deferredResponse = $q.defer()
