@@ -51,14 +51,14 @@
                             </select>
                             <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
                                 aria-label="First name" data-ng-model="submitPayload.transferringStaff.first_name"
-                                data-ng-blur="submitPayload.transferringStaff.first_name = (submitPayload.newStaff.first_name | titleCase)"
+                                data-ng-blur="submitPayload.transferringStaff.first_name = (submitPayload.transferringStaff.first_name | titleCase)"
                                 data-ng-required="true">
                             <input type="text" class="form-control form-control-sm w-25" placeholder="Middle name"
                                 aria-label="Middle name" data-ng-model="submitPayload.transferringStaff.middle_name"
-                                data-ng-blur="submitPayload.transferringStaff.middle_name = (submitPayload.newStaff.middle_name | titleCase)">
+                                data-ng-blur="submitPayload.transferringStaff.middle_name = (submitPayload.transferringStaff.middle_name | titleCase)">
                             <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
                                 aria-label="Last name" data-ng-model="submitPayload.transferringStaff.last_name"
-                                data-ng-blur="submitPayload.transferringStaff.last_name = (submitPayload.newStaff.last_name | titleCase)"
+                                data-ng-blur="submitPayload.transferringStaff.last_name = (submitPayload.transferringStaff.last_name | titleCase)"
                                 data-ng-required="true">
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                         <input id="transferring-position" type="text" class="form-control form-control-sm"
                             placeholder="Ex: 2nd Grade Teacher, or Principal" aria-label="Position"
                             data-ng-model="submitPayload.transferringStaff.position"
-                            data-ng-blur="submitPayload.transferringStaff.position = (submitPayload.newStaff.position | titleCase)"
+                            data-ng-blur="submitPayload.transferringStaff.position = (submitPayload.transferringStaff.position | titleCase)"
                             data-ng-required="true">
                     </div>
                     <div class="col-auto">
@@ -188,8 +188,7 @@
                                             class="form-label form-label-sm label-reset staff-change-req">Transfer
                                             Date</label><br>
                                         <input title="Transfer Date" type="text" class="psDateWidget"
-                                            data-ng-model="submitPayload.transferringStaff.deadline"
-                                            data-ng-required="true">
+                                            ng-model="submitPayload.transferringStaff.deadline" ng-required="true">
                                         <script type="text/javascript">initBehaviors();</script>
                                     </div>
                                 </div>
@@ -230,7 +229,7 @@
                             Type Name Previous Employer</label>
                         <input id="transferring-staff-school-name" class="form-control" type="text"
                             data-ng-model="submitPayload.transferringStaff.prev_school_name"
-                            data-ng-blur="submitPayload.transferringStaff.prev_school_name = (submitPayload.newStaff.prev_school_name | titleCase)">
+                            data-ng-blur="submitPayload.transferringStaff.prev_school_name = (submitPayload.transferringStaff.prev_school_name | titleCase)">
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
@@ -326,16 +325,16 @@
                                             <input type="text" class="form-control form-control-sm w-25"
                                                 placeholder="First name" aria-label="First name"
                                                 data-ng-model="submitPayload.transferringStaff.replace_first_name"
-                                                data-ng-blur="submitPayload.transferringStaff.replace_first_name = (submitPayload.newStaff.replace_first_name | titleCase)"
+                                                data-ng-blur="submitPayload.transferringStaff.replace_first_name = (submitPayload.transferringStaff.replace_first_name | titleCase)"
                                                 data-ng-required="true">
                                             <input type="text" class="form-control form-control-sm w-25"
                                                 placeholder="Middle name" aria-label="Middle name"
                                                 data-ng-model="submitPayload.transferringStaff.replace_middle_name"
-                                                data-ng-blur="submitPayload.transferringStaff.replace_middle_name = (submitPayload.newStaff.replace_middle_name | titleCase)">
+                                                data-ng-blur="submitPayload.transferringStaff.replace_middle_name = (submitPayload.transferringStaff.replace_middle_name | titleCase)">
                                             <input type="text" class="form-control form-control-sm w-25"
                                                 placeholder="Last name" aria-label="Last name"
                                                 data-ng-model="submitPayload.transferringStaff.replace_last_name"
-                                                data-ng-blur="submitPayload.transferringStaff.replace_last_name = (submitPayload.newStaff.replace_last_name | titleCase)"
+                                                data-ng-blur="submitPayload.transferringStaff.replace_last_name = (submitPayload.transferringStaff.replace_last_name | titleCase)"
                                                 data-ng-required="true">
                                         </div>
                                     </div>
@@ -525,8 +524,8 @@
                     <div class="col-xl-6">
                         <div class="form-floating">
                             <textarea class="form-control" placeholder="Additional Notes/Details?" id="exit-add-notes"
-                                spellcheck="true" wrap="absolute" data-ng-model="submitPayload.transferringStaff.notes"
-                                data-ng-blur="submitPayload.transferringStaff.notes = (submitPayload.newStaff.notes | sentenceCase)"></textarea>
+                                spellcheck="true" wrap="absolute" ng-model="submitPayload.transferringStaff.notes"
+                                data-ng-blur="submitPayload.transferringStaff.notes = (submitPayload.transferringStaff.notes | sentenceCase)"></textarea>
                             <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
                         </div>
                     </div>
