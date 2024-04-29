@@ -309,6 +309,7 @@ define(function (require) {
 					console.log('jitbitTicketId', jitbitTicketId)
 
 					await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
+					await jitbitService.updateJitbitTicket({ id: jitbitTicketId, dueDate: formatService.formatDateForApi(formPayload.deadline) })
 				})
 				//sending to confirm screen after submission
 				$scope.formDisplay('confirm', $scope.userContext.pageContext)

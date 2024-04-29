@@ -44,7 +44,7 @@ define(function (require) {
 						origin: 3,
 						assignedToUserId: 14088108,
 						userId: userData.UserID,
-						subject: `${formPayload.readableChangeType} Submission ${formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name} | Due Date: ${formPayload.deadline}`,
+						subject: `TEST ${formPayload.readableChangeType} Submission ${formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name} | Due Date: ${formPayload.deadline}`,
 						body: `Position: ${formPayload.position}\n\nDue Date: ${formPayload.deadline}\n\n${typeof formPayload.notes === 'undefined' ? '' : `Notes: ${formPayload.notes}`}\n\nSubmission from ${formPayload.curUserName} (${formPayload.curUserSchoolAbbr}) | ${formPayload.userEmail}`
 					}
 
@@ -67,8 +67,25 @@ define(function (require) {
 
 					return deferredResponse.promise
 				},
-				updateJitbitTicket: function (ticket_id) {
-					console.log(ticket_id)
+				updateJitbitTicket: function (updateTicketPayload) {
+					console.log('from update', updateTicketPayload.id)
+
+					let deferredResponse = $q.defer()
+					let updateTicketUrl = `${JITBIT_API_URL}/UpdateTicket`
+
+					$http({
+						method: 'POST',
+						url: updateTicketUrl,
+						params: updateTicketPayload,
+						headers: jibit_headers
+					}).then(
+						res => {
+							deferredResponse.resolve(res.data || [])
+						},
+						res => {
+							psAlert({ message: `There was an error hitting ${getUserUrl}`, title: 'Error getting user' })
+						}
+					)
 				}
 			}
 		}
