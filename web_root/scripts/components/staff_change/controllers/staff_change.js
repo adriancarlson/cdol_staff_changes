@@ -9,7 +9,8 @@ define(function (require) {
 		'$window',
 		'formatService',
 		'psApiService',
-		function ($scope, $http, $attrs, $window, formatService, psApiService) {
+		'jitbitService',
+		function ($scope, $http, $attrs, $window, formatService, psApiService, jitbitService) {
 			//initializing overall form data
 			$scope.userContext = {
 				pageStatus: $attrs.ngStatus,
@@ -47,10 +48,8 @@ define(function (require) {
 			$scope.getStaffChange = async staffChangeId => {
 				loadingDialog()
 				//copyFormatKeys
-				let getFormatKeys = await { ...$scope.formatKeys }[
-					//remove formatKeys that are not needed for the GET API call
-					'deleteKeys'
-				].forEach(key => delete getFormatKeys[key])
+				let getFormatKeys = await { ...$scope.formatKeys }
+				delete getFormatKeys['deleteKeys']
 
 				if (staffChangeId) {
 					const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, getFormatKeys, staffChangeId)
@@ -285,18 +284,26 @@ define(function (require) {
 							formPayload.deadline = `06/30/${yyyy}`
 						}
 					}
-					//create payload of fields needed for email
-					let readableChangeType = formatService.decamelize(formPayload.change_type)
 
 					//add commonPayload to each object in submitPayload
 					formPayload = Object.assign(formPayload, commonPayload)
 					//add createFormatKeys to each object in submitPayload
 					formPayload = Object.assign(formPayload, createFormatKeys)
-					console.log('formPayload', formPayload)
 					//submitting staff changes through api
 					await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
 
 					//jitbit call here
+					let jitbitPayload = {
+						...formPayload,
+						curUserName: $scope.userContext.curUserName,
+						curUserSchoolAbbr: $scope.userContext.curUserSchoolAbbr,
+						curDate: $scope.userContext.curDate,
+						curTime: $scope.userContext.curTime,
+						userEmail: $scope.userContext.curUserEmail,
+						readableChangeType: formatService.decamelize(formPayload.change_type)
+					}
+
+					jitbitPayload = await jitbitService.createJitbitTicket(jitbitPayload)
 				})
 				//sending to confirm screen after submission
 				$scope.formDisplay('confirm', $scope.userContext.pageContext)
