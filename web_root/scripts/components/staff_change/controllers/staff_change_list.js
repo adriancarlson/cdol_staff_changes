@@ -108,6 +108,31 @@ define(function (require) {
 							} else {
 								item.completed = false
 							}
+
+							if (item.submission_time) {
+								const submissionTime = item.submission_time
+
+								// Splitting the time string into hours, minutes, and AM/PM parts
+								const [time, period] = submissionTime.split(' ')
+								const [hours, minutes] = time.split(':')
+
+								// Convert hours to 24-hour format if it's PM and not noon
+								let hours24 = parseInt(hours, 10)
+								if (period === 'PM' && hours24 !== 12) {
+									hours24 += 12
+								} else if (period === 'AM' && hours24 === 12) {
+									hours24 = 0 // Midnight
+								}
+
+								// Creating a Date object with today's date and the adjusted hours and minutes
+								const submissionDate = new Date()
+								submissionDate.setHours(hours24)
+								submissionDate.setMinutes(parseInt(minutes, 10))
+								submissionDate.setSeconds(0) // Optional: You can set seconds to zero if not required
+
+								// Now, submissionDate holds the time in a format that can be sorted properly
+								item.sort_time = submissionDate
+							}
 						})
 					} else {
 						$scope.staffList[changeType] = {}
