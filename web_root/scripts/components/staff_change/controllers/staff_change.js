@@ -313,6 +313,8 @@ define(function (require) {
 					let formattedDate = formatService.formatDateForApi(formPayload.deadline)
 					let concatenatedDateTime = `${formattedDate}T23:59:00Z`
 					await jitbitService.updateJitbitTicket({ id: jitbitTicketId, dueDate: concatenatedDateTime })
+					formPayload.staffChangeId = staffChangeId
+					formPayload.ticket_id = jitbitTicketId
 				})
 				//sending to confirm screen after submission
 				$scope.formDisplay('confirm', $scope.userContext.pageContext)
