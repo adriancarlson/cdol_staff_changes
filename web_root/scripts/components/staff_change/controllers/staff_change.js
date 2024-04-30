@@ -7,10 +7,11 @@ define(function (require) {
 		'$http',
 		'$attrs',
 		'$window',
+		'$anchorScroll',
 		'formatService',
 		'psApiService',
 		'jitbitService',
-		function ($scope, $http, $attrs, $window, formatService, psApiService, jitbitService) {
+		function ($scope, $http, $attrs, $window, $anchorScroll, formatService, psApiService, jitbitService) {
 			//initializing overall form data
 			$scope.userContext = {
 				pageStatus: $attrs.ngStatus,
@@ -121,7 +122,8 @@ define(function (require) {
 						break
 				}
 				//adding scroll to top when switching between forms
-				$window.scrollTo(0, 0)
+				// had to change from $window.scrollTo(0, 0) because it broke in the enhanced UI
+				$anchorScroll('staff-change-scroll-top')
 			}
 
 			// $scope.updateLicensing = pageContext => {
