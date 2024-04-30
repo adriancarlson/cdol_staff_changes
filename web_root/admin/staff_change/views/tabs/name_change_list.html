@@ -32,6 +32,10 @@
             <tr data-ng-repeat="nameChange in filteredNameChangeList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap"><a href="/admin/staff_change/submit.html?status=Edit&id={{nameChange.staffid}}">
+                        <span data-ng-show="nameChange.title !== 'Fr.' &&
+                    nameChange.title !== 'Msgr.' &&
+                    nameChange.title !== 'Sr.' &&
+                    nameChange.title !== 'Br.' "> {{nameChange.title}}</span>
                         {{nameChange.first_name}}
                         {{nameChange.last_name}}</a></td>
                 <td class="nowrap">{{nameChange.old_name_placeholder}}</td>

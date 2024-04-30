@@ -190,7 +190,11 @@
             </div>
         </div>
         <div class="card-footer">
-            <span class="fw-semibold">Jitbit Ticket ID:</span> {{submitPayload[userContext.pageContext].ticket_id }}
+            <span class="fw-semibold">Jitbit Ticket ID:</span> <a
+                data-ng-href='https://cdol.jitbit.com/Ticket/{{submitPayload[userContext.pageContext].ticket_id}}'
+                target="_blank">{{submitPayload[userContext.pageContext].ticket_id}}</a>
+
+
         </div>
     </div>
 </div>
