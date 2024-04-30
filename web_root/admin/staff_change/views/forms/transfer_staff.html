@@ -38,7 +38,10 @@
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
-                                data-ng-model="submitPayload.transferringStaff.title">
+                                data-ng-model="submitPayload.transferringStaff.title" data-ng-show="(submitPayload.transferringStaff.title !== 'Fr.' &&
+                        submitPayload.transferringStaff.title !== 'Msgr.' &&
+                        submitPayload.transferringStaff.title !== 'Sr.' &&
+                        submitPayload.transferringStaff.title !== 'Br.')">
                                 <option selected></option>
                                 <option value="Mr.">Mr.</option>
                                 <option value="Mrs.">Mrs.</option>

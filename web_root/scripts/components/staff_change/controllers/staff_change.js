@@ -169,7 +169,7 @@ define(function (require) {
 								if ($scope.submitPayload[pageContext].title === 'Fr.' || $scope.submitPayload[pageContext].title === 'Msgr.' || $scope.submitPayload[pageContext].title === 'Sr.' || $scope.submitPayload[pageContext].title === 'Br.') {
 									$scope.submitPayload[pageContext].title = ''
 								}
-								$scope.submitPayload[pageContext].old_name_placeholder = `${$scope.submitPayload[pageContext].title} ${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
+								$scope.submitPayload[pageContext].old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => $scope.submitPayload[pageContext].first_name.startsWith(prefix)) && $scope.submitPayload[pageContext].title ? $scope.submitPayload[pageContext].title + ' ' : ''}${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
 							}
 							if (pageContext === 'transferringStaff') {
 								$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
@@ -180,7 +180,7 @@ define(function (require) {
 								$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
 							}
 							if (pageContext === 'exitingStaff') {
-								$scope.submitPayload[pageContext].old_name_placeholder = `${$scope.submitPayload[pageContext].title} ${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
+								$scope.submitPayload[pageContext].old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => $scope.submitPayload[pageContext].first_name.startsWith(prefix)) && $scope.submitPayload[pageContext].title ? $scope.submitPayload[pageContext].title + ' ' : ''}${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
 							}
 						}
 						//if the resource is user data and the field is replace_dcid
@@ -265,7 +265,7 @@ define(function (require) {
 					formPayload.change_type = key
 
 					if (formPayload.change_type == 'exitingStaff') {
-						formPayload.old_name_placeholder = `${formPayload.title} ${formPayload.first_name} ${formPayload.last_name}`
+						formPayload.old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => formPayload.first_name.startsWith(prefix)) && formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name}`
 					}
 
 					// constructing deadline
