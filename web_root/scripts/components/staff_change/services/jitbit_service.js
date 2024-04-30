@@ -46,7 +46,7 @@ define(function (require) {
 						assignedToUserId: 14088108,
 						userId: userData.UserID,
 						subject: `TEST ${formPayload.readableChangeType} Submission ${staffChangeName} | Due Date: ${formPayload.deadline}`,
-						body: `${formPayload.prev_school_name ? `Transferring in from: ${formPayload.prev_school_name}\n\n` : ''}${formPayload.old_name_placeholder ? `Previous Name: ${formPayload.old_name_placeholder}\n\n` : ''}${formPayload.position ? `Position: ${formPayload.position}\n\n` : ''}${formPayload.previous_position ? `Previous Position: ${formPayload.previous_position}\n\n` : ''}${formPayload.new_position ? `New Position: ${formPayload.new_position}\n\n` : ''}Due Date: ${formPayload.deadline}\n\n${typeof formPayload.notes === 'undefined' ? '' : `Notes: ${formPayload.notes}`}\n\nSubmission from ${formPayload.curUserName} (${formPayload.curUserSchoolAbbr}) | ${formPayload.userEmail}`,
+						body: `${formPayload.change_type === 'transferringStaff' && formPayload.prev_school_name ? `Transferring in from: ${formPayload.prev_school_name}\n\n` : ''}${formPayload.change_type === 'nameChange' && formPayload.old_name_placeholder ? `Previous Name: ${formPayload.old_name_placeholder}\n\n` : ''}${formPayload.position ? `Position: ${formPayload.position}\n\n` : ''}${formPayload.previous_position ? `Previous Position: ${formPayload.previous_position}\n\n` : ''}${formPayload.new_position ? `New Position: ${formPayload.new_position}\n\n` : ''}Due Date: ${formPayload.deadline}\n\n${typeof formPayload.notes === 'undefined' ? '' : `Notes: ${formPayload.notes}`}\n\nSubmission from ${formPayload.curUserName} (${formPayload.curUserSchoolAbbr}) | ${formPayload.userEmail}`,
 						customFields: { 59314: `${staffChangeName}` }
 					}
 
