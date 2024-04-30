@@ -37,7 +37,7 @@ define(function (require) {
 				},
 				createJitbitTicket: async function (formPayload) {
 					let userData = await this.gitJitbitUser(formPayload.userEmail)
-					let staffChangeName = `${formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name}`
+					let staffChangeName = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => formPayload.first_name.startsWith(prefix)) && formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name}`
 
 					let ticketPayload = {
 						categoryId: 588445,
