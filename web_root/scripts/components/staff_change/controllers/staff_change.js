@@ -188,7 +188,7 @@ define(function (require) {
 							// set and empty object
 							const replaceObject = {}
 							// find all the keys in the found item and add the 'replace_' to the front of the key. keep same value. then set those key value pairs to replaceObject
-							for (key in foundItem) {
+							for (let key in foundItem) {
 								if (foundItem.hasOwnProperty(key)) {
 									replaceObject[`replace_${key}`] = foundItem[key]
 								}
