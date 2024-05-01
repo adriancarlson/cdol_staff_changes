@@ -47,6 +47,7 @@
                     <div class="col-6">
                         <label for="transferring-staff-name"
                             class="form-label form-label-sm  label-reset staff-change-req">New Staff
+                            Preferred
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
@@ -72,6 +73,40 @@
                                 aria-label="Last name" data-ng-model="submitPayload.newStaff.last_name"
                                 data-ng-blur="submitPayload.newStaff.last_name = (submitPayload.newStaff.last_name | titleCase)"
                                 data-ng-required="true">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary" role="alert"><i
+                                class="bi bi-chat-right-text-fill"></i>
+                            <strong><u>Preferred Name</u></strong>: is how the staff name will appear on reports and in
+                            the gradebook.<br>It is also used to create username and email address.
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3">
+                    <div class="col-6">
+                        <label for="transferring-staff-legal-name"
+                            class="form-label form-label-sm  label-reset staff-change-req">New
+                            Staff Legal
+                            Name</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="Legal first name"
+                                aria-label="Legal First name" data-ng-model="submitPayload.newStaff.legal_first_name"
+                                data-ng-required="true">
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="Legal middle name"
+                                aria-label="Legal middle name" data-ng-model="submitPayload.newStaff.legal_middle_name">
+                            <input type="text" class="form-control form-control-sm w-25" placeholder="Legal last name"
+                                aria-label="Legal last name" data-ng-model="submitPayload.newStaff.legal_last_name"
+                                data-ng-required="true">
+                            <button type="button" class="m-0 p-2 ps-1" data-ng-if="userContext.pageStatus =='Submit'"
+                                data-ng-click="copyNames(userContext.pageContext)">Copy from Preferred Name</button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary" role="alert"><i
+                                class="bi bi-chat-right-text-fill"></i>
+                            <strong><u>Legal Name</u></strong>: exactly how the staff's name appears on teaching
+                            certificate or legal documentation.
                         </div>
                     </div>
                 </div>
@@ -181,7 +216,7 @@
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.newStaff.staff_type">
                     <div class="col-auto">
                         <div class="card">
-                            <div class="card-header fw-semibold ps-1 staff-change-req">{{
+                            <div class="card-header fw-semibold ps-1 staff-change-req">{{submitPayload.newStaff.title}} {{
                                 submitPayload.newStaff.first_name}} {{
                                 submitPayload.newStaff.last_name}}'s Licensing</div>
                             <div class="card-body">
@@ -225,7 +260,8 @@
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.newStaff.first_name">
                     <div class="col-auto">
                         <div class="card">
-                            <div class="card-header fw-semibold ps-1 staff-change-req">{{
+                            <div class="card-header fw-semibold ps-1 staff-change-req">{{submitPayload.newStaff.title}}
+                                {{
                                 submitPayload.newStaff.first_name}} {{
                                 submitPayload.newStaff.last_name}}'s Requested Account Creation
                                 Date</div>
@@ -280,7 +316,8 @@
                             <div class="card-body">
                                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">
                                     <div class="col-auto">
-                                        <label class="form-label form-label-sm label-reset staff-change-req">Has {{
+                                        <label class="form-label form-label-sm label-reset staff-change-req">Has
+                                            {{submitPayload.newStaff.title}} {{
                                             submitPayload.newStaff.first_name}} {{
                                             submitPayload.newStaff.last_name}} previously worked for ~(schoolname) or
                                             another Diocese of Lincoln School?</label><br>
@@ -308,7 +345,8 @@
                                     data-ng-if="submitPayload.newStaff.prev_school_radio == 1 || (userContext.pageStatus =='Edit' && submitPayload.newStaff.prev_school_number)">
                                     <div class="col-auto">
                                         <label for="prev_school_number"
-                                            class="form-label form-label-sm label-reset staff-change-req">Where was {{
+                                            class="form-label form-label-sm label-reset staff-change-req">Where was
+                                            {{submitPayload.newStaff.title}} {{
                                             submitPayload.newStaff.first_name}} {{
                                             submitPayload.newStaff.last_name}}'s previously employed?</label><span
                                             class="text-muted"
@@ -354,7 +392,8 @@
                             <div class="card-body">
                                 <div data-ng-if="userContext.pageStatus =='Submit'" class="row align-items-center mb-3">
                                     <div class="col-auto">
-                                        <label class="form-label form-label-sm label-reset staff-change-req">Will {{
+                                        <label class="form-label form-label-sm label-reset staff-change-req">Will
+                                            {{submitPayload.newStaff.title}} {{
                                             submitPayload.newStaff.first_name}} {{
                                             submitPayload.newStaff.last_name}} be replacing a current staff
                                             member at ~(schoolname)?</label><br>
@@ -382,7 +421,7 @@
                                         <label for="replacing_dcid"
                                             class="form-label form-label-sm label-reset staff-change-req">Who
                                             is
-                                            {{
+                                            {{submitPayload.newStaff.title}} {{
                                             submitPayload.newStaff.first_name}} {{
                                             submitPayload.newStaff.last_name}} replacing?</label><span
                                             class="text-muted"
@@ -418,7 +457,7 @@
                                         <label for="exiting-staff-name"
                                             class="form-label form-label-sm  label-reset staff-change-req">Name
                                             of the staff member
-                                            {{
+                                            {{submitPayload.newStaff.title}} {{
                                             submitPayload.newStaff.first_name}} {{
                                             submitPayload.newStaff.last_name}} is replacing</label>
                                         <div class="input-group">
@@ -534,7 +573,8 @@
                                 <div class="row align-items-center mb-3">
                                     <div class="col-auto">
                                         <label class="form-label form-label-sm label-reset staff-change-req"><span
-                                                data-ng-if="userContext.pageStatus =='Submit'">Will</span> {{
+                                                data-ng-if="userContext.pageStatus =='Submit'">Will</span>
+                                            {{submitPayload.newStaff.title}} {{
                                             submitPayload.newStaff.first_name}} {{
                                             submitPayload.newStaff.last_name}} need<span
                                                 data-ng-if="userContext.pageStatus =='Edit'">s</span> access to

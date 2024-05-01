@@ -201,6 +201,11 @@ define(function (require) {
 					}
 				}
 			}
+			$scope.copyNames = pageContext => {
+				$scope.submitPayload[pageContext].legal_first_name = $scope.submitPayload[pageContext].first_name
+				$scope.submitPayload[pageContext].legal_middle_name = $scope.submitPayload[pageContext].middle_name
+				$scope.submitPayload[pageContext].legal_last_name = $scope.submitPayload[pageContext].last_name
+			}
 
 			$scope.updateAdditionalPayload = pageContext => {
 				if ($scope.submitPayload[pageContext].leaving_radio == 1) {
@@ -312,7 +317,7 @@ define(function (require) {
 					let concatenatedDateTime = `${formattedDate}T23:59:00Z`
 
 					await jitbitService.updateJitbitTicket({ id: jitbitTicketId, dueDate: concatenatedDateTime })
-					
+
 					formPayload.staffChangeId = staffChangeId
 					formPayload.ticket_id = jitbitTicketId
 				})
