@@ -45,7 +45,7 @@ define(function (require) {
 						origin: 3,
 						assignedToUserId: 14088108,
 						userId: userData.UserID,
-						subject: `TEST ${formPayload.readableChangeType} Submission ${staffChangeName} | Due Date: ${formPayload.deadline}`,
+						subject: `${formPayload.readableChangeType} Submission ${staffChangeName} | Due Date: ${formPayload.deadline}`,
 						body: `${formPayload.change_type === 'transferringStaff' && formPayload.prev_school_name ? `Transferring in from: ${formPayload.prev_school_name}\n\n` : ''}${formPayload.change_type === 'nameChange' && formPayload.old_name_placeholder ? `Previous Name: ${formPayload.old_name_placeholder}\n\n` : ''}${formPayload.position ? `Position: ${formPayload.position}\n\n` : ''}${formPayload.previous_position ? `Previous Position: ${formPayload.previous_position}\n\n` : ''}${formPayload.new_position ? `New Position: ${formPayload.new_position}\n\n` : ''}Due Date: ${formPayload.deadline}\n\n${typeof formPayload.notes === 'undefined' ? '' : `Notes: ${formPayload.notes}`}\n\nSubmission from ${formPayload.curUserName} (${formPayload.curUserSchoolAbbr}) | ${formPayload.userEmail}`,
 						customFields: { 59314: `${staffChangeName}` }
 					}
@@ -70,8 +70,6 @@ define(function (require) {
 					return deferredResponse.promise
 				},
 				updateJitbitTicket: function (updateTicketPayload) {
-					console.log('from update', updateTicketPayload.id)
-
 					let deferredResponse = $q.defer()
 					let updateTicketUrl = `${JITBIT_API_URL}/UpdateTicket`
 

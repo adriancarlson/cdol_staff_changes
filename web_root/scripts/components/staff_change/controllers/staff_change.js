@@ -293,9 +293,7 @@ define(function (require) {
 					formPayload = Object.assign(formPayload, createFormatKeys)
 					//submitting staff changes through api
 					let staffChangeId = await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
-					console.log('staffChangeID', staffChangeId)
 
-					//jitbit call here
 					let jitbitPayload = {
 						...formPayload,
 						curUserName: $scope.userContext.curUserName,
@@ -308,13 +306,13 @@ define(function (require) {
 
 					let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
 
-					console.log('jitbitTicketId', jitbitTicketId)
-
 					await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
 
 					let formattedDate = formatService.formatDateForApi(formPayload.deadline)
 					let concatenatedDateTime = `${formattedDate}T23:59:00Z`
+
 					await jitbitService.updateJitbitTicket({ id: jitbitTicketId, dueDate: concatenatedDateTime })
+					
 					formPayload.staffChangeId = staffChangeId
 					formPayload.ticket_id = jitbitTicketId
 				})
