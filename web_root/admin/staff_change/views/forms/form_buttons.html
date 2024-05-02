@@ -33,7 +33,8 @@
                 data-ng-if="(staffChangeForm.$invalid && staffChangeForm.$dirty) || !submitPayload[userContext.formType].users_dcid">Please
                 fill all required fields prior to submitting.</span>
             <button type="button" id="subBtn" class="m-0 p-2" data-ng-disabled="staffChangeForm.$invalid"
-                data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
+                data-ng-show="!subConfirm"
+                data-ng-click="subConfirm = true;dupSearch(userContext.formType, submitPayload[userContext.formType])">Submit</button>
             <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
                 data-ng-click="subConfirm = false">Cancel</button>
             <button type="button" id="confBtn" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
@@ -62,5 +63,11 @@
                 data-ng-show="!delUpdate" data-ng-click="updateStaffChange(userContext.pageContext)">Submit
                 Update</button>
         </div>
+    </div>
+</div>
+
+<div class="hide" id="dialogContainer">
+    <div id="dupeDiv">
+        <p>staffChangeDupeData: {{staffChangeDupeData[0]}}</p>
     </div>
 </div>

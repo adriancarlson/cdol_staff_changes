@@ -8,10 +8,53 @@ define(function (require) {
 		'$attrs',
 		'$window',
 		'$anchorScroll',
+		'pqService',
 		'formatService',
 		'psApiService',
 		'jitbitService',
-		function ($scope, $http, $attrs, $window, $anchorScroll, formatService, psApiService, jitbitService) {
+		function ($scope, $http, $attrs, $window, $anchorScroll, pqService, formatService, psApiService, jitbitService) {
+			let psDialogHolder = null
+
+			$scope.openDupeDialog = function () {
+				psDialogHolder = $j('#dupeDiv').detach()
+				psDialog({
+					type: 'dialogMDiv',
+					width: 600,
+					title: 'Potential Duplicate Staff Change Found!',
+					content: psDialogHolder,
+					initBehaviors: true,
+					close: function () {
+						showMessage('dialog close event')
+						// Move View back to a holder so that it won't be lost if another type of dialog is opened.
+						$j('#dialogContainer').append(psDialogHolder)
+					},
+					buttons: [
+						{
+							id: 'cancelDialogButton',
+							text: 'Cancel',
+							title: 'cancel tooltip',
+							click: function () {
+								showMessage('cancel was clicked')
+								psDialogClose()
+							}
+						},
+						{
+							id: 'saveDialogButton',
+							text: 'Save',
+							title: 'save tooltip',
+							click: function () {
+								showMessage('save was clicked')
+								psDialogClose()
+							}
+						}
+					]
+				})
+			}
+
+			var showMessage = function (message) {
+				console.log(message)
+			}
+
 			//initializing overall form data
 			$scope.userContext = {
 				pageStatus: $attrs.ngStatus,
@@ -88,6 +131,30 @@ define(function (require) {
 					firstNameSubString: staffToSearch.first_name.substring(0, 3).toLowerCase()
 				}
 				$scope.getJSONData('staffDupData', staffDupParams)
+			}
+
+			$scope.dupSearch = async (formType, formPayload) => {
+				//   loadingDialog()
+
+				let staffChangeDupParams = {
+					calendarYear: new Date().getFullYear().toString(),
+					firstName: formPayload.first_name,
+					lastName: formPayload.last_name,
+					curSchoolID: $scope.userContext.curSchoolId,
+					changeType: 'allStaff'
+				}
+				$scope.getJSONData('staffChangeDupeData', staffChangeDupParams)
+				console.log($scope.staffChangeDupeData)
+				// // getting staff counts
+				// $scope.$apply()
+				// if ($scope.staffChangeDupeData.length > 0) {
+				// 	console.log($scope.staffChangeDupeData)
+				// 	$scope.openDupeDialog()
+				// }
+
+				// 	schoolid: $scope.userContext.curSchoolId,
+				// console.log('searchPayload', searchPayload)
+				// closeLoading()
 			}
 			// function to switch forms and set scope to hold form data
 			$scope.formDisplay = (pageContext, prevContext, direction) => {
@@ -309,17 +376,17 @@ define(function (require) {
 						readableChangeType: formatService.decamelize(formPayload.change_type)
 					}
 
-					let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
+					// 	let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
 
-					await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
+					// 	await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
 
 					let formattedDate = formatService.formatDateForApi(formPayload.deadline)
 					let concatenatedDateTime = `${formattedDate}T23:59:00Z`
 
-					await jitbitService.updateJitbitTicket({ id: jitbitTicketId, dueDate: concatenatedDateTime })
+					// 	await jitbitService.updateJitbitTicket({ id: jitbitTicketId, dueDate: concatenatedDateTime })
 
 					formPayload.staffChangeId = staffChangeId
-					formPayload.ticket_id = jitbitTicketId
+					// 	formPayload.ticket_id = jitbitTicketId
 				})
 				//sending to confirm screen after submission
 				$scope.formDisplay('confirm', $scope.userContext.pageContext)
