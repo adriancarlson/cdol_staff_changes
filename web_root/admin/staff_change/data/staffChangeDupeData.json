@@ -7,12 +7,13 @@
         u_cdol_staff_changes.first_name,
         u_cdol_staff_changes.last_name,
         users_submitted.first_name || ' ' || users_submitted.last_name AS submittedstaff,
-        u_cdol_staff_changes.submission_date,
+        TO_CHAR(u_cdol_staff_changes.submission_date, 'MM/DD/YYYY'),
         u_cdol_staff_changes.submission_time,
         CASE
             WHEN u_cdol_staff_changes.schoolid = 0 THEN 'Diocesan Office'
             ELSE schools.name
-        END AS schoolName
+        END AS schoolName,
+        u_cdol_staff_changes.schoolid
     FROM
         u_cdol_staff_changes
         LEFT OUTER JOIN schools ON u_cdol_staff_changes.schoolid = schools.school_number
@@ -39,7 +40,8 @@
             "submittedstaff":"~(6;JSON)",
             "submission_date":"~(7;JSON)",
             "submission_time":"~(8;JSON)",
-            "schname":"~(9;JSON)"
+            "schname":"~(9;JSON)",
+            "schoolid":"~(10;JSON)"
         },
     [/tlist_sql]
     {}]

@@ -19,28 +19,19 @@ define(function (require) {
 				psDialogHolder = $j('#dupeDiv').detach()
 				psDialog({
 					type: 'dialogMDiv',
-					width: 600,
+					width: 850,
 					title: 'Potential Duplicate Staff Change Found!',
 					content: psDialogHolder,
 					initBehaviors: true,
 					close: function () {
-						showMessage('dialog close event')
+						showMessage('dialog close event hi')
 						// Move View back to a holder so that it won't be lost if another type of dialog is opened.
 						$j('#dialogContainer').append(psDialogHolder)
 					},
 					buttons: [
 						{
-							id: 'cancelDialogButton',
-							text: 'Cancel',
-							title: 'cancel tooltip',
-							click: function () {
-								showMessage('cancel was clicked')
-								psDialogClose()
-							}
-						},
-						{
 							id: 'saveDialogButton',
-							text: 'Save',
+							text: 'Proceed',
 							title: 'save tooltip',
 							click: function () {
 								showMessage('save was clicked')
@@ -121,6 +112,7 @@ define(function (require) {
 					})
 					$scope[resource] = res.data
 					$scope[resource].pop()
+					$scope.$apply()
 				}
 			}
 
@@ -143,8 +135,9 @@ define(function (require) {
 					curSchoolID: $scope.userContext.curSchoolId,
 					changeType: 'allStaff'
 				}
-				$scope.getJSONData('staffChangeDupeData', staffChangeDupParams)
-				console.log($scope.staffChangeDupeData)
+				await $scope.getJSONData('staffChangeDupeData', staffChangeDupParams)
+				$scope.openDupeDialog()
+				// console.log($scope.staffChangeDupeData)
 				// // getting staff counts
 				// $scope.$apply()
 				// if ($scope.staffChangeDupeData.length > 0) {
@@ -474,6 +467,27 @@ define(function (require) {
 					return `${trimmedSentence.charAt(0).toUpperCase()}${trimmedSentence.slice(1).toLowerCase()}`
 				})
 				.join('. ')
+		}
+	})
+	module.filter('changeTypeFilter', function () {
+		// Define the filter function that takes the input value and returns the transformed value
+		return function (input) {
+			// Check if input is a valid string
+			if (typeof input === 'string') {
+				// Split the input string by uppercase letters
+				var words = input.split(/(?=[A-Z])/)
+
+				// Capitalize the first letter of each word
+				var capitalizedWords = words.map(function (word) {
+					return word.charAt(0).toUpperCase() + word.slice(1)
+				})
+
+				// Join the capitalized words with space
+				return capitalizedWords.join(' ')
+			} else {
+				// Return input unchanged if it's not a string
+				return input
+			}
 		}
 	})
 })

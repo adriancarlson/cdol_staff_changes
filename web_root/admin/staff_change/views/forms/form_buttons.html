@@ -65,9 +65,31 @@
         </div>
     </div>
 </div>
-
 <div class="hide" id="dialogContainer">
-    <div id="dupeDiv">
-        <p>staffChangeDupeData: {{staffChangeDupeData[0]}}</p>
+    <div id="dupeDiv" class="container-fluid">
+        <div data-ng-repeat="staffChangeDupe in staffChangeDupeData" class="card m-2">
+            <div class="card-body p-0">
+                <div class="p-2">It appears that <strong>{{staffChangeDupe.submittedstaff}}</strong> <span
+                        data-ng-if="staffChangeDupe.schoolid !== userContext.curSchoolId"> from
+                        <strong>{{staffChangeDupe.schname}}</strong></span> has already submitted a <em> <span
+                            data-ng-class="{
+        'text-success': staffChangeDupe.change_type === 'newStaff',
+        'text-primary': staffChangeDupe.change_type  === 'transferringStaff',
+        'text-info': staffChangeDupe.change_type  === 'jobChange',
+        'text-warning': staffChangeDupe.change_type  === 'nameChange',
+        'text-secondary': staffChangeDupe.change_type  === 'exitingStaff'
+    }"><strong>{{ staffChangeDupe.change_type | changeTypeFilter }}</strong></span></em> request for
+                    <strong>{{staffChangeDupe.title}} {{staffChangeDupe.first_name}}
+                        {{staffChangeDupe.last_name}}</strong> on {{staffChangeDupe.submission_date|date}}
+                    {{staffChangeDupe.submission_time}}.Please click the 'Go to Submission' button below to review that
+                    request, or click 'Proceed' to continue with your submission.
+                </div>
+                <div class="card-footer">
+                    <div class="button-row">
+                        <button class="mt-1 mb-0">Go to this Submission</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
