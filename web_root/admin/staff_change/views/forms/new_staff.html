@@ -45,7 +45,7 @@
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
                     <div class="col-6">
-                        <label for="transferring-staff-name"
+                        <label for="new-staff-name"
                             class="form-label form-label-sm  label-reset staff-change-req">New Staff
                             Preferred
                             Name</label>
@@ -85,7 +85,7 @@
                 </div>
                 <div class="row align-items-center mb-3">
                     <div class="col-6">
-                        <label for="transferring-staff-legal-name"
+                        <label for="new-staff-legal-name"
                             class="form-label form-label-sm  label-reset staff-change-req">New
                             Staff Legal
                             Name</label>
@@ -363,10 +363,10 @@
                                 <div class="row align-items-center mb-3"
                                     data-ng-if="submitPayload.newStaff.prev_school_number == -1">
                                     <div class="col-auto">
-                                        <label for="transferring-staff-school-name"
+                                        <label for="new-staff-school-name"
                                             class="form-label form-label-sm label-reset staff-change-req">Please
                                             Type Name Previous Employer</label>
-                                        <input id="transferring-staff-school-name" class="form-control" type="text"
+                                        <input id="new-staff-school-name" class="form-control" type="text"
                                             data-ng-model="submitPayload.newStaff.prev_school_name"
                                             data-ng-blur="submitPayload.newStaff.prev_school_name = (submitPayload.newStaff.prev_school_name | titleCase)">
                                     </div>

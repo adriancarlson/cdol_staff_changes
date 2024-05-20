@@ -20,7 +20,7 @@
                                 id="transferring-staff-radio" data-ng-model="userContext.formType"
                                 value="transferringStaff">
                             <label class="form-check-label change-type-radio-label" for="transferring-staff-radio">
-                                Transferring Staff
+                                Transferring-In Staff
                             </label>
                         </div>
                         <div class="form-check" data-ng-mouseenter="userContext.formTypeHover = 'jobChange'"
@@ -82,11 +82,11 @@
             </div>
             <div id="transferring-staff-card" class="card"
                 data-ng-if="userContext.formTypeHover === 'transferringStaff'">
-                <div class="card-header bg-primary text-bg-primary bg-gradient fs-6 fw-semibold">Transferring
+                <div class="card-header bg-primary text-bg-primary bg-gradient fs-6 fw-semibold">Transferring-In
                     Staff :
                 </div>
                 <div class="card-body">
-                    A transferring staff member is someone coming <strong>INTO</strong> ~(schoolname)
+                    A transferring-in staff member is someone coming <strong>INTO</strong> ~(schoolname)
                     from another Diocese of Lincoln School.
                 </div>
                 <div class="card-footer">
@@ -138,6 +138,9 @@
                 </div>
                 <div class="card-body">
                     A staff member not returning to ~(schoolname).
+                    <br>
+                    Use the Exiting Staff form <strong>even if</strong> the staff member is leaving ~(schoolname) for
+                    another Diocese of Lincoln School.
                 </div>
                 <div class="card-footer">
                     <strong>Example:</strong> A teacher who will not be returning to ~(schoolname) next

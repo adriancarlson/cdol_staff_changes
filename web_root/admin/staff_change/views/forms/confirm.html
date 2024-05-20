@@ -8,7 +8,7 @@
                     <p class="h6"><span data-ng-if="$index > 0"> Also, </span> Your
                         <span data-ng-switch on="payload.change_type">
                             <span data-ng-switch-when="newStaff">New Staff</span>
-                            <span data-ng-switch-when="transferringStaff">Transferring Staff</span>
+                            <span data-ng-switch-when="transferringStaff">Transferring-In Staff</span>
                             <span data-ng-switch-when="jobChange">Job Change</span>
                             <span data-ng-switch-when="nameChange">Name Change</span>
                             <span data-ng-switch-when="exitingStaff">Exiting Staff</span>
@@ -21,7 +21,7 @@
                     </p>
                     <p> We will be in concact with you once the account <span data-ng-switch on="payload.change_type">
                             <span data-ng-switch-when="newStaff">has been created.</span>
-                            <span data-ng-switch-when="transferringStaff">has been transferred.</span>
+                            <span data-ng-switch-when="transferringStaff">has been transferred-in.</span>
                             <span data-ng-switch-when="jobChange">has been moved.</span>
                             <span data-ng-switch-when="nameChange">name has been changed.</span>
                             <span data-ng-switch-when="exitingStaff">has been deactivated.</span>
@@ -29,7 +29,7 @@
                     </p>
                     <p>The <span data-ng-switch on="payload.change_type">
                             <span data-ng-switch-when="newStaff">account will be created</span>
-                            <span data-ng-switch-when="transferringStaff">transfer will occur</span>
+                            <span data-ng-switch-when="transferringStaff">transfer-in will occur</span>
                             <span data-ng-switch-when="jobChange">job change will occur</span>
                             <span data-ng-switch-when="nameChange">name change will occur</span>
                             <span data-ng-switch-when="exitingStaff">account will be deactivated</span>
