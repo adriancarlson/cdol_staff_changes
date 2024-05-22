@@ -1,17 +1,17 @@
 <div id="transferring-form-container" class="container-fluid">
     <div class="card">
-        <div class="card-header bg-primary text-bg-primary bg-gradient fs-6 fw-semibold">Transferring-In Staff:</div>
+        <div class="card-header bg-primary text-bg-primary bg-gradient fs-6 fw-semibold">Transferring Staff:</div>
         <div class="card-body">
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">
                     <div class="col-auto">
                         <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Who is
-                            Transferring-In
-                            to ~(schoolname)?</label><span class="text-muted"
+                            Transferring
+                            into ~(schoolname)?</label><span class="text-muted"
                             data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Type Other if staff
                                     member is not listed in the dropdown)</em></small></span>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
-                            data-placeholder="Type Name of Transferring-In Staff Member"
+                            data-placeholder="Type Name of Transferring Staff Member"
                             data-ng-model="submitPayload.transferringStaff.users_dcid" data-ng-required="true"
                             data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.transferringStaff.users_dcid, 'users_dcid')">
                             <option selected></option>
@@ -34,7 +34,7 @@
                     data-ng-if="submitPayload.transferringStaff.users_dcid == -1 || userContext.pageStatus =='Edit'">
                     <div class="col-6">
                         <label for="transferring-staff-name"
-                            class="form-label form-label-sm  label-reset staff-change-req">Transferring-In Staff
+                            class="form-label form-label-sm  label-reset staff-change-req">Transferring Staff
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
@@ -153,7 +153,7 @@
                         <div class="card">
                             <div class="card-header fw-semibold ps-1 staff-change-req">{{
                                 submitPayload.transferringStaff.first_name}} {{
-                                submitPayload.transferringStaff.last_name}}'s Transfer-In
+                                submitPayload.transferringStaff.last_name}}'s Transfer
                                 Date</div>
                             <div class="card-body">
                                 <div data-ng-if="userContext.pageStatus =='Submit'">
@@ -173,7 +173,7 @@
                                             data-ng-model="submitPayload.transferringStaff.date_radio" value="june30"
                                             data-ng-required="!submitPayload.transferringStaff.date_radio" tabindex="0">
                                         <label class="form-check-label" for="exit-date-june30">June
-                                            30th</label>
+                                            30<sup>th</sup></label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="exit-date-group"
@@ -188,7 +188,7 @@
                                     data-ng-if="submitPayload.transferringStaff.date_radio==='other' || userContext.pageStatus =='Edit'">
                                     <div class="col">
                                         <label data-ng-if="userContext.pageStatus =='Submit'"
-                                            class="form-label form-label-sm label-reset staff-change-req">Transfer-In
+                                            class="form-label form-label-sm label-reset staff-change-req">Transfer
                                             Date</label><br>
                                         <input title="Transfer Date" type="text" class="psDateWidget"
                                             ng-model="submitPayload.transferringStaff.deadline" ng-required="true">

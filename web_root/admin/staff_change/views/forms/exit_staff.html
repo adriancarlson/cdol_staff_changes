@@ -1,8 +1,8 @@
 <div id="exit-form-container" class="container-fluid">
     <div class="alert alert-warning" role="alert" data-ng-if="userContext.pageStatus =='Submit'"><i
             class="bi bi-exclamation-triangle-fill"></i> If this Exiting Staff member is being replaced by a
-        New or Transferring-In staff member, go back to the previous screen and submit the New or Transferring-In staff member
-        member form first. When you fill out that form you can choose who the New or Transfering-In Staff
+        New or Transferring staff member, go back to the previous screen and submit the New or Transferring staff member
+        member form first. When you fill out that form you can choose who the New or Transfering Staff
         member is replacing and an Exiting Staff Record will automatically submitted for the replaced staff.
     </div>
     <div class="card">
@@ -100,7 +100,7 @@
                                             value="june30" data-ng-required="!submitPayload.exitingStaff.date_radio"
                                             tabindex="0">
                                         <label class="form-check-label" for="exit-date-june30">June
-                                            30th</label>
+                                            30<sup>th</sup></label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="exit-date-group"
@@ -133,7 +133,7 @@
                             be deactivated shortly
                             after <span data-ng-switch on="submitPayload.exitingStaff.date_radio">
                                 <span data-ng-switch-when="today">{{userContext.curDate}}</span>
-                                <span data-ng-switch-when="june30">June 30th</span>
+                                <span data-ng-switch-when="june30">June 30<sup>th</sup></span>
                                 <span data-ng-switch-when="other">{{submitPayload.exitingStaff.deadline}}</span>
                             </span>. They
                             will no longer be able to access PowerSchool, Canvas, Office 365, Teams, Email, or log
@@ -143,7 +143,7 @@
                             their
                             account after <span data-ng-switch on="exitingStaff.date_radio">
                                 <span data-ng-switch-when="today">{{userContext.curDate}}</span>
-                                <span data-ng-switch-when="june30">June 30th</span>
+                                <span data-ng-switch-when="june30">June 30<sup>th</sup></span>
                                 <span data-ng-switch-when="other">{{submitPayload.exitingStaff.deadline}}</span>
                             </span> or needs
                             to be deactivated sooner, please modify the deactivation date.
@@ -276,16 +276,17 @@
                     </div>
                     <div class="col">
                         <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary" role="alert"><i
-                                class="bi bi-chat-right-text-fill"></i>
-                            <strong><u>Please Note</u></strong>: personal files (i.e. Documents, pictures, music and
-                            videos)
-                            should be removed by {{
-                            submitPayload.exitingStaff.first_name}} {{
-                            submitPayload.exitingStaff.last_name}} prior to departure.<br> The Education Techonology
-                            Office is not
-                            responsible for any files after {{
-                            submitPayload.exitingStaff.first_name}} {{
-                            submitPayload.exitingStaff.last_name}} has been deactivated.
+                                class="bi bi-chat-right-text-fill"></i><strong><u>Please Note</u>:</strong> Personal
+                            files (i.e. Documents, pictures, music and
+                            videos) should be removed by {{ submitPayload.exitingStaff.title}} {{
+                            submitPayload.exitingStaff.first_name}} {{ submitPayload.exitingStaff.last_name}} prior to
+                            leaving ~(schoolname) as {{ submitPayload.exitingStaff.title}} {{
+                            submitPayload.exitingStaff.first_name}} {{ submitPayload.exitingStaff.last_name}} will not
+                            have access PowerSchool, Canvas, Office 365, Teams, email, or their device, once removed
+                            from the system. The exiting staff will not be able to access their account after the chosen
+                            deactivation date.<br>
+                            <strong>The Education Technology Office is not responsible for any files after the staff
+                                member has been deactivated.</strong>
                         </div>
                     </div>
                 </div>

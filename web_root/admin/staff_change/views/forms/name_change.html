@@ -5,9 +5,8 @@
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">
                     <div class="col-auto">
-                        <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Who's name
-                            is
-                            changing?</label>
+                        <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Whose name
+                            is changing?</label>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.nameChange.users_dcid" data-ng-required="true"
                             data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.nameChange.users_dcid, 'users_dcid')">
@@ -94,7 +93,7 @@
                                             value="june30" data-ng-required="!submitPayload.nameChange.date_radio"
                                             tabindex="0">
                                         <label class="form-check-label" for="exit-date-june30">June
-                                            30th</label>
+                                            30<sup>th</sup></label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="exit-date-group"
@@ -123,11 +122,10 @@
                     <div class="col"
                         data-ng-if="userContext.pageStatus =='Submit' && submitPayload.nameChange.date_radio">
                         <div class="alert alert-warning" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>
-                            {{submitPayload.nameChange.old_name_placeholder}} will need to be at ~(schoolname) and on
-                            the
-                            network in order to change their name, so we can ensure they can log into all the various
-                            systems after the update.<br> Please choose an change date when
-                            {{submitPayload.nameChange.old_name_placeholder}} can be at ~(schoolname).
+                            Please choose a change date when {{submitPayload.nameChange.old_name_placeholder}} can be at
+                            ~(schoolname) and on the network to ensure they can log into all the various systems after
+                            the update.<br>{{submitPayload.nameChange.old_name_placeholder}} will be instructed to call
+                            the Education Technology Office to complete the name change process.
                         </div>
                     </div>
                 </div>
