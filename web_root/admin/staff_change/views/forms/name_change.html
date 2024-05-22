@@ -123,7 +123,8 @@
                         data-ng-if="userContext.pageStatus =='Submit' && submitPayload.nameChange.date_radio">
                         <div class="alert alert-warning" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>
                             Please choose a change date when {{submitPayload.nameChange.old_name_placeholder}} can be at
-                            ~(schoolname) and on the network to ensure they can log into all the various systems after
+                            {{ userContext.curSchoolName }} and on the network to ensure they can log into all the
+                            various systems after
                             the update.<br>{{submitPayload.nameChange.old_name_placeholder}} will be instructed to call
                             the Education Technology Office to complete the name change process.
                         </div>

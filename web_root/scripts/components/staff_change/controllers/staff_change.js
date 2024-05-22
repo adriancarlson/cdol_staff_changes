@@ -16,6 +16,7 @@ define(function (require) {
 			$scope.userContext = {
 				pageStatus: $attrs.ngStatus,
 				curSchoolId: $attrs.ngCurSchoolId,
+				curSchoolName: $attrs.ngCurSchoolName,
 				curYearId: $attrs.ngCurYearId,
 				curDate: $attrs.ngCurDate,
 				curTime: $attrs.ngCurTime,

@@ -7,7 +7,7 @@
                     <div class="col-auto">
                         <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Who is
                             Transferring
-                            into ~(schoolname)?</label><span class="text-muted"
+                            into {{ userContext.curSchoolName }}?</label><span class="text-muted"
                             data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Type Other if staff
                                     member is not listed in the dropdown)</em></small></span>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
@@ -245,7 +245,7 @@
                                         <label class="form-label form-label-sm label-reset staff-change-req">Will {{
                                             submitPayload.transferringStaff.first_name}} {{
                                             submitPayload.transferringStaff.last_name}} be replacing a current staff
-                                            member at ~(schoolname)?</label><br>
+                                            member at {{ userContext.curSchoolName }}?</label><br>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="exit-radio-group"
                                                 id="exit-radio-yes"
@@ -348,7 +348,7 @@
                                         <label class="form-label form-label-sm label-reset staff-change-req">Is {{
                                             submitPayload.transferringStaff.replace_first_name}} {{
                                             submitPayload.transferringStaff.replace_last_name}} leaving
-                                            ~(schoolname)?</label><br>
+                                            {{ userContext.curSchoolName }}?</label><br>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="leaving-radio-group"
                                                 id="leaving-radio-yes"
@@ -383,7 +383,7 @@
                                         <label class="form-label form-label-sm label-reset staff-change-req">Is {{
                                             submitPayload.transferringStaff.replace_first_name}} {{
                                             submitPayload.transferringStaff.replace_last_name}} changing positions/jobs
-                                            within ~(schoolname)?</label><br>
+                                            within {{ userContext.curSchoolName }}?</label><br>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="position-radio-group"
                                                 id="position-radio-yes"
