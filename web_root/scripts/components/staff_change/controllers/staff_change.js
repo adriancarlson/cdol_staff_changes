@@ -186,16 +186,6 @@ define(function (require) {
 				$anchorScroll('staff-change-scroll-top')
 			}
 
-			// $scope.updateLicensing = pageContext => {
-			// 	if (!$scope.submitPayload[pageContext].hasOwnProperty('license_microsoft')) {
-			// 		$scope.submitPayload[pageContext].license_microsoft = 'A1'
-			// 	}
-
-			// 	if (!$scope.submitPayload[pageContext].hasOwnProperty('license_adobe')) {
-			// 		$scope.submitPayload[pageContext].license_adobe = 'No'
-			// 	}
-			// }
-
 			$scope.updateScopeFromDropdown = (pageContext, resource, identifier, field) => {
 				//if dropdown source is user data
 				if (resource === 'usersData') {

@@ -135,7 +135,6 @@
                             aria-label="Preferred Name" placeholder='ex: Bill instead of William'
                             data-ng-model="submitPayload.newStaff.preferred_name"
                             data-ng-blur="submitPayload.newStaff.preferred_name = (submitPayload.newStaff.preferred_name | titleCase)">
-
                     </div>
                     <div class="col-2"
                         data-ng-if="submitPayload.newStaff.gender === 'F' && (submitPayload.newStaff.title ==='Mrs.' || submitPayload.newStaff.title ==='Dr.')">
@@ -212,51 +211,6 @@
                         </select>
                     </div>
                 </div>
-                <!-- Licensing to be added after submission restructure 
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.newStaff.staff_type">
-                    <div class="col-auto">
-                        <div class="card">
-                            <div class="card-header fw-semibold ps-1 staff-change-req">{{submitPayload.newStaff.title}} {{
-                                submitPayload.newStaff.first_name}} {{
-                                submitPayload.newStaff.last_name}}'s Licensing</div>
-                            <div class="card-body">
-                                <label class="form-label form-label-sm label-reset staff-change-req">Microsoft 365</label><br>
-                                <select id="new-staff-license-microsoft" class="form-select form-select-sm"
-                                    aria-label="new-staff-license-microsoft"
-                                    data-ng-model="submitPayload.newStaff.license_microsoft"
-                                    data-ng-required="!submitPayload.newStaff.license_microsoft">
-                                    <option value="A1">A1 (Free)</option>
-                                    <option value="A3">A3 (Paid)</option>
-                                </select>
-                                <div class="py-3">
-                                    <label class="form-label form-label-sm label-reset staff-change-req">Adobe License?</label>
-                                    <select id="new-staff-license-adobe" class="form-select form-select-sm"
-                                        aria-label="new-staff-license-adobe"
-                                        data-ng-model="submitPayload.newStaff.license_adobe"
-                                        data-ng-required="!submitPayload.newStaff.license_adobe">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <div class="card">
-                            <div class="card-header fw-semibold ps-1">Licensing Notes:</div>
-                            <div class="card-body">
-                                <strong>Microsoft Licensing:</strong> Blah Blah.<br>
-                                Blah blah
-                            </div>
-                            <div class="card-footer">
-                                <strong>Adobe Licensing:</strong> Blah Blah.<br>
-                                Blah blah
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                -->
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.newStaff.first_name">
                     <div class="col-auto">
                         <div class="card">
