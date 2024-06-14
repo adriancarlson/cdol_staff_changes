@@ -73,7 +73,7 @@
                                         <textarea class="form-control" placeholder="Previous Position/Job:"
                                             id="job-change-previous-position" spellcheck="true" wrap="absolute"
                                             data-ng-model="submitPayload.jobChange.previous_position"
-                                            data-ng-blur="submitPayload.jobChange.previous_position = (submitPayload.jobChange.previous_position | sentenceCase)"
+                                            data-ng-blur="submitPayload.jobChange.previous_position = (submitPayload.jobChange.previous_position | sentenceCase);dupSearch(userContext.formType, submitPayload[userContext.formType])"
                                             data-ng-required="true"></textarea>
                                         <label class="fw-semibold" for="job-change-previous-position">Previous
                                             Position/Job:</label>

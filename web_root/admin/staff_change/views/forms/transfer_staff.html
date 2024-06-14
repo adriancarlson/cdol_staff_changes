@@ -74,7 +74,8 @@
                         <select id="transferring-staff-type" class="form-select form-select-sm"
                             aria-label="transferring-staff-type"
                             data-ng-model="submitPayload.transferringStaff.staff_type"
-                            data-ng-change="updateLicensing(userContext.pageContext)" data-ng-required="true">
+                            data-ng-change="updateLicensing(userContext.pageContext);dupSearch(userContext.formType, submitPayload[userContext.formType])"
+                            data-ng-required="true">
                             <option></option>
                             <option value="1">Teacher</option>
                             <option value="2">Staff</option>
