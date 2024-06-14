@@ -26,7 +26,7 @@
 	AND ( u_cdol_staff_changes.calendar_year = '~(gpv.calendarYear)'
 		OR '~(gpv.calendarYear)' = 0)
 	AND ( '~(gpv.changeType)' = 'allStaff'
-		OR u_cdol_staff_changes.change_type = '~(gpv.changeType)' )
+		OR u_cdol_staff_changes.change_type IN ('~(gpv.changeType)') )
     ORDER BY
         u_cdol_staff_changes.submission_date DESC,
         u_cdol_staff_changes.last_name

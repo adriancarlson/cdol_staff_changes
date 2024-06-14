@@ -33,10 +33,9 @@
                 data-ng-if="(staffChangeForm.$invalid && staffChangeForm.$dirty) || !submitPayload[userContext.formType].users_dcid">Please
                 fill all required fields prior to submitting.</span>
             <button type="button" id="subBtn" class="m-0 p-2" data-ng-disabled="staffChangeForm.$invalid"
-                data-ng-show="!subConfirm"
-                data-ng-click="subConfirm = true;dupSearch(userContext.formType, submitPayload[userContext.formType])">Submit</button>
+                data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
             <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
-                data-ng-click="subConfirm = false">Cancel</button>
+                data-ng-click="subConfirm = false;">Cancel</button>
             <button type="button" id="confBtn" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
                 data-ng-click="createStaffChange()">Confirm Submit</button>
         </div>
@@ -82,12 +81,14 @@
     }"><strong>{{ staffChangeDupe.change_type | changeTypeFilter }}</strong></span></em> request for
                     <strong>{{staffChangeDupe.title}} {{staffChangeDupe.first_name}}
                         {{staffChangeDupe.last_name}}</strong> on {{staffChangeDupe.submission_date|date}}
-                    {{staffChangeDupe.submission_time}}.Please click the 'Go to Submission' button below to review that
-                    request, or click 'Proceed' to continue with your submission.
+                    {{staffChangeDupe.submission_time}}.<br>To review this previous submission click the <strong>Go to
+                        this Submission</strong> button. If you do not believe this is a duplicate than click the
+                    <strong>Proceed</strong> button below to continue with your submission.
                 </div>
                 <div class="card-footer">
                     <div class="button-row">
-                        <button class="mt-1 mb-0">Go to this Submission</button>
+                        <a data-ng-href="/admin/staff_change/submit.html?status=Edit&id={{staffChangeDupe.staffid}}"
+                            target="_blank" type="button" id="review" class="button mt-1 mb-0">Go to this Submission</a>
                     </div>
                 </div>
             </div>

@@ -18,13 +18,14 @@ define(function (require) {
 			$scope.openDupeDialog = function () {
 				psDialogHolder = $j('#dupeDiv').detach()
 				psDialog({
-					type: 'dialogMDiv',
+					type: 'dialogM',
 					width: 850,
 					title: 'Potential Duplicate Staff Change Found!',
 					content: psDialogHolder,
 					initBehaviors: true,
 					close: function () {
 						showMessage('dialog close event hi')
+						delete $scope.staffChangeDupeData
 						// Move View back to a holder so that it won't be lost if another type of dialog is opened.
 						$j('#dialogContainer').append(psDialogHolder)
 					},
@@ -32,9 +33,10 @@ define(function (require) {
 						{
 							id: 'saveDialogButton',
 							text: 'Proceed',
-							title: 'save tooltip',
+							title: 'Proceed',
 							click: function () {
 								showMessage('save was clicked')
+								delete $scope.staffChangeDupeData
 								psDialogClose()
 							}
 						}
@@ -126,8 +128,6 @@ define(function (require) {
 			}
 
 			$scope.dupSearch = async (formType, formPayload) => {
-				//   loadingDialog()
-
 				let staffChangeDupParams = {
 					calendarYear: new Date().getFullYear().toString(),
 					firstName: formPayload.first_name,
@@ -136,18 +136,19 @@ define(function (require) {
 					changeType: 'allStaff'
 				}
 				await $scope.getJSONData('staffChangeDupeData', staffChangeDupParams)
-				$scope.openDupeDialog()
-				// console.log($scope.staffChangeDupeData)
-				// // getting staff counts
-				// $scope.$apply()
-				// if ($scope.staffChangeDupeData.length > 0) {
-				// 	console.log($scope.staffChangeDupeData)
-				// 	$scope.openDupeDialog()
-				// }
 
-				// 	schoolid: $scope.userContext.curSchoolId,
-				// console.log('searchPayload', searchPayload)
-				// closeLoading()
+				// Conditional filtering
+				if (formType === 'newStaff' || formType === 'transferringStaff') {
+					$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === 'newStaff' || item.change_type === 'transferringStaff')
+				} else {
+					$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === formType)
+				}
+
+				$scope.$apply()
+
+				if ($scope.staffChangeDupeData.length > 0) {
+					$scope.openDupeDialog()
+				}
 			}
 			// function to switch forms and set scope to hold form data
 			$scope.formDisplay = (pageContext, prevContext, direction) => {
