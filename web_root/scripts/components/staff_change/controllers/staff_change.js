@@ -8,10 +8,66 @@ define(function (require) {
 		'$attrs',
 		'$window',
 		'$anchorScroll',
+		'$location',
+		'pqService',
 		'formatService',
 		'psApiService',
 		'jitbitService',
-		function ($scope, $http, $attrs, $window, $anchorScroll, formatService, psApiService, jitbitService) {
+		function ($scope, $http, $attrs, $window, $anchorScroll, $location, pqService, formatService, psApiService, jitbitService) {
+			let psDialogHolder = null
+
+			$scope.openDupeDialog = function () {
+				psDialogHolder = $j('#dupeDiv').detach()
+				psDialog({
+					type: 'dialogM',
+					width: 850,
+					title: 'Potential Duplicate Staff Change Found!',
+					content: psDialogHolder,
+					initBehaviors: true,
+					close: function () {
+						showMessage('dialog close event hi')
+						delete $scope.staffChangeDupeData
+						// Move View back to a holder so that it won't be lost if another type of dialog is opened.
+						$j('#dialogContainer').append(psDialogHolder)
+					},
+					buttons: [
+						{
+							id: 'saveDialogButton',
+							text: 'Proceed',
+							title: 'Proceed',
+							click: function () {
+								showMessage('save was clicked')
+								delete $scope.staffChangeDupeData
+								psDialogClose()
+							}
+						}
+					]
+				})
+			}
+
+			$scope.closeDupeDialog = function (formType, pageContext) {
+				console.log('running', formType, pageContext)
+				delete $scope.staffChangeDupeData
+				$j('#dialogContainer').append(psDialogHolder)
+				psDialogClose()
+				if (pageContext === 'exitingStaff') {
+					$location.hash('leaving_radio_target')
+					delete $scope.submitPayload.exitingStaff
+					$scope.submitPayload[formType].leaving_radio = 0
+					$anchorScroll()
+				}
+				if (pageContext === 'jobChange') {
+					$location.hash('position_radio_target')
+					delete $scope.submitPayload.jobChange
+					$scope.submitPayload[formType].position_radio = 0
+					$anchorScroll()
+				}
+			}
+
+			var showMessage = function (message) {
+				console.log(message)
+			}
+
 			//initializing overall form data
 			$scope.userContext = {
 				pageStatus: $attrs.ngStatus,
@@ -79,6 +135,7 @@ define(function (require) {
 					})
 					$scope[resource] = res.data
 					$scope[resource].pop()
+					$scope.$apply()
 				}
 			}
 
@@ -89,6 +146,31 @@ define(function (require) {
 					firstNameSubString: staffToSearch.first_name.substring(0, 3).toLowerCase()
 				}
 				$scope.getJSONData('staffDupData', staffDupParams)
+			}
+
+			$scope.dupSearch = async (pageContext, formPayload) => {
+				console.log(pageContext)
+				let staffChangeDupParams = {
+					calendarYear: new Date().getFullYear().toString(),
+					firstName: formPayload.replace_first_name ? formPayload.replace_first_name : formPayload.first_name,
+					lastName: formPayload.replace_first_name ? formPayload.replace_last_name : formPayload.last_name,
+					curSchoolID: formPayload.replace_first_name ? formPayload.replace_homeschoolid : $scope.userContext.curSchoolId,
+					changeType: 'allStaff'
+				}
+				await $scope.getJSONData('staffChangeDupeData', staffChangeDupParams)
+
+				// Conditional filtering
+				if (pageContext === 'newStaff' || pageContext === 'transferringStaff') {
+					$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === 'newStaff' || item.change_type === 'transferringStaff')
+				} else {
+					$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === pageContext)
+				}
+
+				$scope.$apply()
+
+				if ($scope.staffChangeDupeData.length > 0) {
+					$scope.openDupeDialog()
+				}
 			}
 			// function to switch forms and set scope to hold form data
 			$scope.formDisplay = (pageContext, prevContext, direction) => {
@@ -120,6 +202,7 @@ define(function (require) {
 						break
 					case 'forward':
 						$scope.updateAdditionalPayload(prevContext)
+						delete $scope.staffChangeDupeData
 						break
 				}
 				//adding scroll to top when switching between forms
@@ -398,6 +481,27 @@ define(function (require) {
 					return `${trimmedSentence.charAt(0).toUpperCase()}${trimmedSentence.slice(1).toLowerCase()}`
 				})
 				.join('. ')
+		}
+	})
+	module.filter('changeTypeFilter', function () {
+		// Define the filter function that takes the input value and returns the transformed value
+		return function (input) {
+			// Check if input is a valid string
+			if (typeof input === 'string') {
+				// Split the input string by uppercase letters
+				var words = input.split(/(?=[A-Z])/)
+
+				// Capitalize the first letter of each word
+				var capitalizedWords = words.map(function (word) {
+					return word.charAt(0).toUpperCase() + word.slice(1)
+				})
+
+				// Join the capitalized words with space
+				return capitalizedWords.join(' ')
+			} else {
+				// Return input unchanged if it's not a string
+				return input
+			}
 		}
 	})
 })

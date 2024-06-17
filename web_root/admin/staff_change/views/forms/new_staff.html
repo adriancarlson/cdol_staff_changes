@@ -71,7 +71,7 @@
                                 data-ng-blur="submitPayload.newStaff.middle_name = (submitPayload.newStaff.middle_name | titleCase)">
                             <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
                                 aria-label="Last name" data-ng-model="submitPayload.newStaff.last_name"
-                                data-ng-blur="submitPayload.newStaff.last_name = (submitPayload.newStaff.last_name | titleCase)"
+                                data-ng-blur="submitPayload.newStaff.last_name = (submitPayload.newStaff.last_name | titleCase);dupSearch(userContext.pageContext, submitPayload[userContext.formType])"
                                 data-ng-required="true">
                         </div>
                     </div>
@@ -133,7 +133,6 @@
                             aria-label="Preferred Name" placeholder='ex: Bill instead of William'
                             data-ng-model="submitPayload.newStaff.preferred_name"
                             data-ng-blur="submitPayload.newStaff.preferred_name = (submitPayload.newStaff.preferred_name | titleCase)">
-
                     </div>
                     <div class="col-2"
                         data-ng-if="submitPayload.newStaff.gender === 'F' && (submitPayload.newStaff.title ==='Mrs.' || submitPayload.newStaff.title ==='Dr.')">
