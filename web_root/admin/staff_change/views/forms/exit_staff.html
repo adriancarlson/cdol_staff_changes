@@ -90,7 +90,7 @@
                                             id="exit-date-today" data-ng-model="submitPayload.exitingStaff.date_radio"
                                             value="today" data-ng-required="!submitPayload.exitingStaff.date_radio"
                                             tabindex="0"
-                                            data-ng-change="dupSearch(userContext.formType, submitPayload[userContext.formType])">
+                                            data-ng-change="dupSearch(userContext.pageContext, submitPayload[userContext.formType])">
                                         <label class="form-check-label" for="exit-date-today">Today
                                             ({{ userContext.curDate}})</label>
                                     </div>
@@ -100,7 +100,7 @@
                                             id="exit-date-june30" data-ng-model="submitPayload.exitingStaff.date_radio"
                                             value="june30" data-ng-required="!submitPayload.exitingStaff.date_radio"
                                             tabindex="0"
-                                            data-ng-change="dupSearch(userContext.formType, submitPayload[userContext.formType])">
+                                            data-ng-change="dupSearch(userContext.pageContext, submitPayload[userContext.formType])">
                                         <label class="form-check-label" for="exit-date-june30">June
                                             30th</label>
                                     </div>
@@ -109,7 +109,7 @@
                                             id="exit-date-specific"
                                             data-ng-model="submitPayload.exitingStaff.date_radio" value="other"
                                             data-ng-required="!submitPayload.exitingStaff.date_radio" tabindex="0"
-                                            data-ng-change="dupSearch(userContext.formType, submitPayload[userContext.formType])">
+                                            data-ng-change="dupSearch(userContext.pageContext, submitPayload[userContext.formType])">
                                         <label class="form-check-label" for="exit-date-specific">Specific
                                             Date</label>
                                     </div>

@@ -127,21 +127,22 @@ define(function (require) {
 				$scope.getJSONData('staffDupData', staffDupParams)
 			}
 
-			$scope.dupSearch = async (formType, formPayload) => {
+			$scope.dupSearch = async (pageContext, formPayload) => {
+				console.log(pageContext)
 				let staffChangeDupParams = {
 					calendarYear: new Date().getFullYear().toString(),
-					firstName: formPayload.first_name,
-					lastName: formPayload.last_name,
-					curSchoolID: $scope.userContext.curSchoolId,
+					firstName: formPayload.replace_first_name ? formPayload.replace_first_name : formPayload.first_name,
+					lastName: formPayload.replace_first_name ? formPayload.replace_last_name : formPayload.last_name,
+					curSchoolID: formPayload.replace_first_name ? formPayload.replace_homeschoolid : $scope.userContext.curSchoolId,
 					changeType: 'allStaff'
 				}
 				await $scope.getJSONData('staffChangeDupeData', staffChangeDupParams)
 
 				// Conditional filtering
-				if (formType === 'newStaff' || formType === 'transferringStaff') {
+				if (pageContext === 'newStaff' || pageContext === 'transferringStaff') {
 					$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === 'newStaff' || item.change_type === 'transferringStaff')
 				} else {
-					$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === formType)
+					$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === pageContext)
 				}
 
 				$scope.$apply()
@@ -180,6 +181,7 @@ define(function (require) {
 						break
 					case 'forward':
 						$scope.updateAdditionalPayload(prevContext)
+						delete $scope.staffChangeDupeData
 						break
 				}
 				//adding scroll to top when switching between forms
