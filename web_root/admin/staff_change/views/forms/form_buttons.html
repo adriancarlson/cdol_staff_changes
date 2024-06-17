@@ -64,7 +64,6 @@
         </div>
     </div>
 </div>
-
 <div class="hide" id="dialogContainer">
     <div id="dupeDiv" class="container-fluid">
         <div data-ng-repeat="staffChangeDupe in staffChangeDupeData" class="card m-2">
@@ -79,16 +78,37 @@
         'text-warning': staffChangeDupe.change_type  === 'nameChange',
         'text-secondary': staffChangeDupe.change_type  === 'exitingStaff'
     }"><strong>{{ staffChangeDupe.change_type | changeTypeFilter }}</strong></span></em> request for
-                    <strong>{{staffChangeDupe.title}} {{staffChangeDupe.first_name}}
+                    <strong><span data-ng-show="staffChangeDupe.title !== 'Fr.' &&
+                        staffChangeDupe.title !== 'Msgr.' &&
+                        staffChangeDupe.title !== 'Sr.' &&
+                        staffChangeDupe.title !== 'Br.' ">{{staffChangeDupe.title}}</span>
+                        {{staffChangeDupe.first_name}}
                         {{staffChangeDupe.last_name}}</strong> on {{staffChangeDupe.submission_date|date}}
-                    {{staffChangeDupe.submission_time}}.<br>To review this previous submission click the <strong>Go to
-                        this Submission</strong> button. If you do not believe this is a duplicate than click the
-                    <strong>Proceed</strong> button below to continue with your submission.
+                    {{staffChangeDupe.submission_time}}.<br>
+                    <span data-ng-if="!submitPayload[userContext.pageContext].replace_first_name">To review this
+                        previous submission click the <strong>Go to this Submission</strong> button. <br></span>
+                    <span data-ng-if="submitPayload[userContext.pageContext].replace_first_name">If this is a duplicate
+                        than click the <strong> Previous</strong> button, to go back to the previous screen and change
+                        the response to the <br><strong>Is <span
+                                data-ng-show="submitPayload[userContext.pageContext].title !== 'Fr.' &&
+                        submitPayload[userContext.pageContext].title !== 'Msgr.' &&
+                        submitPayload[userContext.pageContext].title !== 'Sr.' &&
+                        submitPayload[userContext.pageContext].title !== 'Br.' ">{{submitPayload[userContext.pageContext].title}}</span>
+                            {{submitPayload[userContext.pageContext].first_name}}
+                            {{submitPayload[userContext.pageContext].last_name}} leaving ~(schoolname)?</strong>
+                        question to <mark><strong>No</strong></mark> <br></span>
+                    If you do not believe this is a duplicate than click the <strong>Proceed</strong> button below to
+                    continue with your submission.
                 </div>
                 <div class="card-footer">
                     <div class="button-row">
-                        <a data-ng-href="/admin/staff_change/submit.html?status=Edit&id={{staffChangeDupe.staffid}}"
+                        <a data-ng-if="!submitPayload[userContext.pageContext].replace_first_name"
+                            data-ng-href="/admin/staff_change/submit.html?status=Edit&id={{staffChangeDupe.staffid}}"
                             type="button" id="review" class="button mt-1 mb-0">Go to this Submission</a>
+                        <button type="button" class="button mt-1 mb-0"
+                            data-ng-if="submitPayload[userContext.pageContext].replace_first_name"
+                            data-ng-click="closeDupeDialog(userContext.formType, userContext.pageContext);formDisplay(userContext.prevContext,userContext.formType, 'back')"><i
+                                class="bi bi-chevron-left fw-bold"></i> Previous</button>
                     </div>
                 </div>
             </div>

@@ -8,11 +8,12 @@ define(function (require) {
 		'$attrs',
 		'$window',
 		'$anchorScroll',
+		'$location',
 		'pqService',
 		'formatService',
 		'psApiService',
 		'jitbitService',
-		function ($scope, $http, $attrs, $window, $anchorScroll, pqService, formatService, psApiService, jitbitService) {
+		function ($scope, $http, $attrs, $window, $anchorScroll, $location, pqService, formatService, psApiService, jitbitService) {
 			let psDialogHolder = null
 
 			$scope.openDupeDialog = function () {
@@ -42,6 +43,19 @@ define(function (require) {
 						}
 					]
 				})
+			}
+
+			$scope.closeDupeDialog = function (formType, pageContext) {
+				console.log('running', formType, pageContext)
+				delete $scope.staffChangeDupeData
+				$j('#dialogContainer').append(psDialogHolder)
+				psDialogClose()
+				if (pageContext === 'exitingStaff') {
+					$location.hash('leaving_radio_target')
+					delete $scope.submitPayload.exitingStaff
+					$scope.submitPayload[formType].leaving_radio = 0
+					$anchorScroll()
+				}
 			}
 
 			var showMessage = function (message) {
