@@ -89,13 +89,17 @@
                         previous submission click the <strong>Go to this Submission</strong> button. <br></span>
                     <span data-ng-if="submitPayload[userContext.pageContext].replace_first_name">If this is a duplicate
                         than click the <strong> Previous</strong> button, to go back to the previous screen and change
-                        the response to the <br><strong>Is <span
+                        the response to the <br>
+                        <strong>Is <span
                                 data-ng-show="submitPayload[userContext.pageContext].title !== 'Fr.' &&
                         submitPayload[userContext.pageContext].title !== 'Msgr.' &&
                         submitPayload[userContext.pageContext].title !== 'Sr.' &&
                         submitPayload[userContext.pageContext].title !== 'Br.' ">{{submitPayload[userContext.pageContext].title}}</span>
                             {{submitPayload[userContext.pageContext].first_name}}
-                            {{submitPayload[userContext.pageContext].last_name}} leaving ~(schoolname)?</strong>
+                            {{submitPayload[userContext.pageContext].last_name}} <span
+                                data-ng-if="userContext.pageContext === 'exitingStaff'">leaving</span><span
+                                data-ng-if="userContext.pageContext === 'jobChange'">changing positions/jobs
+                                within</span> ~(schoolname)?</strong>
                         question to <mark><strong>No</strong></mark> <br></span>
                     If you do not believe this is a duplicate than click the <strong>Proceed</strong> button below to
                     continue with your submission.
