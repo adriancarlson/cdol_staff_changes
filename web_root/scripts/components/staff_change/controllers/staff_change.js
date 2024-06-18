@@ -20,7 +20,7 @@ define(function (require) {
 				psDialogHolder = $j('#dupeDiv').detach()
 				psDialog({
 					type: 'dialogM',
-					width: 850,
+					width: 1000,
 					title: 'Potential Duplicate Staff Change Found!',
 					content: psDialogHolder,
 					initBehaviors: true,
@@ -102,7 +102,7 @@ define(function (require) {
 			}
 			$scope.todayBeforeJuly()
 
-			//pull existing Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
+			//pull exiting Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
 			$scope.getStaffChange = async staffChangeId => {
 				loadingDialog()
 				//copyFormatKeys
@@ -380,7 +380,7 @@ define(function (require) {
 						curDate: $scope.userContext.curDate,
 						curTime: $scope.userContext.curTime,
 						userEmail: $scope.userContext.curUserEmail,
-						readableChangeType: formatService.decamelize(formPayload.change_type)
+						readableChangeType: formatService.changeMap(formPayload.change_type)
 					}
 
 					let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
@@ -484,20 +484,19 @@ define(function (require) {
 		}
 	})
 	module.filter('changeTypeFilter', function () {
-		// Define the filter function that takes the input value and returns the transformed value
+		const reverseMap = {
+			newStaff: 'New Staff',
+			exitingStaff: 'Exiting Staff',
+			nameChange: 'Name Change',
+			jobChange: 'Job Change',
+			transferringStaff: 'Transferring-In Staff'
+		}
+
 		return function (input) {
 			// Check if input is a valid string
 			if (typeof input === 'string') {
-				// Split the input string by uppercase letters
-				var words = input.split(/(?=[A-Z])/)
-
-				// Capitalize the first letter of each word
-				var capitalizedWords = words.map(function (word) {
-					return word.charAt(0).toUpperCase() + word.slice(1)
-				})
-
-				// Join the capitalized words with space
-				return capitalizedWords.join(' ')
+				// Return the corresponding value from reverseMap or null if not found
+				return reverseMap[input] || null
 			} else {
 				// Return input unchanged if it's not a string
 				return input

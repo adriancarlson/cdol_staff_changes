@@ -1,17 +1,17 @@
 <div id="transferring-form-container" class="container-fluid">
     <div class="card">
-        <div class="card-header bg-primary text-bg-primary bg-gradient fs-6 fw-semibold">Transferring Staff:</div>
+        <div class="card-header bg-primary text-bg-primary bg-gradient fs-6 fw-semibold">Transferring-In Staff:</div>
         <div class="card-body">
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">
                     <div class="col-auto">
                         <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Who is
-                            Transferring
-                            into {{ userContext.curSchoolName }}?</label><span class="text-muted"
+                            Transferring-In
+                            to {{ userContext.curSchoolName }}?</label><span class="text-muted"
                             data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Type Other if staff
                                     member is not listed in the dropdown)</em></small></span>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
-                            data-placeholder="Type Name of Transferring Staff Member"
+                            data-placeholder="Type Name of Transferring-In Staff Member"
                             data-ng-model="submitPayload.transferringStaff.users_dcid" data-ng-required="true"
                             data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.transferringStaff.users_dcid, 'users_dcid')">
                             <option selected></option>
@@ -34,7 +34,7 @@
                     data-ng-if="submitPayload.transferringStaff.users_dcid == -1 || userContext.pageStatus =='Edit'">
                     <div class="col-6">
                         <label for="transferring-staff-name"
-                            class="form-label form-label-sm  label-reset staff-change-req">Transferring Staff
+                            class="form-label form-label-sm  label-reset staff-change-req">Transferring-In Staff
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
@@ -107,7 +107,7 @@
                         <div class="card">
                             <div class="card-header fw-semibold ps-1 staff-change-req">{{
                                 submitPayload.transferringStaff.first_name}} {{
-                                submitPayload.transferringStaff.last_name}}'s Transfer
+                                submitPayload.transferringStaff.last_name}}'s Transfer-In
                                 Date</div>
                             <div class="card-body">
                                 <div data-ng-if="userContext.pageStatus =='Submit'">
@@ -496,7 +496,7 @@
                             Office is not
                             responsible for any files after {{
                             submitPayload.transferringStaff.first_name}} {{
-                            submitPayload.transferringStaff.last_name}} has been transferred.
+                            submitPayload.transferringStaff.last_name}} has been transferred in.
                         </div>
                     </div>
                 </div>

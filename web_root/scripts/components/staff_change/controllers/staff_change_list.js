@@ -28,10 +28,10 @@ define(function (require) {
 			}
 			$scope.changeMap = {
 				'New Staff': 'newStaff',
-				'Existing Staff': 'exitingStaff',
+				'Exiting Staff': 'exitingStaff',
 				'Name Change': 'nameChange',
 				'Job Change': 'jobChange',
-				'Transferring Staff': 'transferringStaff'
+				'Transferring-In Staff': 'transferringStaff'
 			}
 			$scope.schoolMap = {
 				'All Saints Catholic School Holdrege': 'All Saints Catholic School Holdrege',
@@ -160,20 +160,19 @@ define(function (require) {
 		}
 	])
 	module.filter('changeTypeFilter', function () {
-		// Define the filter function that takes the input value and returns the transformed value
+		const reverseMap = {
+			newStaff: 'New Staff',
+			exitingStaff: 'Exiting Staff',
+			nameChange: 'Name Change',
+			jobChange: 'Job Change',
+			transferringStaff: 'Transferring-In Staff'
+		}
+
 		return function (input) {
 			// Check if input is a valid string
 			if (typeof input === 'string') {
-				// Split the input string by uppercase letters
-				var words = input.split(/(?=[A-Z])/)
-
-				// Capitalize the first letter of each word
-				var capitalizedWords = words.map(function (word) {
-					return word.charAt(0).toUpperCase() + word.slice(1)
-				})
-
-				// Join the capitalized words with space
-				return capitalizedWords.join(' ')
+				// Return the corresponding value from reverseMap or null if not found
+				return reverseMap[input] || null
 			} else {
 				// Return input unchanged if it's not a string
 				return input

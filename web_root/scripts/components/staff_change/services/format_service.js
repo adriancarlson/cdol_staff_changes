@@ -102,6 +102,18 @@ define(function (require) {
 						})
 				},
 
+				changeMap: function (value) {
+					const reverseMap = {
+						newStaff: 'New Staff',
+						exitingStaff: 'Exiting Staff',
+						nameChange: 'Name Change',
+						jobChange: 'Job Change',
+						transferringStaff: 'Transferring-In Staff'
+					}
+
+					return reverseMap[value] || null
+				},
+
 				sentenceCase: function (str) {
 					if (str !== undefined) {
 						var n = str.split('.')
