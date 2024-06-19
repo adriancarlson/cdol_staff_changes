@@ -450,17 +450,17 @@ define(function (require) {
 						readableChangeType: formatService.changeMap(formPayload.change_type)
 					}
 
-					// 	let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
+					let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
 
-					// 	await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
+					await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
 
 					let formattedDate = formatService.formatDateForApi(formPayload.deadline)
 					let concatenatedDateTime = `${formattedDate}T23:59:00Z`
 
-					// 	await jitbitService.updateJitbitTicket({ id: jitbitTicketId, dueDate: concatenatedDateTime })
+					await jitbitService.updateJitbitTicket({ id: jitbitTicketId, dueDate: concatenatedDateTime })
 
 					formPayload.staffChangeId = staffChangeId
-					// 	formPayload.ticket_id = jitbitTicketId
+					formPayload.ticket_id = jitbitTicketId
 				})
 				//sending to confirm screen after submission
 				$scope.formDisplay('confirm', $scope.userContext.pageContext)
