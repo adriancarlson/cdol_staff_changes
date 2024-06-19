@@ -210,14 +210,21 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.newStaff.first_name">
-                    <div class="col-auto">
+                    <div class="col-2">
                         <label class="form-label form-label-sm label-reset staff-change-req">Requested
                             Account Creation Date</label><br>
                         <input title="Transfer Date" type="text" class="psDateWidget"
-                            data-ng-model="submitPayload.newStaff.deadline"
+                            data-minDate="{{userContext.minDate}}" data-ng-model="submitPayload.newStaff.deadline"
                             ng-init="submitPayload.newStaff.deadline = userContext.tempDeadline"
                             data-ng-required="true">
                         <script type="text/javascript">initBehaviors();</script>
+                    </div>
+                    <div class="col-4">
+                        <div class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
+                                data-ng-if="submitPayload.newStaff.deadline =='06/30/2024'">We recommend June
+                                30<sup>th</sup> for all new staff that will start next school year.<br></span> Please
+                            allow <strong><em>at least</em></strong> 3 business days for account creation.
+                        </div>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"

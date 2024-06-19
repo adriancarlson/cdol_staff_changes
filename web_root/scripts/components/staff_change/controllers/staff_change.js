@@ -149,11 +149,12 @@ define(function (require) {
 				return date
 			}
 
+			$scope.userContext.minDate = formatDate(addBusinessDays(today, 3))
+
 			if (today >= firstDay && today < lastDay) {
 				$scope.userContext.tempDeadline = formatDate(lastDay)
 			} else {
-				const newDeadline = addBusinessDays(today, 3)
-				$scope.userContext.tempDeadline = formatDate(newDeadline)
+				$scope.userContext.tempDeadline = $scope.userContext.minDate
 			}
 
 			// setting up universal formatKeys that will be used in API calls to format fields or delete feidls
