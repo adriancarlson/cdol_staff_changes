@@ -92,7 +92,7 @@ define(function (require) {
 			const lastDay = new Date(`06/30/${curYear}`)
 			const today = new Date()
 
-			const holidays = [
+			$scope.holidays = [
 				new Date(`01/01/${curYear}`), // New Year's Day
 				new Date(`01/02/${curYear}`), // Christmas Break
 				new Date(`01/03/${curYear}`), // Christmas Break
@@ -141,7 +141,7 @@ define(function (require) {
 						continue
 					}
 					// Check if it's a holiday
-					if (holidays.some(holiday => holiday.getTime() === date.getTime())) {
+					if ($scope.holidays.some(holiday => holiday.getTime() === date.getTime())) {
 						continue
 					}
 					days--
@@ -155,6 +155,26 @@ define(function (require) {
 				$scope.userContext.tempDeadline = formatDate(lastDay)
 			} else {
 				$scope.userContext.tempDeadline = $scope.userContext.minDate
+			}
+
+			$scope.checkIfBusinessDay = pageContext => {
+				const checkDate = new Date($scope.submitPayload[pageContext].deadline)
+
+				// Function to check if a date is a business day
+				const isBusinessDay = date => {
+					// Check if it's a weekend
+					if (date.getDay() === 0 || date.getDay() === 6) {
+						return false
+					}
+					// Check if it's a holiday
+					if ($scope.holidays.some(holiday => holiday.getTime() === date.getTime())) {
+						return false
+					}
+					return true
+				}
+
+				// Check if the checkDate is a business day
+				$scope.userContext.invalidDate = !isBusinessDay(checkDate)
 			}
 
 			// setting up universal formatKeys that will be used in API calls to format fields or delete feidls
