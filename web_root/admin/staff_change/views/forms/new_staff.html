@@ -125,15 +125,6 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3 gx-3">
-                    <div class="col-3">
-                        <label for="new-staff-preferred-name" class="form-label form-label-sm  label-reset">Preferred
-                            Name </label><span class="text-muted"><small><em> (Chosen name that may differ from legal
-                                    name)</em></small></span></label>
-                        <input id="new-staff-preferred-name" type="text" class="form-control form-control-sm"
-                            aria-label="Preferred Name" placeholder='ex: Bill instead of William'
-                            data-ng-model="submitPayload.newStaff.preferred_name"
-                            data-ng-blur="submitPayload.newStaff.preferred_name = (submitPayload.newStaff.preferred_name | titleCase)">
-                    </div>
                     <div class="col-2"
                         data-ng-if="submitPayload.newStaff.gender === 'F' && (submitPayload.newStaff.title ==='Mrs.' || submitPayload.newStaff.title ==='Dr.')">
                         <label for="new-staff-maiden-name" class="form-label form-label-sm  label-reset">Maiden
