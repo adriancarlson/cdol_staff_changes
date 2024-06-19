@@ -220,7 +220,8 @@
                         <script type="text/javascript">initBehaviors();</script>
                     </div>
                     <div class="col-4">
-                        <div class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
+                        <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary" role="alert"><i
+                                class="bi bi-chat-right-text-fill"></i> <span
                                 data-ng-if="submitPayload.newStaff.deadline =='06/30/2024'">We recommend June
                                 30<sup>th</sup> for all new staff that will start next school year.<br></span> Please
                             allow <strong><em>at least</em></strong> 3 business days for account creation.
