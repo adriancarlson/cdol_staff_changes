@@ -84,6 +84,27 @@ define(function (require) {
 				pageContext: 'start',
 				prevContext: undefined
 			}
+
+			// initializing date formatting for deadline field
+
+			const curYear = new Date().getFullYear()
+			const firstDay = new Date(`01/01/${curYear}`)
+			const lastDay = new Date(`06/30/${curYear}`)
+			const today = new Date()
+
+			const formatDate = date => {
+				const month = ('0' + (date.getMonth() + 1)).slice(-2)
+				const day = ('0' + date.getDate()).slice(-2)
+				const year = date.getFullYear()
+				return `${month}/${day}/${year}`
+			}
+
+			if (today >= firstDay && today < lastDay) {
+				$scope.userContext.tempDeadline = formatDate(lastDay)
+			} else {
+				$scope.userContext.tempDeadline = null
+			}
+
 			// setting up universal formatKeys that will be used in API calls to format fields or delete feidls
 			$scope.formatKeys = {
 				dateKeys: ['_date', 'dob', 'deadline'],
@@ -92,15 +113,6 @@ define(function (require) {
 			}
 			//initilazing empty payload
 			$scope.submitPayload = {}
-			// determining if today between Jan 1st and July 1st
-			$scope.todayBeforeJuly = () => {
-				const curYear = new Date().getFullYear()
-				const firstDay = new Date(`01/01/${curYear}`)
-				const lastDay = new Date(`06/30/${curYear}`)
-				const today = new Date()
-				$scope.userContext.isTodayBeforeJuly = today >= firstDay && today < lastDay
-			}
-			$scope.todayBeforeJuly()
 
 			//pull exiting Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
 			$scope.getStaffChange = async staffChangeId => {
@@ -349,23 +361,6 @@ define(function (require) {
 						formPayload.old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => formPayload.first_name.startsWith(prefix)) && formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name}`
 					}
 
-					// constructing deadline
-					if (formPayload.hasOwnProperty('date_radio')) {
-						const today = new Date()
-						const yyyy = today.getFullYear()
-						let mm = today.getMonth() + 1 // Months start at 0!
-						let dd = today.getDate()
-						if (dd < 10) dd = '0' + dd
-						if (mm < 10) mm = '0' + mm
-						let todayFormated = mm + '/' + dd + '/' + yyyy
-
-						if (formPayload.date_radio === 'today') {
-							formPayload.deadline = todayFormated
-						} else if (formPayload.date_radio === 'june30') {
-							formPayload.deadline = `06/30/${yyyy}`
-						}
-					}
-
 					//add commonPayload to each object in submitPayload
 					formPayload = Object.assign(formPayload, commonPayload)
 					//add createFormatKeys to each object in submitPayload
@@ -383,17 +378,17 @@ define(function (require) {
 						readableChangeType: formatService.changeMap(formPayload.change_type)
 					}
 
-					let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
+					// 	let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
 
-					await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
+					// 	await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
 
 					let formattedDate = formatService.formatDateForApi(formPayload.deadline)
 					let concatenatedDateTime = `${formattedDate}T23:59:00Z`
 
-					await jitbitService.updateJitbitTicket({ id: jitbitTicketId, dueDate: concatenatedDateTime })
+					// 	await jitbitService.updateJitbitTicket({ id: jitbitTicketId, dueDate: concatenatedDateTime })
 
 					formPayload.staffChangeId = staffChangeId
-					formPayload.ticket_id = jitbitTicketId
+					// 	formPayload.ticket_id = jitbitTicketId
 				})
 				//sending to confirm screen after submission
 				$scope.formDisplay('confirm', $scope.userContext.pageContext)
@@ -448,6 +443,9 @@ define(function (require) {
 						break
 					case 'exitingStaff':
 						redirectPath = `${redirectPath}#tabFiveContent`
+						break
+					case 'allStaff':
+						redirectPath = `${redirectPath}#tabSixContent`
 						break
 					default:
 						redirectPath
