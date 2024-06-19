@@ -103,52 +103,29 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid">
+                    <div class="col-2">
+                        <label class="form-label form-label-sm label-reset staff-change-req">Requested
+                            Account Creation Date</label><br>
+                        <input title="Transfer Date" type="text" class="psDateWidget"
+                            data-minDate="{{userContext.minDate}}"
+                            data-ng-model="submitPayload.transferringStaff.deadline"
+                            data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.transferringStaff.deadline = userContext.tempDeadline : submitPayload.transferringStaff.deadline"
+                            data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
+                        <script type="text/javascript">initBehaviors();</script>
+                    </div>
                     <div class="col-auto">
-                        <div class="card">
-                            <div class="card-header fw-semibold ps-1 staff-change-req">{{
-                                submitPayload.transferringStaff.first_name}} {{
-                                submitPayload.transferringStaff.last_name}}'s Transfer-In
-                                Date</div>
-                            <div class="card-body">
-                                <div data-ng-if="userContext.pageStatus =='Submit'">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="exit-date-group"
-                                            id="exit-date-today"
-                                            data-ng-model="submitPayload.transferringStaff.date_radio" value="today"
-                                            data-ng-required="!submitPayload.transferringStaff.date_radio" tabindex="0">
-                                        <label class="form-check-label" for="exit-date-today">Today
-                                            ({{ userContext.curDate}})</label>
-                                    </div>
-                                    <div class="form-check form-check-inline"
-                                        data-ng-if="userContext.isTodayBeforeJuly">
-                                        <input class="form-check-input" type="radio" name="exit-date-group"
-                                            id="exit-date-june30"
-                                            data-ng-model="submitPayload.transferringStaff.date_radio" value="june30"
-                                            data-ng-required="!submitPayload.transferringStaff.date_radio" tabindex="0">
-                                        <label class="form-check-label" for="exit-date-june30">June
-                                            30<sup>th</sup></label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="exit-date-group"
-                                            id="exit-date-specific"
-                                            data-ng-model="submitPayload.transferringStaff.date_radio" value="other"
-                                            data-ng-required="!submitPayload.transferringStaff.date_radio" tabindex="0">
-                                        <label class="form-check-label" for="exit-date-specific">Specific
-                                            Date</label>
-                                    </div>
-                                </div>
-                                <div class="row row-cols-sm-auto align-items-center mt-2"
-                                    data-ng-if="submitPayload.transferringStaff.date_radio==='other' || userContext.pageStatus =='Edit'">
-                                    <div class="col">
-                                        <label data-ng-if="userContext.pageStatus =='Submit'"
-                                            class="form-label form-label-sm label-reset staff-change-req">Transfer
-                                            Date</label><br>
-                                        <input title="Transfer Date" type="text" class="psDateWidget"
-                                            ng-model="submitPayload.transferringStaff.deadline" ng-required="true">
-                                        <script type="text/javascript">initBehaviors();</script>
-                                    </div>
-                                </div>
-                            </div>
+                        <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
+                            class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
+                                data-ng-if="submitPayload.transferringStaff.deadline =='06/30/2024'">All Transferring-In
+                                Staff that will start next school year cannot be transferred until June 30<sup>th</sup>
+                                as their previous school will still needs access to their account.<br></span>
+                            Please allow <strong><em>at least</em></strong> 3 business days for account transfer.
+                        </div>
+                        <div data-ng-if="userContext.invalidDate" class="alert alert-danger" role="alert"><i
+                                class="bi bi-exclamation-octagon-fill"></i>
+                            <strong>{{submitPayload.transferringStaff.deadline}}</strong> is not a Business Day.<br>
+                            Please
+                            choose another date.
                         </div>
                     </div>
                 </div>

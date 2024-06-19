@@ -78,79 +78,26 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.first_name">
-                    <div class="col-auto">
-                        <div class="card">
-                            <div class="card-header fw-semibold ps-1 staff-change-req">{{
-                                submitPayload.exitingStaff.first_name}} {{
-                                submitPayload.exitingStaff.last_name}}'s Deactivation
-                                Date</div>
-                            <div class="card-body">
-                                <div data-ng-if="userContext.pageStatus =='Submit'">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="exit-date-group"
-                                            id="exit-date-today" data-ng-model="submitPayload.exitingStaff.date_radio"
-                                            value="today" data-ng-required="!submitPayload.exitingStaff.date_radio"
-                                            tabindex="0"
-                                            data-ng-change="dupSearch(userContext.pageContext, submitPayload[userContext.formType])">
-                                        <label class="form-check-label" for="exit-date-today">Today
-                                            ({{ userContext.curDate}})</label>
-                                    </div>
-                                    <div class="form-check form-check-inline"
-                                        data-ng-if="userContext.isTodayBeforeJuly">
-                                        <input class="form-check-input" type="radio" name="exit-date-group"
-                                            id="exit-date-june30" data-ng-model="submitPayload.exitingStaff.date_radio"
-                                            value="june30" data-ng-required="!submitPayload.exitingStaff.date_radio"
-                                            tabindex="0"
-                                            data-ng-change="dupSearch(userContext.pageContext, submitPayload[userContext.formType])">
-                                        <label class="form-check-label" for="exit-date-june30">June
-                                            30<sup>th</sup></label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="exit-date-group"
-                                            id="exit-date-specific"
-                                            data-ng-model="submitPayload.exitingStaff.date_radio" value="other"
-                                            data-ng-required="!submitPayload.exitingStaff.date_radio" tabindex="0"
-                                            data-ng-change="dupSearch(userContext.pageContext, submitPayload[userContext.formType])">
-                                        <label class="form-check-label" for="exit-date-specific">Specific
-                                            Date</label>
-                                    </div>
-                                </div>
-                                <div class="row row-cols-sm-auto align-items-center mt-2"
-                                    data-ng-if="submitPayload.exitingStaff.date_radio==='other' || userContext.pageStatus =='Edit'">
-                                    <div class="col">
-                                        <label data-ng-if="userContext.pageStatus =='Submit'"
-                                            class="form-label form-label-sm label-reset staff-change-req">Deactivation
-                                            Date</label><br>
-                                        <input title="deadline" type="text" class="psDateWidget"
-                                            data-ng-model="submitPayload.exitingStaff.deadline" data-ng-required="true">
-                                        <script type="text/javascript">initBehaviors();</script>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-2">
+                        <label class="form-label form-label-sm label-reset staff-change-req">Requested
+                            Deactivation Date</label><br>
+                        <input title="Transfer Date" type="text" class="psDateWidget"
+                            data-minDate="{{userContext.minDate}}" data-ng-model="submitPayload.exitingStaff.deadline"
+                            data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.exitingStaff.deadline = userContext.tempDeadline : submitPayload.exitingStaff.deadline"
+                            data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
+                        <script type="text/javascript">initBehaviors();</script>
                     </div>
-                    <div class="col"
-                        data-ng-if="userContext.pageStatus =='Submit' && submitPayload.exitingStaff.date_radio">
-                        <div class="alert alert-warning" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>
-                            {{submitPayload.exitingStaff.first_name}} {{submitPayload.exitingStaff.last_name}}'s account
-                            will
-                            be deactivated shortly
-                            after <span data-ng-switch on="submitPayload.exitingStaff.date_radio">
-                                <span data-ng-switch-when="today">{{userContext.curDate}}</span>
-                                <span data-ng-switch-when="june30">June 30<sup>th</sup></span>
-                                <span data-ng-switch-when="other">{{submitPayload.exitingStaff.deadline}}</span>
-                            </span>. They
-                            will no longer be able to access PowerSchool, Canvas, Office 365, Teams, Email, or log
-                            on to a device.<br> If {{ submitPayload.exitingStaff.first_name}} {{
-                            submitPayload.exitingStaff.last_name}} needs access
-                            to
-                            their
-                            account after <span data-ng-switch on="exitingStaff.date_radio">
-                                <span data-ng-switch-when="today">{{userContext.curDate}}</span>
-                                <span data-ng-switch-when="june30">June 30<sup>th</sup></span>
-                                <span data-ng-switch-when="other">{{submitPayload.exitingStaff.deadline}}</span>
-                            </span> or needs
-                            to be deactivated sooner, please modify the deactivation date.
+                    <div class="col-4">
+                        <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
+                            class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
+                                data-ng-if="submitPayload.exitingStaff.deadline =='06/30/2024'">We recommend June
+                                30<sup>th</sup> all staff not returning next school year.<br></span> Please
+                            allow <strong><em>at least</em></strong> 3 business days for account deactivation.
+                        </div>
+                        <div data-ng-if="userContext.invalidDate" class="alert alert-danger" role="alert"><i
+                                class="bi bi-exclamation-octagon-fill"></i>
+                            <strong>{{submitPayload.exitingStaff.deadline}}</strong> is not a Business Day.<br> Please
+                            choose another date.
                         </div>
                     </div>
                 </div>
