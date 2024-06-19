@@ -92,6 +92,39 @@ define(function (require) {
 			const lastDay = new Date(`06/30/${curYear}`)
 			const today = new Date()
 
+			const holidays = [
+				new Date(`01/01/${curYear}`), // New Year's Day
+				new Date(`01/02/${curYear}`), // Christmas Break
+				new Date(`01/03/${curYear}`), // Christmas Break
+				new Date(`01/04/${curYear}`), // Christmas Break
+				new Date(`03/28/${curYear}`), // Holy Thursday
+				new Date(`03/29/${curYear}`), // Good Friday
+				new Date(`04/01/${curYear}`), // Easter
+				new Date(`04/02/${curYear}`), // Easter Monday
+				new Date(`05/09/${curYear}`), // Ascension Day
+				new Date(`05/27/${curYear}`), // Memorial Day
+				new Date(`07/01/${curYear}`), // PowerSchool Roll Over
+				new Date(`07/04/${curYear}`), // Independence Day
+				new Date(`07/05/${curYear}`), // Independence Day Break
+				new Date(`08/02/${curYear}`), // Incoperation Day
+				new Date(`08/15/${curYear}`), // Assumption of Mary
+				new Date(`09/02/${curYear}`), // Labor Day
+				new Date(`11/01/${curYear}`), // All Saints' Day
+				new Date(`11/27/${curYear}`), // Thanksgiving Break
+				new Date(`11/28/${curYear}`), // Thanksgiving Break
+				new Date(`11/29/${curYear}`), // Thanksgiving Break
+				new Date(`12/09/${curYear}`), // Immaculate Conception
+				new Date(`12/23/${curYear}`), // Christmas Break
+				new Date(`12/24/${curYear}`), // Christmas Break
+				new Date(`12/25/${curYear}`), // Christmas Break
+				new Date(`12/26/${curYear}`), // Christmas Break
+				new Date(`12/27/${curYear}`), // Christmas Break
+				new Date(`12/28/${curYear}`), // Christmas Break
+				new Date(`12/29/${curYear}`), // Christmas Break
+				new Date(`12/30/${curYear}`), // Christmas Break
+				new Date(`12/31/${curYear}`) // Christmas Break
+			]
+
 			const formatDate = date => {
 				const month = ('0' + (date.getMonth() + 1)).slice(-2)
 				const day = ('0' + date.getDate()).slice(-2)
@@ -99,10 +132,28 @@ define(function (require) {
 				return `${month}/${day}/${year}`
 			}
 
+			const addBusinessDays = (startDate, days) => {
+				let date = new Date(startDate)
+				while (days > 0) {
+					date.setDate(date.getDate() + 1)
+					// Check if it's a weekend
+					if (date.getDay() === 0 || date.getDay() === 6) {
+						continue
+					}
+					// Check if it's a holiday
+					if (holidays.some(holiday => holiday.getTime() === date.getTime())) {
+						continue
+					}
+					days--
+				}
+				return date
+			}
+
 			if (today >= firstDay && today < lastDay) {
 				$scope.userContext.tempDeadline = formatDate(lastDay)
 			} else {
-				$scope.userContext.tempDeadline = null
+				const newDeadline = addBusinessDays(today, 3)
+				$scope.userContext.tempDeadline = formatDate(newDeadline)
 			}
 
 			// setting up universal formatKeys that will be used in API calls to format fields or delete feidls

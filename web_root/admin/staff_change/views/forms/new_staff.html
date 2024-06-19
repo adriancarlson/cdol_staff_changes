@@ -214,7 +214,9 @@
                         <label class="form-label form-label-sm label-reset staff-change-req">Requested
                             Account Creation Date</label><br>
                         <input title="Transfer Date" type="text" class="psDateWidget"
-                            data-ng-model="submitPayload.newStaff.deadline" data-ng-required="true">
+                            data-ng-model="submitPayload.newStaff.deadline"
+                            ng-init="submitPayload.newStaff.deadline = userContext.tempDeadline"
+                            data-ng-required="true">
                         <script type="text/javascript">initBehaviors();</script>
                     </div>
                 </div>
