@@ -21,7 +21,7 @@ define(function (require) {
 			let psDialogHolder = null
 
 			$scope.openDupeDialog = function () {
-				psDialogHolder = $j('#dupeDiv').detach()
+				psDialogHolder = $j('#staffChangeDupeDiv').detach()
 				psDialog({
 					type: 'dialogM',
 					width: 1000,
@@ -31,7 +31,7 @@ define(function (require) {
 					close: function () {
 						showMessage('dialog close event hi')
 						// Move View back to a holder so that it won't be lost if another type of dialog is opened.
-						$j('#dialogContainer').append(psDialogHolder)
+						$j('#staffChangeDialogContainer').append(psDialogHolder)
 					},
 					buttons: [
 						{
@@ -47,7 +47,7 @@ define(function (require) {
 			}
 
 			$scope.closeDupeDialog = function (formType, pageContext) {
-				$j('#dialogContainer').append(psDialogHolder)
+				$j('#staffChangeDialogContainer').append(psDialogHolder)
 				psDialogClose()
 				if (pageContext === 'exitingStaff') {
 					$location.hash('leaving_radio_target')

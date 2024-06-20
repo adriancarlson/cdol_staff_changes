@@ -1,29 +1,43 @@
 [
 ~[tlist_sql;
-    SELECT 
-        schoolstaff.dcid,               
-        teachers.first_name,
-        teachers.last_name,
+WITH ranked_results AS (
+    SELECT
+        schoolstaff.dcid,
+        users.first_name,
+        users.last_name,
         CASE
-            WHEN schoolstaff.status = 1 
-            THEN 'Active'
-            ELSE
-                'Inactive'
-        END AS Status,
-        CASE
-            WHEN teachers.homeschoolid = 0 THEN
-                'Diocesan Office'
-            ELSE
-                schools.name
-        END AS schoolname
-    FROM schoolstaff 
-    INNER JOIN teachers ON schoolstaff.dcid = teachers.dcid
-    and schoolstaff.schoolid = teachers.homeschoolid
-    LEFT OUTER JOIN schools ON teachers.homeschoolid = schools.school_number
+            WHEN schoolstaff.status = 1 THEN 'Active'
+            ELSE 'Inactive'
+        END AS status,
+        COALESCE(
+            (
+                SELECT LISTAGG(s.name, ', ') WITHIN GROUP (ORDER BY s.name)
+                FROM schools s
+                WHERE INSTR(';' || users.canchangeschool || ';', ';' || s.school_number || ';') > 0
+            ),
+            (SELECT name FROM schools WHERE school_number = users.HomeSchoolID)
+        ) AS schools,
+        ROW_NUMBER() OVER (PARTITION BY users.first_name, users.last_name ORDER BY users.last_name, users.first_name) AS rn
+    FROM
+        users
+        LEFT JOIN schoolstaff ON users.dcid = schoolstaff.users_dcid
     WHERE
-    (lower(teachers.last_name) LIKE '' || '~(gpv.lastName)' || '%'
-    OR lower(teachers.last_name) LIKE '' || '~(gpv.maidenName)' || '%')
-    AND lower(TRIM(SUBSTR(teachers.first_name,INSTR(teachers.first_name,'.')+1,LENGTH(teachers.first_name)+1-INSTR(teachers.first_name,' ')))) LIKE '' ||'~(gpv.firstNameSubString)' || '%'
+        (UTL_MATCH.JARO_WINKLER_SIMILARITY(UPPER(users.first_name), UPPER('~(gpv.firstName)')) >= 75)
+        AND (UTL_MATCH.JARO_WINKLER_SIMILARITY(UPPER(users.last_name), UPPER('~(gpv.lastName)')) >= 90 OR UTL_MATCH.JARO_WINKLER_SIMILARITY(UPPER(users.last_name), UPPER('~(gpv.maidenName)')) >= 90)
+    )
+    SELECT
+        dcid,
+        first_name,
+        last_name,
+        status,
+        schools
+    FROM
+        ranked_results
+    WHERE
+        rn = 1
+        ORDER BY
+        last_name,
+        first_name
 ;]
     {
         "dcid": ~(1),
