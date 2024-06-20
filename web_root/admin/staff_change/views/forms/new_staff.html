@@ -131,7 +131,7 @@
                             Name </label>
                         <input id="new-staff-maiden-name" type="text" class="form-control form-control-sm"
                             aria-label="Maiden Name" data-ng-model="submitPayload.newStaff.maiden_name"
-                            data-ng-blur="submitPayload.newStaff.maiden_name = (submitPayload.newStaff.maiden_name | titleCase)">
+                            data-ng-blur="submitPayload.newStaff.maiden_name = (submitPayload.newStaff.maiden_name | titleCase);dupSearch(userContext.pageContext, submitPayload[userContext.formType], 'maiden')">
                     </div>
                 </div>
                 <div class="row align-items-center mb-3 gx-2">

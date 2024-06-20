@@ -26,7 +26,6 @@ define(function (require) {
 					initBehaviors: true,
 					close: function () {
 						showMessage('dialog close event hi')
-						delete $scope.staffChangeDupeData
 						// Move View back to a holder so that it won't be lost if another type of dialog is opened.
 						$j('#dialogContainer').append(psDialogHolder)
 					},
@@ -36,8 +35,6 @@ define(function (require) {
 							text: 'Proceed',
 							title: 'Proceed',
 							click: function () {
-								showMessage('save was clicked')
-								delete $scope.staffChangeDupeData
 								psDialogClose()
 							}
 						}
@@ -46,8 +43,6 @@ define(function (require) {
 			}
 
 			$scope.closeDupeDialog = function (formType, pageContext) {
-				console.log('running', formType, pageContext)
-				delete $scope.staffChangeDupeData
 				$j('#dialogContainer').append(psDialogHolder)
 				psDialogClose()
 				if (pageContext === 'exitingStaff') {
@@ -219,7 +214,7 @@ define(function (require) {
 					})
 					$scope[resource] = res.data
 					$scope[resource].pop()
-					$scope.$apply()
+					$scope.$applyAsync()
 				}
 			}
 
@@ -232,15 +227,26 @@ define(function (require) {
 				$scope.getJSONData('staffDupData', staffDupParams)
 			}
 
-			$scope.dupSearch = async (pageContext, formPayload) => {
-				console.log(pageContext)
-				let staffChangeDupParams = {
-					calendarYear: new Date().getFullYear().toString(),
-					firstName: formPayload.replace_first_name ? formPayload.replace_first_name : formPayload.first_name,
-					lastName: formPayload.replace_first_name ? formPayload.replace_last_name : formPayload.last_name,
-					curSchoolID: formPayload.replace_first_name ? formPayload.replace_homeschoolid : $scope.userContext.curSchoolId,
-					changeType: 'allStaff'
+			$scope.dupSearch = async (pageContext, formPayload, searchType) => {
+				console.log('searchType', searchType)
+
+				if ($scope.staffChangeDupeData) {
+					delete $scope.staffChangeDupeData
 				}
+
+				let staffChangeDupParams = {
+					changeType: 'allStaff',
+					calendarYear: new Date().getFullYear().toString(),
+					curSchoolID: formPayload.replace_first_name ? formPayload.replace_homeschoolid : $scope.userContext.curSchoolId,
+					firstName: formPayload.replace_first_name ? formPayload.replace_first_name : formPayload.first_name
+				}
+
+				if (searchType === 'maiden') {
+					staffChangeDupParams.lastName = formPayload.maiden_name
+				} else {
+					staffChangeDupParams.lastName = formPayload.replace_last_name ? formPayload.replace_last_name : formPayload.last_name
+				}
+
 				await $scope.getJSONData('staffChangeDupeData', staffChangeDupParams)
 
 				// Conditional filtering
@@ -249,8 +255,6 @@ define(function (require) {
 				} else {
 					$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === pageContext)
 				}
-
-				$scope.$apply()
 
 				if ($scope.staffChangeDupeData.length > 0) {
 					$scope.openDupeDialog()
