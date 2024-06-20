@@ -20,8 +20,8 @@ define(function (require) {
 
 			let psDialogHolder = null
 
-			$scope.openDupeDialog = function () {
-				psDialogHolder = $j('#staffChangeDupeDiv').detach()
+			$scope.openDupeDialog = function (type) {
+				psDialogHolder = $j(`#${type}DupeDiv`).detach()
 				psDialog({
 					type: 'dialogM',
 					width: 1000,
@@ -31,7 +31,7 @@ define(function (require) {
 					close: function () {
 						showMessage('dialog close event hi')
 						// Move View back to a holder so that it won't be lost if another type of dialog is opened.
-						$j('#staffChangeDialogContainer').append(psDialogHolder)
+						$j(`#${type}DialogContainer`).append(psDialogHolder)
 					},
 					buttons: [
 						{
@@ -261,7 +261,7 @@ define(function (require) {
 				}
 
 				if ($scope.staffChangeDupeData.length > 0) {
-					$scope.openDupeDialog()
+					$scope.openDupeDialog('staffChange')
 				}
 			}
 			// function to switch forms and set scope to hold form data
