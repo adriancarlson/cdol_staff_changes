@@ -13,7 +13,7 @@ WITH ranked_results AS (
             (
                 SELECT LISTAGG(s.name, ', ') WITHIN GROUP (ORDER BY s.name)
                 FROM schools s
-                WHERE INSTR(';' || users.canchangeschool || ';', ';' || s.school_number || ';') > 0
+                WHERE INSTR('CHR(59)' || users.canchangeschool || 'CHR(59)', 'CHR(59)' || s.school_number || 'CHR(59)') > 0
             ),
             (SELECT name FROM schools WHERE school_number = users.HomeSchoolID)
         ) AS schools,
@@ -35,7 +35,7 @@ WITH ranked_results AS (
         ranked_results
     WHERE
         rn = 1
-        ORDER BY
+    ORDER BY
         last_name,
         first_name
 ;]
