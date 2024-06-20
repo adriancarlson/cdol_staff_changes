@@ -4,7 +4,7 @@
         anticipate a name change in the next few months, please enter their anticipated name.
     </div>
     ~[if#distCheck.security.inrole=9]
-    <div data-ng-if="userContext.pageStatus =='Edit' && staffDupData.length > 0 && !submitPayload.newStaff.ps_created">
+    <div data-ng-if="userContext.pageStatus =='Edit' && staffDupeData.length > 0 && !submitPayload.newStaff.ps_created">
         <div class="container-fluid mb-2">
             <div class="row">
                 <div class="col-5">
@@ -27,7 +27,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr data-ng-repeat="dup in staffDupData">
+                                    <tr data-ng-repeat="dup in staffDupeData">
                                         <td><a href="/admin/faculty/home.html?frn=005{{dup.dcid}}"
                                                 target="_blank">{{dup.first_name}} {{dup.last_name}}</a></td>
                                         <td>{{dup.status}}</td>

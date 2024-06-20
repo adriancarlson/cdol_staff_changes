@@ -21,11 +21,11 @@ define(function (require) {
 			let psDialogHolder = null
 
 			$scope.openDupeDialog = function (type) {
-				psDialogHolder = $j(`#${type}DupeDiv`).detach()
+				psDialogHolder = $j(`#${type}Div`).detach()
 				psDialog({
 					type: 'dialogM',
 					width: 1000,
-					title: 'Potential Duplicate Staff Change Found!',
+					title: `Potential Duplicate ${formatService.titleCase(type)} Found!`,
 					content: psDialogHolder,
 					initBehaviors: true,
 					close: function () {
@@ -47,7 +47,7 @@ define(function (require) {
 			}
 
 			$scope.closeDupeDialog = function (formType, pageContext) {
-				$j('#staffChangeDialogContainer').append(psDialogHolder)
+				$j('#staffChangeDupeDialogContainer').append(psDialogHolder)
 				psDialogClose()
 				if (pageContext === 'exitingStaff') {
 					$location.hash('leaving_radio_target')
@@ -223,12 +223,12 @@ define(function (require) {
 			}
 
 			$scope.searchForDups = async staffToSearch => {
-				let staffDupParams = {
+				let staffDupeParams = {
 					lastName: staffToSearch.last_name.toLowerCase(),
 					maidenName: `${staffToSearch.middle_name ? staffToSearch.middle_name.toLowerCase() : null}`,
 					firstNameSubString: staffToSearch.first_name.substring(0, 3).toLowerCase()
 				}
-				$scope.getJSONData('staffDupData', staffDupParams)
+				$scope.getJSONData('staffDupeData', staffDupeParams)
 			}
 
 			$scope.dupSearch = async (pageContext, formPayload, searchType) => {
@@ -261,7 +261,19 @@ define(function (require) {
 				}
 
 				if ($scope.staffChangeDupeData.length > 0) {
-					$scope.openDupeDialog('staffChange')
+					$scope.openDupeDialog('staffChangeDupe')
+				} else if (pageContext === 'newStaff') {
+					let staffDupParams = {
+						firstName: formPayload.first_name,
+						lastName: formPayload.last_name,
+						...(formPayload.maiden_name && { maidenName: formPayload.maiden_name })
+					}
+
+					await $scope.getJSONData('staffDupeData', staffDupParams)
+
+					if ($scope.staffDupeData.length > 0) {
+						$scope.openDupeDialog('staffDupe')
+					}
 				}
 			}
 			// function to switch forms and set scope to hold form data
