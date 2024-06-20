@@ -22,10 +22,16 @@ define(function (require) {
 
 			$scope.openDupeDialog = function (type) {
 				psDialogHolder = $j(`#${type}Div`).detach()
+				let dupeMessage
+				if (type === 'staffDupe') {
+					dupeMessage = 'Potential Existing Staff Found!'
+				} else if (type === 'staffChangeDupe') {
+					dupeMessage = 'Potential Duplicate Staff Change Found!'
+				}
 				psDialog({
 					type: 'dialogM',
 					width: 1000,
-					title: `Potential Duplicate ${formatService.titleCase(type)} Found!`,
+					title: dupeMessage,
 					content: psDialogHolder,
 					initBehaviors: true,
 					close: function () {

@@ -128,18 +128,19 @@
         <div data-ng-repeat="staffDupe in staffDupeData" class="card m-2">
             <div class="card-body p-0">
                 <div class="p-2"><strong>{{staffDupe.first_name}} {{staffDupe.last_name}}</strong> is
-                    <em>{{staffDupe.status}}</em> at <strong>{{staffDupe.school_name}}</strong><br>
-                    If this is the same person than click the <strong>Convert to Transferring-In Staff
-                        Submission</strong> button below to change to a <em>Transferring-In Staff</em> submission.<br>
-                    If you do not believe this is the same person than click the <strong>Proceed</strong> button below
+                    <em>{{staffDupe.status}}</em> at <strong> {{staffDupe.school_name}}</strong><br>
+                    If this is the same person then this needs to be a Transferring-In submission not a New Staff
+                    Submission. <br>
+                    click the <strong>Convert to Transferring-In Staff Submission</strong> button below to change to a
+                    <em>Transferring-In Staff</em> submission.<br>
+                    If this is not same person than click the <strong>Proceed</strong> button below
                     to continue with your submission.
                 </div>
                 <div class="card-footer">
                     <div class="button-row">
                         <button type="button" class="button mt-1 mb-0"
-                            data-ng-click="closeDupeDialog(userContext.formType, userContext.pageContext);formDisplay(userContext.prevContext,userContext.formType, 'back')"><i
-                                class="bi bi-chevron-left fw-bold"></i> Convert to Transferring-In Staff
-                            Submission</button>
+                            data-ng-click="closeDupeDialog(userContext.formType, userContext.pageContext);formDisplay(userContext.prevContext,userContext.formType, 'back')">Convert
+                            to Transferring-In Staff Submission</button>
                     </div>
                 </div>
             </div>
