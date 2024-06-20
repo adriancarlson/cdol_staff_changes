@@ -24,7 +24,7 @@ define(function (require) {
 				psDialogHolder = $j(`#${type}Div`).detach()
 				let dupeMessage
 				if (type === 'staffDupe') {
-					dupeMessage = 'Potential Existing Staff Found!'
+					dupeMessage = 'Potential Staff Found!'
 				} else if (type === 'staffChangeDupe') {
 					dupeMessage = 'Potential Duplicate Staff Change Found!'
 				}
@@ -52,8 +52,8 @@ define(function (require) {
 				})
 			}
 
-			$scope.closeDupeDialog = function (formType, pageContext) {
-				$j('#staffChangeDupeDialogContainer').append(psDialogHolder)
+			$scope.closeDupeDialog = function (formType, pageContext, type) {
+				$j(`#${type}DialogContainer`).append(psDialogHolder)
 				psDialogClose()
 				if (pageContext === 'exitingStaff') {
 					$location.hash('leaving_radio_target')

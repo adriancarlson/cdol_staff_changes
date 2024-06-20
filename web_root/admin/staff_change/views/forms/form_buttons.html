@@ -115,7 +115,7 @@
                             type="button" id="review" class="button mt-1 mb-0">Go to this Submission</a>
                         <button type="button" class="button mt-1 mb-0"
                             data-ng-if="submitPayload[userContext.pageContext].replace_first_name"
-                            data-ng-click="closeDupeDialog(userContext.formType, userContext.pageContext);formDisplay(userContext.prevContext,userContext.formType, 'back')"><i
+                            data-ng-click="closeDupeDialog(userContext.formType, userContext.pageContext,'staffChangeDupe');formDisplay(userContext.prevContext,userContext.formType, 'back')"><i
                                 class="bi bi-chevron-left fw-bold"></i> Previous</button>
                     </div>
                 </div>
@@ -139,7 +139,7 @@
                 <div class="card-footer">
                     <div class="button-row">
                         <button type="button" class="button mt-1 mb-0"
-                            data-ng-click="closeDupeDialog(userContext.formType, userContext.pageContext);formDisplay(userContext.prevContext,userContext.formType, 'back')">Convert
+                            data-ng-click="updateScopeFromDropdown('transferringStaff', 'usersData', staffDupe.dcid, 'users_dcid');formDisplay('transferringStaff',userContext.formType, 'back')">Convert
                             to Transferring-In Staff Submission</button>
                     </div>
                 </div>
