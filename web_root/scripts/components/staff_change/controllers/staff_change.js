@@ -263,6 +263,10 @@ define(function (require) {
 				if ($scope.staffChangeDupeData.length > 0) {
 					$scope.openDupeDialog('staffChangeDupe')
 				} else if (pageContext === 'newStaff') {
+					if ($scope.staffDupeData) {
+						delete $scope.staffDupeData
+					}
+
 					let staffDupParams = {
 						firstName: formPayload.first_name,
 						lastName: formPayload.last_name,
