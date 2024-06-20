@@ -21,7 +21,7 @@
                         <select data-ng-if="userContext.pageStatus =='Submit'" class="form-select form-select-sm"
                             id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.exitingStaff.users_dcid" data-ng-required="true"
-                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.exitingStaff.users_dcid,'users_dcid')">
+                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.exitingStaff.users_dcid,'users_dcid');dupSearch(userContext.pageContext, submitPayload[userContext.formType])">
                             <option selected></option>
                             ~[tlist_sql;SELECT
                             users.dcid,
@@ -227,7 +227,7 @@
                     </div>
                     <div class="col">
                         <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary" role="alert"><i
-                                class="bi bi-chat-right-text-fill"></i><strong><u>Please Note</u>:</strong> Personal
+                                class="bi bi-chat-right-text-fill"></i> <strong><u>Please Note</u>:</strong> Personal
                             files (i.e. Documents, pictures, music and
                             videos) should be removed by <span data-ng-show="submitPayload.exitingStaff.title !== 'Fr.' &&
                             submitPayload.exitingStaff.title !== 'Msgr.' &&

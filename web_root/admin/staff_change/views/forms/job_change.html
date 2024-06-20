@@ -10,7 +10,7 @@
                             Positions/Jobs?</label>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.jobChange.users_dcid" data-ng-required="true"
-                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.jobChange.users_dcid, 'users_dcid')">
+                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.jobChange.users_dcid, 'users_dcid');dupSearch(userContext.pageContext, submitPayload[userContext.formType])">
                             <option selected></option>
                             ~[tlist_sql;SELECT
                             users.dcid,
@@ -73,7 +73,7 @@
                                         <textarea class="form-control" placeholder="Previous Position/Job:"
                                             id="job-change-previous-position" spellcheck="true" wrap="absolute"
                                             data-ng-model="submitPayload.jobChange.previous_position"
-                                            data-ng-blur="submitPayload.jobChange.previous_position = (submitPayload.jobChange.previous_position | sentenceCase);dupSearch(userContext.pageContext, submitPayload[userContext.formType])"
+                                            data-ng-blur="submitPayload.jobChange.previous_position = (submitPayload.jobChange.previous_position | sentenceCase)"
                                             data-ng-required="true"></textarea>
                                         <label class="fw-semibold" for="job-change-previous-position">Previous
                                             Position/Job:</label>
