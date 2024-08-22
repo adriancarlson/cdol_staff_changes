@@ -389,6 +389,20 @@ define(function (require) {
 					}
 				}
 			}
+
+			$scope.newToTransferringIn = identifier => {
+				delete $scope.submitPayload.newStaff
+
+				$scope.submitPayload.transferringStaff = { users_dcid: identifier }
+
+				let foundItem = $scope.usersData.find(item => {
+					return item.identifier === identifier
+				})
+				$scope.submitPayload.transferringStaff = Object.assign($scope.submitPayload.transferringStaff, foundItem)
+				$scope.submitPayload.transferringStaff.prev_school_number = $scope.submitPayload.transferringStaff.homeschoolid
+				$scope.submitPayload.transferringStaff.prev_school_name = $scope.submitPayload.transferringStaff.homeschoolname
+			}
+
 			$scope.copyNames = pageContext => {
 				$scope.submitPayload[pageContext].legal_first_name = $scope.submitPayload[pageContext].first_name
 				$scope.submitPayload[pageContext].legal_middle_name = $scope.submitPayload[pageContext].middle_name
