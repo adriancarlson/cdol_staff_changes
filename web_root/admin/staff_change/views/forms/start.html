@@ -87,7 +87,8 @@
                 <div class="card-body">
                     A transferring-in staff member is someone coming <strong>INTO</strong> {{ userContext.curSchoolName
                     }}
-                    from another Diocese of Lincoln School.
+                    from another Diocese of Lincoln School. This can also include staff members who work across multiple
+                    Diocese of Lincoln schools, including {{ userContext.curSchoolName }}.
                 </div>
                 <div class="card-footer">
                     <strong>Example 1:</strong> A teacher coming <strong>INTO</strong> {{ userContext.curSchoolName }}
@@ -95,7 +96,10 @@
                     <strong>Example 2:</strong> A priest or religious sister who previously taught
                     at another Diocese of Lincoln School and is being reassigned to {{ userContext.curSchoolName }}.<br>
                     <strong>Example 3:</strong> A teacher who previously taught
-                    at {{ userContext.curSchoolName }} and currently needs to be reactivated because they are returning.
+                    at {{ userContext.curSchoolName }} and currently needs to be reactivated because they are
+                    returning.<br>
+                    <strong>Example 4:</strong> A band teacher who teaches at both {{ userContext.curSchoolName }} and
+                    other Diocese of Lincoln Schools.
                 </div>
             </div>
             <div id="job-change-card" class="card" data-ng-if="userContext.formTypeHover === 'jobChange'">
