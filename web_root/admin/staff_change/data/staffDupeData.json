@@ -1,7 +1,7 @@
 [
 ~[tlist_sql;
 SELECT
-        schoolstaff.dcid,
+        users.dcid,
         users.first_name,
         users.last_name,
         CASE
