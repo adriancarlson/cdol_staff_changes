@@ -20,13 +20,13 @@
             <button type="button" id="nxtExtBtn" class="m-0 p-2"
                 data-ng-show="submitPayload[userContext.formType].leaving_radio == 1"
                 data-ng-disabled="userContext.invalidDate"
-                data-ng-click="formDisplay('exitingStaff',userContext.formType, 'forward');dupSearch(userContext.pageContext, submitPayload[userContext.formType])">
+                data-ng-click="formDisplay('exitingStaff',userContext.formType, 'forward');dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
                 Continue <i class="bi bi-chevron-right fw-bold"></i></button>
             <!-- Send to jobchange form -->
             <button type="button" id="nxtJobBtn" class="m-0 p-2"
                 data-ng-show="submitPayload[userContext.formType].position_radio == 1"
                 data-ng-disabled="userContext.invalidDate"
-                data-ng-click="formDisplay('jobChange',userContext.formType, 'forward');dupSearch(userContext.pageContext, submitPayload[userContext.formType])">
+                data-ng-click="formDisplay('jobChange',userContext.formType, 'forward');dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
                 Continue <i class="bi bi-chevron-right fw-bold"></i></button>
         </div>
         <div class="col-auto" id="sub-btn-group"

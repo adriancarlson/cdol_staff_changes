@@ -74,7 +74,7 @@
                         <select id="transferring-staff-type" class="form-select form-select-sm"
                             aria-label="transferring-staff-type"
                             data-ng-model="submitPayload.transferringStaff.staff_type"
-                            data-ng-change="updateLicensing(userContext.pageContext);dupSearch(userContext.pageContext, submitPayload[userContext.formType])"
+                            data-ng-change="updateLicensing(userContext.pageContext);dupeSearch(userContext.pageContext, submitPayload[userContext.formType])"
                             data-ng-required="true">
                             <option></option>
                             <option value="1">Teacher</option>
@@ -126,6 +126,51 @@
                             <strong>{{submitPayload.transferringStaff.deadline}}</strong> is not a Business Day.<br>
                             Please
                             choose another date.
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header fw-semibold ps-1">Licensing Information</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <label for="transferring-staff-license-microsoft"
+                                            class="form-label form-label-sm label-reset staff-change-req">Microsoft
+                                            Licensing</label>
+                                        <select id="transferring-staff-license-microsoft"
+                                            class="form-select form-select-sm"
+                                            aria-label="transferring-staff-license-microsoft"
+                                            data-ng-model="submitPayload.transferringStaff.license_microsoft"
+                                            ng-init="submitPayload.transferringStaff.license_microsoft = submitPayload.transferringStaff.license_microsoft || 'A1'"
+                                            data-ng-required="true">
+                                            <option value="A1">A1 - Free</option>
+                                            <option value="A3">A3 - Paid</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-10">
+                                        <div class="alert alert-primary" role="alert"><i
+                                                class="bi bi-chat-right-text-fill"></i> <strong><u>Microsoft A1 vs. A3
+                                                    Licensing</u></strong><br>
+                                            <ul>
+                                                <li><u>Microsoft A1</u> is a free basic license, and the default license
+                                                    given to our staff. It includes essential web (i.e. browser)
+                                                    versions of Office apps like Word, Excel and Outlook. No voicemail
+                                                    for Teams Phones, and Outlook mailbox size is maxed at 50GB. It's
+                                                    great for basic productivity needs, generally for paras and part
+                                                    time non-teaching staff.</li>
+                                                <li><u>Microsoft A3</u> is a <em>paid</em>, more advanced license. It
+                                                    provides both web and desktop installations of Office. A3 also
+                                                    includes additional security features, voicemail for Teams Phones,
+                                                    and the Outlook mailbox size is 100GB. It's designed for users who
+                                                    need more comprehensive tools and management capabilities, generally
+                                                    Teachers, School Administrators, and Secretaries</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -21,7 +21,7 @@
                         <select data-ng-if="userContext.pageStatus =='Submit'" class="form-select form-select-sm"
                             id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.exitingStaff.users_dcid" data-ng-required="true"
-                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.exitingStaff.users_dcid,'users_dcid');dupSearch(userContext.pageContext, submitPayload[userContext.formType])">
+                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.exitingStaff.users_dcid,'users_dcid');dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
                             <option selected></option>
                             ~[tlist_sql;SELECT
                             users.dcid,

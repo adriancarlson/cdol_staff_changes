@@ -10,7 +10,7 @@
                             Positions/Jobs?</label>
                         <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.jobChange.users_dcid" data-ng-required="true"
-                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.jobChange.users_dcid, 'users_dcid');dupSearch(userContext.pageContext, submitPayload[userContext.formType])">
+                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.jobChange.users_dcid, 'users_dcid');dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
                             <option selected></option>
                             ~[tlist_sql;SELECT
                             users.dcid,
@@ -116,6 +116,50 @@
                                 class="bi bi-exclamation-octagon-fill"></i>
                             <strong>{{submitPayload.jobChange.deadline}}</strong> is not a Business Day.<br> Please
                             choose another date.
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.first_name">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header fw-semibold ps-1">Licensing Information</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <label for="job-change-license-microsoft"
+                                            class="form-label form-label-sm label-reset staff-change-req">Microsoft
+                                            Licensing</label>
+                                        <select id="job-change-license-microsoft" class="form-select form-select-sm"
+                                            aria-label="job-change-license-microsoft"
+                                            data-ng-model="submitPayload.newStaff.license_microsoft"
+                                            ng-init="submitPayload.jobChange.license_microsoft = submitPayload.jobChange.license_microsoft || 'A1'"
+                                            data-ng-required="true">
+                                            <option value="A1">A1 - Free</option>
+                                            <option value="A3">A3 - Paid</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-10">
+                                        <div class="alert alert-primary" role="alert"><i
+                                                class="bi bi-chat-right-text-fill"></i> <strong><u>Microsoft A1 vs. A3
+                                                    Licensing</u></strong><br>
+                                            <ul>
+                                                <li><u>Microsoft A1</u> is a free basic license, and the default license
+                                                    given to our staff. It includes essential web (i.e. browser)
+                                                    versions of Office apps like Word, Excel and Outlook. No voicemail
+                                                    for Teams Phones, and Outlook mailbox size is maxed at 50GB. It's
+                                                    great for basic productivity needs, generally for paras and part
+                                                    time non-teaching staff.</li>
+                                                <li><u>Microsoft A3</u> is a <em>paid</em>, more advanced license. It
+                                                    provides both web and desktop installations of Office. A3 also
+                                                    includes additional security features, voicemail for Teams Phones,
+                                                    and the Outlook mailbox size is 100GB. It's designed for users who
+                                                    need more comprehensive tools and management capabilities, generally
+                                                    Teachers, School Administrators, and Secretaries</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

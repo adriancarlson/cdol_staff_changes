@@ -203,7 +203,7 @@ define(function (require) {
 					$scope.submitPayload[res.change_type] = await res
 					$scope.userContext.pageContext = await res.change_type
 					if ($scope.userContext.pageContext === 'newStaff') {
-						await $scope.searchForDups(res)
+						await $scope.checkDupesOnEdit(res)
 					}
 				}
 
@@ -228,23 +228,25 @@ define(function (require) {
 				}
 			}
 
-			$scope.searchForDups = async staffToSearch => {
+			$scope.checkDupesOnEdit = async staffToSearch => {
+
 				let staffDupeParams = {
-					lastName: staffToSearch.last_name.toLowerCase(),
-					maidenName: `${staffToSearch.middle_name ? staffToSearch.middle_name.toLowerCase() : null}`,
-					firstNameSubString: staffToSearch.first_name.substring(0, 3).toLowerCase()
+					firstName: staffToSearch.first_name,
+					lastName: staffToSearch.last_name,
+					...(staffToSearch.maiden_name && { maidenName: staffToSearch.maiden_name })
 				}
-				$scope.getJSONData('staffDupeData', staffDupeParams)
+
+				await $scope.getJSONData('staffDupeData', staffDupeParams)
 			}
 
-			$scope.dupSearch = async (pageContext, formPayload, searchType) => {
+			$scope.dupeSearch = async (pageContext, formPayload, searchType) => {
 				console.log('searchType', searchType)
 
 				if ($scope.staffChangeDupeData) {
 					delete $scope.staffChangeDupeData
 				}
 
-				let staffChangeDupParams = {
+				let staffChangeDupeParams = {
 					changeType: 'allStaff',
 					calendarYear: new Date().getFullYear().toString(),
 					curSchoolID: formPayload.replace_first_name ? formPayload.replace_homeschoolid : $scope.userContext.curSchoolId,
@@ -252,12 +254,12 @@ define(function (require) {
 				}
 
 				if (searchType === 'maiden') {
-					staffChangeDupParams.lastName = formPayload.maiden_name
+					staffChangeDupeParams.lastName = formPayload.maiden_name
 				} else {
-					staffChangeDupParams.lastName = formPayload.replace_last_name ? formPayload.replace_last_name : formPayload.last_name
+					staffChangeDupeParams.lastName = formPayload.replace_last_name ? formPayload.replace_last_name : formPayload.last_name
 				}
 
-				await $scope.getJSONData('staffChangeDupeData', staffChangeDupParams)
+				await $scope.getJSONData('staffChangeDupeData', staffChangeDupeParams)
 
 				// Conditional filtering
 				if (pageContext === 'newStaff' || pageContext === 'transferringStaff') {
@@ -273,13 +275,13 @@ define(function (require) {
 						delete $scope.staffDupeData
 					}
 
-					let staffDupParams = {
+					let staffDupeParams = {
 						firstName: formPayload.first_name,
 						lastName: formPayload.last_name,
 						...(formPayload.maiden_name && { maidenName: formPayload.maiden_name })
 					}
 
-					await $scope.getJSONData('staffDupeData', staffDupParams)
+					await $scope.getJSONData('staffDupeData', staffDupeParams)
 
 					if ($scope.staffDupeData.length > 0) {
 						$scope.openDupeDialog('staffDupe')
