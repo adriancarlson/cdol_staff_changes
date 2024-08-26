@@ -44,6 +44,7 @@
         'text-success': allStaff.change_type === 'newStaff',
         'text-primary': allStaff.change_type  === 'transferringStaff',
         'text-info': allStaff.change_type  === 'jobChange',
+        'text-indigo': staffChangeDupe.change_type === 'subStaff',
         'text-warning': allStaff.change_type  === 'nameChange',
         'text-secondary': allStaff.change_type  === 'exitingStaff'
     }">{{ allStaff.change_type | changeTypeFilter }}</td>

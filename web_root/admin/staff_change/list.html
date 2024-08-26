@@ -58,13 +58,18 @@
                     <li data-ng-click="loadData('jobChange')" data-context="jobChange"><a
                             href="#tabThreeContent">Position/Job Changes <span class="badge text-bg-info ms-1">{{
                                 staffChangeCounts.total_job_change_remaining }}</span></a></li>
-                    <li data-ng-click="loadData('nameChange')" data-context="nameChange"><a href="#tabFourContent">Name
+                    <li data-ng-click="loadData('subStaff')" data-context="subStaff"><a
+                            href="#tabFourContent">Substitutes
+                            <span class="badge text-bg-indigo ms-1">{{
+                                staffChangeCounts.total_sub_remaining }}</span></a></li>
+                    <li data-ng-click="loadData('nameChange')" data-context="nameChange"><a href="#tabFiveContent">Name
                             Changes <span class="badge text-bg-warning ms-1">{{
                                 staffChangeCounts.total_name_change_remaining }}</span></a></li>
                     <li data-ng-click="loadData('exitingStaff')" data-context="exitingStaff"><a
-                            href="#tabFiveContent">Exiting Staff <span class="badge text-bg-secondary ms-1">{{
+                            href="#tabSixContent">Exiting Staff <span class="badge text-bg-secondary ms-1">{{
                                 staffChangeCounts.total_exit_remaining }}</span></a></li>
-                    <li data-ng-click="loadData('allStaff')" data-context="allStaff"><a href="#tabSixContent">All Staff
+                    <li data-ng-click="loadData('allStaff')" data-context="allStaff"><a href="#tabSevenContent">All
+                            Staff
                             Changes
                             <span class="badge text-bg-dark  ms-1">{{
                                 staffChangeCounts.total_remaining }}</span></a></li>
@@ -72,9 +77,10 @@
                 <new-staff-list id="tabOneContent"></new-staff-list>
                 <transfer-staff-list id="tabTwoContent"></transfer-staff-list>
                 <job-change-list id="tabThreeContent"></job-change-list>
-                <name-change-list id="tabFourContent"></name-change-list>
-                <exit-staff-list id="tabFiveContent"></exit-staff-list>
-                <all-staff-list id="tabSixContent"></all-staff-list>
+                <sub-staff-list id="tabFourContent"></sub-staff-list>
+                <name-change-list id="tabFiveContent"></name-change-list>
+                <exit-staff-list id="tabSixContent"></exit-staff-list>
+                <all-staff-list id="tabSevenContent"></all-staff-list>
             </div>
         </div>
         ~[wc:admin_footer_css]

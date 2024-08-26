@@ -79,6 +79,7 @@
         'text-success': staffChangeDupe.change_type === 'newStaff',
         'text-primary': staffChangeDupe.change_type  === 'transferringStaff',
         'text-info': staffChangeDupe.change_type  === 'jobChange',
+        'text-indigo': staffChangeDupe.change_type === 'subStaff',
         'text-warning': staffChangeDupe.change_type  === 'nameChange',
         'text-secondary': staffChangeDupe.change_type  === 'exitingStaff'
     }"><strong>{{ staffChangeDupe.change_type | changeTypeFilter }}</strong></span></em> request for
