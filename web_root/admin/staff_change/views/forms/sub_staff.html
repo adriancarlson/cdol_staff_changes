@@ -41,51 +41,60 @@
     <div class="card">
         <div class="card-header bg-indigo text-bg-indigo bg-gradient fs-6 fw-semibold">Substitute Staff:</div>
         <div class="card-body">
+            <div class="alert alert-warning" role="alert" data-ng-if="userContext.pageStatus =='Submit'"><i
+                    class="bi bi-exclamation-triangle-fill"></i> Descriptions and distinctions of each <strong>Substutue
+                    Type</strong> are detailed according to the <a
+                    href="https://cdolinc.sharepoint.com/:w:/s/All-Admin-Faculty-Staff/EScZuoXgRnhBl5RTPVLGX6MBwvcRyasPrcxa3eG_jus52w?e=ZBgmdr"
+                    target="_blank">Substitute Teacher Policy for Technology Access</a>
+            </div>
             <form name="staffChangeForm" method="POST" novalidate>
-                <div class="row align-items-center mb-3">
+                <div class="row align-items-start mb-3">
                     <div class="col-auto">
                         <div class="ms-3">
                             <div id="start-card" class="card">
-                                <div class="card-header fs-6 fw-semibold">Substitute Type:
+                                <div class="card-header fs-6 fw-semibold staff-change-req">Substitute Type:
                                 </div>
                                 <div class="card-body">
                                     <div class="form-check" data-ng-mouseenter="userContext.subTypeHover = 'sts'"
                                         data-ng-mouseleave="userContext.subTypeHover = userContext.formType">
                                         <input class="form-check-input" type="radio" name="sts-staff-radio"
-                                            id="sts-staff-radio" data-ng-model="userContext.formType" value="sts">
+                                            id="sts-staff-radio" data-ng-model="submitPayload.subStaff.sub_type"
+                                            value="sts" data-ng-required="true">
                                         <label class="form-check-label change-type-radio-label" for="sts-staff-radio">
-                                            Short Term Sub (STS)
+                                            <strong>Short Term Sub</strong> (STS)
                                         </label>
                                     </div>
                                     <div class="form-check" data-ng-mouseenter="userContext.subTypeHover = 'fsts'"
                                         data-ng-mouseleave="userContext.subTypeHover = userContext.formType">
                                         <input class="form-check-input" type="radio" name="fsts-staff-radio"
-                                            id="fsts-staff-radio" data-ng-model="userContext.formType" value="fsts">
+                                            id="fsts-staff-radio" data-ng-model="submitPayload.subStaff.sub_type"
+                                            value="fsts" data-ng-required="true">
                                         <label class="form-check-label change-type-radio-label" for="fsts-staff-radio">
-                                            Frequent Short Term Sub (FSTS)
+                                            <strong>Frequent Short Term Sub</strong> (FSTS)
                                         </label>
                                     </div>
                                     <div class="form-check" data-ng-mouseenter="userContext.subTypeHover = 'lts'"
                                         data-ng-mouseleave="userContext.subTypeHover = userContext.formType">
                                         <input class="form-check-input" type="radio" name="lts-change-radio"
-                                            id="lts-change-radio" data-ng-model="userContext.formType" value="lts">
+                                            id="lts-change-radio" data-ng-model="submitPayload.subStaff.sub_type"
+                                            value="lts" data-ng-required="true">
                                         <label class="form-check-label change-type-radio-label" for="lts-change-radio">
-                                            Long Term Sub (LTS)
+                                            <strong>Long Term Sub</strong> (LTS)
                                         </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col" data-ng-if="userContext.pageStatus =='Submit'">
                         <div id="sts-staff-card" class="card" data-ng-if="userContext.subTypeHover === 'sts'">
-                            <div class="card-header bg-indigo text-bg-indigo bg-gradient fs-6 fw-semibold">Short Term
+                            <div class="card-header fs-6 fw-semibold">Short Term
                                 Sub (STS) :
                             </div>
                             <div class="card-body">
                                 An STS would be a sub that comes in for a single day or two at a time. An STS will have
-                                no direct access to the teacher’s data. They will use the local sub account (e.g.
-                                XXXX-Sub) to log into the teacher’s computer. They will not have email or access to
+                                no direct access to the teacher's data. They will use the local sub account (e.g.
+                                XXXX-Sub) to log into the teacher's computer. They will not have email or access to
                                 anything in Office365. They will not have access to Canvas. They will be able to access
                                 the PowerSchool Sub Portal (https://powerschool.cdolinc.net/subs) to enter attendance
                                 and lunch counts, but no other access will be given.
@@ -97,7 +106,7 @@
                             </div>
                         </div>
                         <div id="fsts-staff-card" class="card" data-ng-if="userContext.subTypeHover === 'fsts'">
-                            <div class="card-header bg-primary text-bg-primary bg-gradient fs-6 fw-semibold">
+                            <div class="card-header fs-6 fw-semibold">
                                 Frequent Short Term Sub (FSTS) :
                             </div>
                             <div class="card-body">
@@ -119,7 +128,7 @@
                             </div>
                         </div>
                         <div id="lts-change-card" class="card" data-ng-if="userContext.subTypeHover === 'lts'">
-                            <div class="card-header bg-info text-bg-info bg-gradient fs-6 fw-semibold">Long Term Sub
+                            <div class="card-header fs-6 fw-semibold">Long Term Sub
                                 (LTS)
                             </div>
                             <div class="card-body">
@@ -133,7 +142,7 @@
                                 the access necessary to serve as a teacher in our schools. The LTS will be required to
                                 set up MFA on their account in order to be able to use it. The school will need to make
                                 the LTS a co-teacher in PowerSchool and Canvas (and any other programs needed) in order
-                                to be able to access the teacher’s files in those programs. This also gives the LTS
+                                to be able to access the teacher's files in those programs. This also gives the LTS
                                 access to contacting students and parents through Canvas.
 
                                 The permanent teacher can share their files with the LTS in multiple ways. First, if the
@@ -144,599 +153,646 @@
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3">
-                    <div class="col-6">
-                        <label for="sub-staff-name"
-                            class="form-label form-label-sm  label-reset staff-change-req">Substitute
-                            Staff
-                            Preferred
-                            Name</label>
-                        <div class="input-group">
-                            <select class="form-select form-select-sm" aria-label="title"
-                                data-ng-model="submitPayload.subStaff.title">
-                                <option selected></option>
-                                <option value="Mr.">Mr.</option>
-                                <option value="Mrs.">Mrs.</option>
-                                <option value="Ms.">Ms.</option>
-                                <option value="Dr.">Dr.</option>
-                                <option value="Fr.">Fr.</option>
-                                <option value="Msgr.">Msgr.</option>
-                                <option value="Sr.">Sr.</option>
-                                <option value="Br.">Br.</option>
+                <div data-ng-if="submitPayload.subStaff.sub_type == 'lts'|| submitPayload.subStaff.sub_type == 'fsts'">
+                    <div class="row align-items-center mb-3">
+                        <div class="col-6">
+                            <label for="sub-staff-name"
+                                class="form-label form-label-sm  label-reset staff-change-req">Substitute
+                                Staff
+                                Preferred
+                                Name</label>
+                            <div class="input-group">
+                                <select class="form-select form-select-sm" aria-label="title"
+                                    data-ng-model="submitPayload.subStaff.title">
+                                    <option selected></option>
+                                    <option value="Mr.">Mr.</option>
+                                    <option value="Mrs.">Mrs.</option>
+                                    <option value="Ms.">Ms.</option>
+                                    <option value="Dr.">Dr.</option>
+                                    <option value="Fr.">Fr.</option>
+                                    <option value="Msgr.">Msgr.</option>
+                                    <option value="Sr.">Sr.</option>
+                                    <option value="Br.">Br.</option>
+                                </select>
+                                <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
+                                    aria-label="First name" data-ng-model="submitPayload.subStaff.first_name"
+                                    data-ng-blur="submitPayload.subStaff.first_name = (submitPayload.subStaff.first_name | titleCase)"
+                                    data-ng-required="true">
+                                <input type="text" class="form-control form-control-sm w-25" placeholder="Middle name"
+                                    aria-label="Middle name" data-ng-model="submitPayload.subStaff.middle_name"
+                                    data-ng-blur="submitPayload.subStaff.middle_name = (submitPayload.subStaff.middle_name | titleCase)">
+                                <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
+                                    aria-label="Last name" data-ng-model="submitPayload.subStaff.last_name"
+                                    data-ng-blur="submitPayload.subStaff.last_name = (submitPayload.subStaff.last_name | titleCase);dupeSearch(userContext.pageContext, submitPayload[userContext.formType])"
+                                    data-ng-required="true">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary"
+                                role="alert"><i class="bi bi-chat-right-text-fill"></i>
+                                <strong><u>Preferred Name</u></strong>: is how the staff name will appear on reports and
+                                in
+                                the gradebook.<br>It is also used to create username and email address.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center mb-3">
+                        <div class="col-6">
+                            <label for="sub-staff-legal-name"
+                                class="form-label form-label-sm  label-reset staff-change-req">Substitute Staff Legal
+                                Name</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-sm w-25"
+                                    placeholder="Legal first name" aria-label="Legal First name"
+                                    data-ng-model="submitPayload.subStaff.legal_first_name" data-ng-required="true">
+                                <input type="text" class="form-control form-control-sm w-25"
+                                    placeholder="Legal middle name" aria-label="Legal middle name"
+                                    data-ng-model="submitPayload.subStaff.legal_middle_name">
+                                <input type="text" class="form-control form-control-sm w-25"
+                                    placeholder="Legal last name" aria-label="Legal last name"
+                                    data-ng-model="submitPayload.subStaff.legal_last_name" data-ng-required="true">
+                                <button type="button" class="m-0 p-2 ps-1"
+                                    data-ng-if="userContext.pageStatus =='Submit'"
+                                    data-ng-click="copyNames(userContext.pageContext)">Copy from Preferred Name</button>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary"
+                                role="alert"><i class="bi bi-chat-right-text-fill"></i>
+                                <strong><u>Legal Name</u></strong>: exactly how the staff's name appears on teaching
+                                certificate or legal documentation.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center mb-3 gx-3">
+                        <div class="col-auto">
+                            <label for="sub-staff-gender"
+                                class="form-label form-label-sm  label-reset staff-change-req">Gender</label>
+                            <select id="sub-staff-gender" class="form-select form-select-sm"
+                                aria-label="sub-staff-gender" data-ng-model="submitPayload.subStaff.gender"
+                                data-ng-required="true">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]gender)]
                             </select>
-                            <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
-                                aria-label="First name" data-ng-model="submitPayload.subStaff.first_name"
-                                data-ng-blur="submitPayload.subStaff.first_name = (submitPayload.subStaff.first_name | titleCase)"
+                        </div>
+                        <div class="col-auto">
+                            <label class="form-label form-label-sm label-reset">Date of Birth</label><br>
+                            <input title="Date of Birth" type="text" class="psDateWidget"
+                                data-ng-model="submitPayload.subStaff.dob">
+                            <script type="text/javascript">initBehaviors();</script>
+                        </div>
+                    </div>
+                    <div class="row align-items-center mb-3 gx-3">
+                        <div class="col-2"
+                            data-ng-if="submitPayload.subStaff.gender === 'F' && (submitPayload.subStaff.title ==='Mrs.' || submitPayload.subStaff.title ==='Dr.')">
+                            <label for="sub-staff-maiden-name" class="form-label form-label-sm  label-reset">Maiden
+                                Name </label>
+                            <input id="sub-staff-maiden-name" type="text" class="form-control form-control-sm"
+                                aria-label="Maiden Name" data-ng-model="submitPayload.subStaff.maiden_name"
+                                data-ng-blur="submitPayload.subStaff.maiden_name = (submitPayload.subStaff.maiden_name | titleCase);dupeSearch(userContext.pageContext, submitPayload[userContext.formType], 'maiden')">
+                        </div>
+                    </div>
+                    <div class="row align-items-center mb-3 gx-2">
+                        <div class="col-auto">
+                            <label for="sub-staff-religion"
+                                class="form-label form-label-sm  label-reset">Religion</label>
+                            <select id="sub-staff-religion" class="form-select form-select-sm"
+                                aria-label="sub-staff-religion" data-ng-model="submitPayload.subStaff.religion">
+                                <option></option>
+                                <option value="C">C - Catholic</option>
+                                <option value="N">N - Non-Catholic</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="sub-staff-religiousclergylay"
+                                class="form-label form-label-sm label-reset">Religious, Clergy, or Lay</label>
+                            <select id="sub-staff-religiousclergylay" class="form-select form-select-sm"
+                                aria-label="sub-staff-religiousclergylay"
+                                data-ng-model="submitPayload.subStaff.religiousclergylay">
+                                <option></option>
+                                <option value="R">R - Religious</option>
+                                <option value="C">C - Clergy</option>
+                                <option value="L" selected="">L - Lay</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row align-items-center mb-3">
+                        <div class="col-auto">
+                            <label for="sub-staff-personal-email" class="form-label form-label-sm  label-reset">Personal
+                                Email <span class="text-muted"><small><em>(for communication during account setup and
+                                            summer
+                                            trainings)</em></small></span></label>
+                            <input id="sub-staff-personal-email" type="text" class="form-control form-control-sm"
+                                placeholder="substaff@email.com" aria-label="Personal Email"
+                                data-ng-model="submitPayload.subStaff.personal_email">
+                        </div>
+                    </div>
+                    <div class="row align-items-center mb-3 gx-2">
+                        <div class="col-auto">
+                            <label for="sub-staff-type"
+                                class="form-label form-label-sm  label-reset staff-change-req">Staff
+                                Type</label>
+                            <select id="sub-staff-type" class="form-select form-select-sm" aria-label="sub-staff-type"
+                                data-ng-model="submitPayload.subStaff.staff_type"
+                                data-ng-change="updateLicensing(userContext.pageContext)" data-ng-required="true">
+                                <option></option>
+                                <option value="1">Teacher</option>
+                                <option value="2">Staff</option>
+                                <option value="3">Lunch Staff</option>
+                                <option value="4">Substitute</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <label for="sub-staff-position"
+                                class="form-label form-label-sm  label-reset staff-change-req">Position</label>
+                            <input id="sub-staff-position" type="text" class="form-control form-control-sm"
+                                placeholder="Ex: 2nd Grade Teacher, or Principal" aria-label="Position"
+                                data-ng-model="submitPayload.subStaff.position"
+                                data-ng-blur="submitPayload.subStaff.position = (submitPayload.subStaff.position | titleCase)"
                                 data-ng-required="true">
-                            <input type="text" class="form-control form-control-sm w-25" placeholder="Middle name"
-                                aria-label="Middle name" data-ng-model="submitPayload.subStaff.middle_name"
-                                data-ng-blur="submitPayload.subStaff.middle_name = (submitPayload.subStaff.middle_name | titleCase)">
-                            <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
-                                aria-label="Last name" data-ng-model="submitPayload.subStaff.last_name"
-                                data-ng-blur="submitPayload.subStaff.last_name = (submitPayload.subStaff.last_name | titleCase);dupeSearch(userContext.pageContext, submitPayload[userContext.formType])"
-                                data-ng-required="true">
+                        </div>
+                        <div class="col-auto">
+                            <label for="sub-staff-fte" class="form-label form-label-sm label-reset">FTE</label>
+                            <select id="sub-staff-fte" class="form-select form-select-sm" aria-label="sub-staff-fte"
+                                data-ng-model="submitPayload.subStaff.fte">
+                                <option></option>
+                                <option value="FT">FT - Full-time</option>
+                                <option value="PT">PT - Part-time</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="col">
-                        <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary" role="alert"><i
-                                class="bi bi-chat-right-text-fill"></i>
-                            <strong><u>Preferred Name</u></strong>: is how the staff name will appear on reports and in
-                            the gradebook.<br>It is also used to create username and email address.
+                    <div class="row align-items-center mb-3" data-ng-if="submitPayload.subStaff.first_name">
+                        <div class="col-2">
+                            <label class="form-label form-label-sm label-reset staff-change-req">Requested
+                                Account Creation Date</label><br>
+                            <input title="Transfer Date" type="text" class="psDateWidget"
+                                data-minDate="{{userContext.minDate}}" data-ng-model="submitPayload.subStaff.deadline"
+                                data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.subStaff.deadline = userContext.tempDeadline : submitPayload.subStaff.deadline"
+                                data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
+                            <script type="text/javascript">initBehaviors();</script>
                         </div>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3">
-                    <div class="col-6">
-                        <label for="sub-staff-legal-name"
-                            class="form-label form-label-sm  label-reset staff-change-req">Substitute Staff Legal
-                            Name</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control form-control-sm w-25" placeholder="Legal first name"
-                                aria-label="Legal First name" data-ng-model="submitPayload.subStaff.legal_first_name"
-                                data-ng-required="true">
-                            <input type="text" class="form-control form-control-sm w-25" placeholder="Legal middle name"
-                                aria-label="Legal middle name" data-ng-model="submitPayload.subStaff.legal_middle_name">
-                            <input type="text" class="form-control form-control-sm w-25" placeholder="Legal last name"
-                                aria-label="Legal last name" data-ng-model="submitPayload.subStaff.legal_last_name"
-                                data-ng-required="true">
-                            <button type="button" class="m-0 p-2 ps-1" data-ng-if="userContext.pageStatus =='Submit'"
-                                data-ng-click="copyNames(userContext.pageContext)">Copy from Preferred Name</button>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary" role="alert"><i
-                                class="bi bi-chat-right-text-fill"></i>
-                            <strong><u>Legal Name</u></strong>: exactly how the staff's name appears on teaching
-                            certificate or legal documentation.
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3 gx-3">
-                    <div class="col-auto">
-                        <label for="sub-staff-gender"
-                            class="form-label form-label-sm  label-reset staff-change-req">Gender</label>
-                        <select id="sub-staff-gender" class="form-select form-select-sm" aria-label="sub-staff-gender"
-                            data-ng-model="submitPayload.subStaff.gender"
-                            data-ng-required="true">~[x:codesetoptions;codetype=Gender;includeblank;value=~([U_CDOL_STAFF_CHANGES]gender)]
-                        </select>
-                    </div>
-                    <div class="col-auto">
-                        <label class="form-label form-label-sm label-reset">Date of Birth</label><br>
-                        <input title="Date of Birth" type="text" class="psDateWidget"
-                            data-ng-model="submitPayload.subStaff.dob">
-                        <script type="text/javascript">initBehaviors();</script>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3 gx-3">
-                    <div class="col-2"
-                        data-ng-if="submitPayload.subStaff.gender === 'F' && (submitPayload.subStaff.title ==='Mrs.' || submitPayload.subStaff.title ==='Dr.')">
-                        <label for="sub-staff-maiden-name" class="form-label form-label-sm  label-reset">Maiden
-                            Name </label>
-                        <input id="sub-staff-maiden-name" type="text" class="form-control form-control-sm"
-                            aria-label="Maiden Name" data-ng-model="submitPayload.subStaff.maiden_name"
-                            data-ng-blur="submitPayload.subStaff.maiden_name = (submitPayload.subStaff.maiden_name | titleCase);dupeSearch(userContext.pageContext, submitPayload[userContext.formType], 'maiden')">
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3 gx-2">
-                    <div class="col-auto">
-                        <label for="sub-staff-religion" class="form-label form-label-sm  label-reset">Religion</label>
-                        <select id="sub-staff-religion" class="form-select form-select-sm"
-                            aria-label="sub-staff-religion" data-ng-model="submitPayload.subStaff.religion">
-                            <option></option>
-                            <option value="C">C - Catholic</option>
-                            <option value="N">N - Non-Catholic</option>
-                        </select>
-                    </div>
-                    <div class="col-auto">
-                        <label for="sub-staff-religiousclergylay"
-                            class="form-label form-label-sm label-reset">Religious, Clergy, or Lay</label>
-                        <select id="sub-staff-religiousclergylay" class="form-select form-select-sm"
-                            aria-label="sub-staff-religiousclergylay"
-                            data-ng-model="submitPayload.subStaff.religiousclergylay">
-                            <option></option>
-                            <option value="R">R - Religious</option>
-                            <option value="C">C - Clergy</option>
-                            <option value="L" selected="">L - Lay</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3">
-                    <div class="col-auto">
-                        <label for="sub-staff-personal-email" class="form-label form-label-sm  label-reset">Personal
-                            Email <span class="text-muted"><small><em>(for communication during account setup and summer
-                                        trainings)</em></small></span></label>
-                        <input id="sub-staff-personal-email" type="text" class="form-control form-control-sm"
-                            placeholder="substaff@email.com" aria-label="Personal Email"
-                            data-ng-model="submitPayload.subStaff.personal_email">
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3 gx-2">
-                    <div class="col-auto">
-                        <label for="sub-staff-type" class="form-label form-label-sm  label-reset staff-change-req">Staff
-                            Type</label>
-                        <select id="sub-staff-type" class="form-select form-select-sm" aria-label="sub-staff-type"
-                            data-ng-model="submitPayload.subStaff.staff_type"
-                            data-ng-change="updateLicensing(userContext.pageContext)" data-ng-required="true">
-                            <option></option>
-                            <option value="1">Teacher</option>
-                            <option value="2">Staff</option>
-                            <option value="3">Lunch Staff</option>
-                            <option value="4">Substitute</option>
-                        </select>
-                    </div>
-                    <div class="col-3">
-                        <label for="sub-staff-position"
-                            class="form-label form-label-sm  label-reset staff-change-req">Position</label>
-                        <input id="sub-staff-position" type="text" class="form-control form-control-sm"
-                            placeholder="Ex: 2nd Grade Teacher, or Principal" aria-label="Position"
-                            data-ng-model="submitPayload.subStaff.position"
-                            data-ng-blur="submitPayload.subStaff.position = (submitPayload.subStaff.position | titleCase)"
-                            data-ng-required="true">
-                    </div>
-                    <div class="col-auto">
-                        <label for="sub-staff-fte" class="form-label form-label-sm label-reset">FTE</label>
-                        <select id="sub-staff-fte" class="form-select form-select-sm" aria-label="sub-staff-fte"
-                            data-ng-model="submitPayload.subStaff.fte">
-                            <option></option>
-                            <option value="FT">FT - Full-time</option>
-                            <option value="PT">PT - Part-time</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.subStaff.first_name">
-                    <div class="col-2">
-                        <label class="form-label form-label-sm label-reset staff-change-req">Requested
-                            Account Creation Date</label><br>
-                        <input title="Transfer Date" type="text" class="psDateWidget"
-                            data-minDate="{{userContext.minDate}}" data-ng-model="submitPayload.subStaff.deadline"
-                            data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.subStaff.deadline = userContext.tempDeadline : submitPayload.subStaff.deadline"
-                            data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
-                        <script type="text/javascript">initBehaviors();</script>
-                    </div>
-                    <div class="col-4">
-                        <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
-                            class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
-                                data-ng-if="submitPayload.subStaff.deadline =='06/30/2024'">We recommend June
-                                30<sup>th</sup> for all new staff that will start next school year.<br></span> Please
-                            allow <strong><em>at least</em></strong> 3 business days for account creation.
-                        </div>
-                        <div data-ng-if="userContext.invalidDate" class="alert alert-danger" role="alert"><i
-                                class="bi bi-exclamation-octagon-fill"></i>
-                            <strong>{{submitPayload.subStaff.deadline}}</strong> is not a Business Day.<br> Please
-                            choose another date.
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.subStaff.first_name">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header fw-semibold ps-1">Licensing Information</div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-2">
-                                        <label for="sub-staff-license-microsoft"
-                                            class="form-label form-label-sm label-reset staff-change-req">Microsoft
-                                            Licensing</label>
-                                        <select id="sub-staff-license-microsoft" class="form-select form-select-sm"
-                                            aria-label="sub-staff-license-microsoft"
-                                            data-ng-model="submitPayload.subStaff.license_microsoft"
-                                            ng-init="submitPayload.subStaff.license_microsoft = submitPayload.subStaff.license_microsoft || 'A1'"
-                                            data-ng-required="true">
-                                            <option value="A1">A1 - Free</option>
-                                            <option value="A3">A3 - Paid</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-10">
-                                        <div class="alert alert-primary" role="alert"><i
-                                                class="bi bi-chat-right-text-fill"></i> <strong><u>Microsoft A1 vs. A3
-                                                    Licensing</u></strong><br>
-                                            <ul>
-                                                <li><u>Microsoft A1</u> is a free basic license, and the default license
-                                                    given to our staff. It includes essential web (i.e. browser)
-                                                    versions of Office apps like Word, Excel and Outlook. There is no
-                                                    voicemail
-                                                    for Teams Phones and Outlook mailbox size is maxed at 50GB. It's
-                                                    great for basic productivity needs. This is generally for paras and
-                                                    part-time non-teaching staff.</li>
-                                                <li><u>Microsoft A3</u> is a <em>paid</em>, more advanced license. It
-                                                    provides both web and desktop installations of Office. A3 also
-                                                    includes additional security features, voicemail for Teams Phones,
-                                                    and the Outlook mailbox size is 100GB. It's designed for users who
-                                                    need more comprehensive tools and management capabilities. This is
-                                                    generally for
-                                                    Teachers, School Administrators, and Secretaries</li>
-                                                <li>The decision regarding licensing rests with the local school
-                                                    administrator.</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="col-4">
+                            <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
+                                class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i>
+                                <span data-ng-if="submitPayload.subStaff.deadline =='06/30/2024'">We recommend June
+                                    30<sup>th</sup> for all new staff that will start next school year.<br></span>
+                                Please
+                                allow <strong><em>at least</em></strong> 3 business days for account creation.
+                            </div>
+                            <div data-ng-if="userContext.invalidDate" class="alert alert-danger" role="alert"><i
+                                    class="bi bi-exclamation-octagon-fill"></i>
+                                <strong>{{submitPayload.subStaff.deadline}}</strong> is not a Business Day.<br> Please
+                                choose another date.
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row align-items-center mb-3"
-                    data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.subStaff.first_name) || (userContext.pageStatus =='Edit' && submitPayload.subStaff.prev_school_number)">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">
-                                    <div class="col-auto">
-                                        <label class="form-label form-label-sm label-reset staff-change-req">Has
-                                            {{submitPayload.subStaff.title}} {{
-                                            submitPayload.subStaff.first_name}} {{
-                                            submitPayload.subStaff.last_name}} previously worked for {{
-                                            userContext.curSchoolName }} or
-                                            another Diocese of Lincoln School?</label><br>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="prev-school-radio-group"
-                                                id="prev-school-radio-yes"
-                                                data-ng-model="submitPayload.subStaff.prev_school_radio" value="1"
-                                                data-ng-required="!submitPayload.subStaff.prev_school_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
-                                                tabindex="0">
-                                            <label class="form-check-label" for="prev-school-radio-yes">Yes</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="prev-school-radio-group"
-                                                id="prev-school-radio-no"
-                                                data-ng-model="submitPayload.subStaff.prev_school_radio" value="0"
-                                                data-ng-required="!submitPayload.subStaff.prev_school_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
-                                                tabindex="0">
-                                            <label class="form-check-label" for="prev-school-radio-no">No</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row align-items-center mb-3"
-                                    data-ng-if="submitPayload.subStaff.prev_school_radio == 1 || (userContext.pageStatus =='Edit' && submitPayload.subStaff.prev_school_number)">
-                                    <div class="col-auto">
-                                        <label for="prev_school_number"
-                                            class="form-label form-label-sm label-reset staff-change-req">Where was
-                                            {{submitPayload.subStaff.title}} {{
-                                            submitPayload.subStaff.first_name}} {{
-                                            submitPayload.subStaff.last_name}}'s previously employed?</label><span
-                                            class="text-muted"
-                                            data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose --Other--
-                                                    if employer is not
-                                                    listed)</em></small></span>
-                                        <select class="form-select form-select-sm" id="prev_school_number"
-                                            aria-label="Where previously employed?"
-                                            data-ng-model="submitPayload.subStaff.prev_school_number"
-                                            data-ng-required="true"
-                                            data-ng-change="updateScopeFromDropdown(userContext.pageContext,'schoolsData',submitPayload.subStaff.prev_school_number)">
-                                            <option selected></option>
-                                            ~[tlist_sql;SELECT SCHOOLS.School_number, SCHOOLS.name
-                                            FROM SCHOOLS
-                                            WHERE SCHOOLS.School_number NOT IN (888888,999999,79438)
-                                            ORDER BY schools.name;]
-                                            <option value="~(schnum)">~(schname)</option>
-                                            [/tlist_sql]
-                                            <option value="0">Diocesan Office</option>
-                                            <option value="-1">-- Other --</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row align-items-center mb-3"
-                                    data-ng-if="submitPayload.subStaff.prev_school_number == -1">
-                                    <div class="col-auto">
-                                        <label for="sub-staff-school-name"
-                                            class="form-label form-label-sm label-reset staff-change-req">Please
-                                            Type Name Previous Employer</label>
-                                        <input id="sub-staff-school-name" class="form-control" type="text"
-                                            data-ng-model="submitPayload.subStaff.prev_school_name"
-                                            data-ng-blur="submitPayload.subStaff.prev_school_name = (submitPayload.subStaff.prev_school_name | titleCase)">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3"
-                    data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.subStaff.first_name) || (userContext.pageStatus =='Edit' && submitPayload.subStaff.replace_dcid)">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <div data-ng-if="userContext.pageStatus =='Submit'" class="row align-items-center mb-3">
-                                    <div class="col-auto">
-                                        <label class="form-label form-label-sm label-reset staff-change-req">Will
-                                            {{submitPayload.subStaff.title}} {{
-                                            submitPayload.subStaff.first_name}} {{
-                                            submitPayload.subStaff.last_name}} be replacing a current staff
-                                            member at {{ userContext.curSchoolName }}?</label><br>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="exit-radio-group"
-                                                id="exit-radio-yes" data-ng-model="submitPayload.subStaff.exit_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
-                                                value="1" data-ng-required="!submitPayload.subStaff.exit_radio"
-                                                tabindex="0">
-                                            <label class="form-check-label" for="exit-radio-yes">Yes</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="exit-radio-group"
-                                                id="exit-radio-no" data-ng-model="submitPayload.subStaff.exit_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
-                                                value="0" data-ng-required="!submitPayload.subStaff.exit_radio"
-                                                tabindex="0">
-                                            <label class="form-check-label" for="exit-radio-no">No</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row align-items-center mb-3"
-                                    data-ng-if="submitPayload.subStaff.exit_radio == 1 || (userContext.pageStatus =='Edit' && submitPayload.subStaff.replace_dcid)">
-                                    <div class="col-auto">
-                                        <label for="replacing_dcid"
-                                            class="form-label form-label-sm label-reset staff-change-req">Who
-                                            is
-                                            {{submitPayload.subStaff.title}} {{
-                                            submitPayload.subStaff.first_name}} {{
-                                            submitPayload.subStaff.last_name}} replacing?</label><span
-                                            class="text-muted"
-                                            data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose --Other--
-                                                    if staff member is not
-                                                    listed)</em></small></span>
-                                        <select class="form-select form-select-sm" id="replace_dcid"
-                                            aria-label="Who is not returning?"
-                                            data-ng-model="submitPayload.subStaff.replace_dcid" data-ng-required="true"
-                                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.subStaff.replace_dcid, 'replace_dcid')">
-                                            <option selected></option>
-                                            ~[tlist_sql;SELECT
-                                            users.dcid,
-                                            users.first_name,
-                                            users.last_name
-                                            FROM SCHOOLSTAFF
-                                            inner join users
-                                            on users.dcid = schoolstaff.users_dcid
-                                            WHERE schoolstaff.status = 1
-                                            ~[if.is.a.school]
-                                            AND schoolstaff.schoolid = ~(curschoolid)
-                                            [/if.is.a.school]
-                                            Order BY users.last_name , users.first_name]
-                                            <option value="~(dcid)">~(first) ~(last)</option>
-                                            [/tlist_sql]
-                                            <option value="-1">-- Other --</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row align-items-center mb-3"
-                                    data-ng-if="submitPayload.subStaff.replace_dcid == -1">
-                                    <div class="col-6">
-                                        <label for="exiting-staff-name"
-                                            class="form-label form-label-sm  label-reset staff-change-req">Name
-                                            of the staff member
-                                            {{submitPayload.subStaff.title}} {{
-                                            submitPayload.subStaff.first_name}} {{
-                                            submitPayload.subStaff.last_name}} is replacing</label>
-                                        <div class="input-group">
-                                            <select class="form-select form-select-sm" aria-label="title"
-                                                data-ng-model="submitPayload.subStaff.replace_title">
-                                                <option selected></option>
-                                                <option value="Mr.">Mr.</option>
-                                                <option value="Mrs.">Mrs.</option>
-                                                <option value="Ms.">Ms.</option>
-                                                <option value="Dr.">Dr.</option>
-                                                <option value="Fr.">Fr.</option>
-                                                <option value="Msgr.">Msgr.</option>
-                                                <option value="Sr.">Sr.</option>
-                                                <option value="Br.">Br.</option>
+                    <div class="row align-items-center mb-3" data-ng-if="submitPayload.subStaff.first_name">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header fw-semibold ps-1">Licensing Information</div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label for="sub-staff-license-microsoft"
+                                                class="form-label form-label-sm label-reset staff-change-req">Microsoft
+                                                Licensing</label>
+                                            <select id="sub-staff-license-microsoft" class="form-select form-select-sm"
+                                                aria-label="sub-staff-license-microsoft"
+                                                data-ng-model="submitPayload.subStaff.license_microsoft"
+                                                ng-init="submitPayload.subStaff.license_microsoft = submitPayload.subStaff.license_microsoft || 'A1'"
+                                                data-ng-required="true">
+                                                <option value="A1">A1 - Free</option>
+                                                <option value="A3">A3 - Paid</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm w-25"
-                                                placeholder="First name" aria-label="First name"
-                                                data-ng-model="submitPayload.subStaff.replace_first_name"
-                                                data-ng-blur="submitPayload.subStaff.replace_first_name = (submitPayload.subStaff.replace_first_name | titleCase)"
-                                                data-ng-required="true">
-                                            <input type="text" class="form-control form-control-sm w-25"
-                                                placeholder="Middle name" aria-label="Middle name"
-                                                data-ng-model="submitPayload.subStaff.replace_middle_name"
-                                                data-ng-blur="submitPayload.subStaff.replace_middle_name = (submitPayload.subStaff.replace_middle_name | titleCase)">
-                                            <input type="text" class="form-control form-control-sm w-25"
-                                                placeholder="Last name" aria-label="Last name"
-                                                data-ng-model="submitPayload.subStaff.replace_last_name"
-                                                data-ng-blur="submitPayload.subStaff.replace_last_name = (submitPayload.subStaff.replace_last_name | titleCase)"
-                                                data-ng-required="true">
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row align-items-center mb-3"
-                                    data-ng-if="submitPayload.subStaff.replace_dcid">
-                                    <div class="col" data-ng-if="userContext.pageStatus =='Submit'">
-                                        <label class="form-label form-label-sm label-reset staff-change-req">Is {{
-                                            submitPayload.subStaff.replace_first_name}} {{
-                                            submitPayload.subStaff.replace_last_name}} leaving
-                                            {{ userContext.curSchoolName }}?</label><br>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="leaving-radio-group"
-                                                id="leaving-radio-yes"
-                                                data-ng-model="submitPayload.subStaff.leaving_radio" value="1"
-                                                data-ng-required="!submitPayload.subStaff.leaving_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
-                                                tabindex="0">
-                                            <label class="form-check-label" for="leaving-radio-yes">Yes</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="leaving-radio-group"
-                                                id="leaving-radio-no"
-                                                data-ng-model="submitPayload.subStaff.leaving_radio" value="0"
-                                                data-ng-required="!submitPayload.subStaff.leaving_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
-                                                tabindex="0">
-                                            <label class="form-check-label" for="leaving-radio-no">No</label>
-                                        </div>
-                                        <div class="alert alert-warning" role="alert"
-                                            data-ng-if="submitPayload.subStaff.leaving_radio == 1"><i
-                                                class="bi bi-pencil-square"></i>
-                                            <strong><u>Please Note</u></strong>: Next, You will be taken to the Exiting
-                                            Staff screen to finish the Exiting Staff submission for {{
-                                            submitPayload.subStaff.replace_first_name}} {{
-                                            submitPayload.subStaff.replace_last_name}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row align-items-center mb-3"
-                                    data-ng-if="submitPayload.subStaff.leaving_radio == 0">
-                                    <div class="col">
-                                        <label class="form-label form-label-sm label-reset staff-change-req">Is {{
-                                            submitPayload.subStaff.replace_first_name}} {{
-                                            submitPayload.subStaff.replace_last_name}} changing positions/jobs
-                                            within {{ userContext.curSchoolName }}?</label><br>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="position-radio-group"
-                                                id="position-radio-yes"
-                                                data-ng-model="submitPayload.subStaff.position_radio" value="1"
-                                                data-ng-required="!submitPayload.subStaff.position_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
-                                                tabindex="0">
-                                            <label class="form-check-label" for="position-radio-yes">Yes</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="position-radio-group"
-                                                id="position-radio-no"
-                                                data-ng-model="submitPayload.subStaff.position_radio" value="0"
-                                                data-ng-required="!submitPayload.subStaff.position_radio"
-                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
-                                                tabindex="0">
-                                            <label class="form-check-label" for="position-radio-no">No</label>
-                                        </div>
-                                        <div class="alert alert-warning" role="alert"
-                                            data-ng-if="submitPayload.subStaff.position_radio == 1"><i
-                                                class="bi bi-pencil-square"></i>
-                                            <strong><u>Please Note</u></strong>: Next, You will be taken to the
-                                            Position/Job Change screen to finish the Position/Job Change submission for
-                                            {{
-                                            submitPayload.subStaff.replace_first_name}} {{
-                                            submitPayload.subStaff.replace_last_name}}
+                                        <div class="col-10">
+                                            <div class="alert alert-primary" role="alert"><i
+                                                    class="bi bi-chat-right-text-fill"></i> <strong><u>Microsoft A1 vs.
+                                                        A3
+                                                        Licensing</u></strong><br>
+                                                <ul>
+                                                    <li><u>Microsoft A1</u> is a free basic license, and the default
+                                                        license
+                                                        given to our staff. It includes essential web (i.e. browser)
+                                                        versions of Office apps like Word, Excel and Outlook. There is
+                                                        no
+                                                        voicemail
+                                                        for Teams Phones and Outlook mailbox size is maxed at 50GB. It's
+                                                        great for basic productivity needs. This is generally for paras
+                                                        and
+                                                        part-time non-teaching staff.</li>
+                                                    <li><u>Microsoft A3</u> is a <em>paid</em>, more advanced license.
+                                                        It
+                                                        provides both web and desktop installations of Office. A3 also
+                                                        includes additional security features, voicemail for Teams
+                                                        Phones,
+                                                        and the Outlook mailbox size is 100GB. It's designed for users
+                                                        who
+                                                        need more comprehensive tools and management capabilities. This
+                                                        is
+                                                        generally for
+                                                        Teachers, School Administrators, and Secretaries</li>
+                                                    <li>The decision regarding licensing rests with the local school
+                                                        administrator.</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row align-items-center mb-3"
-                    data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.subStaff.first_name && (userContext.curSchoolId == 130 || userContext.curSchoolId == 131 || userContext.curSchoolId == 160 || userContext.curSchoolId == 189 || userContext.curSchoolId == 210 || userContext.curSchoolId == 211 || userContext.curSchoolId == 264 || userContext.curSchoolId == 437)) || (userContext.pageStatus =='Edit' && submitPayload.subStaff.additional_schoolid)">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-auto">
-                                        <label class="form-label form-label-sm label-reset staff-change-req"><span
-                                                data-ng-if="userContext.pageStatus =='Submit'">Will</span>
-                                            {{submitPayload.subStaff.title}} {{
-                                            submitPayload.subStaff.first_name}} {{
-                                            submitPayload.subStaff.last_name}} need<span
-                                                data-ng-if="userContext.pageStatus =='Edit'">s</span> access to
-                                            <span data-ng-if="userContext.curSchoolId == 130">Lourdes Central Catholic
-                                                Elementary School</span>
-                                            <span data-ng-if="userContext.curSchoolId == 131">Lourdes Central Catholic
-                                                Middle/High School</span>
-                                            <span data-ng-if="userContext.curSchoolId == 160">Aquinas Catholic
-                                                Elementary</span>
-                                            <span data-ng-if="userContext.curSchoolId == 189">St. Michael
-                                                Hastings</span>
-                                            <span data-ng-if="userContext.curSchoolId == 210">Falls City Sacred Heart
-                                                Elementary</span>
-                                            <span data-ng-if="userContext.curSchoolId == 211">Falls City Sacred Heart
-                                                Jr/Sr High School</span>
-                                            <span data-ng-if="userContext.curSchoolId == 264">Aquinas Catholic
-                                                Middle/High</span>
-                                            <span data-ng-if="userContext.curSchoolId == 437">St. Cecilia Middle & High
-                                                School</span>
-                                            <span data-ng-if="userContext.pageStatus =='Submit'">as
-                                                well?</span></label><br>
-                                        <div class="form-check form-check-inline">
-                                            <input data-ng-if="userContext.curSchoolId == 130" class="form-check-input"
-                                                type="radio" name="additional-schoolid-radio-group"
-                                                id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.subStaff.additional_schoolid" value="131"
-                                                data-ng-required="!submitPayload.subStaff.additional_schoolid"
-                                                tabindex="0">
-                                            <input data-ng-if=" userContext.curSchoolId ==131" class="form-check-input"
-                                                type="radio" name="additional-schoolid-radio-group"
-                                                id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.subStaff.additional_schoolid" value="130"
-                                                data-ng-required="!submitPayload.subStaff.additional_schoolid"
-                                                tabindex="0">
-                                            <input data-ng-if="userContext.curSchoolId == 160" class="form-check-input"
-                                                type="radio" name="additional-schoolid-radio-group"
-                                                id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.subStaff.additional_schoolid" value="264"
-                                                data-ng-required="!submitPayload.subStaff.additional_schoolid"
-                                                tabindex="0">
-                                            <input data-ng-if="userContext.curSchoolId == 189" class="form-check-input"
-                                                type="radio" name="additional-schoolid-radio-group"
-                                                id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.subStaff.additional_schoolid" value="437"
-                                                data-ng-required="!submitPayload.subStaff.additional_schoolid"
-                                                tabindex="0">
-                                            <input data-ng-if="userContext.curSchoolId == 210" class="form-check-input"
-                                                type="radio" name="additional-schoolid-radio-group"
-                                                id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.subStaff.additional_schoolid" value="211"
-                                                data-ng-required="!submitPayload.subStaff.additional_schoolid"
-                                                tabindex="0">
-                                            <input data-ng-if="userContext.curSchoolId == 211" class="form-check-input"
-                                                type="radio" name="additional-schoolid-radio-group"
-                                                id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.subStaff.additional_schoolid" value="210"
-                                                data-ng-required="!submitPayload.subStaff.additional_schoolid"
-                                                tabindex="0">
-                                            <input data-ng-if="userContext.curSchoolId == 264" class="form-check-input"
-                                                type="radio" name="additional-schoolid-radio-group"
-                                                id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.subStaff.additional_schoolid" value="160"
-                                                data-ng-required="!submitPayload.subStaff.additional_schoolid"
-                                                tabindex="0">
-                                            <input data-ng-if="userContext.curSchoolId == 437" class="form-check-input"
-                                                type="radio" name="additional-schoolid-radio-group"
-                                                id="additional-schoolid-radio-yes"
-                                                data-ng-model="submitPayload.subStaff.additional_schoolid" value="189"
-                                                data-ng-required="!submitPayload.subStaff.additional_schoolid"
-                                                tabindex="0">
-                                            <label class="form-check-label"
-                                                for="additional-schoolid-radio-yes">Yes</label>
+                    <div class="row align-items-center mb-3"
+                        data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.subStaff.first_name) || (userContext.pageStatus =='Edit' && submitPayload.subStaff.prev_school_number)">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row align-items-center mb-3"
+                                        data-ng-if="userContext.pageStatus =='Submit'">
+                                        <div class="col-auto">
+                                            <label class="form-label form-label-sm label-reset staff-change-req">Has
+                                                {{submitPayload.subStaff.title}} {{
+                                                submitPayload.subStaff.first_name}} {{
+                                                submitPayload.subStaff.last_name}} previously worked for {{
+                                                userContext.curSchoolName }} or
+                                                another Diocese of Lincoln School?</label><br>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="prev-school-radio-group" id="prev-school-radio-yes"
+                                                    data-ng-model="submitPayload.subStaff.prev_school_radio" value="1"
+                                                    data-ng-required="!submitPayload.subStaff.prev_school_radio"
+                                                    data-ng-change="updateAdditionalPayload(userContext.pageContext)"
+                                                    tabindex="0">
+                                                <label class="form-check-label" for="prev-school-radio-yes">Yes</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="prev-school-radio-group" id="prev-school-radio-no"
+                                                    data-ng-model="submitPayload.subStaff.prev_school_radio" value="0"
+                                                    data-ng-required="!submitPayload.subStaff.prev_school_radio"
+                                                    data-ng-change="updateAdditionalPayload(userContext.pageContext)"
+                                                    tabindex="0">
+                                                <label class="form-check-label" for="prev-school-radio-no">No</label>
+                                            </div>
                                         </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio"
-                                                name="additional-schoolid-radio-group" id="additional-schoolid-radio-no"
-                                                data-ng-model="submitPayload.subStaff.additional_schoolid" value="0"
-                                                data-ng-required="!submitPayload.subStaff.additional_schoolid"
-                                                tabindex="0">
-                                            <label class="form-check-label"
-                                                for="additional-schoolid-radio-no">No</label>
+                                    </div>
+                                    <div class="row align-items-center mb-3"
+                                        data-ng-if="submitPayload.subStaff.prev_school_radio == 1 || (userContext.pageStatus =='Edit' && submitPayload.subStaff.prev_school_number)">
+                                        <div class="col-auto">
+                                            <label for="prev_school_number"
+                                                class="form-label form-label-sm label-reset staff-change-req">Where was
+                                                {{submitPayload.subStaff.title}} {{
+                                                submitPayload.subStaff.first_name}} {{
+                                                submitPayload.subStaff.last_name}}'s previously employed?</label><span
+                                                class="text-muted"
+                                                data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose
+                                                        --Other--
+                                                        if employer is not
+                                                        listed)</em></small></span>
+                                            <select class="form-select form-select-sm" id="prev_school_number"
+                                                aria-label="Where previously employed?"
+                                                data-ng-model="submitPayload.subStaff.prev_school_number"
+                                                data-ng-required="true"
+                                                data-ng-change="updateScopeFromDropdown(userContext.pageContext,'schoolsData',submitPayload.subStaff.prev_school_number)">
+                                                <option selected></option>
+                                                ~[tlist_sql;SELECT SCHOOLS.School_number, SCHOOLS.name
+                                                FROM SCHOOLS
+                                                WHERE SCHOOLS.School_number NOT IN (888888,999999,79438)
+                                                ORDER BY schools.name;]
+                                                <option value="~(schnum)">~(schname)</option>
+                                                [/tlist_sql]
+                                                <option value="0">Diocesan Office</option>
+                                                <option value="-1">-- Other --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center mb-3"
+                                        data-ng-if="submitPayload.subStaff.prev_school_number == -1">
+                                        <div class="col-auto">
+                                            <label for="sub-staff-school-name"
+                                                class="form-label form-label-sm label-reset staff-change-req">Please
+                                                Type Name Previous Employer</label>
+                                            <input id="sub-staff-school-name" class="form-control" type="text"
+                                                data-ng-model="submitPayload.subStaff.prev_school_name"
+                                                data-ng-blur="submitPayload.subStaff.prev_school_name = (submitPayload.subStaff.prev_school_name | titleCase)">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.subStaff.first_name">
-                    <div class="col-xl-6">
-                        <div class="form-floating">
-                            <textarea class="form-control" placeholder="Additional Notes/Details?" id="exit-add-notes"
-                                spellcheck="true" wrap="absolute"
-                                data-ng-model="submitPayload.subStaff.notes"></textarea>
-                            <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
+                    <div class="row align-items-center mb-3"
+                        data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.subStaff.first_name) || (userContext.pageStatus =='Edit' && submitPayload.subStaff.replace_dcid)">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div data-ng-if="userContext.pageStatus =='Submit'"
+                                        class="row align-items-center mb-3">
+                                        <div class="col-auto">
+                                            <label class="form-label form-label-sm label-reset staff-change-req">Will
+                                                {{submitPayload.subStaff.title}} {{
+                                                submitPayload.subStaff.first_name}} {{
+                                                submitPayload.subStaff.last_name}} be replacing a current staff
+                                                member at {{ userContext.curSchoolName }}?</label><br>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="exit-radio-group"
+                                                    id="exit-radio-yes"
+                                                    data-ng-model="submitPayload.subStaff.exit_radio"
+                                                    data-ng-change="updateAdditionalPayload(userContext.pageContext)"
+                                                    value="1" data-ng-required="!submitPayload.subStaff.exit_radio"
+                                                    tabindex="0">
+                                                <label class="form-check-label" for="exit-radio-yes">Yes</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="exit-radio-group"
+                                                    id="exit-radio-no" data-ng-model="submitPayload.subStaff.exit_radio"
+                                                    data-ng-change="updateAdditionalPayload(userContext.pageContext)"
+                                                    value="0" data-ng-required="!submitPayload.subStaff.exit_radio"
+                                                    tabindex="0">
+                                                <label class="form-check-label" for="exit-radio-no">No</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center mb-3"
+                                        data-ng-if="submitPayload.subStaff.exit_radio == 1 || (userContext.pageStatus =='Edit' && submitPayload.subStaff.replace_dcid)">
+                                        <div class="col-auto">
+                                            <label for="replacing_dcid"
+                                                class="form-label form-label-sm label-reset staff-change-req">Who
+                                                is
+                                                {{submitPayload.subStaff.title}} {{
+                                                submitPayload.subStaff.first_name}} {{
+                                                submitPayload.subStaff.last_name}} replacing?</label><span
+                                                class="text-muted"
+                                                data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose
+                                                        --Other--
+                                                        if staff member is not
+                                                        listed)</em></small></span>
+                                            <select class="form-select form-select-sm" id="replace_dcid"
+                                                aria-label="Who is not returning?"
+                                                data-ng-model="submitPayload.subStaff.replace_dcid"
+                                                data-ng-required="true"
+                                                data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.subStaff.replace_dcid, 'replace_dcid')">
+                                                <option selected></option>
+                                                ~[tlist_sql;SELECT
+                                                users.dcid,
+                                                users.first_name,
+                                                users.last_name
+                                                FROM SCHOOLSTAFF
+                                                inner join users
+                                                on users.dcid = schoolstaff.users_dcid
+                                                WHERE schoolstaff.status = 1
+                                                ~[if.is.a.school]
+                                                AND schoolstaff.schoolid = ~(curschoolid)
+                                                [/if.is.a.school]
+                                                Order BY users.last_name , users.first_name]
+                                                <option value="~(dcid)">~(first) ~(last)</option>
+                                                [/tlist_sql]
+                                                <option value="-1">-- Other --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center mb-3"
+                                        data-ng-if="submitPayload.subStaff.replace_dcid == -1">
+                                        <div class="col-6">
+                                            <label for="exiting-staff-name"
+                                                class="form-label form-label-sm  label-reset staff-change-req">Name
+                                                of the staff member
+                                                {{submitPayload.subStaff.title}} {{
+                                                submitPayload.subStaff.first_name}} {{
+                                                submitPayload.subStaff.last_name}} is replacing</label>
+                                            <div class="input-group">
+                                                <select class="form-select form-select-sm" aria-label="title"
+                                                    data-ng-model="submitPayload.subStaff.replace_title">
+                                                    <option selected></option>
+                                                    <option value="Mr.">Mr.</option>
+                                                    <option value="Mrs.">Mrs.</option>
+                                                    <option value="Ms.">Ms.</option>
+                                                    <option value="Dr.">Dr.</option>
+                                                    <option value="Fr.">Fr.</option>
+                                                    <option value="Msgr.">Msgr.</option>
+                                                    <option value="Sr.">Sr.</option>
+                                                    <option value="Br.">Br.</option>
+                                                </select>
+                                                <input type="text" class="form-control form-control-sm w-25"
+                                                    placeholder="First name" aria-label="First name"
+                                                    data-ng-model="submitPayload.subStaff.replace_first_name"
+                                                    data-ng-blur="submitPayload.subStaff.replace_first_name = (submitPayload.subStaff.replace_first_name | titleCase)"
+                                                    data-ng-required="true">
+                                                <input type="text" class="form-control form-control-sm w-25"
+                                                    placeholder="Middle name" aria-label="Middle name"
+                                                    data-ng-model="submitPayload.subStaff.replace_middle_name"
+                                                    data-ng-blur="submitPayload.subStaff.replace_middle_name = (submitPayload.subStaff.replace_middle_name | titleCase)">
+                                                <input type="text" class="form-control form-control-sm w-25"
+                                                    placeholder="Last name" aria-label="Last name"
+                                                    data-ng-model="submitPayload.subStaff.replace_last_name"
+                                                    data-ng-blur="submitPayload.subStaff.replace_last_name = (submitPayload.subStaff.replace_last_name | titleCase)"
+                                                    data-ng-required="true">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center mb-3"
+                                        data-ng-if="submitPayload.subStaff.replace_dcid">
+                                        <div class="col" data-ng-if="userContext.pageStatus =='Submit'">
+                                            <label class="form-label form-label-sm label-reset staff-change-req">Is {{
+                                                submitPayload.subStaff.replace_first_name}} {{
+                                                submitPayload.subStaff.replace_last_name}} leaving
+                                                {{ userContext.curSchoolName }}?</label><br>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="leaving-radio-group"
+                                                    id="leaving-radio-yes"
+                                                    data-ng-model="submitPayload.subStaff.leaving_radio" value="1"
+                                                    data-ng-required="!submitPayload.subStaff.leaving_radio"
+                                                    data-ng-change="updateAdditionalPayload(userContext.pageContext)"
+                                                    tabindex="0">
+                                                <label class="form-check-label" for="leaving-radio-yes">Yes</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="leaving-radio-group"
+                                                    id="leaving-radio-no"
+                                                    data-ng-model="submitPayload.subStaff.leaving_radio" value="0"
+                                                    data-ng-required="!submitPayload.subStaff.leaving_radio"
+                                                    data-ng-change="updateAdditionalPayload(userContext.pageContext)"
+                                                    tabindex="0">
+                                                <label class="form-check-label" for="leaving-radio-no">No</label>
+                                            </div>
+                                            <div class="alert alert-warning" role="alert"
+                                                data-ng-if="submitPayload.subStaff.leaving_radio == 1"><i
+                                                    class="bi bi-pencil-square"></i>
+                                                <strong><u>Please Note</u></strong>: Next, You will be taken to the
+                                                Exiting
+                                                Staff screen to finish the Exiting Staff submission for {{
+                                                submitPayload.subStaff.replace_first_name}} {{
+                                                submitPayload.subStaff.replace_last_name}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center mb-3"
+                                        data-ng-if="submitPayload.subStaff.leaving_radio == 0">
+                                        <div class="col">
+                                            <label class="form-label form-label-sm label-reset staff-change-req">Is {{
+                                                submitPayload.subStaff.replace_first_name}} {{
+                                                submitPayload.subStaff.replace_last_name}} changing positions/jobs
+                                                within {{ userContext.curSchoolName }}?</label><br>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="position-radio-group"
+                                                    id="position-radio-yes"
+                                                    data-ng-model="submitPayload.subStaff.position_radio" value="1"
+                                                    data-ng-required="!submitPayload.subStaff.position_radio"
+                                                    data-ng-change="updateAdditionalPayload(userContext.pageContext)"
+                                                    tabindex="0">
+                                                <label class="form-check-label" for="position-radio-yes">Yes</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="position-radio-group"
+                                                    id="position-radio-no"
+                                                    data-ng-model="submitPayload.subStaff.position_radio" value="0"
+                                                    data-ng-required="!submitPayload.subStaff.position_radio"
+                                                    data-ng-change="updateAdditionalPayload(userContext.pageContext)"
+                                                    tabindex="0">
+                                                <label class="form-check-label" for="position-radio-no">No</label>
+                                            </div>
+                                            <div class="alert alert-warning" role="alert"
+                                                data-ng-if="submitPayload.subStaff.position_radio == 1"><i
+                                                    class="bi bi-pencil-square"></i>
+                                                <strong><u>Please Note</u></strong>: Next, You will be taken to the
+                                                Position/Job Change screen to finish the Position/Job Change submission
+                                                for
+                                                {{
+                                                submitPayload.subStaff.replace_first_name}} {{
+                                                submitPayload.subStaff.replace_last_name}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center mb-3"
+                        data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.subStaff.first_name && (userContext.curSchoolId == 130 || userContext.curSchoolId == 131 || userContext.curSchoolId == 160 || userContext.curSchoolId == 189 || userContext.curSchoolId == 210 || userContext.curSchoolId == 211 || userContext.curSchoolId == 264 || userContext.curSchoolId == 437)) || (userContext.pageStatus =='Edit' && submitPayload.subStaff.additional_schoolid)">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col-auto">
+                                            <label class="form-label form-label-sm label-reset staff-change-req"><span
+                                                    data-ng-if="userContext.pageStatus =='Submit'">Will</span>
+                                                {{submitPayload.subStaff.title}} {{
+                                                submitPayload.subStaff.first_name}} {{
+                                                submitPayload.subStaff.last_name}} need<span
+                                                    data-ng-if="userContext.pageStatus =='Edit'">s</span> access to
+                                                <span data-ng-if="userContext.curSchoolId == 130">Lourdes Central
+                                                    Catholic
+                                                    Elementary School</span>
+                                                <span data-ng-if="userContext.curSchoolId == 131">Lourdes Central
+                                                    Catholic
+                                                    Middle/High School</span>
+                                                <span data-ng-if="userContext.curSchoolId == 160">Aquinas Catholic
+                                                    Elementary</span>
+                                                <span data-ng-if="userContext.curSchoolId == 189">St. Michael
+                                                    Hastings</span>
+                                                <span data-ng-if="userContext.curSchoolId == 210">Falls City Sacred
+                                                    Heart
+                                                    Elementary</span>
+                                                <span data-ng-if="userContext.curSchoolId == 211">Falls City Sacred
+                                                    Heart
+                                                    Jr/Sr High School</span>
+                                                <span data-ng-if="userContext.curSchoolId == 264">Aquinas Catholic
+                                                    Middle/High</span>
+                                                <span data-ng-if="userContext.curSchoolId == 437">St. Cecilia Middle &
+                                                    High
+                                                    School</span>
+                                                <span data-ng-if="userContext.pageStatus =='Submit'">as
+                                                    well?</span></label><br>
+                                            <div class="form-check form-check-inline">
+                                                <input data-ng-if="userContext.curSchoolId == 130"
+                                                    class="form-check-input" type="radio"
+                                                    name="additional-schoolid-radio-group"
+                                                    id="additional-schoolid-radio-yes"
+                                                    data-ng-model="submitPayload.subStaff.additional_schoolid"
+                                                    value="131"
+                                                    data-ng-required="!submitPayload.subStaff.additional_schoolid"
+                                                    tabindex="0">
+                                                <input data-ng-if=" userContext.curSchoolId ==131"
+                                                    class="form-check-input" type="radio"
+                                                    name="additional-schoolid-radio-group"
+                                                    id="additional-schoolid-radio-yes"
+                                                    data-ng-model="submitPayload.subStaff.additional_schoolid"
+                                                    value="130"
+                                                    data-ng-required="!submitPayload.subStaff.additional_schoolid"
+                                                    tabindex="0">
+                                                <input data-ng-if="userContext.curSchoolId == 160"
+                                                    class="form-check-input" type="radio"
+                                                    name="additional-schoolid-radio-group"
+                                                    id="additional-schoolid-radio-yes"
+                                                    data-ng-model="submitPayload.subStaff.additional_schoolid"
+                                                    value="264"
+                                                    data-ng-required="!submitPayload.subStaff.additional_schoolid"
+                                                    tabindex="0">
+                                                <input data-ng-if="userContext.curSchoolId == 189"
+                                                    class="form-check-input" type="radio"
+                                                    name="additional-schoolid-radio-group"
+                                                    id="additional-schoolid-radio-yes"
+                                                    data-ng-model="submitPayload.subStaff.additional_schoolid"
+                                                    value="437"
+                                                    data-ng-required="!submitPayload.subStaff.additional_schoolid"
+                                                    tabindex="0">
+                                                <input data-ng-if="userContext.curSchoolId == 210"
+                                                    class="form-check-input" type="radio"
+                                                    name="additional-schoolid-radio-group"
+                                                    id="additional-schoolid-radio-yes"
+                                                    data-ng-model="submitPayload.subStaff.additional_schoolid"
+                                                    value="211"
+                                                    data-ng-required="!submitPayload.subStaff.additional_schoolid"
+                                                    tabindex="0">
+                                                <input data-ng-if="userContext.curSchoolId == 211"
+                                                    class="form-check-input" type="radio"
+                                                    name="additional-schoolid-radio-group"
+                                                    id="additional-schoolid-radio-yes"
+                                                    data-ng-model="submitPayload.subStaff.additional_schoolid"
+                                                    value="210"
+                                                    data-ng-required="!submitPayload.subStaff.additional_schoolid"
+                                                    tabindex="0">
+                                                <input data-ng-if="userContext.curSchoolId == 264"
+                                                    class="form-check-input" type="radio"
+                                                    name="additional-schoolid-radio-group"
+                                                    id="additional-schoolid-radio-yes"
+                                                    data-ng-model="submitPayload.subStaff.additional_schoolid"
+                                                    value="160"
+                                                    data-ng-required="!submitPayload.subStaff.additional_schoolid"
+                                                    tabindex="0">
+                                                <input data-ng-if="userContext.curSchoolId == 437"
+                                                    class="form-check-input" type="radio"
+                                                    name="additional-schoolid-radio-group"
+                                                    id="additional-schoolid-radio-yes"
+                                                    data-ng-model="submitPayload.subStaff.additional_schoolid"
+                                                    value="189"
+                                                    data-ng-required="!submitPayload.subStaff.additional_schoolid"
+                                                    tabindex="0">
+                                                <label class="form-check-label"
+                                                    for="additional-schoolid-radio-yes">Yes</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    name="additional-schoolid-radio-group"
+                                                    id="additional-schoolid-radio-no"
+                                                    data-ng-model="submitPayload.subStaff.additional_schoolid" value="0"
+                                                    data-ng-required="!submitPayload.subStaff.additional_schoolid"
+                                                    tabindex="0">
+                                                <label class="form-check-label"
+                                                    for="additional-schoolid-radio-no">No</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center mb-3" data-ng-if="submitPayload.subStaff.first_name">
+                        <div class="col-xl-6">
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Additional Notes/Details?"
+                                    id="exit-add-notes" spellcheck="true" wrap="absolute"
+                                    data-ng-model="submitPayload.subStaff.notes"></textarea>
+                                <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
+                            </div>
                         </div>
                     </div>
                 </div>
