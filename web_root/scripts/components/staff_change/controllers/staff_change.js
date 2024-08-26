@@ -35,7 +35,6 @@ define(function (require) {
 					content: psDialogHolder,
 					initBehaviors: true,
 					close: function () {
-						showMessage('dialog close event hi')
 						// Move View back to a holder so that it won't be lost if another type of dialog is opened.
 						$j(`#${type}DialogContainer`).append(psDialogHolder)
 					},
@@ -67,10 +66,6 @@ define(function (require) {
 					$scope.submitPayload[formType].position_radio = 0
 					$anchorScroll()
 				}
-			}
-
-			var showMessage = function (message) {
-				console.log(message)
 			}
 
 			//initializing overall form data
@@ -295,7 +290,7 @@ define(function (require) {
 				$scope.getJSONData('usersData')
 
 				//only loading school data if it is needed
-				if (pageContext === 'transferringStaff' || pageContext === 'newStaff') {
+				if (pageContext === 'transferringStaff' || pageContext === 'newStaff' || pageContext === 'subStaff') {
 					$scope.getJSONData('schoolsData')
 				}
 				//add and remove form payload objects based on directions of buttons

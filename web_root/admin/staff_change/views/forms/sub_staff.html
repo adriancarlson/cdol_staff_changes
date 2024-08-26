@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="form-check" data-ng-mouseenter="userContext.subTypeHover = 'sts'"
-                                        data-ng-mouseleave="userContext.subTypeHover = userContext.formType">
+                                        data-ng-mouseleave="userContext.subTypeHover =submitPayload.subStaff.sub_type">
                                         <input class="form-check-input" type="radio" name="sts-staff-radio"
                                             id="sts-staff-radio" data-ng-model="submitPayload.subStaff.sub_type"
                                             value="sts" data-ng-required="true">
@@ -65,7 +65,7 @@
                                         </label>
                                     </div>
                                     <div class="form-check" data-ng-mouseenter="userContext.subTypeHover = 'fsts'"
-                                        data-ng-mouseleave="userContext.subTypeHover = userContext.formType">
+                                        data-ng-mouseleave="userContext.subTypeHover =submitPayload.subStaff.sub_type">
                                         <input class="form-check-input" type="radio" name="fsts-staff-radio"
                                             id="fsts-staff-radio" data-ng-model="submitPayload.subStaff.sub_type"
                                             value="fsts" data-ng-required="true">
@@ -74,7 +74,7 @@
                                         </label>
                                     </div>
                                     <div class="form-check" data-ng-mouseenter="userContext.subTypeHover = 'lts'"
-                                        data-ng-mouseleave="userContext.subTypeHover = userContext.formType">
+                                        data-ng-mouseleave="userContext.subTypeHover =submitPayload.subStaff.sub_type">
                                         <input class="form-check-input" type="radio" name="lts-change-radio"
                                             id="lts-change-radio" data-ng-model="submitPayload.subStaff.sub_type"
                                             value="lts" data-ng-required="true">
@@ -92,17 +92,15 @@
                                 Sub (STS) :
                             </div>
                             <div class="card-body">
-                                An STS would be a sub that comes in for a single day or two at a time. An STS will have
-                                no direct access to the teacher's data. They will use the local sub account (e.g.
-                                XXXX-Sub) to log into the teacher's computer. They will not have email or access to
-                                anything in Office365. They will not have access to Canvas. They will be able to access
-                                the PowerSchool Sub Portal (https://powerschool.cdolinc.net/subs) to enter attendance
+                                A <strong>STS</strong> is a sub that comes in for a single day or two at a time. An
+                                <strong>STS</strong> will have no direct access to the teacher's data. They will use the
+                                local sub account (e.g. <strong>{{userContext.curUserSchoolAbbr}}-Sub</strong>) to log
+                                into the teacher's computer. They will <strong><u>NOT</u></strong> have email or access
+                                to anything in Office365. They <strong><u>will</u></strong> <strong><u>NOT</u></strong>
+                                have access to Canvas. They will be able to access the PowerSchool Sub Portal (<a
+                                    href="https://powerschool.cdolinc.net/subs"
+                                    target="_blank">https://powerschool.cdolinc.net/subs</a>) to enter attendance
                                 and lunch counts, but no other access will be given.
-
-                                Any work that a teacher wants to give to an STS will need to be handled by the teacher.
-                                This could be through emailing the sub through their personal email account, sharing
-                                files with them in OneDrive (using the “shared with anyone who has the link”), printing
-                                them off and leaving on the desk, or other types of manual access.
                             </div>
                         </div>
                         <div id="fsts-staff-card" class="card" data-ng-if="userContext.subTypeHover === 'fsts'">
@@ -110,21 +108,14 @@
                                 Frequent Short Term Sub (FSTS) :
                             </div>
                             <div class="card-body">
-                                In the event that there is a person who frequently subs in our school system (more than
-                                5 times per year total in any of our Catholic schools) we will treat them as an FSTS. An
-                                FSTS will have a CDOL account created for them following the standard naming convention
-                                of “firstname-lastname@cdolinc.net”.
-
-                                This type of account will have an email account and access to Office 365 and will need
-                                to setup MFA, but will otherwise have the same restrictions as an STS. The advantage of
-                                an FSTS is the ability for the sub to not have to use the local sub account. The teacher
-                                will still need to manually give the lesson materials to an FSTS in the same way as they
-                                will for the STS. The FSTS will also need to use the PowerSchool Sub Portal
-                                (https://powerschool.cdolinc.net/subs) for attendance and lunch counts.
-
-                                If the FSTS only subs in one of our Catholic schools, Ed Tech can give some additional
-                                access (e.g. the fileserver and printers). For an FSTS who subs at different schools,
-                                there will be no additional access given.
+                                A <strong>FSTS</strong> is a sub who frequently subs in our school system (more than
+                                5 times per year total in any of our Catholic schools). An
+                                <strong>FSTS</strong> <strong><u>will</u></strong> have a CDOL account created for them
+                                following the standard naming convention of
+                                “<strong>firstname-lastname@cdolinc.net</strong>”. <br>
+                                They <strong><u>will</u></strong> have an email account and access to Office 365 and
+                                will need to setup MFA, but will otherwise have the same restrictions as an
+                                <strong>STS</strong>.
                             </div>
                         </div>
                         <div id="lts-change-card" class="card" data-ng-if="userContext.subTypeHover === 'lts'">
@@ -132,23 +123,18 @@
                                 (LTS)
                             </div>
                             <div class="card-body">
-                                An LTS would be a sub who will be covering for the teacher on a replacement basis for an
-                                extended period of time. The distinguishing factor will be the need for the sub to have
-                                access to the gradebook in PowerSchool. Whether that is 3 days, 10 days, or more is to
-                                be determined by the school principal.
-
-                                An LTS will have a CDOL account created for them following the standard naming
-                                convention of “firstname-lastname@cdolinc.net”. This will be a full account with all of
-                                the access necessary to serve as a teacher in our schools. The LTS will be required to
-                                set up MFA on their account in order to be able to use it. The school will need to make
-                                the LTS a co-teacher in PowerSchool and Canvas (and any other programs needed) in order
-                                to be able to access the teacher's files in those programs. This also gives the LTS
-                                access to contacting students and parents through Canvas.
-
-                                The permanent teacher can share their files with the LTS in multiple ways. First, if the
-                                lessons are already in Canvas then being a co-teacher will give the LTS access to the
-                                information automatically. Otherwise, the teacher can share the appropriate files by
-                                setting up a shared folder in Teams, OneDrive, or the Fileserver.
+                                An <strong>LTS</strong> is a sub who will be covering for the teacher on a replacement
+                                basis for an extended period of time. The distinguishing factor will be <u>the need for
+                                    the sub to have access to the gradebook in PowerSchool</u>. Whether that is 3 days,
+                                10 days, or more is to be determined by the school principal.<br>
+                                An <strong>LTS</strong> <strong><u>will</u></strong> have a CDOL account created for
+                                them following the standard naming convention of
+                                “<strong>firstname-lastname@cdolinc.net</strong>”. This <strong><u>will</u></strong> be
+                                a full account with all of the access necessary to serve as a teacher in our schools.
+                                The <strong>LTS</strong> will be required to set up MFA on their account in order to be
+                                able to use it. The school will need to make the <strong>LTS</strong> a co-teacher in
+                                PowerSchool and Canvas (and any other programs needed) in order to be able to access the
+                                teacher's files in those programs.
                             </div>
                         </div>
                     </div>
