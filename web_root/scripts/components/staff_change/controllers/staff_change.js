@@ -229,7 +229,6 @@ define(function (require) {
 			}
 
 			$scope.checkDupesOnEdit = async staffToSearch => {
-
 				let staffDupeParams = {
 					firstName: staffToSearch.first_name,
 					lastName: staffToSearch.last_name,

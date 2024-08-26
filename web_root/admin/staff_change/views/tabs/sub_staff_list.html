@@ -1,0 +1,61 @@
+<div id="sub-staff-grid" data-pss-grid-widget data-data="staffList.subStaff" data-filtered-data="filteredSubStaffList"
+    data-client-side-pagination="false">
+    <!-- Adding before the table so it will put this filter at the top of the list in the drop down -->
+    <label data-pss-filter-field="ad_complete|multiselect" data-filter-info="booleanMap">Active Directory
+        Complete?</label>
+    <label data-pss-filter-field="ps_complete|multiselect" data-filter-info="booleanMap">PowerSchool Complete?</label>
+    <label data-pss-filter-field="o365_complete|multiselect" data-filter-info="booleanMap">Office 365 Complete?</label>
+    <label data-pss-filter-field="lms_complete|multiselect" data-filter-info="booleanMap">LMS Complete?</label>
+    <label data-pss-filter-field="completed|multiselect" data-filter-info="booleanMap">All Completed?</label>
+    <label data-pss-filter-field="title|multiselect" data-filter-info="titleMap">Title</label>
+    <label data-pss-filter-field="first_name">First Name</label>
+    <label data-pss-filter-field="last_name">Last Name</label>
+
+    <table class="grid">
+        <thead class="sticky-header">
+            <tr>
+                <th></th>
+                <th data-pss-sort-fields="last_name" class="nowrap">Substitute Staff</th>
+                <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">School</th>
+                <th data-pss-sort-fields="submittedstaff">Submitted By</th>
+                <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending">
+                    Submission Date</th>
+                <th data-pss-sort-fields="completion_date|date">Deadline</th>
+                <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">PS Created</th>
+                <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">AD Created</th>
+                <th data-pss-sort-fields="o365_created, o365_ignored" data-exclude-from-filter="true">O365 Created</th>
+                <th data-pss-sort-fields="final_completion_date|date">Completion Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="subStaff in filteredSubStaffList">
+                <td>{{$index +1}}</td>
+                <td class="nowrap"><a
+                        href="/admin/staff_change/submit.html?status=Edit&id={{subStaff.staffid}}">{{subStaff.title}}
+                        {{subStaff.first_name}}
+                        {{subStaff.last_name}}</a></td>
+                <td class="nowrap">{{subStaff.schname}}</td>
+                <td class="nowrap">{{subStaff.submittedstaff}}</td>
+                <td class="nowrap">{{subStaff.submission_date | date : 'MM/dd/yyyy'}}
+                    {{subStaff.submission_time}}</td>
+                <td
+                    data-ng-class="{'req-notation': (subStaff.completion_date < curDate) && (!subStaff.ps_complete || !subStaff.ad_complete || !subStaff.o365_complete || !subStaff.lms_complete)}">
+                    {{subStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td><span
+                        data-ng-class="{'mark-complete': subStaff.ps_complete, 'mark-incomplete': !subStaff.ps_complete}"></span>
+                </td>
+                <td><span
+                        data-ng-class="{'mark-complete': subStaff.ad_complete, 'mark-incomplete': !subStaff.ad_complete}"></span>
+                </td>
+                <td><span
+                        data-ng-class="{'mark-complete': subStaff.o365_complete, 'mark-incomplete': !subStaff.o365_complete}"></span>
+                </td>
+                <td><span
+                        data-ng-class="{'mark-complete': subStaff.lms_complete, 'mark-incomplete': !subStaff.lms_complete}"></span>
+                </td>
+                <td>{{subStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
