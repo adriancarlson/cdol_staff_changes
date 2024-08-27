@@ -29,10 +29,10 @@ SELECT DISTINCT
     {
         "dcid": ~(1),
         "ssdcid": ~(2),
-        "first_name":"~(2;JSON)",
-        "last_name":"~(3;JSON)",
-        "status":"~(4;JSON)",
-        "school_name":"~(5;JSON)"
+        "first_name":"~(3;JSON)",
+        "last_name":"~(4;JSON)",
+        "status":"~(5;JSON)",
+        "school_name":"~(6;JSON)"
     },
 [/tlist_sql]
 {}]

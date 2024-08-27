@@ -56,7 +56,8 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="form-check" data-ng-mouseenter="userContext.subTypeHover = 'sts'"
-                                        data-ng-mouseleave="userContext.subTypeHover =submitPayload.subStaff.sub_type">
+                                        data-ng-mouseleave="userContext.subTypeHover =submitPayload.subStaff.sub_type"
+                                        data-ng-click="openDialog('sub')">
                                         <input class="form-check-input" type="radio" name="sts-staff-radio"
                                             id="sts-staff-radio" data-ng-model="submitPayload.subStaff.sub_type"
                                             value="sts" data-ng-required="true">

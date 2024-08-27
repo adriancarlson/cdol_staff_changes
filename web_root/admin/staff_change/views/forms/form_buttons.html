@@ -117,7 +117,7 @@
                             type="button" id="review" class="button mt-1 mb-0">Go to this Submission</a>
                         <button type="button" class="button mt-1 mb-0"
                             data-ng-if="submitPayload[userContext.pageContext].replace_first_name"
-                            data-ng-click="closeDupeDialog(userContext.formType, userContext.pageContext,'staffChangeDupe');formDisplay(userContext.prevContext,userContext.formType, 'back')"><i
+                            data-ng-click="closeDialog(userContext.formType, userContext.pageContext,'staffChangeDupe');formDisplay(userContext.prevContext,userContext.formType, 'back')"><i
                                 class="bi bi-chevron-left fw-bold"></i> Previous</button>
                     </div>
                 </div>
@@ -139,8 +139,32 @@
                 <div class="card-footer">
                     <div class="button-row">
                         <button type="button" class="button mt-1 mb-0"
-                            data-ng-click="closeDupeDialog(userContext.formType, userContext.pageContext,'staffDupe');newToTransferringIn(staffDupe.dcid.toString());formDisplay('transferringStaff',userContext.formType, 'back')">Convert
+                            data-ng-click="closeDialog(userContext.formType, userContext.pageContext,'staffDupe');newToTransferringIn(staffDupe.dcid.toString());formDisplay('transferringStaff',userContext.formType, 'back')">Convert
                             to Transferring-In Staff Submission</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="hide" id="subDialogContainer">
+    <div id="subDiv" class="container-fluid">
+        <div data-ng-repeat="sub in subData" class="card m-2">
+            <div class="card-body p-0">
+                <div class="p-2">You do not need to submit a Staff Change Submission for <strong>Short Term Sub</strong>
+                    (STS), as they use the local sub account (e.g.
+                    <strong>{{userContext.curUserSchoolAbbr}}-Sub</strong>) to log into the teacher's computer. They
+                    will <strong><u>NOT</u></strong> have email or access
+                    to anything in Office365. They <strong><u>will</u></strong> <strong><u>NOT</u></strong>
+                    have access to Canvas. They will be able to access the PowerSchool Sub Portal (<a
+                        href="https://powerschool.cdolinc.net/subs"
+                        target="_blank">https://powerschool.cdolinc.net/subs</a>) to enter attendance
+                    and lunch counts. Click the <strong>Exit</strong> button below to return to the Staff Change List.
+                </div>
+                <div class="card-footer">
+                    <div class="button-row">
+                        <a href="list.html" type="button" id="listAll"
+                            class="btn btn-sm btn-primary btn-ps-blue ms-1">Exit</a>
                     </div>
                 </div>
             </div>

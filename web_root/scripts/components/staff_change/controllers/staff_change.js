@@ -20,13 +20,15 @@ define(function (require) {
 
 			let psDialogHolder = null
 
-			$scope.openDupeDialog = function (type) {
+			$scope.openDialog = function (type) {
 				psDialogHolder = $j(`#${type}Div`).detach()
 				let dupeMessage
 				if (type === 'staffDupe') {
 					dupeMessage = 'Potential Staff Found!'
 				} else if (type === 'staffChangeDupe') {
 					dupeMessage = 'Potential Duplicate Staff Change Found!'
+				} else if (type === 'sub') {
+					dupeMessage = 'No Staff Submission Needed for STS'
 				}
 				psDialog({
 					type: 'dialogM',
@@ -51,7 +53,7 @@ define(function (require) {
 				})
 			}
 
-			$scope.closeDupeDialog = function (formType, pageContext, type) {
+			$scope.closeDialog = function (formType, pageContext, type) {
 				$j(`#${type}DialogContainer`).append(psDialogHolder)
 				psDialogClose()
 				if (pageContext === 'exitingStaff') {
@@ -263,7 +265,7 @@ define(function (require) {
 				}
 
 				if ($scope.staffChangeDupeData.length > 0) {
-					$scope.openDupeDialog('staffChangeDupe')
+					$scope.openDialog('staffChangeDupe')
 				} else if (pageContext === 'newStaff') {
 					if ($scope.staffDupeData) {
 						delete $scope.staffDupeData
@@ -278,7 +280,7 @@ define(function (require) {
 					await $scope.getJSONData('staffDupeData', staffDupeParams)
 
 					if ($scope.staffDupeData.length > 0) {
-						$scope.openDupeDialog('staffDupe')
+						$scope.openDialog('staffDupe')
 					}
 				}
 			}
