@@ -59,7 +59,7 @@ define(function (require) {
 							click: function () {
 								psDialogClose()
 								// Redirect to list.html
-								window.location.href = 'list.html'
+								$scope.toListRedirect('subStaff')
 							}
 						}
 					]
@@ -581,20 +581,26 @@ define(function (require) {
 			$scope.toListRedirect = form => {
 				let redirectPath = '/admin/staff_change/list.html'
 				switch (form) {
+					case 'newStaff':
+						redirectPath = `${redirectPath}#tabOneContent`
+						break
 					case 'transferringStaff':
 						redirectPath = `${redirectPath}#tabTwoContent`
 						break
 					case 'jobChange':
 						redirectPath = `${redirectPath}#tabThreeContent`
 						break
-					case 'nameChange':
+					case 'subStaff':
 						redirectPath = `${redirectPath}#tabFourContent`
 						break
-					case 'exitingStaff':
+					case 'nameChange':
 						redirectPath = `${redirectPath}#tabFiveContent`
 						break
-					case 'allStaff':
+					case 'exitingStaff':
 						redirectPath = `${redirectPath}#tabSixContent`
+						break
+					case 'allStaff':
+						redirectPath = `${redirectPath}#tabSevenContent`
 						break
 					default:
 						redirectPath
@@ -635,6 +641,7 @@ define(function (require) {
 			newStaff: 'New Staff',
 			exitingStaff: 'Exiting Staff',
 			nameChange: 'Name Change',
+			subStaff: 'Substitute',
 			jobChange: 'Job Change',
 			transferringStaff: 'Transferring-In Staff'
 		}

@@ -44,10 +44,11 @@
         'text-success': allStaff.change_type === 'newStaff',
         'text-primary': allStaff.change_type  === 'transferringStaff',
         'text-info': allStaff.change_type  === 'jobChange',
-        'text-indigo': staffChangeDupe.change_type === 'subStaff',
+        'text-indigo': allStaff.change_type === 'subStaff',
         'text-warning': allStaff.change_type  === 'nameChange',
         'text-secondary': allStaff.change_type  === 'exitingStaff'
-    }">{{ allStaff.change_type | changeTypeFilter }}</td>
+    }">{{ allStaff.change_type | changeTypeFilter }}<span
+                        data-ng-if="allStaff.change_type === 'subStaff'">({{allStaff.sub_type}})</span></td>
                 <td class="nowrap">{{allStaff.schname}}</td>
                 <td class="nowrap">{{allStaff.submittedstaff}}</td>
                 <td class="nowrap">{{allStaff.submission_date | date : 'MM/dd/yyyy'}}
