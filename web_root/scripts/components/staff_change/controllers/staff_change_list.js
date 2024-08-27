@@ -164,6 +164,7 @@ define(function (require) {
 			newStaff: 'New Staff',
 			exitingStaff: 'Exiting Staff',
 			nameChange: 'Name Change',
+			subStaff: 'Substitute',
 			jobChange: 'Job Change',
 			transferringStaff: 'Transferring-In Staff'
 		}
