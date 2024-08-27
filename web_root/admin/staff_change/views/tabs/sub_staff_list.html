@@ -43,10 +43,11 @@
                 <td
                     data-ng-class="{'req-notation': (subStaff.completion_date < curDate) && (!subStaff.ps_complete || !subStaff.ad_complete || !subStaff.o365_complete || !subStaff.lms_complete)}">
                     {{subStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <span data-ng-if="subStaff.sub_type !== 'FSTS'"
-                    data-ng-class="{'mark-complete': subStaff.ps_complete, 'mark-incomplete': !subStaff.ps_complete}">
-                </span>
-                <span data-ng-if="subStaff.sub_type === 'FSTS'" class="text-primary fs-6 fw-medium">- - -</span>
+                <td><span data-ng-if="subStaff.sub_type !== 'FSTS'"
+                        data-ng-class="{'mark-complete': subStaff.ps_complete, 'mark-incomplete': !subStaff.ps_complete}">
+                    </span>
+                    <span data-ng-if="subStaff.sub_type === 'FSTS'" class="text-primary fs-6 fw-medium">- - -</span>
+                </td>
                 <td><span
                         data-ng-class="{'mark-complete': subStaff.ad_complete, 'mark-incomplete': !subStaff.ad_complete}"></span>
                 </td>
