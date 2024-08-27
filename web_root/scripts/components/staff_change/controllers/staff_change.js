@@ -262,8 +262,6 @@ define(function (require) {
 			}
 
 			$scope.dupeSearch = async (pageContext, formPayload, searchType) => {
-				console.log('searchType', searchType)
-
 				if ($scope.staffChangeDupeData) {
 					delete $scope.staffChangeDupeData
 				}
