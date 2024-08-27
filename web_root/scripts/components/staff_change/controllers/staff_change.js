@@ -502,12 +502,13 @@ define(function (require) {
 					}
 					if (formPayload.change_type == 'subStaff') {
 						formPayload.staff_type = '4'
-						formPayload.position = formPayload.sub_type
 						if (formPayload.sub_type == 'lts') {
 							formPayload.license_microsoft = 'A3'
 						} else {
 							formPayload.license_microsoft = 'A1'
 						}
+						formPayload.sub_type = formPayload.sub_type.toUpperCase()
+						formPayload.position = formPayload.sub_type
 					}
 
 					//add commonPayload to each object in submitPayload
@@ -524,7 +525,7 @@ define(function (require) {
 						curDate: $scope.userContext.curDate,
 						curTime: $scope.userContext.curTime,
 						userEmail: $scope.userContext.curUserEmail,
-						readableChangeType: formatService.changeMap(formPayload.change_type)
+						readableChangeType: formPayload.change_type === 'subStaff' ? `${formatService.changeMap(formPayload.change_type)} (${formPayload.sub_type})` : `${formatService.changeMap(formPayload.change_type)}`
 					}
 
 					let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
