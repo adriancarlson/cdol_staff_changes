@@ -35,8 +35,8 @@
                 data-ng-if="(staffChangeForm.$invalid && staffChangeForm.$dirty) || !submitPayload[userContext.formType].users_dcid">Please
                 fill all required fields prior to submitting.</span>
             <button type="button" id="subBtn" class="m-0 p-2"
-                data-ng-disabled="staffChangeForm.$invalid || userContext.invalidDate" data-ng-show="!subConfirm"
-                data-ng-click="subConfirm = true">Submit</button>
+                data-ng-disabled="staffChangeForm.$invalid || userContext.invalidDate || userContext.subTypeHover == 'sts'"
+                data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
             <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
                 data-ng-click="subConfirm = false;">Cancel</button>
             <button type="button" id="confBtn" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
@@ -149,25 +149,18 @@
 </div>
 <div class="hide" id="subDialogContainer">
     <div id="subDiv" class="container-fluid">
-        <div data-ng-repeat="sub in subData" class="card m-2">
-            <div class="card-body p-0">
-                <div class="p-2">You do not need to submit a Staff Change Submission for <strong>Short Term Sub</strong>
-                    (STS), as they use the local sub account (e.g.
-                    <strong>{{userContext.curUserSchoolAbbr}}-Sub</strong>) to log into the teacher's computer. They
-                    will <strong><u>NOT</u></strong> have email or access
-                    to anything in Office365. They <strong><u>will</u></strong> <strong><u>NOT</u></strong>
-                    have access to Canvas. They will be able to access the PowerSchool Sub Portal (<a
-                        href="https://powerschool.cdolinc.net/subs"
-                        target="_blank">https://powerschool.cdolinc.net/subs</a>) to enter attendance
-                    and lunch counts. Click the <strong>Exit</strong> button below to return to the Staff Change List.
-                </div>
-                <div class="card-footer">
-                    <div class="button-row">
-                        <a href="list.html" type="button" id="listAll"
-                            class="btn btn-sm btn-primary btn-ps-blue ms-1">Exit</a>
-                    </div>
-                </div>
+        <div class="card-body p-0">
+            <div class="p-2">You do not need to submit a Staff Change Submission for a <strong>Short Term Sub</strong>
+                (STS), as they use the local sub account (e.g.
+                <strong>{{userContext.curUserSchoolAbbr}}-Sub</strong>) to log into the teacher's computer. They
+                will <strong><u>NOT</u></strong> have email or access
+                to anything in Office365. They <strong><u>will</u></strong> <strong><u>NOT</u></strong>
+                have access to Canvas. They will be able to access the PowerSchool Sub Portal (<a
+                    href="https://powerschool.cdolinc.net/subs"
+                    target="_blank">https://powerschool.cdolinc.net/subs</a>) to enter attendance
+                and lunch counts. <br>Click the <strong>Exit</strong> button below to return to the Staff Change List.
             </div>
         </div>
     </div>
+</div>
 </div>

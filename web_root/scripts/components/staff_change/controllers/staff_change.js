@@ -22,25 +22,12 @@ define(function (require) {
 
 			$scope.openDialog = function (type) {
 				psDialogHolder = $j(`#${type}Div`).detach()
-				let dupeMessage
+				let dialogMessage
+				let dialogButtons = []
+
 				if (type === 'staffDupe') {
-					dupeMessage = 'Potential Staff Found!'
-				} else if (type === 'staffChangeDupe') {
-					dupeMessage = 'Potential Duplicate Staff Change Found!'
-				} else if (type === 'sub') {
-					dupeMessage = 'No Staff Submission Needed for STS'
-				}
-				psDialog({
-					type: 'dialogM',
-					width: 1000,
-					title: dupeMessage,
-					content: psDialogHolder,
-					initBehaviors: true,
-					close: function () {
-						// Move View back to a holder so that it won't be lost if another type of dialog is opened.
-						$j(`#${type}DialogContainer`).append(psDialogHolder)
-					},
-					buttons: [
+					dialogMessage = 'Potential Staff Found!'
+					dialogButtons = [
 						{
 							id: 'saveDialogButton',
 							text: 'Proceed',
@@ -50,6 +37,45 @@ define(function (require) {
 							}
 						}
 					]
+				} else if (type === 'staffChangeDupe') {
+					dialogMessage = 'Potential Duplicate Staff Change Found!'
+					dialogButtons = [
+						{
+							id: 'saveDialogButton',
+							text: 'Proceed',
+							title: 'Proceed',
+							click: function () {
+								psDialogClose()
+							}
+						}
+					]
+				} else if (type === 'sub') {
+					dialogMessage = 'No Staff Submission Needed for STS'
+					dialogButtons = [
+						{
+							id: 'exitDialogButton',
+							text: 'Exit',
+							title: 'Exit',
+							click: function () {
+								psDialogClose()
+								// Redirect to list.html
+								window.location.href = 'list.html'
+							}
+						}
+					]
+				}
+
+				psDialog({
+					type: 'dialogM',
+					width: 1000,
+					title: dialogMessage,
+					content: psDialogHolder,
+					initBehaviors: true,
+					close: function () {
+						// Move View back to a holder so that it won't be lost if another type of dialog is opened.
+						$j(`#${type}DialogContainer`).append(psDialogHolder)
+					},
+					buttons: dialogButtons
 				})
 			}
 
