@@ -225,7 +225,7 @@ define(function (require) {
 					const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, getFormatKeys, staffChangeId)
 					$scope.submitPayload[res.change_type] = await res
 					$scope.userContext.pageContext = await res.change_type
-					if ($scope.userContext.pageContext === 'newStaff') {
+					if ($scope.userContext.pageContext === 'newStaff' || $scope.userContext.pageContext === 'subStaff') {
 						await $scope.checkDupesOnEdit(res)
 					}
 				}
