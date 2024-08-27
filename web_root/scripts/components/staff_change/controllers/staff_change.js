@@ -500,6 +500,15 @@ define(function (require) {
 					if (formPayload.change_type == 'exitingStaff') {
 						formPayload.old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => formPayload.first_name.startsWith(prefix)) && formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name}`
 					}
+					if (formPayload.change_type == 'subStaff') {
+						formPayload.staff_type = '4'
+						formPayload.position = formPayload.sub_type
+						if (formPayload.sub_type == 'lts') {
+							formPayload.license_microsoft = 'A3'
+						} else {
+							formPayload.license_microsoft = 'A1'
+						}
+					}
 
 					//add commonPayload to each object in submitPayload
 					formPayload = Object.assign(formPayload, commonPayload)

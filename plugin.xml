@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://plugin.powerschool.pearson.com"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd" description="Submitting Tracking Staff Changes" name="CDOL Staff Changes" version="24.8.4.11">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd" description="Submitting Tracking Staff Changes" name="CDOL Staff Changes" version="24.8.4.14">
 	<publisher name="Adrian Carlson">
 		<contact email="adrian-carlson@cdolinc.net"/>
 	</publisher>

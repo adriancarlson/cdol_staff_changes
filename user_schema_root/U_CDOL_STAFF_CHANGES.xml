@@ -64,5 +64,6 @@
         <field name="license_microsoft" type="String" length="100" />
         <field name="license_adobe" type="Boolean" />
         <field name="ticket_id" type="Integer" />
+        <field name="sub_type" type="String" length="100" />
     </extendedTable>
 </psExtension>

@@ -274,29 +274,6 @@
                     </div>
                     <div class="row align-items-center mb-3 gx-2">
                         <div class="col-auto">
-                            <label for="sub-staff-type"
-                                class="form-label form-label-sm  label-reset staff-change-req">Staff
-                                Type</label>
-                            <select id="sub-staff-type" class="form-select form-select-sm" aria-label="sub-staff-type"
-                                data-ng-model="submitPayload.subStaff.staff_type"
-                                data-ng-change="updateLicensing(userContext.pageContext)" data-ng-required="true">
-                                <option></option>
-                                <option value="1">Teacher</option>
-                                <option value="2">Staff</option>
-                                <option value="3">Lunch Staff</option>
-                                <option value="4">Substitute</option>
-                            </select>
-                        </div>
-                        <div class="col-3">
-                            <label for="sub-staff-position"
-                                class="form-label form-label-sm  label-reset staff-change-req">Position</label>
-                            <input id="sub-staff-position" type="text" class="form-control form-control-sm"
-                                placeholder="Ex: 2nd Grade Teacher, or Principal" aria-label="Position"
-                                data-ng-model="submitPayload.subStaff.position"
-                                data-ng-blur="submitPayload.subStaff.position = (submitPayload.subStaff.position | titleCase)"
-                                data-ng-required="true">
-                        </div>
-                        <div class="col-auto">
                             <label for="sub-staff-fte" class="form-label form-label-sm label-reset">FTE</label>
                             <select id="sub-staff-fte" class="form-select form-select-sm" aria-label="sub-staff-fte"
                                 data-ng-model="submitPayload.subStaff.fte">
@@ -328,62 +305,6 @@
                                     class="bi bi-exclamation-octagon-fill"></i>
                                 <strong>{{submitPayload.subStaff.deadline}}</strong> is not a Business Day.<br> Please
                                 choose another date.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row align-items-center mb-3" data-ng-if="submitPayload.subStaff.first_name">
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-header fw-semibold ps-1">Licensing Information</div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-2">
-                                            <label for="sub-staff-license-microsoft"
-                                                class="form-label form-label-sm label-reset staff-change-req">Microsoft
-                                                Licensing</label>
-                                            <select id="sub-staff-license-microsoft" class="form-select form-select-sm"
-                                                aria-label="sub-staff-license-microsoft"
-                                                data-ng-model="submitPayload.subStaff.license_microsoft"
-                                                ng-init="submitPayload.subStaff.license_microsoft = submitPayload.subStaff.license_microsoft || 'A1'"
-                                                data-ng-required="true">
-                                                <option value="A1">A1 - Free</option>
-                                                <option value="A3">A3 - Paid</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-10">
-                                            <div class="alert alert-primary" role="alert"><i
-                                                    class="bi bi-chat-right-text-fill"></i> <strong><u>Microsoft A1 vs.
-                                                        A3
-                                                        Licensing</u></strong><br>
-                                                <ul>
-                                                    <li><u>Microsoft A1</u> is a free basic license, and the default
-                                                        license
-                                                        given to our staff. It includes essential web (i.e. browser)
-                                                        versions of Office apps like Word, Excel and Outlook. There is
-                                                        no
-                                                        voicemail
-                                                        for Teams Phones and Outlook mailbox size is maxed at 50GB. It's
-                                                        great for basic productivity needs. This is generally for paras
-                                                        and
-                                                        part-time non-teaching staff.</li>
-                                                    <li><u>Microsoft A3</u> is a <em>paid</em>, more advanced license.
-                                                        It
-                                                        provides both web and desktop installations of Office. A3 also
-                                                        includes additional security features, voicemail for Teams
-                                                        Phones,
-                                                        and the Outlook mailbox size is 100GB. It's designed for users
-                                                        who
-                                                        need more comprehensive tools and management capabilities. This
-                                                        is
-                                                        generally for
-                                                        Teachers, School Administrators, and Secretaries</li>
-                                                    <li>The decision regarding licensing rests with the local school
-                                                        administrator.</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -471,42 +392,14 @@
                         <div class="col">
                             <div class="card">
                                 <div class="card-body">
-                                    <div data-ng-if="userContext.pageStatus =='Submit'"
-                                        class="row align-items-center mb-3">
-                                        <div class="col-auto">
-                                            <label class="form-label form-label-sm label-reset staff-change-req">Will
-                                                {{submitPayload.subStaff.title}} {{
-                                                submitPayload.subStaff.first_name}} {{
-                                                submitPayload.subStaff.last_name}} be replacing a current staff
-                                                member at {{ userContext.curSchoolName }}?</label><br>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="exit-radio-group"
-                                                    id="exit-radio-yes"
-                                                    data-ng-model="submitPayload.subStaff.exit_radio"
-                                                    data-ng-change="updateAdditionalPayload(userContext.pageContext)"
-                                                    value="1" data-ng-required="!submitPayload.subStaff.exit_radio"
-                                                    tabindex="0">
-                                                <label class="form-check-label" for="exit-radio-yes">Yes</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="exit-radio-group"
-                                                    id="exit-radio-no" data-ng-model="submitPayload.subStaff.exit_radio"
-                                                    data-ng-change="updateAdditionalPayload(userContext.pageContext)"
-                                                    value="0" data-ng-required="!submitPayload.subStaff.exit_radio"
-                                                    tabindex="0">
-                                                <label class="form-check-label" for="exit-radio-no">No</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-3"
-                                        data-ng-if="submitPayload.subStaff.exit_radio == 1 || (userContext.pageStatus =='Edit' && submitPayload.subStaff.replace_dcid)">
+                                    <div class="row align-items-center mb-3">
                                         <div class="col-auto">
                                             <label for="replacing_dcid"
                                                 class="form-label form-label-sm label-reset staff-change-req">Who
                                                 is
                                                 {{submitPayload.subStaff.title}} {{
                                                 submitPayload.subStaff.first_name}} {{
-                                                submitPayload.subStaff.last_name}} replacing?</label><span
+                                                submitPayload.subStaff.last_name}} going to substitute for?</label><span
                                                 class="text-muted"
                                                 data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose
                                                         --Other--
@@ -572,79 +465,6 @@
                                                     data-ng-model="submitPayload.subStaff.replace_last_name"
                                                     data-ng-blur="submitPayload.subStaff.replace_last_name = (submitPayload.subStaff.replace_last_name | titleCase)"
                                                     data-ng-required="true">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-3"
-                                        data-ng-if="submitPayload.subStaff.replace_dcid">
-                                        <div class="col" data-ng-if="userContext.pageStatus =='Submit'">
-                                            <label class="form-label form-label-sm label-reset staff-change-req">Is {{
-                                                submitPayload.subStaff.replace_first_name}} {{
-                                                submitPayload.subStaff.replace_last_name}} leaving
-                                                {{ userContext.curSchoolName }}?</label><br>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="leaving-radio-group"
-                                                    id="leaving-radio-yes"
-                                                    data-ng-model="submitPayload.subStaff.leaving_radio" value="1"
-                                                    data-ng-required="!submitPayload.subStaff.leaving_radio"
-                                                    data-ng-change="updateAdditionalPayload(userContext.pageContext)"
-                                                    tabindex="0">
-                                                <label class="form-check-label" for="leaving-radio-yes">Yes</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="leaving-radio-group"
-                                                    id="leaving-radio-no"
-                                                    data-ng-model="submitPayload.subStaff.leaving_radio" value="0"
-                                                    data-ng-required="!submitPayload.subStaff.leaving_radio"
-                                                    data-ng-change="updateAdditionalPayload(userContext.pageContext)"
-                                                    tabindex="0">
-                                                <label class="form-check-label" for="leaving-radio-no">No</label>
-                                            </div>
-                                            <div class="alert alert-warning" role="alert"
-                                                data-ng-if="submitPayload.subStaff.leaving_radio == 1"><i
-                                                    class="bi bi-pencil-square"></i>
-                                                <strong><u>Please Note</u></strong>: Next, You will be taken to the
-                                                Exiting
-                                                Staff screen to finish the Exiting Staff submission for {{
-                                                submitPayload.subStaff.replace_first_name}} {{
-                                                submitPayload.subStaff.replace_last_name}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-3"
-                                        data-ng-if="submitPayload.subStaff.leaving_radio == 0">
-                                        <div class="col">
-                                            <label class="form-label form-label-sm label-reset staff-change-req">Is {{
-                                                submitPayload.subStaff.replace_first_name}} {{
-                                                submitPayload.subStaff.replace_last_name}} changing positions/jobs
-                                                within {{ userContext.curSchoolName }}?</label><br>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="position-radio-group"
-                                                    id="position-radio-yes"
-                                                    data-ng-model="submitPayload.subStaff.position_radio" value="1"
-                                                    data-ng-required="!submitPayload.subStaff.position_radio"
-                                                    data-ng-change="updateAdditionalPayload(userContext.pageContext)"
-                                                    tabindex="0">
-                                                <label class="form-check-label" for="position-radio-yes">Yes</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="position-radio-group"
-                                                    id="position-radio-no"
-                                                    data-ng-model="submitPayload.subStaff.position_radio" value="0"
-                                                    data-ng-required="!submitPayload.subStaff.position_radio"
-                                                    data-ng-change="updateAdditionalPayload(userContext.pageContext)"
-                                                    tabindex="0">
-                                                <label class="form-check-label" for="position-radio-no">No</label>
-                                            </div>
-                                            <div class="alert alert-warning" role="alert"
-                                                data-ng-if="submitPayload.subStaff.position_radio == 1"><i
-                                                    class="bi bi-pencil-square"></i>
-                                                <strong><u>Please Note</u></strong>: Next, You will be taken to the
-                                                Position/Job Change screen to finish the Position/Job Change submission
-                                                for
-                                                {{
-                                                submitPayload.subStaff.replace_first_name}} {{
-                                                submitPayload.subStaff.replace_last_name}}
                                             </div>
                                         </div>
                                     </div>
