@@ -35,7 +35,7 @@
                 data-ng-if="(staffChangeForm.$invalid && staffChangeForm.$dirty) || !submitPayload[userContext.formType].users_dcid">Please
                 fill all required fields prior to submitting.</span>
             <button type="button" id="subBtn" class="m-0 p-2"
-                data-ng-disabled="staffChangeForm.$invalid || userContext.invalidDate || userContext.subTypeHover == 'sts'"
+                data-ng-disabled="staffChangeForm.$invalid || userContext.invalidDate || userContext.subTypeHover == 'STS'"
                 data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
             <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
                 data-ng-click="subConfirm = false;">Cancel</button>

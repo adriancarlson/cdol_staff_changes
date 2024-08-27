@@ -55,30 +55,31 @@
                                 <div class="card-header fs-6 fw-semibold staff-change-req">Substitute Type:
                                 </div>
                                 <div class="card-body">
-                                    <div class="form-check" data-ng-mouseenter="userContext.subTypeHover = 'sts'"
+                                    <div class="form-check" data-ng-if="userContext.pageStatus =='Submit'"
+                                        data-ng-mouseenter="userContext.subTypeHover = 'STS'"
                                         data-ng-mouseleave="userContext.subTypeHover =submitPayload.subStaff.sub_type"
                                         data-ng-click="openDialog('sub')">
                                         <input class="form-check-input" type="radio" name="sts-staff-radio"
                                             id="sts-staff-radio" data-ng-model="submitPayload.subStaff.sub_type"
-                                            value="sts" data-ng-required="true">
+                                            value="STS" data-ng-required="true">
                                         <label class="form-check-label change-type-radio-label" for="sts-staff-radio">
                                             <strong>Short Term Sub</strong> (STS)
                                         </label>
                                     </div>
-                                    <div class="form-check" data-ng-mouseenter="userContext.subTypeHover = 'fsts'"
+                                    <div class="form-check" data-ng-mouseenter="userContext.subTypeHover = 'FSTS'"
                                         data-ng-mouseleave="userContext.subTypeHover =submitPayload.subStaff.sub_type">
                                         <input class="form-check-input" type="radio" name="fsts-staff-radio"
                                             id="fsts-staff-radio" data-ng-model="submitPayload.subStaff.sub_type"
-                                            value="fsts" data-ng-required="true">
+                                            value="FSTS" data-ng-required="true">
                                         <label class="form-check-label change-type-radio-label" for="fsts-staff-radio">
                                             <strong>Frequent Short Term Sub</strong> (FSTS)
                                         </label>
                                     </div>
-                                    <div class="form-check" data-ng-mouseenter="userContext.subTypeHover = 'lts'"
+                                    <div class="form-check" data-ng-mouseenter="userContext.subTypeHover = 'LTS'"
                                         data-ng-mouseleave="userContext.subTypeHover =submitPayload.subStaff.sub_type">
                                         <input class="form-check-input" type="radio" name="lts-change-radio"
                                             id="lts-change-radio" data-ng-model="submitPayload.subStaff.sub_type"
-                                            value="lts" data-ng-required="true">
+                                            value="LTS" data-ng-required="true">
                                         <label class="form-check-label change-type-radio-label" for="lts-change-radio">
                                             <strong>Long Term Sub</strong> (LTS)
                                         </label>
@@ -88,7 +89,7 @@
                         </div>
                     </div>
                     <div class="col" data-ng-if="userContext.pageStatus =='Submit'">
-                        <div id="sts-staff-card" class="card" data-ng-if="userContext.subTypeHover === 'sts'">
+                        <div id="sts-staff-card" class="card" data-ng-if="userContext.subTypeHover === 'STS'">
                             <div class="card-header fs-6 fw-semibold">Short Term
                                 Sub (STS) :
                             </div>
@@ -104,7 +105,7 @@
                                 and lunch counts, but no other access will be given.
                             </div>
                         </div>
-                        <div id="fsts-staff-card" class="card" data-ng-if="userContext.subTypeHover === 'fsts'">
+                        <div id="fsts-staff-card" class="card" data-ng-if="userContext.subTypeHover === 'FSTS'">
                             <div class="card-header fs-6 fw-semibold">
                                 Frequent Short Term Sub (FSTS) :
                             </div>
@@ -119,7 +120,7 @@
                                 <strong>STS</strong>.
                             </div>
                         </div>
-                        <div id="lts-change-card" class="card" data-ng-if="userContext.subTypeHover === 'lts'">
+                        <div id="lts-change-card" class="card" data-ng-if="userContext.subTypeHover === 'LTS'">
                             <div class="card-header fs-6 fw-semibold">Long Term Sub
                                 (LTS)
                             </div>
@@ -140,7 +141,7 @@
                         </div>
                     </div>
                 </div>
-                <div data-ng-if="submitPayload.subStaff.sub_type == 'lts'|| submitPayload.subStaff.sub_type == 'fsts'">
+                <div data-ng-if="submitPayload.subStaff.sub_type == 'LTS'|| submitPayload.subStaff.sub_type == 'FSTS'">
                     <div class="row align-items-center mb-3">
                         <div class="col-6">
                             <label for="sub-staff-name"

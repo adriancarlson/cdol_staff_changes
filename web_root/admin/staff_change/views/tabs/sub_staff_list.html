@@ -5,6 +5,7 @@
         Complete?</label>
     <label data-pss-filter-field="ps_complete|multiselect" data-filter-info="booleanMap">PowerSchool Complete?</label>
     <label data-pss-filter-field="o365_complete|multiselect" data-filter-info="booleanMap">Office 365 Complete?</label>
+    <label data-pss-filter-field="lms_complete|multiselect" data-filter-info="booleanMap">LMS Complete?</label>
     <label data-pss-filter-field="completed|multiselect" data-filter-info="booleanMap">All Completed?</label>
     <label data-pss-filter-field="title|multiselect" data-filter-info="titleMap">Title</label>
     <label data-pss-filter-field="first_name">First Name</label>
@@ -24,6 +25,7 @@
                 <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">PS Created</th>
                 <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">AD Created</th>
                 <th data-pss-sort-fields="o365_created, o365_ignored" data-exclude-from-filter="true">O365 Created</th>
+                <th data-pss-sort-fields="lms_created" data-exclude-from-filter="true">LMS Created</th>
                 <th data-pss-sort-fields="final_completion_date|date">Completion Date</th>
             </tr>
         </thead>
@@ -52,6 +54,9 @@
                 </td>
                 <td><span
                         data-ng-class="{'mark-complete': subStaff.o365_complete, 'mark-incomplete': !subStaff.o365_complete}"></span>
+                </td>
+                <td><span
+                        data-ng-class="{'mark-complete': subStaff.lms_complete, 'mark-incomplete': !subStaff.lms_complete}"></span>
                 </td>
                 <td>{{subStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>

@@ -73,10 +73,10 @@
                         class="text-primary fs-6 fw-medium">- - -</span>
                 </td>
                 <td><span
-                        data-ng-if="allStaff.change_type !== 'exitingStaff' && allStaff.change_type !== 'jobChange' && allStaff.change_type !== 'subStaff'"
+                        data-ng-if="allStaff.change_type !== 'exitingStaff' && allStaff.change_type !== 'jobChange' && (allStaff.change_type === 'subStaff' && allStaff.sub_type !== 'FSTS')"
                         data-ng-class="{'mark-complete': allStaff.lms_complete, 'mark-incomplete': !allStaff.lms_complete}"></span>
                     <span
-                        data-ng-if="allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange' || allStaff.change_type === 'subStaff'"
+                        data-ng-if="allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange' || (allStaff.change_type === 'subStaff' && allStaff.sub_type === 'FSTS')"
                         class="text-primary fs-6 fw-medium">- - -</span>
                 </td>
                 <td>{{allStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>

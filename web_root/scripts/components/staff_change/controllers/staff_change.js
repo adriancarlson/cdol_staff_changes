@@ -205,7 +205,7 @@ define(function (require) {
 				$scope.userContext.invalidDate = !isBusinessDay(checkDate)
 			}
 
-			// setting up universal formatKeys that will be used in API calls to format fields or delete feidls
+			// setting up universal formatKeys that will be used in API calls to format fields or delete fields
 			$scope.formatKeys = {
 				dateKeys: ['_date', 'dob', 'deadline'],
 				checkBoxKeys: ['_created', '_ignored'],
@@ -500,12 +500,11 @@ define(function (require) {
 					}
 					if (formPayload.change_type == 'subStaff') {
 						formPayload.staff_type = '4'
-						if (formPayload.sub_type == 'lts') {
+						if (formPayload.sub_type == 'LTS') {
 							formPayload.license_microsoft = 'A3'
 						} else {
 							formPayload.license_microsoft = 'A1'
 						}
-						formPayload.sub_type = formPayload.sub_type.toUpperCase()
 						formPayload.position = formPayload.sub_type
 					}
 
