@@ -283,7 +283,7 @@
                                 <option value="4">Substitute</option>
                             </select>
                         </div>
-                        <div class="col-3">
+                        <div class="col-auto">
                             <label for="sub-staff-fte" class="form-label form-label-sm label-reset">FTE</label>
                             <select id="sub-staff-fte" class="form-select form-select-sm" aria-label="sub-staff-fte"
                                 data-ng-model="submitPayload.subStaff.fte">
@@ -616,23 +616,28 @@
                                             <select id="sub-staff-license-microsoft" class="form-select form-select-sm"
                                                 aria-label="sub-staff-license-microsoft"
                                                 data-ng-model="submitPayload.subStaff.license_microsoft"
-                                                data-ng-init="submitPayload.subStaff.license_microsoft = submitPayload.subStaff.replace_license_microsoft || 'A1'"
                                                 data-ng-required="true">
                                                 <option value="A1">A1 - Free</option>
                                                 <option value="A3">A3 - Paid</option>
                                             </select>
                                         </div>
-                                        <div class="col-10"
-                                            data-ng-if="submitPayload.subStaff.replace_dcid && submitPayload.subStaff.replace_dcid != -1">
-                                            <div class="alert alert-primary" role="alert"><i
-                                                    class="bi bi-chat-right-text-fill"></i> {{replace_first_name}}
-                                                {{replace_last_name}} had a
-                                                <strong>{{replace_license_microsoft}}</strong> Microsoft License.
-                                            </div>
-                                        </div>
                                         <div class="col-10" data-ng-if="userContext.pageStatus =='Submit'">
                                             <div class="alert alert-primary" role="alert"><i
-                                                    class="bi bi-chat-right-text-fill"></i> <strong><u>Microsoft A1 vs.
+                                                    class="bi bi-chat-right-text-fill"></i> <span
+                                                    data-ng-if="submitPayload.subStaff.replace_dcid && submitPayload.subStaff.replace_dcid != -1">{{submitPayload.subStaff.replace_first_name}}
+                                                    {{submitPayload.subStaff.replace_last_name}} has a
+                                                    <strong>{{submitPayload.subStaff.replace_license_microsoft}}</strong>
+                                                    Microsoft License.<br></span>
+                                                <span
+                                                    data-ng-if="submitPayload.subStaff.replace_license_microsoft == 'A3'">{{submitPayload.subStaff.replace_first_name}}
+                                                    {{submitPayload.subStaff.replace_last_name}} will be assigned a
+                                                    temporary <strong>A1</strong> Microsoft License during their leave.
+                                                    Meanwhile, their <strong>A3</strong> Microsoft License will be
+                                                    temporarily transferred to {{submitPayload.subStaff.first_name}}
+                                                    {{submitPayload.subStaff.last_name}} until
+                                                    {{submitPayload.subStaff.replace_first_name}}
+                                                    {{submitPayload.subStaff.replace_last_name}} returns.<br></span>
+                                                <strong><u>Microsoft A1 vs.
                                                         A3
                                                         Licensing</u></strong><br>
                                                 <ul>

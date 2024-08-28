@@ -408,6 +408,9 @@ define(function (require) {
 							// assign the replaceObject to the submitPayload
 							Object.assign($scope.submitPayload[pageContext], replaceObject)
 						}
+						if (pageContext === 'subStaff') {
+							$scope.submitPayload[pageContext].license_microsoft = $scope.submitPayload[pageContext].replace_license_microsoft
+						}
 					}
 				}
 			}
