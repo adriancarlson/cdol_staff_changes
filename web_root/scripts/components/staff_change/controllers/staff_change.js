@@ -500,9 +500,7 @@ define(function (require) {
 					}
 					if (formPayload.change_type == 'subStaff') {
 						formPayload.staff_type = '4'
-						if (formPayload.sub_type == 'LTS') {
-							formPayload.license_microsoft = 'A3'
-						} else {
+						if (formPayload.sub_type == 'FSTS') {
 							formPayload.license_microsoft = 'A1'
 						}
 						formPayload.position = formPayload.sub_type

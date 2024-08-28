@@ -74,7 +74,7 @@
                         <select id="transferring-staff-type" class="form-select form-select-sm"
                             aria-label="transferring-staff-type"
                             data-ng-model="submitPayload.transferringStaff.staff_type"
-                            data-ng-change="updateLicensing(userContext.pageContext);dupeSearch(userContext.pageContext, submitPayload[userContext.formType])"
+                            data-ng-change="dupeSearch(userContext.pageContext, submitPayload[userContext.formType])"
                             data-ng-required="true">
                             <option></option>
                             <option value="1">Teacher</option>
@@ -143,13 +143,13 @@
                                             class="form-select form-select-sm"
                                             aria-label="transferring-staff-license-microsoft"
                                             data-ng-model="submitPayload.transferringStaff.license_microsoft"
-                                            ng-init="submitPayload.transferringStaff.license_microsoft = submitPayload.transferringStaff.license_microsoft || 'A1'"
+                                            data-ng-init="submitPayload.transferringStaff.license_microsoft = submitPayload.transferringStaff.license_microsoft || 'A1'"
                                             data-ng-required="true">
                                             <option value="A1">A1 - Free</option>
                                             <option value="A3">A3 - Paid</option>
                                         </select>
                                     </div>
-                                    <div class="col-10">
+                                    <div class="col-10" data-ng-if="userContext.pageStatus =='Submit'">
                                         <div class="alert alert-primary" role="alert"><i
                                                 class="bi bi-chat-right-text-fill"></i> <strong><u>Microsoft A1 vs. A3
                                                     Licensing</u></strong><br>
@@ -168,7 +168,8 @@
                                                     need more comprehensive tools and management capabilities. This is
                                                     generally for
                                                     Teachers, School Administrators, and Secretaries</li>
-                                                    <li>The decision regarding licensing rests with the local school administrator.</li>
+                                                <li>The decision regarding licensing rests with the local school
+                                                    administrator.</li>
                                             </ul>
                                         </div>
                                     </div>

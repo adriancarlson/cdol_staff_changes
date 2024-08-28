@@ -274,7 +274,16 @@
                         </div>
                     </div>
                     <div class="row align-items-center mb-3 gx-2">
-                        <div class="col-auto">
+                        <div class="col-auto" data-ng-if="userContext.pageStatus =='Edit'">
+                            <label for="sub-staff-type"
+                                class="form-label form-label-sm  label-reset staff-change-req">Staff
+                                Type</label>
+                            <select id="sub-staff-type" class="form-select form-select-sm" aria-label="sub-staff-type"
+                                data-ng-model="submitPayload.subStaff.staff_type" data-ng-required="true">
+                                <option value="4">Substitute</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
                             <label for="sub-staff-fte" class="form-label form-label-sm label-reset">FTE</label>
                             <select id="sub-staff-fte" class="form-select form-select-sm" aria-label="sub-staff-fte"
                                 data-ng-model="submitPayload.subStaff.fte">
@@ -389,7 +398,7 @@
                         </div>
                     </div>
                     <div class="row align-items-center mb-3"
-                        data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.subStaff.first_name) || (userContext.pageStatus =='Edit' && submitPayload.subStaff.replace_dcid)">
+                        data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.subStaff.sub_type == 'LTS') || (userContext.pageStatus =='Edit' && submitPayload.subStaff.replace_dcid)">
                         <div class="col">
                             <div class="card">
                                 <div class="card-body">
@@ -586,6 +595,71 @@
                                                     tabindex="0">
                                                 <label class="form-check-label"
                                                     for="additional-schoolid-radio-no">No</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center mb-3"
+                        data-ng-if="submitPayload.subStaff.sub_type == 'LTS' || userContext.pageStatus =='Edit'">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header fw-semibold ps-1">Licensing Information</div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label for="sub-staff-license-microsoft"
+                                                class="form-label form-label-sm label-reset staff-change-req">Microsoft
+                                                Licensing</label>
+                                            <select id="sub-staff-license-microsoft" class="form-select form-select-sm"
+                                                aria-label="sub-staff-license-microsoft"
+                                                data-ng-model="submitPayload.subStaff.license_microsoft"
+                                                data-ng-init="submitPayload.subStaff.license_microsoft = submitPayload.subStaff.replace_license_microsoft || 'A1'"
+                                                data-ng-required="true">
+                                                <option value="A1">A1 - Free</option>
+                                                <option value="A3">A3 - Paid</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-10"
+                                            data-ng-if="submitPayload.subStaff.replace_dcid && submitPayload.subStaff.replace_dcid != -1">
+                                            <div class="alert alert-primary" role="alert"><i
+                                                    class="bi bi-chat-right-text-fill"></i> {{replace_first_name}}
+                                                {{replace_last_name}} had a
+                                                <strong>{{replace_license_microsoft}}</strong> Microsoft License.
+                                            </div>
+                                        </div>
+                                        <div class="col-10" data-ng-if="userContext.pageStatus =='Submit'">
+                                            <div class="alert alert-primary" role="alert"><i
+                                                    class="bi bi-chat-right-text-fill"></i> <strong><u>Microsoft A1 vs.
+                                                        A3
+                                                        Licensing</u></strong><br>
+                                                <ul>
+                                                    <li><u>Microsoft A1</u> is a free basic license, and the default
+                                                        license
+                                                        given to our staff. It includes essential web (i.e. browser)
+                                                        versions of Office apps like Word, Excel and Outlook. There is
+                                                        no
+                                                        voicemail
+                                                        for Teams Phones and Outlook mailbox size is maxed at 50GB. It's
+                                                        great for basic productivity needs. This is generally for paras
+                                                        and
+                                                        part-time non-teaching staff.</li>
+                                                    <li><u>Microsoft A3</u> is a <em>paid</em>, more advanced license.
+                                                        It
+                                                        provides both web and desktop installations of Office. A3 also
+                                                        includes additional security features, voicemail for Teams
+                                                        Phones,
+                                                        and the Outlook mailbox size is 100GB. It's designed for users
+                                                        who
+                                                        need more comprehensive tools and management capabilities. This
+                                                        is
+                                                        generally for
+                                                        Teachers, School Administrators, and Secretaries</li>
+                                                    <li>The decision regarding licensing rests with the local school
+                                                        administrator.</li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>

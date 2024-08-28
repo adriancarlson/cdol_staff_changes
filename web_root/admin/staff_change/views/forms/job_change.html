@@ -132,13 +132,13 @@
                                         <select id="job-change-license-microsoft" class="form-select form-select-sm"
                                             aria-label="job-change-license-microsoft"
                                             data-ng-model="submitPayload.newStaff.license_microsoft"
-                                            ng-init="submitPayload.jobChange.license_microsoft = submitPayload.jobChange.license_microsoft || 'A1'"
+                                            data-ng-init="submitPayload.jobChange.license_microsoft = submitPayload.jobChange.license_microsoft || 'A1'"
                                             data-ng-required="true">
                                             <option value="A1">A1 - Free</option>
                                             <option value="A3">A3 - Paid</option>
                                         </select>
                                     </div>
-                                    <div class="col-10">
+                                    <div class="col-10" data-ng-if="userContext.pageStatus =='Submit'">
                                         <div class="alert alert-primary" role="alert"><i
                                                 class="bi bi-chat-right-text-fill"></i> <strong><u>Microsoft A1 vs. A3
                                                     Licensing</u></strong><br>
