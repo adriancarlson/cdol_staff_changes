@@ -555,15 +555,51 @@ define(function (require) {
 					//add updateFormatKeys to each object in submitPayload
 					formPayload = Object.assign(formPayload, updateFormatKeys)
 
-					if (key !== 'exitingStaff' && key !== 'jobChange') {
-						if (formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored) && (formPayload.o365_created || formPayload.o365_ignored) && formPayload.lms_created) {
-							formPayload.final_completion_date = $scope.userContext.curDate
-						}
-					} else {
-						if (formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored)) {
-							formPayload.final_completion_date = $scope.userContext.curDate
-						}
+					//updating final completion date based on conditions (condensed from numerous if statements by chatGPT)
+					const commonCondition = formPayload => formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored)
+
+					const o365Condition = formPayload => formPayload.o365_created || formPayload.o365_ignored
+
+					const lmsCondition = formPayload => formPayload.lms_created
+
+					switch (key) {
+						case 'newStaff':
+						case 'transferringStaff':
+						case 'nameChange':
+							if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload)) {
+								formPayload.final_completion_date = $scope.userContext.curDate
+							}
+							break
+
+						case 'jobChange':
+						case 'exitingStaff':
+							if (commonCondition(formPayload)) {
+								formPayload.final_completion_date = $scope.userContext.curDate
+							}
+							break
+
+						case 'subStaff':
+							if (formPayload.sub_type === 'FSTS') {
+								if (formPayload.final_completion_date === undefined && o365Condition(formPayload) && (formPayload.ad_created || formPayload.ad_ignored)) {
+									formPayload.final_completion_date = $scope.userContext.curDate
+								}
+							} else if (formPayload.sub_type === 'LTS') {
+								if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload)) {
+									formPayload.final_completion_date = $scope.userContext.curDate
+								}
+							}
+							break
 					}
+
+					// if (key !== 'exitingStaff' && key !== 'jobChange') {
+					// 	if (formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored) && (formPayload.o365_created || formPayload.o365_ignored) && formPayload.lms_created) {
+					// 		formPayload.final_completion_date = $scope.userContext.curDate
+					// 	}
+					// } else {
+					// 	if (formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored)) {
+					// 		formPayload.final_completion_date = $scope.userContext.curDate
+					// 	}
+					// }
 
 					if ($scope.userContext.staffChangeId) {
 						await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', formPayload, $scope.userContext.staffChangeId)

@@ -4,7 +4,8 @@
             Diocesan Office Account Checks</div>
         <div class="card-body">
             <div class="row">
-                <div class="col">
+                <div class="col"
+                    data-ng-hide="userContext.pageContext =='subStaff' &&  submitPayload[userContext.pageContext].sub_type !=='LTS'">
                     <div class="card">
                         <div
                             class="card-header bg-primary text-bg-primary text-dark bg-opacity-10 bg-gradient fw-semibold">
@@ -15,6 +16,7 @@
                                 <span data-ng-switch on="submitPayload[userContext.pageContext].change_type">
                                     <span data-ng-switch-when="newStaff"> Created</span>
                                     <span data-ng-switch-when="transferringStaff"> Moved</span>
+                                    <span data-ng-switch-when="subStaff"> Created</span>
                                     <span data-ng-switch-when="jobChange"> Adjusted</span>
                                     <span data-ng-switch-when="nameChange"> Updated</span>
                                     <span data-ng-switch-when="exitingStaff"> Deactivated</span>
@@ -37,6 +39,13 @@
                             <ul class="list-group list-group-flush m-0" data-ng-switch-when="jobChange">
                                 <li class="list-group-item">Security Group Updated? (If Applicable)</li>
                                 <li class="list-group-item">Send instructions on switching lead teacher</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="subStaff">
+                                <li class="list-group-item">Created account?</li>
+                                <li class="list-group-item">Assigned Security Group?</li>
+                                <li class="list-group-item">Assigned Email?</li>
+                                <li class="list-group-item">Assigned IDP?</li>
+                                <li class="list-group-item">NCEA?</li>
                             </ul>
                             <ul class="list-group list-group-flush m-0" data-ng-switch-when="nameChange">
                                 <li class="list-group-item">User Name Updated?</li>
@@ -66,6 +75,7 @@
                                             <span data-ng-switch-when="newStaff"> Created</span>
                                             <span data-ng-switch-when="transferringStaff"> Moved</span>
                                             <span data-ng-switch-when="jobChange"> Adjusted</span>
+                                            <span data-ng-switch-when="subStaff"> Created</span>
                                             <span data-ng-switch-when="nameChange"> Updated</span>
                                             <span data-ng-switch-when="exitingStaff"> Disabled</span>
                                         </span>?</label>
@@ -90,6 +100,19 @@
                             </ul>
                             <ul class="list-group list-group-flush m-0" data-ng-switch-when="jobChange">
                                 <li class="list-group-item">Groups and other fields changed reflecting the move?</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="subStaff">
+                                <li class="list-group-item">Exchange email mailbox created?</li>
+                                <li class="list-group-item"
+                                    data-ng-if="submitPayload[userContext.pageContext].replace_license_microsoft == 'A3'">
+                                    {{submitPayload.subStaff.replace_first_name}}
+                                    {{submitPayload.subStaff.replace_last_name}} has an <strong>A3</strong> Microsoft
+                                    License. Temporarily transfer this license to {{submitPayload.subStaff.first_name}}
+                                    {{submitPayload.subStaff.last_name}} and assign
+                                    {{submitPayload.subStaff.replace_first_name}}
+                                    {{submitPayload.subStaff.replace_last_name}} a <strong>A1</strong> Microsoft License
+                                    until {{submitPayload.subStaff.replace_first_name}}
+                                    {{submitPayload.subStaff.replace_last_name}} returns.</li>
                             </ul>
                             <ul class="list-group list-group-flush m-0" data-ng-switch-when="nameChange">
                                 <li class="list-group-item">Exchange email updated?</li>
@@ -147,6 +170,9 @@
                             <ul class="list-group list-group-flush m-0" data-ng-switch-when="transferringStaff">
                                 <li class="list-group-item">Verify Teams and Office 365 groups</li>
                             </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="subStaff">
+                                <li class="list-group-item">Office 365 licensed (incl. Teams) assigned?</li>
+                            </ul>
                             <ul class="list-group list-group-flush m-0" data-ng-switch-when="nameChange">
                                 <li class="list-group-item">Office 365 updated?</li>
                             </ul>
@@ -154,7 +180,7 @@
                     </div>
                 </div>
                 <div class="col"
-                    data-ng-hide="userContext.pageContext =='jobChange' || userContext.pageContext =='exitingStaff'">
+                    data-ng-hide="userContext.pageContext =='jobChange' || userContext.pageContext =='exitingStaff' || (userContext.pageContext =='subStaff' &&  submitPayload[userContext.pageContext].sub_type !=='LTS')">
                     <div class="card">
                         <div
                             class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
@@ -180,6 +206,10 @@
                                 <li class="list-group-item">If Tech Liasion or School Administrator, update permissions.
                                 </li>
                             </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="subStaff">
+                                <li class="list-group-item">Imported from PS-SIS?</li>
+                                <li class="list-group-item">Matches O365 Login?</li>
+                            </ul>
                             <ul class="list-group list-group-flush m-0" data-ng-switch-when="nameChange">
                                 <li class="list-group-item">LMS name Updated?</li>
                                 <li class="list-group-item">Matches O365 Login?</li>
@@ -193,8 +223,6 @@
             <span class="fw-semibold">Jitbit Ticket ID:</span> <a
                 data-ng-href='https://cdol.jitbit.com/Ticket/{{submitPayload[userContext.pageContext].ticket_id}}'
                 target="_blank">{{submitPayload[userContext.pageContext].ticket_id}}</a>
-
-
         </div>
     </div>
 </div>
