@@ -282,8 +282,8 @@ define(function (require) {
 				await $scope.getJSONData('staffChangeDupeData', staffChangeDupeParams)
 
 				// Conditional filtering
-				if (pageContext === 'newStaff' || pageContext === 'transferringStaff') {
-					$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === 'newStaff' || item.change_type === 'transferringStaff')
+				if (pageContext === 'newStaff' || pageContext === 'transferringStaff' || pageContext === 'subStaff') {
+					$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === 'newStaff' || item.change_type === 'transferringStaff' || item.change_type === 'subStaff')
 				} else {
 					$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === pageContext)
 				}
