@@ -63,6 +63,20 @@ define(function (require) {
 							}
 						}
 					]
+				} else if (type === 'subChange') {
+					dialogMessage = 'Convert to Substitute Staff?'
+					dialogButtons = [
+						{
+							id: 'exitDialogButton',
+							text: 'Exit',
+							title: 'Exit',
+							click: function () {
+								psDialogClose()
+								// Redirect to list.html
+								$scope.toListRedirect('subStaff')
+							}
+						}
+					]
 				}
 
 				psDialog({
@@ -426,6 +440,12 @@ define(function (require) {
 				$scope.submitPayload.transferringStaff = Object.assign($scope.submitPayload.transferringStaff, foundItem)
 				$scope.submitPayload.transferringStaff.prev_school_number = $scope.submitPayload.transferringStaff.homeschoolid
 				$scope.submitPayload.transferringStaff.prev_school_name = $scope.submitPayload.transferringStaff.homeschoolname
+			}
+
+			$scope.checkStaffType = staffType => {
+				if (staffType === '4') {
+					$scope.openDialog('subChange')
+				}
 			}
 
 			$scope.copyNames = pageContext => {

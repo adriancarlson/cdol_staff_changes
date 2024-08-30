@@ -175,7 +175,8 @@
                         <label for="new-staff-type" class="form-label form-label-sm  label-reset staff-change-req">Staff
                             Type</label>
                         <select id="new-staff-type" class="form-select form-select-sm" aria-label="new-staff-type"
-                            data-ng-model="submitPayload.newStaff.staff_type" data-ng-required="true">
+                            data-ng-model="submitPayload.newStaff.staff_type"
+                            data-ng-change="checkStaffType(submitPayload.newStaff.staff_type)" data-ng-required="true">
                             <option></option>
                             <option value="1">Teacher</option>
                             <option value="2">Staff</option>
