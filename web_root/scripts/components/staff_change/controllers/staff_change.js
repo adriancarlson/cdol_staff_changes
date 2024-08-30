@@ -354,6 +354,9 @@ define(function (require) {
 						$scope.updateAdditionalPayload(prevContext)
 						delete $scope.staffChangeDupeData
 						break
+					case 'convert':
+						$scope.submitPayload[pageContext] = { ...$scope.submitPayload[prevContext] }
+						delete $scope.submitPayload[prevContext]
 				}
 				//adding scroll to top when switching between forms
 				// had to change from $window.scrollTo(0, 0) because it broke in the enhanced UI
