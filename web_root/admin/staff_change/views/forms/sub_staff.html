@@ -184,7 +184,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row align-items-center mb-3">
+                    <div class="row align-items-center mb-3" data-ng-if="!submitPayload.subStaff.users_dcid">
                         <div class="col-6">
                             <label for="sub-staff-legal-name"
                                 class="form-label form-label-sm  label-reset staff-change-req">Substitute Staff Legal
@@ -212,7 +212,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row align-items-center mb-3 gx-3">
+                    <div class="row align-items-center mb-3 gx-3" data-ng-if="!submitPayload.subStaff.users_dcid">
                         <div class="col-auto">
                             <label for="sub-staff-gender"
                                 class="form-label form-label-sm  label-reset staff-change-req">Gender</label>
@@ -238,7 +238,7 @@
                                 data-ng-blur="submitPayload.subStaff.maiden_name = (submitPayload.subStaff.maiden_name | titleCase);dupeSearch(userContext.pageContext, submitPayload[userContext.formType], 'maiden')">
                         </div>
                     </div>
-                    <div class="row align-items-center mb-3 gx-2">
+                    <div class="row align-items-center mb-3 gx-2" data-ng-if="!submitPayload.subStaff.users_dcid">
                         <div class="col-auto">
                             <label for="sub-staff-religion"
                                 class="form-label form-label-sm  label-reset">Religion</label>
@@ -324,7 +324,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row align-items-center mb-3"
-                                        data-ng-if="userContext.pageStatus =='Submit'">
+                                        data-ng-if="userContext.pageStatus =='Submit' && !submitPayload.subStaff.users_dcid">
                                         <div class="col-auto">
                                             <label class="form-label form-label-sm label-reset staff-change-req">Has
                                                 {{submitPayload.subStaff.title}} {{
@@ -353,7 +353,7 @@
                                         </div>
                                     </div>
                                     <div class="row align-items-center mb-3"
-                                        data-ng-if="submitPayload.subStaff.prev_school_radio == 1 || (userContext.pageStatus =='Edit' && submitPayload.subStaff.prev_school_number)">
+                                        data-ng-if="submitPayload.subStaff.prev_school_radio == 1 || submitPayload.subStaff.prev_school_number">
                                         <div class="col-auto">
                                             <label for="prev_school_number"
                                                 class="form-label form-label-sm label-reset staff-change-req">Where was
