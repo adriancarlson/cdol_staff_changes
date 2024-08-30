@@ -648,12 +648,23 @@ define(function (require) {
 	module.filter('titleCase', function () {
 		return function (input) {
 			if (!input) return ''
-			return input
-				.toLowerCase()
-				.split(' ')
-				.map(word => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
-				.join(' ')
-				.trim()
+			return (
+				input
+					// Split by spaces, hyphens, or apostrophes
+					.split(/([ \-\–'])/g)
+					.map(function (word, index, array) {
+						// Capitalize the first letter if it's the first word or follows a delimiter
+						if (index === 0 || array[index - 1].match(/[ \-\–']/)) {
+							return word.charAt(0).toUpperCase() + word.slice(1)
+						}
+						return word
+					})
+					.join('') // Combine array back into a string
+					// Replace multiple spaces with a single space
+					.replace(/\s{2,}/g, ' ')
+					// Trim leading and trailing spaces
+					.trim()
+			)
 		}
 	})
 	module.filter('sentenceCase', function () {
