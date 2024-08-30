@@ -134,7 +134,6 @@ define(function (require) {
 				titleCase: function (str) {
 					const buildString = str || ''
 					return buildString
-						.toLowerCase()
 						.split(' ')
 						.map(function (word) {
 							return word.charAt(0).toUpperCase() + word.slice(1)
