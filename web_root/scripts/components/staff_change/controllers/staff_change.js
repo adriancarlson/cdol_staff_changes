@@ -20,26 +20,14 @@ define(function (require) {
 
 			let psDialogHolder = null
 
-			$scope.openDupeDialog = function (type) {
+			$scope.openDialog = function (type) {
 				psDialogHolder = $j(`#${type}Div`).detach()
-				let dupeMessage
+				let dialogMessage
+				let dialogButtons = []
+
 				if (type === 'staffDupe') {
-					dupeMessage = 'Potential Staff Found!'
-				} else if (type === 'staffChangeDupe') {
-					dupeMessage = 'Potential Duplicate Staff Change Found!'
-				}
-				psDialog({
-					type: 'dialogM',
-					width: 1000,
-					title: dupeMessage,
-					content: psDialogHolder,
-					initBehaviors: true,
-					close: function () {
-						showMessage('dialog close event hi')
-						// Move View back to a holder so that it won't be lost if another type of dialog is opened.
-						$j(`#${type}DialogContainer`).append(psDialogHolder)
-					},
-					buttons: [
+					dialogMessage = 'Potential Staff Found!'
+					dialogButtons = [
 						{
 							id: 'saveDialogButton',
 							text: 'Proceed',
@@ -49,10 +37,63 @@ define(function (require) {
 							}
 						}
 					]
+				} else if (type === 'staffChangeDupe') {
+					dialogMessage = 'Potential Duplicate Staff Change Found!'
+					dialogButtons = [
+						{
+							id: 'saveDialogButton',
+							text: 'Proceed',
+							title: 'Proceed',
+							click: function () {
+								psDialogClose()
+							}
+						}
+					]
+				} else if (type === 'sub') {
+					dialogMessage = 'No Staff Submission Needed for STS'
+					dialogButtons = [
+						{
+							id: 'exitDialogButton',
+							text: 'Exit',
+							title: 'Exit',
+							click: function () {
+								psDialogClose()
+								// Redirect to list.html
+								$scope.toListRedirect('subStaff')
+							}
+						}
+					]
+				} else if (type === 'subChange') {
+					dialogMessage = 'Convert to Substitute Staff?'
+					dialogButtons = [
+						{
+							id: 'exitDialogButton',
+							text: 'Exit',
+							title: 'Exit',
+							click: function () {
+								psDialogClose()
+								// Redirect to list.html
+								$scope.toListRedirect('subStaff')
+							}
+						}
+					]
+				}
+
+				psDialog({
+					type: 'dialogM',
+					width: 1000,
+					title: dialogMessage,
+					content: psDialogHolder,
+					initBehaviors: true,
+					close: function () {
+						// Move View back to a holder so that it won't be lost if another type of dialog is opened.
+						$j(`#${type}DialogContainer`).append(psDialogHolder)
+					},
+					buttons: dialogButtons
 				})
 			}
 
-			$scope.closeDupeDialog = function (formType, pageContext, type) {
+			$scope.closeDialog = function (formType, pageContext, type) {
 				$j(`#${type}DialogContainer`).append(psDialogHolder)
 				psDialogClose()
 				if (pageContext === 'exitingStaff') {
@@ -67,10 +108,6 @@ define(function (require) {
 					$scope.submitPayload[formType].position_radio = 0
 					$anchorScroll()
 				}
-			}
-
-			var showMessage = function (message) {
-				console.log(message)
 			}
 
 			//initializing overall form data
@@ -182,7 +219,7 @@ define(function (require) {
 				$scope.userContext.invalidDate = !isBusinessDay(checkDate)
 			}
 
-			// setting up universal formatKeys that will be used in API calls to format fields or delete feidls
+			// setting up universal formatKeys that will be used in API calls to format fields or delete fields
 			$scope.formatKeys = {
 				dateKeys: ['_date', 'dob', 'deadline'],
 				checkBoxKeys: ['_created', '_ignored'],
@@ -202,7 +239,7 @@ define(function (require) {
 					const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, getFormatKeys, staffChangeId)
 					$scope.submitPayload[res.change_type] = await res
 					$scope.userContext.pageContext = await res.change_type
-					if ($scope.userContext.pageContext === 'newStaff') {
+					if ($scope.userContext.pageContext === 'newStaff' || $scope.userContext.pageContext === 'subStaff') {
 						await $scope.checkDupesOnEdit(res)
 					}
 				}
@@ -229,7 +266,6 @@ define(function (require) {
 			}
 
 			$scope.checkDupesOnEdit = async staffToSearch => {
-
 				let staffDupeParams = {
 					firstName: staffToSearch.first_name,
 					lastName: staffToSearch.last_name,
@@ -240,8 +276,6 @@ define(function (require) {
 			}
 
 			$scope.dupeSearch = async (pageContext, formPayload, searchType) => {
-				console.log('searchType', searchType)
-
 				if ($scope.staffChangeDupeData) {
 					delete $scope.staffChangeDupeData
 				}
@@ -262,14 +296,14 @@ define(function (require) {
 				await $scope.getJSONData('staffChangeDupeData', staffChangeDupeParams)
 
 				// Conditional filtering
-				if (pageContext === 'newStaff' || pageContext === 'transferringStaff') {
-					$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === 'newStaff' || item.change_type === 'transferringStaff')
+				if (pageContext === 'newStaff' || pageContext === 'transferringStaff' || pageContext === 'subStaff') {
+					$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === 'newStaff' || item.change_type === 'transferringStaff' || item.change_type === 'subStaff')
 				} else {
 					$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === pageContext)
 				}
 
 				if ($scope.staffChangeDupeData.length > 0) {
-					$scope.openDupeDialog('staffChangeDupe')
+					$scope.openDialog('staffChangeDupe')
 				} else if (pageContext === 'newStaff') {
 					if ($scope.staffDupeData) {
 						delete $scope.staffDupeData
@@ -284,7 +318,7 @@ define(function (require) {
 					await $scope.getJSONData('staffDupeData', staffDupeParams)
 
 					if ($scope.staffDupeData.length > 0) {
-						$scope.openDupeDialog('staffDupe')
+						$scope.openDialog('staffDupe')
 					}
 				}
 			}
@@ -296,7 +330,7 @@ define(function (require) {
 				$scope.getJSONData('usersData')
 
 				//only loading school data if it is needed
-				if (pageContext === 'transferringStaff' || pageContext === 'newStaff') {
+				if (pageContext === 'transferringStaff' || pageContext === 'newStaff' || pageContext === 'subStaff') {
 					$scope.getJSONData('schoolsData')
 				}
 				//add and remove form payload objects based on directions of buttons
@@ -320,6 +354,9 @@ define(function (require) {
 						$scope.updateAdditionalPayload(prevContext)
 						delete $scope.staffChangeDupeData
 						break
+					case 'convert':
+						$scope.submitPayload[pageContext] = { ...$scope.submitPayload[prevContext] }
+						delete $scope.submitPayload[prevContext]
 				}
 				//adding scroll to top when switching between forms
 				// had to change from $window.scrollTo(0, 0) because it broke in the enhanced UI
@@ -388,6 +425,9 @@ define(function (require) {
 							// assign the replaceObject to the submitPayload
 							Object.assign($scope.submitPayload[pageContext], replaceObject)
 						}
+						if (pageContext === 'subStaff') {
+							$scope.submitPayload[pageContext].license_microsoft = $scope.submitPayload[pageContext].replace_license_microsoft
+						}
 					}
 				}
 			}
@@ -403,6 +443,12 @@ define(function (require) {
 				$scope.submitPayload.transferringStaff = Object.assign($scope.submitPayload.transferringStaff, foundItem)
 				$scope.submitPayload.transferringStaff.prev_school_number = $scope.submitPayload.transferringStaff.homeschoolid
 				$scope.submitPayload.transferringStaff.prev_school_name = $scope.submitPayload.transferringStaff.homeschoolname
+			}
+
+			$scope.checkStaffType = staffType => {
+				if (staffType === '4') {
+					$scope.openDialog('subChange')
+				}
 			}
 
 			$scope.copyNames = pageContext => {
@@ -478,6 +524,13 @@ define(function (require) {
 					if (formPayload.change_type == 'exitingStaff') {
 						formPayload.old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => formPayload.first_name.startsWith(prefix)) && formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name}`
 					}
+					if (formPayload.change_type == 'subStaff') {
+						formPayload.staff_type = '4'
+						if (formPayload.sub_type == 'FSTS') {
+							formPayload.license_microsoft = 'A1'
+						}
+						formPayload.position = formPayload.sub_type
+					}
 
 					//add commonPayload to each object in submitPayload
 					formPayload = Object.assign(formPayload, commonPayload)
@@ -493,7 +546,7 @@ define(function (require) {
 						curDate: $scope.userContext.curDate,
 						curTime: $scope.userContext.curTime,
 						userEmail: $scope.userContext.curUserEmail,
-						readableChangeType: formatService.changeMap(formPayload.change_type)
+						readableChangeType: formPayload.change_type === 'subStaff' ? `${formatService.changeMap(formPayload.change_type)} (${formPayload.sub_type})` : `${formatService.changeMap(formPayload.change_type)}`
 					}
 
 					let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
@@ -525,15 +578,51 @@ define(function (require) {
 					//add updateFormatKeys to each object in submitPayload
 					formPayload = Object.assign(formPayload, updateFormatKeys)
 
-					if (key !== 'exitingStaff' && key !== 'jobChange') {
-						if (formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored) && (formPayload.o365_created || formPayload.o365_ignored) && formPayload.lms_created) {
-							formPayload.final_completion_date = $scope.userContext.curDate
-						}
-					} else {
-						if (formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored)) {
-							formPayload.final_completion_date = $scope.userContext.curDate
-						}
+					//updating final completion date based on conditions (condensed from numerous if statements by chatGPT)
+					const commonCondition = formPayload => formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored)
+
+					const o365Condition = formPayload => formPayload.o365_created || formPayload.o365_ignored
+
+					const lmsCondition = formPayload => formPayload.lms_created
+
+					switch (key) {
+						case 'newStaff':
+						case 'transferringStaff':
+						case 'nameChange':
+							if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload)) {
+								formPayload.final_completion_date = $scope.userContext.curDate
+							}
+							break
+
+						case 'jobChange':
+						case 'exitingStaff':
+							if (commonCondition(formPayload)) {
+								formPayload.final_completion_date = $scope.userContext.curDate
+							}
+							break
+
+						case 'subStaff':
+							if (formPayload.sub_type === 'FSTS') {
+								if (formPayload.final_completion_date === undefined && o365Condition(formPayload) && (formPayload.ad_created || formPayload.ad_ignored)) {
+									formPayload.final_completion_date = $scope.userContext.curDate
+								}
+							} else if (formPayload.sub_type === 'LTS') {
+								if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload)) {
+									formPayload.final_completion_date = $scope.userContext.curDate
+								}
+							}
+							break
 					}
+
+					// if (key !== 'exitingStaff' && key !== 'jobChange') {
+					// 	if (formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored) && (formPayload.o365_created || formPayload.o365_ignored) && formPayload.lms_created) {
+					// 		formPayload.final_completion_date = $scope.userContext.curDate
+					// 	}
+					// } else {
+					// 	if (formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored)) {
+					// 		formPayload.final_completion_date = $scope.userContext.curDate
+					// 	}
+					// }
 
 					if ($scope.userContext.staffChangeId) {
 						await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', formPayload, $scope.userContext.staffChangeId)
@@ -550,20 +639,26 @@ define(function (require) {
 			$scope.toListRedirect = form => {
 				let redirectPath = '/admin/staff_change/list.html'
 				switch (form) {
+					case 'newStaff':
+						redirectPath = `${redirectPath}#tabOneContent`
+						break
 					case 'transferringStaff':
 						redirectPath = `${redirectPath}#tabTwoContent`
 						break
 					case 'jobChange':
 						redirectPath = `${redirectPath}#tabThreeContent`
 						break
-					case 'nameChange':
+					case 'subStaff':
 						redirectPath = `${redirectPath}#tabFourContent`
 						break
-					case 'exitingStaff':
+					case 'nameChange':
 						redirectPath = `${redirectPath}#tabFiveContent`
 						break
-					case 'allStaff':
+					case 'exitingStaff':
 						redirectPath = `${redirectPath}#tabSixContent`
+						break
+					case 'allStaff':
+						redirectPath = `${redirectPath}#tabSevenContent`
 						break
 					default:
 						redirectPath
@@ -576,12 +671,23 @@ define(function (require) {
 	module.filter('titleCase', function () {
 		return function (input) {
 			if (!input) return ''
-			return input
-				.toLowerCase()
-				.split(' ')
-				.map(word => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
-				.join(' ')
-				.trim()
+			return (
+				input
+					// Split by spaces, hyphens, or apostrophes
+					.split(/([ \-\–'])/g)
+					.map(function (word, index, array) {
+						// Capitalize the first letter if it's the first word or follows a delimiter
+						if (index === 0 || array[index - 1].match(/[ \-\–']/)) {
+							return word.charAt(0).toUpperCase() + word.slice(1)
+						}
+						return word
+					})
+					.join('') // Combine array back into a string
+					// Replace multiple spaces with a single space
+					.replace(/\s{2,}/g, ' ')
+					// Trim leading and trailing spaces
+					.trim()
+			)
 		}
 	})
 	module.filter('sentenceCase', function () {
@@ -604,6 +710,7 @@ define(function (require) {
 			newStaff: 'New Staff',
 			exitingStaff: 'Exiting Staff',
 			nameChange: 'Name Change',
+			subStaff: 'Substitute',
 			jobChange: 'Job Change',
 			transferringStaff: 'Transferring-In Staff'
 		}

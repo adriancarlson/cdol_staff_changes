@@ -15,7 +15,7 @@ define(function (require) {
 			$scope.curDate = new Date($attrs.ngCurDate)
 			$scope.calendarYear = new Date().getFullYear()
 			$scope.selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context')
-			$scope.booleanMap = { Yes: true, No: false }
+			$scope.booleanMap = { Yes: true, No: !true }
 			$scope.titleMap = {
 				'Mr.': 'Mr.',
 				'Mrs.': 'Mrs.',
@@ -29,10 +29,12 @@ define(function (require) {
 			$scope.changeMap = {
 				'New Staff': 'newStaff',
 				'Exiting Staff': 'exitingStaff',
+				Substitute: 'subStaff',
 				'Name Change': 'nameChange',
 				'Job Change': 'jobChange',
 				'Transferring-In Staff': 'transferringStaff'
 			}
+
 			$scope.schoolMap = {
 				'All Saints Catholic School Holdrege': 'All Saints Catholic School Holdrege',
 				'Aquinas Catholic Elementary': 'Aquinas Catholic Elementary',
@@ -66,7 +68,10 @@ define(function (require) {
 				'St. Wenceslaus Wahoo': 'St. Wenceslaus Wahoo',
 				'Villa Marie School': 'Villa Marie School'
 			}
-
+			$scope.subTypeMap = {
+				FSTS: 'FSTS',
+				LTS: 'LTS'
+			}
 			$scope.loadData = async changeType => {
 				loadingDialog()
 				//only make API call to get the data if
@@ -164,6 +169,7 @@ define(function (require) {
 			newStaff: 'New Staff',
 			exitingStaff: 'Exiting Staff',
 			nameChange: 'Name Change',
+			subStaff: 'Substitute',
 			jobChange: 'Job Change',
 			transferringStaff: 'Transferring-In Staff'
 		}

@@ -31,6 +31,14 @@
                                 Position/Job Change
                             </label>
                         </div>
+                        <div class="form-check" data-ng-mouseenter="userContext.formTypeHover = 'subStaff'"
+                            data-ng-mouseleave="userContext.formTypeHover = userContext.formType">
+                            <input class="form-check-input" type="radio" name="sub-staff-radio" id="sub-staff-radio"
+                                data-ng-model="userContext.formType" value="subStaff">
+                            <label class="form-check-label change-type-radio-label" for="sub-staff-radio">
+                                Substitute
+                            </label>
+                        </div>
                         <div class="form-check" data-ng-mouseenter="userContext.formTypeHover = 'nameChange'"
                             data-ng-mouseleave="userContext.formTypeHover = userContext.formType">
                             <input class="form-check-input" type="radio" name="name-change-radio" id="name-change-radio"
@@ -117,6 +125,27 @@
                     grade but will now teach second grade.<br>
                     <strong>Example 2:</strong> A teacher at {{ userContext.curSchoolName }} who used to teach computers
                     but will now be the administrative assistant in the front office.
+                </div>
+            </div>
+            <div id="sub-staff-card" class="card" data-ng-if="userContext.formTypeHover === 'subStaff'">
+                <div class="card-header bg-indigo text-bg-indigo bg-gradient fs-6 fw-semibold">Substitute:
+                </div>
+                <div class="card-body">
+                    A Substitute is a staff member that fills in for a regular teacher, managing classroom instruction
+                    and activities during their absence. There are three distinctions according to the <a
+                        href="https://cdolinc.sharepoint.com/:w:/s/All-Admin-Faculty-Staff/EScZuoXgRnhBl5RTPVLGX6MBwvcRyasPrcxa3eG_jus52w?e=ZBgmdr"
+                        target="_blank">Substitute Teacher Policy for Technology Access</a>
+                </div>
+                <div class="card-footer">
+                    <strong>Short Term Sub (STS) :</strong> A Substitute that comes in for a single day or two at a
+                    time.<strong><u>You do not need to submit a Staff Change for STS</u></strong><br>
+                    <strong>Frequent Short Term Sub (FSTS) :</strong> A Substitute that frequently subs in our school
+                    system more than 5 times per year total in any of our Catholic schools.
+                    <br>
+                    <strong>Long Term Sub (LTS) :</strong> A Substitute covering for a teacher on a replacement
+                    basis for an extended period of time. <strong><u>The distinguishing factor will be the need for the
+                            sub to have
+                            access to the gradebook in PowerSchool</u></strong>.
                 </div>
             </div>
             <div id="name-change-card" class="card" data-ng-if="userContext.formTypeHover === 'nameChange'">

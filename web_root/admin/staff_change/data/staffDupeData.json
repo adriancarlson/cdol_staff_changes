@@ -2,6 +2,7 @@
 ~[tlist_sql;
 SELECT DISTINCT
         users.dcid,
+        schoolstaff.users_dcid,
         users.first_name,
         users.last_name,
         CASE
@@ -27,10 +28,11 @@ SELECT DISTINCT
 ;]
     {
         "dcid": ~(1),
-        "first_name":"~(2;JSON)",
-        "last_name":"~(3;JSON)",
-        "status":"~(4;JSON)",
-        "school_name":"~(5;JSON)"
+        "ssdcid": ~(2),
+        "first_name":"~(3;JSON)",
+        "last_name":"~(4;JSON)",
+        "status":"~(5;JSON)",
+        "school_name":"~(6;JSON)"
     },
 [/tlist_sql]
 {}]

@@ -35,8 +35,8 @@
                 data-ng-if="(staffChangeForm.$invalid && staffChangeForm.$dirty) || !submitPayload[userContext.formType].users_dcid">Please
                 fill all required fields prior to submitting.</span>
             <button type="button" id="subBtn" class="m-0 p-2"
-                data-ng-disabled="staffChangeForm.$invalid || userContext.invalidDate" data-ng-show="!subConfirm"
-                data-ng-click="subConfirm = true">Submit</button>
+                data-ng-disabled="staffChangeForm.$invalid || userContext.invalidDate || userContext.subTypeHover == 'STS'"
+                data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
             <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
                 data-ng-click="subConfirm = false;">Cancel</button>
             <button type="button" id="confBtn" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
@@ -79,6 +79,7 @@
         'text-success': staffChangeDupe.change_type === 'newStaff',
         'text-primary': staffChangeDupe.change_type  === 'transferringStaff',
         'text-info': staffChangeDupe.change_type  === 'jobChange',
+        'text-indigo': staffChangeDupe.change_type === 'subStaff',
         'text-warning': staffChangeDupe.change_type  === 'nameChange',
         'text-secondary': staffChangeDupe.change_type  === 'exitingStaff'
     }"><strong>{{ staffChangeDupe.change_type | changeTypeFilter }}</strong></span></em> request for
@@ -116,7 +117,7 @@
                             type="button" id="review" class="button mt-1 mb-0">Go to this Submission</a>
                         <button type="button" class="button mt-1 mb-0"
                             data-ng-if="submitPayload[userContext.pageContext].replace_first_name"
-                            data-ng-click="closeDupeDialog(userContext.formType, userContext.pageContext,'staffChangeDupe');formDisplay(userContext.prevContext,userContext.formType, 'back')"><i
+                            data-ng-click="closeDialog(userContext.formType, userContext.pageContext,'staffChangeDupe');formDisplay(userContext.prevContext,userContext.formType, 'back')"><i
                                 class="bi bi-chevron-left fw-bold"></i> Previous</button>
                     </div>
                 </div>
@@ -138,9 +139,44 @@
                 <div class="card-footer">
                     <div class="button-row">
                         <button type="button" class="button mt-1 mb-0"
-                            data-ng-click="closeDupeDialog(userContext.formType, userContext.pageContext,'staffDupe');newToTransferringIn(staffDupe.dcid.toString());formDisplay('transferringStaff',userContext.formType, 'back')">Convert
+                            data-ng-click="closeDialog(userContext.formType, userContext.pageContext,'staffDupe');newToTransferringIn(staffDupe.dcid.toString());formDisplay('transferringStaff',userContext.formType, 'back')">Convert
                             to Transferring-In Staff Submission</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="hide" id="subDialogContainer">
+    <div id="subDiv" class="container-fluid">
+        <div class="card-body p-0">
+            <div class="p-2">You do not need to submit a Staff Change Submission for a <strong>Short Term Sub</strong>
+                (STS), as they use the local sub account (e.g.
+                <strong>{{userContext.curUserSchoolAbbr}}-Sub</strong>) to log into the teacher's computer. They
+                will <strong><u>NOT</u></strong> have email or access
+                to anything in Office365. They <strong><u>will</u></strong> <strong><u>NOT</u></strong>
+                have access to Canvas. They will be able to access the PowerSchool Sub Portal (<a
+                    href="https://powerschool.cdolinc.net/subs"
+                    target="_blank">https://powerschool.cdolinc.net/subs</a>) to enter attendance
+                and lunch counts. <br>Click the <strong>Exit</strong> button below to return to the Staff Change List.
+            </div>
+        </div>
+    </div>
+</div>
+<div class="hide" id="subChangeDialogContainer">
+    <div id="subChangeDiv" class="container-fluid">
+        <div class="card-body p-0">
+            <div class="p-2">Substitutes should now be entered using the <span class="text-indigo"><strong>Substitute
+                        Staff</strong></span> form. Click
+                the <strong>Convert to Substitute Staff Submission</strong> button below to change this entry to a
+                <span class="text-indigo"><strong>Substitute Staff</strong> Submission</span>, or click the
+                <strong>Exit</strong> button below to return to the Staff Change List.
+            </div>
+            <div class="card-footer">
+                <div class="button-row">
+                    <button type="button" class="button mt-1 mb-0"
+                        data-ng-click="closeDialog(userContext.formType, userContext.pageContext,'subChange');formDisplay('subStaff',userContext.formType, 'convert')">Convert
+                        to Substitute Staff Submission</button>
                 </div>
             </div>
         </div>

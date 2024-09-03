@@ -107,10 +107,10 @@ define(function (require) {
 						newStaff: 'New Staff',
 						exitingStaff: 'Exiting Staff',
 						nameChange: 'Name Change',
+						subStaff: 'Substitute',
 						jobChange: 'Job Change',
 						transferringStaff: 'Transferring-In Staff'
 					}
-
 					return reverseMap[value] || null
 				},
 
@@ -134,7 +134,6 @@ define(function (require) {
 				titleCase: function (str) {
 					const buildString = str || ''
 					return buildString
-						.toLowerCase()
 						.split(' ')
 						.map(function (word) {
 							return word.charAt(0).toUpperCase() + word.slice(1)

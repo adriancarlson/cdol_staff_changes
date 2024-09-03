@@ -4,8 +4,7 @@ define(function (require) {
 	module.factory('jitbitService', [
 		'$http',
 		'$q',
-		'formatService',
-		function ($http, $q, formatService) {
+		function ($http, $q) {
 			const JITBIT_API_URL = 'https://cdol.jitbit.com/helpdesk/api/'
 
 			const JITBIT_ACCESS_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE0MDkyMjMzLCJhZGQiOiI3MkJFNTdDQ0EyRTFDNDk4NzY2RUE3MThBRjM5N0ZCRkM0N0JDRkJGREUxQ0UxMUFCMjQ0NTBDM0YxMjY1NTA0In0.PsicDCu7vO0ZXA6HVwPdt7GnBnC58NpcBO5gM24If1g'
@@ -39,14 +38,17 @@ define(function (require) {
 					let userData = await this.gitJitbitUser(formPayload.userEmail)
 					let staffChangeName = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => formPayload.first_name.startsWith(prefix)) && formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name}`
 
+					// send to Brad (14093457) if it's a subStaff FSTS else to Adrian (14088108)
+					const assignedUserId = formPayload.change_type === 'subStaff' && formPayload.sub_type === 'FSTS' ? 14093457 : 14088108
+
 					let ticketPayload = {
 						categoryId: 588445,
 						priorityId: 0,
 						origin: 3,
-						assignedToUserId: 14088108,
+						assignedToUserId: assignedUserId,
 						userId: userData.UserID,
 						subject: `${formPayload.readableChangeType} Submission ${staffChangeName} | Due Date: ${formPayload.deadline}`,
-						body: `${formPayload.change_type === 'transferringStaff' && formPayload.prev_school_name ? `Transferring-in from: ${formPayload.prev_school_name}\n\n` : ''}${formPayload.change_type === 'nameChange' && formPayload.old_name_placeholder ? `Previous Name: ${formPayload.old_name_placeholder}\n\n` : ''}${formPayload.position ? `Position: ${formPayload.position}\n\n` : ''}${formPayload.previous_position ? `Previous Position: ${formPayload.previous_position}\n\n` : ''}${formPayload.new_position ? `New Position: ${formPayload.new_position}\n\n` : ''}Due Date: ${formPayload.deadline}\n\n${typeof formPayload.notes === 'undefined' ? '' : `Notes: ${formPayload.notes}`}\n\nSubmission from ${formPayload.curUserName} (${formPayload.curUserSchoolAbbr}) | ${formPayload.userEmail}`,
+						body: `${formPayload.change_type === 'transferringStaff' && formPayload.prev_school_name ? `Transferring-in from: ${formPayload.prev_school_name}\n\n` : ''}${formPayload.change_type === 'nameChange' && formPayload.old_name_placeholder ? `Previous Name: ${formPayload.old_name_placeholder}\n\n` : ''}${formPayload.position ? `Position: ${formPayload.position}\n\n` : ''}${formPayload.previous_position ? `Previous Position: ${formPayload.previous_position}\n\n` : ''}${formPayload.new_position ? `New Position: ${formPayload.new_position}\n\n` : ''}Due Date: ${formPayload.deadline}\n\n${typeof formPayload.license_microsoft === 'undefined' ? '' : `Microsoft License: ${formPayload.license_microsoft}`}\n\n${typeof formPayload.notes === 'undefined' ? '' : `Notes: ${formPayload.notes}`}\n\nSubmission from ${formPayload.curUserName} (${formPayload.curUserSchoolAbbr}) | ${formPayload.userEmail}`,
 						customFields: { 59314: `${staffChangeName}` }
 					}
 

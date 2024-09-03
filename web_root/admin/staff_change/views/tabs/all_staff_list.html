@@ -23,10 +23,11 @@
                 <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending">
                     Submission Date</th>
                 <th data-pss-sort-fields="completion_date|date">Deadline</th>
-                <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">PS Created</th>
-                <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">AD Created</th>
-                <th data-pss-sort-fields="o365_created, o365_ignored" data-exclude-from-filter="true">O365 Created</th>
-                <th data-pss-sort-fields="lms_created" data-exclude-from-filter="true">LMS Created</th>
+                <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">PS Completed</th>
+                <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">AD Completed</th>
+                <th data-pss-sort-fields="o365_created, o365_ignored" data-exclude-from-filter="true">O365 Completed
+                </th>
+                <th data-pss-sort-fields="lms_created" data-exclude-from-filter="true">LMS Completed</th>
                 <th data-pss-sort-fields="final_completion_date|date">Completion Date</th>
             </tr>
         </thead>
@@ -44,9 +45,11 @@
         'text-success': allStaff.change_type === 'newStaff',
         'text-primary': allStaff.change_type  === 'transferringStaff',
         'text-info': allStaff.change_type  === 'jobChange',
+        'text-indigo': allStaff.change_type === 'subStaff',
         'text-warning': allStaff.change_type  === 'nameChange',
         'text-secondary': allStaff.change_type  === 'exitingStaff'
-    }">{{ allStaff.change_type | changeTypeFilter }}</td>
+    }">{{ allStaff.change_type | changeTypeFilter }} <span
+                        data-ng-if="allStaff.change_type === 'subStaff'">({{allStaff.sub_type}})</span></td>
                 <td class="nowrap">{{allStaff.schname}}</td>
                 <td class="nowrap">{{allStaff.submittedstaff}}</td>
                 <td class="nowrap">{{allStaff.submission_date | date : 'MM/dd/yyyy'}}
@@ -55,7 +58,11 @@
                     data-ng-class="{ 'req-notation': (allStaff.completion_date < curDate) && ((allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange') ? (!allStaff.ps_complete || !allStaff.ad_complete) : (!allStaff.ps_complete || !allStaff.ad_complete || !allStaff.o365_complete || !allStaff.lms_complete)) }">
                     {{allStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
                 <td><span
-                        data-ng-class="{'mark-complete': allStaff.ps_complete, 'mark-incomplete': !allStaff.ps_complete}"></span>
+                        data-ng-if="(allStaff.change_type === 'subStaff' && allStaff.sub_type !== 'FSTS') || allStaff.change_type !== 'subStaff'"
+                        data-ng-class="{'mark-complete': allStaff.ps_complete, 'mark-incomplete': !allStaff.ps_complete}">
+                    </span>
+                    <span data-ng-if="allStaff.change_type === 'subStaff' && allStaff.sub_type === 'FSTS'"
+                        class="text-primary fs-6 fw-medium">- - -</span>
                 </td>
                 <td><span
                         data-ng-class="{'mark-complete': allStaff.ad_complete, 'mark-incomplete': !allStaff.ad_complete}"></span>
@@ -65,9 +72,11 @@
                     <span data-ng-if="allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange'"
                         class="text-primary fs-6 fw-medium">- - -</span>
                 </td>
-                <td><span data-ng-if="allStaff.change_type !== 'exitingStaff' && allStaff.change_type !== 'jobChange'"
+                <td><span
+                        data-ng-if="allStaff.change_type !== 'exitingStaff' && allStaff.change_type !== 'jobChange' && (allStaff.change_type === 'subStaff' && allStaff.sub_type !== 'FSTS')"
                         data-ng-class="{'mark-complete': allStaff.lms_complete, 'mark-incomplete': !allStaff.lms_complete}"></span>
-                    <span data-ng-if="allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange'"
+                    <span
+                        data-ng-if="allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange' || (allStaff.change_type === 'subStaff' && allStaff.sub_type === 'FSTS')"
                         class="text-primary fs-6 fw-medium">- - -</span>
                 </td>
                 <td>{{allStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
