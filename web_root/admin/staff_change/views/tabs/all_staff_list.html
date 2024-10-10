@@ -10,7 +10,6 @@
     <label data-pss-filter-field="title|multiselect" data-filter-info="titleMap">Title</label>
     <label data-pss-filter-field="first_name">First Name</label>
     <label data-pss-filter-field="last_name">Last Name</label>
-
     <table class="grid">
         <thead class="sticky-header">
             <tr>
@@ -54,9 +53,13 @@
                 <td class="nowrap">{{allStaff.submittedstaff}}</td>
                 <td class="nowrap">{{allStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{allStaff.submission_time}}</td>
-                <td
-                    data-ng-class="{ 'req-notation': (allStaff.completion_date < curDate) && ((allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange') ? (!allStaff.ps_complete || !allStaff.ad_complete) : (!allStaff.ps_complete || !allStaff.ad_complete || !allStaff.o365_complete || !allStaff.lms_complete)) }">
-                    {{allStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td> <span data-ng-if="allStaff.sub_type !== 'FSTS'"
+                        data-ng-class="{ 'req-notation': (allStaff.completion_date < curDate) && ((allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange') ? (!allStaff.ps_complete || !allStaff.ad_complete) : (!allStaff.ps_complete || !allStaff.ad_complete || !allStaff.o365_complete || !allStaff.lms_complete)) }">
+                        {{allStaff.completion_date | date : 'MM/dd/yyyy'}}</span>
+                    <span data-ng-if="allStaff.sub_type === 'FSTS'"
+                        data-ng-class="{'req-notation': (allStaff.completion_date < curDate) && (!allStaff.ad_complete || !allStaff.o365_complete)}">
+                        {{allStaff.completion_date | date : 'MM/dd/yyyy'}}</span>
+                </td>
                 <td><span
                         data-ng-if="(allStaff.change_type === 'subStaff' && allStaff.sub_type !== 'FSTS') || allStaff.change_type !== 'subStaff'"
                         data-ng-class="{'mark-complete': allStaff.ps_complete, 'mark-incomplete': !allStaff.ps_complete}">
@@ -83,5 +86,4 @@
             </tr>
         </tbody>
     </table>
-
 </div>
