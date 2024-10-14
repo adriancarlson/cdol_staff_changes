@@ -619,6 +619,7 @@
                                                 data-ng-required="true">
                                                 <option value="A1">A1 - Free</option>
                                                 <option value="A3">A3 - Paid</option>
+                                                <option value="A3P">A3 with Phone System - Paid</option>
                                             </select>
                                         </div>
                                         <div class="col-10" data-ng-if="userContext.pageStatus =='Submit'">
@@ -629,7 +630,7 @@
                                                     <strong>{{submitPayload.subStaff.replace_license_microsoft}}</strong>
                                                     Microsoft License.<br></span>
                                                 <span
-                                                    data-ng-if="submitPayload.subStaff.replace_license_microsoft == 'A3'">{{submitPayload.subStaff.replace_first_name}}
+                                                    data-ng-if="submitPayload.subStaff.replace_license_microsoft.includes('A3')">{{submitPayload.subStaff.replace_first_name}}
                                                     {{submitPayload.subStaff.replace_last_name}} will be assigned a
                                                     temporary <strong>A1</strong> Microsoft License during their leave.
                                                     Meanwhile, their <strong>A3</strong> Microsoft License will be
@@ -662,6 +663,11 @@
                                                         is
                                                         generally for
                                                         Teachers, School Administrators, and Secretaries</li>
+                                                    <li><u>Microsoft A3 with Phone System</u> is a <em>paid</em>, more
+                                                        advanced license. It has all the same features as an A3 with the
+                                                        addition of Microsoft Teams Phone License</li>
+                                                    <li>The decision regarding licensing rests with the local school
+                                                        administrator.</li>
                                                     <li>The decision regarding licensing rests with the local school
                                                         administrator.</li>
                                                 </ul>

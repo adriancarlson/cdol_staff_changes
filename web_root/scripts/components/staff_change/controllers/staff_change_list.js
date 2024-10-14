@@ -15,7 +15,7 @@ define(function (require) {
 			$scope.curDate = new Date($attrs.ngCurDate)
 			$scope.calendarYear = new Date().getFullYear()
 			$scope.selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context')
-			$scope.booleanMap = { Yes: true, No: !true }
+			$scope.booleanMap = { Yes: true, No: false }
 			$scope.titleMap = {
 				'Mr.': 'Mr.',
 				'Mrs.': 'Mrs.',
@@ -101,6 +101,15 @@ define(function (require) {
 							keys.forEach(key => {
 								item[`${key}_complete`] = item[`${key}_created`] == 1 || item[`${key}_ignored`] == 1
 							})
+
+							// Check if change_type is 'subStaff' and sub_type is 'FSTS'
+							if (item.change_type === 'subStaff' && item.sub_type === 'FSTS') {
+								item.ps_complete = true
+								item.lms_complete = true
+							}
+							if (item.change_type === 'exitingStaff' || item.change_type === 'jobChange') {
+								item.lms_complete = true
+							}
 
 							Object.keys(item).forEach(key => {
 								if (key.endsWith('_date')) {

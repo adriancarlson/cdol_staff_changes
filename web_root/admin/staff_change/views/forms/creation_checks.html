@@ -104,7 +104,7 @@
                             <ul class="list-group list-group-flush m-0" data-ng-switch-when="subStaff">
                                 <li class="list-group-item">Exchange email mailbox created?</li>
                                 <li class="list-group-item"
-                                    data-ng-if="submitPayload[userContext.pageContext].replace_license_microsoft == 'A3'">
+                                    data-ng-if="submitPayload[userContext.pageContext].replace_license_microsoft.includes('A3')">
                                     {{submitPayload.subStaff.replace_first_name}}
                                     {{submitPayload.subStaff.replace_last_name}} has an <strong>A3</strong> Microsoft
                                     License. Temporarily transfer this license to {{submitPayload.subStaff.first_name}}
