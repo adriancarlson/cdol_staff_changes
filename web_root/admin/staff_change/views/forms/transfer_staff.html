@@ -38,10 +38,10 @@
                             Name</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
-                                data-ng-model="submitPayload.transferringStaff.title" data-ng-show="(submitPayload.transferringStaff.title !== 'Fr.' &&
-                        submitPayload.transferringStaff.title !== 'Msgr.' &&
-                        submitPayload.transferringStaff.title !== 'Sr.' &&
-                        submitPayload.transferringStaff.title !== 'Br.')">
+                                data-ng-model="submitPayload.transferringStaff.title" data-ng-show="(!submitPayload.transferringStaff.first_name.startsWith('Fr.') &&
+                        !submitPayload.transferringStaff.first_name.startsWith('Msgr.') &&
+                        !submitPayload.transferringStaff.first_name.startsWith('Sr.') &&
+                        !submitPayload.transferringStaff.first_name.startsWith('Br.'))">
                                 <option selected></option>
                                 <option value="Mr.">Mr.</option>
                                 <option value="Mrs.">Mrs.</option>
@@ -493,10 +493,8 @@
                                                     generally for
                                                     Teachers, School Administrators, and Secretaries</li>
                                                 <li><u>Microsoft A3 with Phone System</u> is a <em>paid</em>, more
-                                                    advanced license. It has all the same features as an A3 with the
-                                                    addition of Microsoft Teams Phone License</li>
-                                                <li>The decision regarding licensing rests with the local school
-                                                    administrator.</li>
+                                                    advanced license. It is the same as an A3 License but for users with
+                                                    a Desk Phone.</li>
                                                 <li>The decision regarding licensing rests with the local school
                                                     administrator.</li>
                                             </ul>

@@ -34,10 +34,12 @@
                 <td>{{$index +1}}</td>
                 <td class="nowrap"><a
                         href="/admin/staff_change/submit.html?status=Edit&id={{transferringStaff.staffid}}">
-                        <span data-ng-show="transferringStaff.title !== 'Fr.' &&
-								transferringStaff.title !== 'Msgr.' &&
-								transferringStaff.title !== 'Sr.' &&
-								transferringStaff.title !== 'Br.' ">{{transferringStaff.title}}</span> {{transferringStaff.first_name}}
+                        <span data-ng-show="!transferringStaff.first_name.startsWith('Fr.') &&
+                    !transferringStaff.first_name.startsWith('Msgr.') &&
+                    !transferringStaff.first_name.startsWith('Sr.') &&
+                    !transferringStaff.first_name.startsWith('Br.')">
+                            {{transferringStaff.title}}
+                        </span> {{transferringStaff.first_name}}
                         {{transferringStaff.last_name}}</a></td>
                 <td class="nowrap">{{transferringStaff.schname}}</td>
                 <td class="nowrap">{{transferringStaff.prev_school_name}}</td>
