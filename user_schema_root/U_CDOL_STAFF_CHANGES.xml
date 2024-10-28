@@ -63,6 +63,7 @@
         <field name="legal_middle_name" type="String" length="100" />
         <field name="legal_last_name" type="String" length="100" />
         <field name="license_microsoft" type="String" length="100" />
+        <field name="license_phone" type="Boolean" />
         <field name="license_adobe" type="Boolean" />
         <field name="ticket_id" type="Integer" />
         <field name="sub_type" type="String" length="100" />
