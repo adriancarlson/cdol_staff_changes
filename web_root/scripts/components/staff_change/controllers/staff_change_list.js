@@ -8,9 +8,9 @@ define(function (require) {
 		'pqService',
 		'formatService',
 		function ($scope, $attrs, pqService, formatService) {
-		//This is here for troubleshooting purposes.
-		//Allows us to double click anywhere on the page and logs scope to console
-		$j(document).dblclick(() => console.log($scope))
+			//This is here for troubleshooting purposes.
+			//Allows us to double click anywhere on the page and logs scope to console
+			$j(document).dblclick(() => console.log($scope))
 
 			$scope.staffChangeCounts = []
 			$scope.staffList = {}
@@ -99,7 +99,7 @@ define(function (require) {
 					//updating staffList obj
 					if (res.length > 0) {
 						updateStaffList(changeType, res)
-						const keys = ['ps', 'ad', 'o365', 'lms']
+						const keys = ['ps', 'ad', 'o365', 'lms', 'canva']
 
 						$scope.staffList[changeType].forEach(item => {
 							keys.forEach(key => {
