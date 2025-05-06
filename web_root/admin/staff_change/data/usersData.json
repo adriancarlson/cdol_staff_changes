@@ -5,6 +5,7 @@
         users.title,
         users.first_name,
         users.last_name,
+        users.email_addr,
         u_users_additional_info.license_microsoft,
         users.homeschoolid,
         schools.name
@@ -24,7 +25,8 @@
         "title": "~(2;JSON)",
         "first_name":"~(3;JSON)",
         "last_name":"~(4;JSON)",
-        "license_microsoft":"~(5;JSON)",
+        "email_addr":"~(5;JSON)",
+        "license_microsoft":"~(6;JSON)",
         "homeschoolid": "~(7;JSON)",
         "homeschoolname": "~(8;JSON)"
     },
