@@ -72,6 +72,33 @@
                         </div>
                     </div>
                 </div>
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.users_dcid">
+                    <div class="col-auto">
+                        <label class="form-label form-label-sm label-reset staff-change-req">Has
+                            {{submitPayload.nameChange.old_name_placeholder}} used
+                            {{submitPayload.nameChange.email_addr}} for <em>Canva for Education</em> and need
+                            to keep access to their projects?</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="canva-radio-group" id="canva-radio-yes"
+                                data-ng-model="submitPayload.nameChange.canva" value="1"
+                                data-ng-required="!submitPayload.nameChange.canva" tabindex="0">
+                            <label class="form-check-label" for="canva-radio-yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="canva-radio-group" id="canva-radio-no"
+                                data-ng-model="submitPayload.nameChange.canva" value="0"
+                                data-ng-required="!submitPayload.nameChange.canva" tabindex="0">
+                            <label class="form-check-label" for="canva-radio-no">No</label>
+                        </div>
+                        <br>
+                        <div class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> Please
+                            <strong>Double check with {{submitPayload.nameChange.old_name_placeholder}}</strong> as we
+                            must submit a form to <em>Canva for Education</em> to change
+                            {{submitPayload.nameChange.old_name_placeholder}}'s name and give them access to their
+                            projects again.
+                        </div>
+                    </div>
+                </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.first_name">
                     <div class="col-2">
                         <label class="form-label form-label-sm label-reset staff-change-req">Requested
