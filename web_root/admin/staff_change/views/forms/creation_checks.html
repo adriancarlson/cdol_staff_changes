@@ -217,6 +217,28 @@
                         </div>
                     </div>
                 </div>
+                <div class="col"
+                    data-ng-hide="(userContext.pageContext =='nameChange' &&  submitPayload[userContext.pageContext].canva_transfer == '1')">
+                    <div class="card">
+                        <div
+                            class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
+                            <input class="form-check-input me-1" type="checkbox" id="canva"
+                                data-ng-model="submitPayload[userContext.pageContext].canva_transfer">
+                            <label class="form-check-label stretched-link" for="canva">Canva<span data-ng-switch
+                                    on="submitPayload[userContext.pageContext].change_type">
+                                    <span data-ng-switch-when="nameChange"> Transferred?</span>
+                                </span>?</label>
+                        </div>
+                        <div class="card-body p-0" data-ng-switch
+                            on="submitPayload[userContext.pageContext].change_type">
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="nameChange">
+                                <li class="list-group-item">Requested Form from Canva Support?</li>
+                                <li class="list-group-item">Submitted Canva Form?</li>
+                                <li class="list-group-item">Receive confirmation from Canva on name change?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-footer">
