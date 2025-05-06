@@ -14,6 +14,10 @@ define(function (require) {
 		'psApiService',
 		'jitbitService',
 		function ($scope, $http, $attrs, $window, $anchorScroll, $location, pqService, formatService, psApiService, jitbitService) {
+		//This is here for troubleshooting purposes.
+		//Allows us to double click anywhere on the page and logs scope to console
+		$j(document).dblclick(() => console.log($scope))
+
 			$scope.refreshPage = function () {
 				$window.location.reload()
 			}

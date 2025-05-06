@@ -8,6 +8,10 @@ define(function (require) {
 		'pqService',
 		'formatService',
 		function ($scope, $attrs, pqService, formatService) {
+		//This is here for troubleshooting purposes.
+		//Allows us to double click anywhere on the page and logs scope to console
+		$j(document).dblclick(() => console.log($scope))
+
 			$scope.staffChangeCounts = []
 			$scope.staffList = {}
 			$scope.curSchoolId = $attrs.ngCurSchoolId
