@@ -150,7 +150,7 @@ define(function (require) {
 				new Date(`07/01/${curYear}`), // PowerSchool Roll Over
 				new Date(`07/04/${curYear}`), // Independence Day
 				new Date(`08/15/${curYear}`), // Assumption of Mary
-				new Date(`09/02/${curYear}`), // Labor Day
+				new Date(`09/01/${curYear}`), // Labor Day
 				new Date(`11/01/${curYear}`), // All Saints' Day
 				new Date(`11/26/${curYear}`), // Thanksgiving Break
 				new Date(`11/27/${curYear}`), // Thanksgiving Break
