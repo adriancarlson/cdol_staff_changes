@@ -67,7 +67,7 @@
         <field name="license_adobe" type="Boolean" />
         <field name="ticket_id" type="Integer" />
         <field name="sub_type" type="String" length="100" />
-        <field name="canva" type="Boolean" />
+        <field name="canva_transfer" type="Integer" />
         <field name="canva_created" type="Boolean" />
         <field name="canva_ignored" type="Boolean" />
     </extendedTable>

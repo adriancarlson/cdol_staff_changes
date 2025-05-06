@@ -227,7 +227,6 @@ define(function (require) {
 			$scope.formatKeys = {
 				dateKeys: ['_date', 'dob', 'deadline'],
 				checkBoxKeys: ['_created', '_ignored'],
-				booleanKeys: ['canva'],
 				deleteKeys: ['_radio', 'homeschool', 'identifier', 'email_addr']
 			}
 			//initilazing empty payload
@@ -244,13 +243,6 @@ define(function (require) {
 					const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, getFormatKeys, staffChangeId)
 					$scope.submitPayload[res.change_type] = await res
 					$scope.userContext.pageContext = await res.change_type
-
-					$scope.formatKeys.booleanKeys.forEach(key => {
-						if (key in $scope.submitPayload[res.change_type]) {
-							const val = $scope.submitPayload[res.change_type][key]
-							$scope.submitPayload[res.change_type][key] = val === 'true' ? '1' : '0'
-						}
-					})
 
 					if ($scope.userContext.pageContext === 'newStaff' || $scope.userContext.pageContext === 'subStaff') {
 						await $scope.checkDupesOnEdit(res)
