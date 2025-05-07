@@ -94,7 +94,7 @@
                                             someone else?</label>
                                         <label data-ng-if="userContext.pageStatus =='Edit'"
                                             class="form-label form-label-sm label-reset staff-change-req">
-                                            Transfer of <em>Canva for Education</em> for school projects
+                                            Transfer of <em>Canva for Education</em> school projects
                                             needed?</label><br>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="canva-radio-group"
@@ -157,7 +157,7 @@
                                             should {{
                                             submitPayload.exitingStaff.first_name}} {{
                                             submitPayload.exitingStaff.last_name}}'s <em>Canva for Education</em>
-                                            account be transferred to?</label>
+                                            projects be transferred to?</label>
                                         <div class="input-group">
                                             <select class="form-select form-select-sm" aria-label="title"
                                                 data-ng-model="submitPayload.exitingStaff.replace_title">
@@ -343,7 +343,7 @@
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.first_name">
                     <div class="col-xl-6">
                         <span class="req-notation"
-                            data-ng-show="(submitPayload.hasOwnProperty('exitingStaff') || submitPayload.hasOwnProperty('newStaff')) && submitPayload.exitingStaff.notes">
+                            data-ng-show="((submitPayload.hasOwnProperty('exitingStaff') && !submitPayload.exitingStaff.replace_dcid) || submitPayload.hasOwnProperty('newStaff')) && submitPayload.exitingStaff.notes">
                             Note copied from {{
                             submitPayload.newStaff.first_name}} {{
                             submitPayload.newStaff.last_name}}'s form. Feel free to add, remove, or edit note for {{
