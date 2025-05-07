@@ -115,6 +115,10 @@ define(function (require) {
 								item.lms_complete = true
 							}
 
+							if (item.change_type === 'nameChange' && item.canva_transfer === '0') {
+								item.canva_complete = true
+							}
+
 							Object.keys(item).forEach(key => {
 								if (key.endsWith('_date')) {
 									item[key] = new Date(formatService.formatDateFromApi(item[key]))

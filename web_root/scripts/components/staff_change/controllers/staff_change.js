@@ -590,12 +590,25 @@ define(function (require) {
 
 					const lmsCondition = formPayload => formPayload.lms_created
 
+					const canvaCondition = formPayload => formPayload.canva_created
+
 					switch (key) {
 						case 'newStaff':
 						case 'transferringStaff':
-						case 'nameChange':
-							if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload)) {
+							if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload) && canvaCondition(formPayload)) {
 								formPayload.final_completion_date = $scope.userContext.curDate
+							}
+							break
+
+						case 'nameChange':
+							if (formPayload.canva_transfer === '1') {
+								if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload) && canvaCondition(formPayload)) {
+									formPayload.final_completion_date = $scope.userContext.curDate
+								}
+							} else {
+								if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload)) {
+									formPayload.final_completion_date = $scope.userContext.curDate
+								}
 							}
 							break
 
