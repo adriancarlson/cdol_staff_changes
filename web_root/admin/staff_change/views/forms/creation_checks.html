@@ -4,8 +4,8 @@
             Diocesan Office Account Checks</div>
         <div class="card-body">
             <div class="row">
-                <div class="col"
-                    data-ng-hide="userContext.pageContext =='subStaff' &&  submitPayload[userContext.pageContext].sub_type !=='LTS'">
+                <div class="col order-1" data-ng-hide="userContext.pageContext =='subStaff' &&
+                    submitPayload[userContext.pageContext].sub_type !=='LTS'">
                     <div class="card">
                         <div
                             class="card-header bg-primary text-bg-primary text-dark bg-opacity-10 bg-gradient fw-semibold">
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col order-3">
                     <div class="card">
                         <div
                             class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
@@ -135,7 +135,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col"
+                <div class="col order-4"
                     data-ng-hide="userContext.pageContext =='jobChange' || userContext.pageContext =='exitingStaff'">
                     <div class="card">
                         <div
@@ -179,7 +179,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col"
+                <div class="col order-5"
                     data-ng-hide="userContext.pageContext =='jobChange' || userContext.pageContext =='exitingStaff' || (userContext.pageContext =='subStaff' &&  submitPayload[userContext.pageContext].sub_type !=='LTS')">
                     <div class="card">
                         <div
@@ -218,6 +218,7 @@
                     </div>
                 </div>
                 <div class="col"
+                    data-ng-class="{'order-2': userContext.pageContext == 'exitingStaff' && submitPayload[userContext.pageContext].canva_transfer == '1', 'order-last': !(userContext.pageContext == 'exitingStaff' && submitPayload[userContext.pageContext].canva_transfer == '1')}"
                     data-ng-show="userContext.pageContext =='newStaff' || (userContext.pageContext =='nameChange' &&  submitPayload[userContext.pageContext].canva_transfer == '1') || (userContext.pageContext =='exitingStaff' &&  submitPayload[userContext.pageContext].canva_transfer == '1')">
                     <div class="card">
                         <div
