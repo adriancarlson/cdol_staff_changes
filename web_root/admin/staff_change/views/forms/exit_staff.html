@@ -77,6 +77,139 @@
                         </div>
                     </div>
                 </div>
+
+
+                <div class="row align-items-center mb-3"
+                    data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.exitingStaff.users_dcid) || (userContext.pageStatus =='Edit' && submitPayload.exitingStaff.replace_dcid)">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <div data-ng-if="userContext.pageStatus =='Submit'" class="row align-items-center mb-3">
+                                    <div class="col-auto">
+                                        <label data-ng-if="userContext.pageStatus =='Submit'"
+                                            class="form-label form-label-sm label-reset staff-change-req">Has
+                                            {{submitPayload.exitingStaff.first_name}}
+                                            {{submitPayload.exitingStaff.last_name}} used
+                                            <em>Canva for Education</em> for school projects, and need projects moved to
+                                            someone else?</label>
+                                        <label data-ng-if="userContext.pageStatus =='Edit'"
+                                            class="form-label form-label-sm label-reset staff-change-req">
+                                            Transfer of <em>Canva for Education</em> for school projects
+                                            needed?</label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="canva-radio-group"
+                                                id="canva-radio-yes"
+                                                data-ng-model="submitPayload.exitingStaff.canva_transfer" value="1"
+                                                data-ng-required="!submitPayload.exitingStaff.canva_transfer"
+                                                tabindex="0">
+                                            <label class="form-check-label" for="canva-radio-yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="canva-radio-group"
+                                                id="canva-radio-no"
+                                                data-ng-model="submitPayload.exitingStaff.canva_transfer" value="0"
+                                                data-ng-required="!submitPayload.exitingStaff.canva_transfer"
+                                                tabindex="0">
+                                            <label class="form-check-label" for="canva-radio-no">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-3"
+                                    data-ng-if="submitPayload.exitingStaff.canva_transfer == 1 || (userContext.pageStatus =='Edit' && submitPayload.exitingStaff.replace_dcid)">
+                                    <div class="col-auto">
+                                        <label for="replacing_dcid"
+                                            class="form-label form-label-sm label-reset staff-change-req">Who
+                                            should {{
+                                            submitPayload.exitingStaff.first_name}} {{
+                                            submitPayload.exitingStaff.last_name}}'s <em>Canva for Education</em>
+                                            account be transferred to?</label><span class="text-muted"
+                                            data-ng-if="userContext.pageStatus =='Submit'"><small><em>
+                                                    (Choose --Other-- if staff member is not listed)</em></small></span>
+                                        <select class="form-select form-select-sm" id="replace_dcid"
+                                            aria-label="Who is not returning?"
+                                            data-ng-model="submitPayload.exitingStaff.replace_dcid"
+                                            data-ng-required="true"
+                                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.exitingStaff.replace_dcid, 'replace_dcid')">
+                                            <option selected></option>
+                                            ~[tlist_sql;SELECT
+                                            users.dcid,
+                                            users.first_name,
+                                            users.last_name
+                                            FROM SCHOOLSTAFF
+                                            inner join users
+                                            on users.dcid = schoolstaff.users_dcid
+                                            WHERE schoolstaff.status = 1
+                                            ~[if.is.a.school]
+                                            AND schoolstaff.schoolid = ~(curschoolid)
+                                            [/if.is.a.school]
+                                            Order BY users.last_name , users.first_name]
+                                            <option value="~(dcid)">~(first) ~(last)</option>
+                                            [/tlist_sql]
+                                            <option value="-1">-- Other --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-3"
+                                    data-ng-if="submitPayload.exitingStaff.replace_dcid == -1">
+                                    <div class="col-6">
+                                        <label for="exiting-staff-name"
+                                            class="form-label form-label-sm  label-reset staff-change-req">Name of who
+                                            should {{
+                                            submitPayload.exitingStaff.first_name}} {{
+                                            submitPayload.exitingStaff.last_name}}'s <em>Canva for Education</em>
+                                            account be transferred to?</label>
+                                        <div class="input-group">
+                                            <select class="form-select form-select-sm" aria-label="title"
+                                                data-ng-model="submitPayload.exitingStaff.replace_title">
+                                                <option selected></option>
+                                                <option value="Mr.">Mr.</option>
+                                                <option value="Mrs.">Mrs.</option>
+                                                <option value="Ms.">Ms.</option>
+                                                <option value="Dr.">Dr.</option>
+                                                <option value="Fr.">Fr.</option>
+                                                <option value="Msgr.">Msgr.</option>
+                                                <option value="Sr.">Sr.</option>
+                                                <option value="Br.">Br.</option>
+                                            </select>
+                                            <input type="text" class="form-control form-control-sm w-25"
+                                                placeholder="First name" aria-label="First name"
+                                                data-ng-model="submitPayload.exitingStaff.replace_first_name"
+                                                data-ng-blur="submitPayload.exitingStaff.replace_first_name = (submitPayload.exitingStaff.replace_first_name | titleCase)"
+                                                data-ng-required="true">
+                                            <input type="text" class="form-control form-control-sm w-25"
+                                                placeholder="Middle name" aria-label="Middle name"
+                                                data-ng-model="submitPayload.exitingStaff.replace_middle_name"
+                                                data-ng-blur="submitPayload.exitingStaff.replace_middle_name = (submitPayload.exitingStaff.replace_middle_name | titleCase)">
+                                            <input type="text" class="form-control form-control-sm w-25"
+                                                placeholder="Last name" aria-label="Last name"
+                                                data-ng-model="submitPayload.exitingStaff.replace_last_name"
+                                                data-ng-blur="submitPayload.exitingStaff.replace_last_name = (submitPayload.exitingStaff.replace_last_name | titleCase)"
+                                                data-ng-required="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-3"
+                                    data-ng-if="userContext.pageStatus =='Submit' && submitPayload.exitingStaff.users_dcid && submitPayload.exitingStaff.canva_transfer">
+                                    <div class="col-6">
+                                        <div class="alert alert-primary" role="alert">
+                                            <i class="bi bi-chat-right-text-fill"></i>
+                                            Please
+                                            <strong>double check</strong> with {{
+                                            submitPayload.exitingStaff.first_name}} {{
+                                            submitPayload.exitingStaff.last_name}} to see if they use <em><strong>Canva
+                                                    for
+                                                    Education</strong></em> and want any of their projects? They will
+                                            need to download anything the desire kept BEFORE ownership of their account
+                                            is <span
+                                                data-ng-if="submitPayload.exitingStaff.canva_transfer == '1'">switched</span><span
+                                                data-ng-if="submitPayload.exitingStaff.canva_transfer != '1'">transferred</span>.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.first_name">
                     <div class="col-2">
                         <label class="form-label form-label-sm label-reset staff-change-req">Requested
@@ -210,10 +343,10 @@
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.first_name">
                     <div class="col-xl-6">
                         <span class="req-notation"
-                            data-ng-show="(submitPayload.hasOwnProperty('transferringStaff') || submitPayload.hasOwnProperty('newStaff')) && submitPayload.exitingStaff.notes">
+                            data-ng-show="(submitPayload.hasOwnProperty('exitingStaff') || submitPayload.hasOwnProperty('newStaff')) && submitPayload.exitingStaff.notes">
                             Note copied from {{
-                            submitPayload.transferringStaff.first_name}} {{
-                            submitPayload.transferringStaff.last_name}}{{
+                            submitPayload.exitingStaff.first_name}} {{
+                            submitPayload.exitingStaff.last_name}}{{
                             submitPayload.newStaff.first_name}} {{
                             submitPayload.newStaff.last_name}}'s form. Feel free to add, remove, or edit note for {{
                             submitPayload.exitingStaff.first_name}} {{
@@ -239,7 +372,8 @@
                             submitPayload.exitingStaff.title !== 'Sr.' &&
                             submitPayload.exitingStaff.title !== 'Br.' ">{{submitPayload.exitingStaff.title}}</span> {{
                             submitPayload.exitingStaff.first_name}} {{ submitPayload.exitingStaff.last_name}} will not
-                            have access PowerSchool, Canvas, Office 365, Teams, email, or their device, once removed
+                            have access to PowerSchool, Canvas, Canva, Office 365, Teams, email, or their device, once
+                            removed
                             from the system. The exiting staff will not be able to access their account after the chosen
                             deactivation date.<br>
                             <strong>The Education Technology Office is not responsible for any files after the staff
