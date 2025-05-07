@@ -613,9 +613,19 @@ define(function (require) {
 							break
 
 						case 'jobChange':
-						case 'exitingStaff':
 							if (commonCondition(formPayload)) {
 								formPayload.final_completion_date = $scope.userContext.curDate
+							}
+							break
+						case 'exitingStaff':
+							if (formPayload.canva_transfer === '1') {
+								if (commonCondition(formPayload) && canvaCondition(formPayload)) {
+									formPayload.final_completion_date = $scope.userContext.curDate
+								}
+							} else {
+								if (commonCondition(formPayload)) {
+									formPayload.final_completion_date = $scope.userContext.curDate
+								}
 							}
 							break
 
