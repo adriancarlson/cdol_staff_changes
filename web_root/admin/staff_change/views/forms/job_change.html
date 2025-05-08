@@ -175,12 +175,9 @@
                         <span class="req-notation"
                             data-ng-show="(submitPayload.hasOwnProperty('transferringStaff') || submitPayload.hasOwnProperty('newStaff')) && submitPayload.jobChange.notes">
                             Note copied from {{
-                            submitPayload.transferringStaff.first_name}} {{
-                            submitPayload.transferringStaff.last_name}}{{
-                            submitPayload.newStaff.first_name}} {{
-                            submitPayload.newStaff.last_name}}'s form. Feel free to add, remove, or edit note for {{
-                            submitPayload.jobChange.first_name}} {{
-                            submitPayload.jobChange.last_name}} </span>
+                            submitPayload.jobChange.replace_first_name}} {{
+                            submitPayload.jobChange.replace_last_name}}'s form. Feel free to add, remove, or edit note
+                            for {{ submitPayload.jobChange.first_name}} {{ submitPayload.jobChange.last_name}} </span>
                         <div class="form-floating">
                             <textarea class="form-control" placeholder="Additional Notes/Details?" id="exit-add-notes"
                                 spellcheck="true" wrap="absolute"
