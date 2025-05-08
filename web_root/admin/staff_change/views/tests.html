@@ -2,8 +2,8 @@
     <div class="card">
         <div class="card-header ms-0">
             <ul class="list-group list-group-horizontal ms-0">
-                <li class="list-group-item"><strong>pageStatus</strong>: {{userContext.pageStatus}}</li>
-                <li class="list-group-item"><strong>formType</strong>: {{userContext.formType}}</li>
+                <li class="list-group-item"><strong>pageStatus</strong>:{{userContext.pageStatus}}</li>
+                <li class="list-group-item"><strong>formType</strong>:{{userContext.formType}}</li>
                 <li class="list-group-item"><strong>prevContext</strong>: {{userContext.prevContext}}
                 </li>
                 <li class="list-group-item"><strong>pageContext</strong>: {{userContext.pageContext}}
@@ -14,11 +14,14 @@
             <ul class="list-group list-group ms-0">
                 <li class="list-group-item"><strong>staffChangeId : {{userContext.staffChangeId}}</strong>
                 </li>
-                <li class="list-group-item"><strong>submitPayload</strong>: <br /> {{submitPayload | json}}
+                <li class="list-group-item"><strong>submitPayload</strong>:<br />
+                    <pre>{{submitPayload | json}}</pre>
                 </li>
-                <li class="list-group-item"><strong>staffChangeDupeData</strong>: <br /> {{staffChangeDupeData}}
+                <li class="list-group-item"><strong>staffChangeDupeData</strong>:<br />
+                    <pre>{{staffChangeDupeData}}</pre>
                 </li>
-                <li class="list-group-item"><strong>userContext</strong>: <br /> {{userContext | json}}
+                <li class="list-group-item"><strong>userContext</strong>:<br />
+                    <pre>{{userContext | json}}</pre>
                 </li>
         </div>
     </div>
