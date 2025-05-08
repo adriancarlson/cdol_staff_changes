@@ -421,18 +421,17 @@ define(function (require) {
 						if (field === 'replace_dcid' || field === 'canva_dcid') {
 							// Determine the prefix dynamically based on the field
 							const prefix = field === 'replace_dcid' ? 'replace_' : 'canva_'
-
 							// Set an empty object
 							const dynamicObject = {}
-
 							// Find all the keys in the found item and add the prefix to the front of the key
 							// Keep the same value and set those key-value pairs to dynamicObject
 							for (let key in foundItem) {
 								if (foundItem.hasOwnProperty(key)) {
+									// Skip license_microsoft if prefix is canva_
+									if (prefix === 'canva_' && key === 'license_microsoft') continue
 									dynamicObject[`${prefix}${key}`] = foundItem[key]
 								}
 							}
-
 							// Assign the dynamicObject to the submitPayload
 							Object.assign($scope.submitPayload[pageContext], dynamicObject)
 						}
