@@ -417,19 +417,26 @@ define(function (require) {
 								$scope.submitPayload[pageContext].old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => $scope.submitPayload[pageContext].first_name.startsWith(prefix)) && $scope.submitPayload[pageContext].title ? $scope.submitPayload[pageContext].title + ' ' : ''}${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
 							}
 						}
-						//if the resource is user data and the field is replace_dcid
-						if (field === 'replace_dcid') {
-							// set and empty object
-							const replaceObject = {}
-							// find all the keys in the found item and add the 'replace_' to the front of the key. keep same value. then set those key value pairs to replaceObject
+						// Dynamically handle both replace_ and canva_ prefixes
+						if (field === 'replace_dcid' || field === 'canva_dcid') {
+							// Determine the prefix dynamically based on the field
+							const prefix = field === 'replace_dcid' ? 'replace_' : 'canva_'
+
+							// Set an empty object
+							const dynamicObject = {}
+
+							// Find all the keys in the found item and add the prefix to the front of the key
+							// Keep the same value and set those key-value pairs to dynamicObject
 							for (let key in foundItem) {
 								if (foundItem.hasOwnProperty(key)) {
-									replaceObject[`replace_${key}`] = foundItem[key]
+									dynamicObject[`${prefix}${key}`] = foundItem[key]
 								}
 							}
-							// assign the replaceObject to the submitPayload
-							Object.assign($scope.submitPayload[pageContext], replaceObject)
+
+							// Assign the dynamicObject to the submitPayload
+							Object.assign($scope.submitPayload[pageContext], dynamicObject)
 						}
+
 						if (pageContext === 'subStaff') {
 							$scope.submitPayload[pageContext].license_microsoft = $scope.submitPayload[pageContext].replace_license_microsoft
 						}

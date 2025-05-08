@@ -70,5 +70,11 @@
         <field name="canva_transfer" type="Integer" />
         <field name="canva_created" type="Boolean" />
         <field name="canva_ignored" type="Boolean" />
+        <field name="canva_dcid" type="Integer" />
+        <field name="canva_title" type="String" length="5" />
+        <field name="canva_first_name" type="String" length="100" />
+        <field name="canva_middle_name" type="String" length="100" />
+        <field name="canva_last_name" type="String" length="100" />
+
     </extendedTable>
 </psExtension>

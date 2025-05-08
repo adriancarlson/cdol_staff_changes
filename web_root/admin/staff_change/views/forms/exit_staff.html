@@ -80,7 +80,7 @@
 
 
                 <div class="row align-items-center mb-3"
-                    data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.exitingStaff.users_dcid) || (userContext.pageStatus =='Edit' && submitPayload.exitingStaff.replace_dcid)">
+                    data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.exitingStaff.users_dcid) || (userContext.pageStatus =='Edit' && submitPayload.exitingStaff.canva_dcid)">
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
@@ -115,7 +115,7 @@
                                     </div>
                                 </div>
                                 <div class="row align-items-center mb-3"
-                                    data-ng-if="submitPayload.exitingStaff.canva_transfer == 1 || (userContext.pageStatus =='Edit' && submitPayload.exitingStaff.replace_dcid)">
+                                    data-ng-if="submitPayload.exitingStaff.canva_transfer == 1 || (userContext.pageStatus =='Edit' && submitPayload.exitingStaff.canva_dcid)">
                                     <div class="col-auto">
                                         <label for="replacing_dcid"
                                             class="form-label form-label-sm label-reset staff-change-req">Who
@@ -125,11 +125,11 @@
                                             account be transferred to?</label><span class="text-muted"
                                             data-ng-if="userContext.pageStatus =='Submit'"><small><em>
                                                     (Choose --Other-- if staff member is not listed)</em></small></span>
-                                        <select class="form-select form-select-sm" id="replace_dcid"
+                                        <select class="form-select form-select-sm" id="canva_dcid"
                                             aria-label="Who is not returning?"
-                                            data-ng-model="submitPayload.exitingStaff.replace_dcid"
+                                            data-ng-model="submitPayload.exitingStaff.canva_dcid"
                                             data-ng-required="true"
-                                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.exitingStaff.replace_dcid, 'replace_dcid')">
+                                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.exitingStaff.canva_dcid, 'canva_dcid')">
                                             <option selected></option>
                                             ~[tlist_sql;SELECT
                                             users.dcid,
@@ -150,7 +150,7 @@
                                     </div>
                                 </div>
                                 <div class="row align-items-center mb-3"
-                                    data-ng-if="submitPayload.exitingStaff.replace_dcid == -1">
+                                    data-ng-if="submitPayload.exitingStaff.canva_dcid == -1">
                                     <div class="col-6">
                                         <label for="exiting-staff-name"
                                             class="form-label form-label-sm  label-reset staff-change-req">Name of who
@@ -160,7 +160,7 @@
                                             projects be transferred to?</label>
                                         <div class="input-group">
                                             <select class="form-select form-select-sm" aria-label="title"
-                                                data-ng-model="submitPayload.exitingStaff.replace_title">
+                                                data-ng-model="submitPayload.exitingStaff.canva_title">
                                                 <option selected></option>
                                                 <option value="Mr.">Mr.</option>
                                                 <option value="Mrs.">Mrs.</option>
@@ -173,17 +173,17 @@
                                             </select>
                                             <input type="text" class="form-control form-control-sm w-25"
                                                 placeholder="First name" aria-label="First name"
-                                                data-ng-model="submitPayload.exitingStaff.replace_first_name"
-                                                data-ng-blur="submitPayload.exitingStaff.replace_first_name = (submitPayload.exitingStaff.replace_first_name | titleCase)"
+                                                data-ng-model="submitPayload.exitingStaff.canva_first_name"
+                                                data-ng-blur="submitPayload.exitingStaff.canva_first_name = (submitPayload.exitingStaff.canva_first_name | titleCase)"
                                                 data-ng-required="true">
                                             <input type="text" class="form-control form-control-sm w-25"
                                                 placeholder="Middle name" aria-label="Middle name"
-                                                data-ng-model="submitPayload.exitingStaff.replace_middle_name"
-                                                data-ng-blur="submitPayload.exitingStaff.replace_middle_name = (submitPayload.exitingStaff.replace_middle_name | titleCase)">
+                                                data-ng-model="submitPayload.exitingStaff.canva_middle_name"
+                                                data-ng-blur="submitPayload.exitingStaff.canva_middle_name = (submitPayload.exitingStaff.canva_middle_name | titleCase)">
                                             <input type="text" class="form-control form-control-sm w-25"
                                                 placeholder="Last name" aria-label="Last name"
-                                                data-ng-model="submitPayload.exitingStaff.replace_last_name"
-                                                data-ng-blur="submitPayload.exitingStaff.replace_last_name = (submitPayload.exitingStaff.replace_last_name | titleCase)"
+                                                data-ng-model="submitPayload.exitingStaff.canva_last_name"
+                                                data-ng-blur="submitPayload.exitingStaff.canva_last_name = (submitPayload.exitingStaff.canva_last_name | titleCase)"
                                                 data-ng-required="true">
                                         </div>
                                     </div>
@@ -344,7 +344,7 @@
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.first_name">
                     <div class="col-xl-6">
                         <span class="req-notation"
-                            data-ng-show="((submitPayload.hasOwnProperty('exitingStaff') && !submitPayload.exitingStaff.replace_dcid) || submitPayload.hasOwnProperty('newStaff')) && submitPayload.exitingStaff.notes">
+                            data-ng-show="submitPayload.exitingStaff && !submitPayload.exitingStaff.canva_dcid && (submitPayload.newStaff || submitPayload.transferringStaff) && submitPayload.exitingStaff.notes">
                             Note copied from {{
                             submitPayload.newStaff.first_name}} {{
                             submitPayload.newStaff.last_name}}'s form. Feel free to add, remove, or edit note for {{
