@@ -57,13 +57,16 @@
                 <td class="nowrap">{{allStaff.submittedstaff}}</td>
                 <td class="nowrap">{{allStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{allStaff.submission_time}}</td>
-                <td> <span data-ng-if="allStaff.sub_type !== 'FSTS'"
-                        data-ng-class="{ 'req-notation': (allStaff.completion_date < curDate) && ((allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange') ? (!allStaff.ps_complete || !allStaff.ad_complete) : (!allStaff.ps_complete || !allStaff.ad_complete || !allStaff.o365_complete || !allStaff.lms_complete)) }">
-                        {{allStaff.completion_date | date : 'MM/dd/yyyy'}}</span>
-                    <span data-ng-if="allStaff.sub_type === 'FSTS'"
-                        data-ng-class="{'req-notation': (allStaff.completion_date < curDate) && (!allStaff.ad_complete || !allStaff.o365_complete)}">
-                        {{allStaff.completion_date | date : 'MM/dd/yyyy'}}</span>
-                </td>
+                <td><span data-ng-class="{
+                                        'req-notation': (allStaff.completion_date < curDate) && (
+                                            allStaff.sub_type === 'FSTS' 
+                                                ? (!allStaff.ad_complete || !allStaff.o365_complete || (allStaff.canva_transfer == '1' ? !allStaff.canva_complete : false))
+                                                : (allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange'
+                                                    ? (!allStaff.ps_complete || !allStaff.ad_complete || (allStaff.canva_transfer == '1' ? !allStaff.canva_complete : false))
+                                                    : (!allStaff.ps_complete || !allStaff.ad_complete || !allStaff.o365_complete || !allStaff.lms_complete || (allStaff.canva_transfer == '1' ? !allStaff.canva_complete : false))
+                                        )
+                                    }">
+                        {{allStaff.completion_date | date : 'MM/dd/yyyy'}} </span></td>
                 <td><span
                         data-ng-if="(allStaff.change_type === 'subStaff' && allStaff.sub_type !== 'FSTS') || allStaff.change_type !== 'subStaff'"
                         data-ng-class="{'mark-complete': allStaff.ps_complete, 'mark-incomplete': !allStaff.ps_complete}">
@@ -80,7 +83,7 @@
                         class="text-primary fs-6 fw-medium">- - -</span>
                 </td>
                 <td><span
-                        data-ng-if="allStaff.change_type !== 'exitingStaff' && allStaff.change_type !== 'jobChange' && (allStaff.change_type === 'subStaff' && allStaff.sub_type !== 'FSTS')"
+                        data-ng-if="allStaff.change_type !== 'exitingStaff' && allStaff.change_type !== 'jobChange' && (allStaff.change_type === 'subStaff' && allStaff.sub_type !== 'FSTS') || allStaff.change_type === 'newStaff' || allStaff.change_type === 'transferringStaff' || allStaff.change_type === 'nameChange'"
                         data-ng-class="{'mark-complete': allStaff.lms_complete, 'mark-incomplete': !allStaff.lms_complete}"></span>
                     <span
                         data-ng-if="allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange' || (allStaff.change_type === 'subStaff' && allStaff.sub_type === 'FSTS')"
