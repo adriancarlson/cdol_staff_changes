@@ -46,7 +46,7 @@
                 <td class="nowrap">{{nameChange.submission_date | date : 'MM/dd/yyyy'}}
                     {{nameChange.submission_time}}</td>
                 <td
-                    data-ng-class="{'req-notation': (nameChange.completion_date < curDate) && (!nameChange.ps_complete || !nameChange.ad_complete || !nameChange.o365_complete || !nameChange.lms_complete || !nameChange.canva_complete)}">
+                    data-ng-class="{'req-notation': (nameChange.completion_date < curDate) && (!nameChange.ps_complete || !nameChange.ad_complete || !nameChange.o365_complete || !nameChange.lms_complete || (nameChange.canva_transfer == '1' ? !nameChange.canva_complete : false))}">
                     {{nameChange.completion_date | date : 'MM/dd/yyyy'}}</td>
                 <td><span
                         data-ng-class="{'mark-complete': nameChange.ps_complete, 'mark-incomplete': !nameChange.ps_complete}"></span>
