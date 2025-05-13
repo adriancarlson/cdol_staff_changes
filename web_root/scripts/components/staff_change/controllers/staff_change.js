@@ -605,7 +605,6 @@ define(function (require) {
 								formPayload.final_completion_date = $scope.userContext.curDate
 							}
 							break
-
 						case 'nameChange':
 							if (formPayload.canva_transfer === '1') {
 								if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload) && canvaCondition(formPayload)) {
@@ -617,7 +616,6 @@ define(function (require) {
 								}
 							}
 							break
-
 						case 'jobChange':
 							if (commonCondition(formPayload)) {
 								formPayload.final_completion_date = $scope.userContext.curDate
@@ -634,7 +632,6 @@ define(function (require) {
 								}
 							}
 							break
-
 						case 'subStaff':
 							if (formPayload.sub_type === 'FSTS') {
 								if (formPayload.final_completion_date === undefined && o365Condition(formPayload) && (formPayload.ad_created || formPayload.ad_ignored)) {

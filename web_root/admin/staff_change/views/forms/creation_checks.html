@@ -219,7 +219,7 @@
                 </div>
                 <div class="col"
                     data-ng-class="{'order-2': userContext.pageContext == 'exitingStaff' && submitPayload[userContext.pageContext].canva_transfer == '1', 'order-last': !(userContext.pageContext == 'exitingStaff' && submitPayload[userContext.pageContext].canva_transfer == '1')}"
-                    data-ng-show="userContext.pageContext =='newStaff' || (userContext.pageContext =='nameChange' &&  submitPayload[userContext.pageContext].canva_transfer == '1') || (userContext.pageContext =='exitingStaff' &&  submitPayload[userContext.pageContext].canva_transfer == '1')">
+                    data-ng-show="userContext.pageContext =='newStaff' || userContext.pageContext == 'transferringStaff'|| (userContext.pageContext =='nameChange' &&  submitPayload[userContext.pageContext].canva_transfer == '1') || (userContext.pageContext =='exitingStaff' &&  submitPayload[userContext.pageContext].canva_transfer == '1')">
                     <div class="card">
                         <div
                             class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
@@ -228,6 +228,7 @@
                             <label class="form-check-label stretched-link" for="canva">Canva<span data-ng-switch
                                     on="submitPayload[userContext.pageContext].change_type">
                                     <span data-ng-switch-when="newStaff"> Created</span>
+                                    <span data-ng-switch-when="transferringStaff"> Moved</span>
                                     <span data-ng-switch-when="nameChange"> Transferred</span>
                                     <span data-ng-switch-when="exitingStaff"> Transferred</span>
                                 </span>?</label>
@@ -237,6 +238,17 @@
                             <ul class="list-group list-group-flush m-0" data-ng-switch-when="newStaff">
                                 <li class="list-group-item">Canva account created?</li>
                                 <li class="list-group-item">User in the correct school team?</li>
+                            </ul>
+                        </div>
+                        <div class="card-body p-0" data-ng-switch
+                            on="submitPayload[userContext.pageContext].change_type">
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="transferringStaff">
+                                <li class="list-group-item">Email sent to
+                                    {{submitPayload[userContext.pageContext].first_name}}
+                                    {{submitPayload[userContext.pageContext].last_name}} explaining how Canva projects
+                                    work, including how to navigate between multiple teams
+                                    and share projects across them?</li>
+                                <li class="list-group-item">Canva account moved properly to new school team?</li>
                             </ul>
                         </div>
                         <div class="card-body p-0" data-ng-switch
