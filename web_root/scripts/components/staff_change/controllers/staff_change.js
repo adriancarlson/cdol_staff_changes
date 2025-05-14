@@ -603,57 +603,67 @@ define(function (require) {
 						case 'transferringStaff':
 							if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload) && canvaCondition(formPayload)) {
 								formPayload.final_completion_date = $scope.userContext.curDate
+							} else if (formPayload.final_completion_date) {
+								formPayload.final_completion_date = undefined
 							}
 							break
+
 						case 'nameChange':
 							if (formPayload.canva_transfer === '1') {
 								if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload) && canvaCondition(formPayload)) {
 									formPayload.final_completion_date = $scope.userContext.curDate
+								} else if (formPayload.final_completion_date) {
+									formPayload.final_completion_date = undefined
 								}
 							} else {
 								if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload)) {
 									formPayload.final_completion_date = $scope.userContext.curDate
+								} else if (formPayload.final_completion_date) {
+									formPayload.final_completion_date = undefined
 								}
 							}
 							break
+
 						case 'jobChange':
 							if (commonCondition(formPayload)) {
 								formPayload.final_completion_date = $scope.userContext.curDate
+							} else if (formPayload.final_completion_date) {
+								formPayload.final_completion_date = undefined
 							}
 							break
+
 						case 'exitingStaff':
 							if (formPayload.canva_transfer === '1') {
 								if (commonCondition(formPayload) && canvaCondition(formPayload)) {
 									formPayload.final_completion_date = $scope.userContext.curDate
+								} else if (formPayload.final_completion_date) {
+									formPayload.final_completion_date = undefined
 								}
 							} else {
 								if (commonCondition(formPayload)) {
 									formPayload.final_completion_date = $scope.userContext.curDate
+								} else if (formPayload.final_completion_date) {
+									formPayload.final_completion_date = undefined
 								}
 							}
 							break
+
 						case 'subStaff':
 							if (formPayload.sub_type === 'FSTS') {
 								if (formPayload.final_completion_date === undefined && o365Condition(formPayload) && (formPayload.ad_created || formPayload.ad_ignored)) {
 									formPayload.final_completion_date = $scope.userContext.curDate
+								} else if (formPayload.final_completion_date && !(o365Condition(formPayload) && (formPayload.ad_created || formPayload.ad_ignored))) {
+									formPayload.final_completion_date = undefined
 								}
 							} else if (formPayload.sub_type === 'LTS') {
 								if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload)) {
 									formPayload.final_completion_date = $scope.userContext.curDate
+								} else if (formPayload.final_completion_date) {
+									formPayload.final_completion_date = undefined
 								}
 							}
 							break
 					}
-
-					// if (key !== 'exitingStaff' && key !== 'jobChange') {
-					// 	if (formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored) && (formPayload.o365_created || formPayload.o365_ignored) && formPayload.lms_created) {
-					// 		formPayload.final_completion_date = $scope.userContext.curDate
-					// 	}
-					// } else {
-					// 	if (formPayload.final_completion_date === undefined && formPayload.ps_created && (formPayload.ad_created || formPayload.ad_ignored)) {
-					// 		formPayload.final_completion_date = $scope.userContext.curDate
-					// 	}
-					// }
 
 					if ($scope.userContext.staffChangeId) {
 						await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', formPayload, $scope.userContext.staffChangeId)
