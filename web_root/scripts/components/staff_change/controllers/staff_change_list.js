@@ -76,6 +76,23 @@ define(function (require) {
 				FSTS: 'FSTS',
 				LTS: 'LTS'
 			}
+
+			$scope.getReqNotationClass = function (allStaff, curDate) {
+				if (allStaff.completion_date >= curDate) return ''
+
+				var needsCanva = allStaff.canva_transfer == '1' && !allStaff.canva_complete
+
+				if (allStaff.sub_type === 'FSTS') {
+					return !allStaff.ad_complete || !allStaff.o365_complete || needsCanva ? 'req-notation' : ''
+				}
+
+				if (allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange') {
+					return !allStaff.ps_complete || !allStaff.ad_complete || needsCanva ? 'req-notation' : ''
+				}
+
+				return !allStaff.ps_complete || !allStaff.ad_complete || !allStaff.o365_complete || !allStaff.lms_complete || needsCanva ? 'req-notation' : ''
+			}
+
 			$scope.loadData = async changeType => {
 				loadingDialog()
 				//only make API call to get the data if
