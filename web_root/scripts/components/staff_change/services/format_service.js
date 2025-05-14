@@ -105,11 +105,11 @@ define(function (require) {
 				changeMap: function (value) {
 					const reverseMap = {
 						newStaff: 'New Staff',
-						exitingStaff: 'Exiting Staff',
-						nameChange: 'Name Change',
-						subStaff: 'Substitute',
+						transferringStaff: 'Transferring-In Staff',
 						jobChange: 'Job Change',
-						transferringStaff: 'Transferring-In Staff'
+						subStaff: 'Substitute',
+						nameChange: 'Name Change',
+						exitingStaff: 'Exiting Staff'
 					}
 					return reverseMap[value] || null
 				},

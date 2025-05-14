@@ -32,11 +32,11 @@ define(function (require) {
 			}
 			$scope.changeMap = {
 				'New Staff': 'newStaff',
-				'Exiting Staff': 'exitingStaff',
+				'Transferring-In Staff': 'transferringStaff',
+				'Job Change': 'jobChange',
 				Substitute: 'subStaff',
 				'Name Change': 'nameChange',
-				'Job Change': 'jobChange',
-				'Transferring-In Staff': 'transferringStaff'
+				'Exiting Staff': 'exitingStaff'
 			}
 
 			$scope.schoolMap = {
@@ -96,7 +96,7 @@ define(function (require) {
 
 				return !changeType.ps_complete || !changeType.ad_complete || !changeType.o365_complete || !changeType.lms_complete || needsCanva ? 'req-notation' : ''
 			}
-			
+
 			$scope.loadData = async changeType => {
 				loadingDialog()
 				//only make API call to get the data if
