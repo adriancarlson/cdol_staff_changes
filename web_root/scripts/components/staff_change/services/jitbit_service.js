@@ -38,8 +38,16 @@ define(function (require) {
 					let userData = await this.gitJitbitUser(formPayload.userEmail)
 					let staffChangeName = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => formPayload.first_name.startsWith(prefix)) && formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name}`
 
-					// send to Brad (14093457) if it's a subStaff FSTS else to Adrian (14088108)
-					const assignedUserId = formPayload.change_type === 'subStaff' && formPayload.sub_type === 'FSTS' ? 14093457 : 14088108
+					// send to Adrian (14088108) first unless it's a subStaff FSTS then to Brad (14093457) or if exitStaff or nameChange and  canva_transfer == '1' then send to Carrie (14088738)
+					let assignedUserId
+
+					if ((formPayload.change_type === 'exitStaff' || formPayload.change_type === 'nameChange') && formPayload.canva_transfer === '1') {
+						assignedUserId = 14088738 // Carrie
+					} else if (formPayload.change_type === 'subStaff' && formPayload.sub_type === 'FSTS') {
+						assignedUserId = 14093457 // Brad
+					} else {
+						assignedUserId = 14088108 // Adrian
+					}
 
 					let ticketPayload = {
 						categoryId: 588445,

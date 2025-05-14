@@ -1,10 +1,10 @@
 <div id="exit-staff-grid" data-pss-grid-widget data-data="staffList.exitingStaff"
     data-filtered-data="filteredExitingStaffList" data-client-side-pagination="false">
     <!-- Adding before the table so it will put this filter at the top of the list in the drop down -->
+    <label data-pss-filter-field="canva_complete|multiselect" data-filter-info="booleanMap">Canva Transferred?</label>
+    <label data-pss-filter-field="ps_complete|multiselect" data-filter-info="booleanMap">PowerSchool Complete?</label>
     <label data-pss-filter-field="ad_complete|multiselect" data-filter-info="booleanMap">Active Directory
         Complete?</label>
-    <label data-pss-filter-field="ps_complete|multiselect" data-filter-info="booleanMap">PowerSchool Complete?</label>
-    <label data-pss-filter-field="canva_complete|multiselect" data-filter-info="booleanMap">Canva Transferred?</label>
     <label data-pss-filter-field="completed|multiselect" data-filter-info="booleanMap">All Completed?</label>
     <label data-pss-filter-field="title|multiselect" data-filter-info="titleMap">Title</label>
     <label data-pss-filter-field="first_name">First Name</label>
@@ -19,8 +19,8 @@
                 <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending">
                     Submission Date</th>
                 <th data-pss-sort-fields="completion_date|date">Deadline</th>
-                <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">PS Deactivated</th>
                 <th data-pss-sort-fields="canva_created" data-exclude-from-filter="true">Canva Transferred</th>
+                <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">PS Deactivated</th>
                 <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">AD Deactivated</th>
                 <th data-pss-sort-fields="final_completion_date|date">Completion Date</th>
             </tr>
@@ -42,13 +42,13 @@
                     {{exitStaff.submission_time}}</td>
                 <td data-ng-class="getReqNotationClass(exitStaff, curDate)">
                     {{exitStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <td><span
-                        data-ng-class="{'mark-complete': exitStaff.ps_complete, 'mark-incomplete': !exitStaff.ps_complete}"></span>
-                </td>
                 <td><span data-ng-if="exitStaff.canva_transfer == '1'"
                         data-ng-class="{'mark-complete': exitStaff.canva_complete, 'mark-incomplete': !exitStaff.canva_complete}"></span>
                     <span data-ng-if="exitStaff.canva_transfer != '1'" class="text-primary fs-6 fw-medium">- -
                         -</span>
+                </td>
+                <td><span
+                        data-ng-class="{'mark-complete': exitStaff.ps_complete, 'mark-incomplete': !exitStaff.ps_complete}"></span>
                 </td>
                 <td><span
                         data-ng-class="{'mark-complete': exitStaff.ad_complete, 'mark-incomplete': !exitStaff.ad_complete}"></span>
