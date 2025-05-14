@@ -77,22 +77,26 @@ define(function (require) {
 				LTS: 'LTS'
 			}
 
-			$scope.getReqNotationClass = function (allStaff, curDate) {
-				if (allStaff.completion_date >= curDate) return ''
+			$scope.getReqNotationClass = (changeType, curDate) => {
+				if (changeType.completion_date >= curDate) return ''
 
-				var needsCanva = allStaff.canva_transfer == '1' && !allStaff.canva_complete
+				const needsCanva = changeType.canva_transfer == '1' && !changeType.canva_complete
 
-				if (allStaff.sub_type === 'FSTS') {
-					return !allStaff.ad_complete || !allStaff.o365_complete || needsCanva ? 'req-notation' : ''
+				if (changeType.sub_type === 'FSTS') {
+					return !changeType.ad_complete || !changeType.o365_complete || needsCanva ? 'req-notation' : ''
 				}
 
-				if (allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange') {
-					return !allStaff.ps_complete || !allStaff.ad_complete || needsCanva ? 'req-notation' : ''
+				if (changeType.change_type === 'exitingStaff' || changeType.change_type === 'jobChange') {
+					return !changeType.ps_complete || !changeType.ad_complete || needsCanva ? 'req-notation' : ''
 				}
 
-				return !allStaff.ps_complete || !allStaff.ad_complete || !allStaff.o365_complete || !allStaff.lms_complete || needsCanva ? 'req-notation' : ''
+				if (changeType.change_type === 'newStaff' || changeType.change_type === 'transferringStaff') {
+					return !changeType.ps_complete || !changeType.ad_complete || !changeType.o365_complete || !changeType.lms_complete || !changeType.canva_complete ? 'req-notation' : ''
+				}
+
+				return !changeType.ps_complete || !changeType.ad_complete || !changeType.o365_complete || !changeType.lms_complete || needsCanva ? 'req-notation' : ''
 			}
-
+			
 			$scope.loadData = async changeType => {
 				loadingDialog()
 				//only make API call to get the data if
