@@ -41,12 +41,10 @@
                 <td class="nowrap">{{subStaff.submittedstaff}}</td>
                 <td class="nowrap">{{subStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{subStaff.submission_time}}</td>
-                <td><span data-ng-if="subStaff.sub_type !== 'FSTS'"
-                        data-ng-class="{'req-notation': (subStaff.completion_date < curDate) && (!subStaff.ps_complete || !subStaff.ad_complete || !subStaff.o365_complete || !subStaff.lms_complete)}">
-                        {{subStaff.completion_date | date : 'MM/dd/yyyy'}}</span>
-                    <span data-ng-if="subStaff.sub_type === 'FSTS'"
-                        data-ng-class="{'req-notation': (subStaff.completion_date < curDate) && (!subStaff.ad_complete || !subStaff.o365_complete)}">
-                        {{subStaff.completion_date | date : 'MM/dd/yyyy'}}</span>
+                <td>
+                    <span data-ng-class="getReqNotationClass(subStaff, curDate)">
+                        {{ subStaff.completion_date | date : 'MM/dd/yyyy' }}
+                    </span>
                 </td>
                 <td><span data-ng-if="subStaff.sub_type !== 'FSTS'"
                         data-ng-class="{'mark-complete': subStaff.ps_complete, 'mark-incomplete': !subStaff.ps_complete}">

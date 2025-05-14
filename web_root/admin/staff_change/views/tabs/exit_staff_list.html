@@ -40,8 +40,7 @@
                 <td class="nowrap">{{exitStaff.submittedstaff}}</td>
                 <td class="nowrap">{{exitStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{exitStaff.submission_time}}</td>
-                <td
-                    data-ng-class="{'req-notation': (exitStaff.completion_date < curDate) && (!exitStaff.ps_complete || (exitStaff.canva_transfer == '1' ? !exitStaff.canva_complete : false) || !exitStaff.ad_complete)}">
+                <td data-ng-class="getReqNotationClass(exitStaff, curDate)">
                     {{exitStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
                 <td><span
                         data-ng-class="{'mark-complete': exitStaff.ps_complete, 'mark-incomplete': !exitStaff.ps_complete}"></span>
