@@ -129,16 +129,16 @@ define(function (require) {
 				curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr,
 				pageContext: 'start',
 				prevContext: undefined,
-				isTestServer: $attrs.ngTestServer,
-				sendJitbit: angular.isUndefined($attrs.ngTestServer)
+				serverName: $attrs.ngServerName,
+				sendJitbit: !($attrs.ngServerName && $attrs.ngServerName.indexOf('.test.') !== -1)
 			}
 
 			// checkbox change handler
 			$scope.toggleJitbitCheckbox = () => {
-				$scope.userContext.isTestServer = $scope.userContext.sendJitbit ? undefined : '~[x:WEB_GetServerInfo;name=HostName]'
+				$scope.userContext.serverName = $scope.userContext.sendJitbit ? undefined : $attrs.ngServerName
 			}
-			// initializing date formatting for deadline field
 
+			// initializing date formatting for deadline field
 			const curYear = new Date().getFullYear()
 			const firstDay = new Date(`01/01/${curYear}`)
 			const lastDay = new Date(`06/30/${curYear}`)

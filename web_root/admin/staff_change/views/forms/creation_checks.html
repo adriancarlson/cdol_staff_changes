@@ -218,7 +218,7 @@
                     </div>
                 </div>
                 <div class="col"
-                    data-ng-class="{'order-1': (userContext.pageContext == 'exitingStaff' || userContext.pageContext == 'nameChange') && submitPayload[userContext.pageContext].canva_transfer == '1', 'order-last': !((userContext.pageContext == 'exitingStaff' || userContext.pageContext == 'nameChange') && submitPayload[userContext.pageContext].canva_transfer == '1')}"
+                    data-ng-class="{'order-first': (userContext.pageContext == 'exitingStaff' || userContext.pageContext == 'nameChange') && submitPayload[userContext.pageContext].canva_transfer == '1', 'order-last': !((userContext.pageContext == 'exitingStaff' || userContext.pageContext == 'nameChange') && submitPayload[userContext.pageContext].canva_transfer == '1')}"
                     data-ng-show="userContext.pageContext =='newStaff' || userContext.pageContext == 'transferringStaff'|| (userContext.pageContext =='nameChange' &&  submitPayload[userContext.pageContext].canva_transfer == '1') || (userContext.pageContext =='exitingStaff' &&  submitPayload[userContext.pageContext].canva_transfer == '1')">
                     <div class="card">
                         <div
