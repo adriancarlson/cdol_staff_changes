@@ -20,7 +20,8 @@
         data-ng-cur-school-name="~(schoolname)" data-ng-cur-year-id="~(curyearid)" data-ng-cur-date="~[date]"
         data-ng-cur-time="~[time]" data-ng-staff-change-id="~(gpv.id)" data-ng-cur-user-dcid="~[x:users_dcid]"
         data-ng-cur-user-name="~[x:username;firstlast]" data-ng-cur-user-email="~[x:useremail]"
-        data-ng-cur-user-school-abbr="~(schoolabbr)" data-ng-cloak>
+        data-ng-cur-user-school-abbr="~(schoolabbr)" data-ng-cloak
+        ~[if.is_prod][else]data-ng-test-server='~[x:WEB_GetServerInfo;name=HostName]' [/if]>
         ~[wc:admin_header_css]
         <a href="/admin/home.html" target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a>
         <span data-ng-show="userContext.pageStatus =='Edit'">&gt;<a href="/admin/staff_change/list.html" target="_top">

@@ -130,7 +130,7 @@ define(function (require) {
 				pageContext: 'start',
 				prevContext: undefined
 			}
-
+			$scope.isTestServer = $attrs.ngTestServer
 			// initializing date formatting for deadline field
 
 			const curYear = new Date().getFullYear()
