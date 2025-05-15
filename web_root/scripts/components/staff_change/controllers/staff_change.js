@@ -550,27 +550,31 @@ define(function (require) {
 					//submitting staff changes through api
 					let staffChangeId = await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
 
-					let jitbitPayload = {
-						...formPayload,
-						curUserName: $scope.userContext.curUserName,
-						curUserSchoolAbbr: $scope.userContext.curUserSchoolAbbr,
-						curDate: $scope.userContext.curDate,
-						curTime: $scope.userContext.curTime,
-						userEmail: $scope.userContext.curUserEmail,
-						readableChangeType: formPayload.change_type === 'subStaff' ? `${formatService.changeMap(formPayload.change_type)} (${formPayload.sub_type})` : `${formatService.changeMap(formPayload.change_type)}`
+					// only create a Jitbit ticket if the form is not a test server
+					if (!$scope.isTestServer) {
+						let jitbitPayload = {
+							...formPayload,
+							curUserName: $scope.userContext.curUserName,
+							curUserSchoolAbbr: $scope.userContext.curUserSchoolAbbr,
+							curDate: $scope.userContext.curDate,
+							curTime: $scope.userContext.curTime,
+							userEmail: $scope.userContext.curUserEmail,
+							readableChangeType: formPayload.change_type === 'subStaff' ? `${formatService.changeMap(formPayload.change_type)} (${formPayload.sub_type})` : `${formatService.changeMap(formPayload.change_type)}`
+						}
+
+						let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
+
+						await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
+
+						let formattedDate = formatService.formatDateForApi(formPayload.deadline)
+						let concatenatedDateTime = `${formattedDate}T23:59:00Z`
+
+						await jitbitService.updateJitbitTicket({ id: jitbitTicketId, dueDate: concatenatedDateTime })
+
+						formPayload.ticket_id = jitbitTicketId
 					}
 
-					let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
-
-					await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
-
-					let formattedDate = formatService.formatDateForApi(formPayload.deadline)
-					let concatenatedDateTime = `${formattedDate}T23:59:00Z`
-
-					await jitbitService.updateJitbitTicket({ id: jitbitTicketId, dueDate: concatenatedDateTime })
-
 					formPayload.staffChangeId = staffChangeId
-					formPayload.ticket_id = jitbitTicketId
 				})
 				//sending to confirm screen after submission
 				$scope.formDisplay('confirm', $scope.userContext.pageContext)
