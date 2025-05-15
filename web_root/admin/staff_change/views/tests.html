@@ -1,15 +1,19 @@
 <div class="container mt-3" data-ng-cloak>
     <div class="card">
-        <div class="card-header ms-0">
-            <ul class="list-group list-group-horizontal ms-0">
-                <li class="list-group-item"><strong>pageStatus</strong>:{{userContext.pageStatus}}</li>
-                <li class="list-group-item"><strong>formType</strong>:{{userContext.formType}}</li>
-                <li class="list-group-item"><strong>prevContext</strong>: {{userContext.prevContext}}
-                </li>
-                <li class="list-group-item"><strong>pageContext</strong>: {{userContext.pageContext}}
-                </li>
+        <div class="card-header ms-0 d-flex justify-content-between align-items-center">
+            <ul class="list-group list-group-horizontal ms-0 mb-0">
+                <li class="list-group-item"><strong>pageStatus</strong>: {{userContext.pageStatus}}</li>
+                <li class="list-group-item"><strong>formType</strong>: {{userContext.formType}}</li>
+                <li class="list-group-item"><strong>prevContext</strong>: {{userContext.prevContext}}</li>
+                <li class="list-group-item"><strong>pageContext</strong>: {{userContext.pageContext}}</li>
             </ul>
+            <div class="form-check ms-auto me-2">
+                <input type="checkbox" id="sendJitbitCheckbox" class="form-check-input"
+                    data-ng-model="userContext.sendJitbit" data-ng-change="toggleJitbitCheckbox()" />
+                <label class="form-check-label" for="sendJitbitCheckbox">Send Jitbit Ticket?</label>
+            </div>
         </div>
+
         <div class="card-body">
             <ul class="list-group list-group ms-0">
                 <li class="list-group-item"><strong>staffChangeId : {{userContext.staffChangeId}}</strong>

@@ -128,9 +128,15 @@ define(function (require) {
 				curUserEmail: $attrs.ngCurUserEmail,
 				curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr,
 				pageContext: 'start',
-				prevContext: undefined
+				prevContext: undefined,
+				isTestServer: $attrs.ngTestServer,
+				sendJitbit: angular.isUndefined($attrs.ngTestServer)
 			}
-			$scope.isTestServer = $attrs.ngTestServer
+
+			// checkbox change handler
+			$scope.toggleJitbitCheckbox = () => {
+				$scope.userContext.isTestServer = $scope.userContext.sendJitbit ? undefined : '~[x:WEB_GetServerInfo;name=HostName]'
+			}
 			// initializing date formatting for deadline field
 
 			const curYear = new Date().getFullYear()
@@ -551,7 +557,7 @@ define(function (require) {
 					let staffChangeId = await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
 
 					// only create a Jitbit ticket if the form is not a test server
-					if (!$scope.isTestServer) {
+					if ($scope.userContext.sendJitbit) {
 						let jitbitPayload = {
 							...formPayload,
 							curUserName: $scope.userContext.curUserName,
