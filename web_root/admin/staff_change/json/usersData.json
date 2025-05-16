@@ -1,0 +1,27 @@
+~[tlist_sql;
+    SELECT 
+        json_arrayagg(
+            json_object(
+                'identifier' VALUE users.dcid,
+                'title' VALUE users.title,
+                'first_name' VALUE users.first_name,
+                'last_name' VALUE users.last_name,
+                'email_addr' VALUE users.email_addr,
+                'license_microsoft' VALUE u_users_additional_info.license_microsoft,
+                'homeschoolid' VALUE users.homeschoolid,
+                'homeschoolname' VALUE schools.name
+                RETURNING CLOB
+            )
+        RETURNING CLOB
+    )   
+    FROM 
+        schoolstaff
+    INNER JOIN users
+        ON users.dcid = schoolstaff.users_dcid
+    LEFT JOIN schools 
+        ON users.homeschoolid = schools.school_number
+    LEFT JOIN u_users_additional_info 
+        ON users.dcid = u_users_additional_info.usersdcid
+    WHERE 
+        schoolstaff.status = 1
+]~(data)[/tlist_sql]

@@ -1,0 +1,36 @@
+~[tlist_sql;
+    SELECT 
+        json_arrayagg(
+            json_object(
+                'dcid' VALUE users.dcid,
+                'ssdcid' VALUE schoolstaff.users_dcid,
+                'first_name' VALUE users.first_name,
+                'last_name' VALUE users.last_name,
+                'status' VALUE CASE
+                                WHEN schoolstaff.status = 1 THEN 'Active'
+                                ELSE 'Inactive'
+                                END,
+                'school_name' VALUE CASE
+                                        WHEN users.homeschoolid = 0 THEN 'Diocesan Office'
+                                        ELSE schools.name
+                                    END
+                RETURNING CLOB
+            )
+            RETURNING CLOB
+        )
+    FROM 
+        users
+    LEFT JOIN schoolstaff 
+        ON users.dcid = schoolstaff.users_dcid
+    LEFT JOIN schools 
+        ON users.homeschoolid = schools.school_number
+    WHERE
+        UTL_MATCH.JARO_WINKLER_SIMILARITY(UPPER(users.first_name), UPPER('~(gpv.firstName)')) >= 75
+        AND (
+            UTL_MATCH.JARO_WINKLER_SIMILARITY(UPPER(users.last_name), UPPER('~(gpv.lastName)')) >= 85
+            OR UTL_MATCH.JARO_WINKLER_SIMILARITY(UPPER(users.last_name), UPPER('~(gpv.maidenName)')) >= 85
+            )
+    ORDER BY
+        users.last_name,
+        users.first_name
+]~(data)[/tlist_sql]

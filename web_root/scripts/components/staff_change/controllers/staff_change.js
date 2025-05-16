@@ -266,12 +266,22 @@ define(function (require) {
 			$scope.getJSONData = async (resource, params = {}) => {
 				if (!$scope[resource]) {
 					const res = await $http({
-						url: `/admin/staff_change/data/${resource}.json`,
+						url: `/admin/staff_change/json/${resource}.json`,
 						method: 'GET',
 						params: params
 					})
-					$scope[resource] = res.data
-					$scope[resource].pop()
+					$scope[resource] = res.data || []
+					// Convert all numeric values in each object to stringsl
+					$scope[resource] = $scope[resource].map(obj => {
+						const newObj = {}
+						for (const key in obj) {
+							if (obj.hasOwnProperty(key)) {
+								newObj[key] = typeof obj[key] === 'number' ? obj[key].toString() : obj[key]
+							}
+						}
+						return newObj
+					})
+					$scope[resource] = psUtils.htmlEntitiesToCharCode($scope[resource])
 					$scope.$applyAsync()
 				}
 			}
