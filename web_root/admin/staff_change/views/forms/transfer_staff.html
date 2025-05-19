@@ -371,7 +371,7 @@
                                                 name="additional-schoolid-radio-group"
                                                 id="additional-schoolid-radio-yes"
                                                 data-ng-model="submitPayload.transferringStaff.additional_schoolid"
-                                                value="{{ getAdditionalSchoolId(userContext.curSchoolId) }}"
+                                                value="{{ getAdditionalSchoolId(userContext.curSchoolId, userContext.pageContext) }}"
                                                 data-ng-required="!submitPayload.transferringStaff.additional_schoolid"
                                                 tabindex="0">
                                             <label class="form-check-label"

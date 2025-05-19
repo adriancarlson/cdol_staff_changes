@@ -231,7 +231,12 @@ define(function (require) {
 
 			$scope.isOtherSchool = schoolId => [130, 131, 160, 189, 210, 211, 264, 437].includes(Number(schoolId))
 
-			$scope.getAdditionalSchoolId = schoolId => {
+			$scope.getAdditionalSchoolId = (schoolId, pageContext) => {
+				if (!schoolId || schoolId == 0) {
+					// Ensure additional_schoolid is not null or undefined
+					return $scope.submitPayload[pageContext] && $scope.submitPayload[pageContext].additional_schoolid ? $scope.submitPayload[pageContext].additional_schoolid : ''
+				}
+
 				const pairs = {
 					130: 131,
 					131: 130,
