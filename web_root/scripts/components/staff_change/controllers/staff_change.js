@@ -803,6 +803,48 @@ define(function (require) {
 			}
 		}
 	})
+
+	module.filter('schoolName', function () {
+		const map = {
+			101: 'Pius X High School',
+			102: 'Cathedral of the Risen Christ School',
+			103: 'Sacred Heart Elementary School',
+			104: 'St. John Lincoln',
+			105: 'St. Joseph Lincoln',
+			106: 'St. Mary Lincoln',
+			107: 'St. Patrick Lincoln',
+			108: 'St. Teresa Elementary School',
+			109: 'Blessed Sacrament School',
+			110: 'St. Peter Catholic School',
+			111: 'North American Martyrs School',
+			115: 'Bishop Neumann Catholic Jr/Sr High School',
+			120: 'St. Michael Lincoln',
+			130: 'Lourdes Central Catholic Middle/High School',
+			131: 'Lourdes Central Catholic Elementary School',
+			140: 'St. Wenceslaus Wahoo',
+			150: 'All Saints Catholic School Holdrege',
+			160: 'Aquinas Catholic Middle/High',
+			164: 'Villa Marie School',
+			184: 'St. Andrew Tecumseh',
+			189: 'St. Cecilia Middle & High School',
+			210: 'Falls City Sacred Heart Jr/Sr High School',
+			211: 'Falls City Sacred Heart Elementary',
+			260: 'St. Joseph Beatrice',
+			261: 'St. Joseph York',
+			262: 'St. John Nepomucene Weston',
+			263: 'St. James Crete',
+			264: 'Aquinas Catholic Elementary',
+			272: 'St. Vincent de Paul Seward',
+			282: 'St. John the Baptist School',
+			310: 'St. Patrick McCook',
+			437: 'St. Michael Hastings'
+		}
+		return function (input) {
+			const key = Number(input)
+			return map[key] || ''
+		}
+	})
+
 	module.filter('otherSchoolName', function () {
 		const map = {
 			130: 'Lourdes Central Catholic Elementary School',

@@ -494,12 +494,12 @@
                                         <label class="form-label form-label-sm label-reset staff-change-req">
                                             <span data-ng-if="userContext.pageStatus =='Submit'">Will</span>
                                             {{submitPayload.newStaff.title}} {{submitPayload.newStaff.first_name}}
-                                            {{submitPayload.newStaff.last_name}} need
-                                            <span data-ng-if="userContext.pageStatus =='Edit'">s</span> access to
+                                            {{submitPayload.newStaff.last_name}} need<span
+                                                data-ng-if="userContext.pageStatus =='Edit'">s</span> access to
                                             {{
                                             userContext.pageStatus == 'Submit'
                                             ? (userContext.curSchoolId | otherSchoolName)
-                                            : (submitPayload.newStaff.additional_schoolid | otherSchoolName) }}
+                                            : (submitPayload.newStaff.additional_schoolid | schoolName) }}
                                             <span data-ng-if="userContext.pageStatus =='Submit'">as well?</span>
                                         </label><br>
                                         <div class="form-check form-check-inline">

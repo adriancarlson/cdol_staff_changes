@@ -493,12 +493,12 @@
                                                 <span data-ng-if="userContext.pageStatus =='Submit'">Will</span>
                                                 {{submitPayload.subStaff.title}}
                                                 {{submitPayload.subStaff.first_name}}
-                                                {{submitPayload.subStaff.last_name}} need
-                                                <span data-ng-if="userContext.pageStatus =='Edit'">s</span> access to
+                                                {{submitPayload.subStaff.last_name}} need<span
+                                                    data-ng-if="userContext.pageStatus =='Edit'">s</span> access to
                                                 {{
                                                 userContext.pageStatus == 'Submit'
                                                 ? (userContext.curSchoolId | otherSchoolName)
-                                                : (submitPayload.subStaff.additional_schoolid | otherSchoolName) }}
+                                                : (submitPayload.subStaff.additional_schoolid | schoolName) }}
                                                 <span data-ng-if="userContext.pageStatus =='Submit'">as well?</span>
                                             </label><br>
                                             <div class="form-check form-check-inline">
