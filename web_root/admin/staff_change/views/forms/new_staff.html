@@ -496,10 +496,11 @@
                                             {{submitPayload.newStaff.title}} {{submitPayload.newStaff.first_name}}
                                             {{submitPayload.newStaff.last_name}} need<span
                                                 data-ng-if="userContext.pageStatus =='Edit'">s</span> access to
-                                            {{
-                                            userContext.pageStatus == 'Submit'
+                                            {{ userContext.pageStatus == 'Submit'
                                             ? (userContext.curSchoolId | otherSchoolName)
-                                            : (submitPayload.newStaff.additional_schoolid | schoolName) }}
+                                            : (submitPayload.newStaff.additional_schoolid == 0
+                                            ? (submitPayload.newStaff.schoolid | otherSchoolName)
+                                            : (submitPayload.newStaff.additional_schoolid | schoolName)) }}
                                             <span data-ng-if="userContext.pageStatus =='Submit'">as well?</span>
                                         </label><br>
                                         <div class="form-check form-check-inline">

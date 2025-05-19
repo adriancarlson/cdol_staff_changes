@@ -348,7 +348,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="(userContext.pageStatus == 'Submit' && submitPayload.transferringStaff.first_name && isOtherSchool(userContext.curSchoolId)) || 
-                    (userContext.pageStatus == 'Edit' && submitPayload.transferringStaff.additional_schoolid)">
+                    (userContext.pageStatus == 'Edit' && submitPayload.transferringStaff.additional_schoolid">
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
@@ -360,10 +360,11 @@
                                             {{submitPayload.transferringStaff.first_name}}
                                             {{submitPayload.transferringStaff.last_name}} need<span
                                                 data-ng-if="userContext.pageStatus =='Edit'">s</span> access to
-                                            {{
-                                            userContext.pageStatus == 'Submit'
+                                            {{ userContext.pageStatus == 'Submit'
                                             ? (userContext.curSchoolId | otherSchoolName)
-                                            : (submitPayload.transferringStaff.additional_schoolid | schoolName) }}
+                                            : (submitPayload.transferringStaff.additional_schoolid == 0
+                                            ? (submitPayload.transferringStaff.schoolid | otherSchoolName)
+                                            : (submitPayload.transferringStaff.additional_schoolid | schoolName)) }}
                                             <span data-ng-if="userContext.pageStatus =='Submit'">as well?</span>
                                         </label><br>
                                         <div class="form-check form-check-inline">

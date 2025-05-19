@@ -250,10 +250,11 @@
                                                 data-ng-if="userContext.pageStatus =='Edit'">s</span> to be
                                             deactivated
                                             at
-                                            {{
-                                            userContext.pageStatus == 'Submit'
+                                            {{ userContext.pageStatus == 'Submit'
                                             ? (userContext.curSchoolId | otherSchoolName)
-                                            : (submitPayload.exitingStaff.additional_schoolid | schoolName) }}
+                                            : (submitPayload.exitingStaff.additional_schoolid == 0
+                                            ? (submitPayload.exitingStaff.schoolid | otherSchoolName)
+                                            : (submitPayload.exitingStaff.additional_schoolid | schoolName)) }}
                                             <span data-ng-if="userContext.pageStatus =='Submit'">as well?</span>
                                         </label><br>
                                         <div class="form-check form-check-inline">
