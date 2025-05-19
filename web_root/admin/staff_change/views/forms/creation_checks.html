@@ -279,8 +279,18 @@
         </div>
         <div class="card-footer">
             <span class="fw-semibold">Jitbit Ticket ID:</span> <a
+                data-ng-show="submitPayload[userContext.pageContext].ticket_id && !addTicket"
                 data-ng-href='https://cdol.jitbit.com/Ticket/{{submitPayload[userContext.pageContext].ticket_id}}'
                 target="_blank">{{submitPayload[userContext.pageContext].ticket_id}}</a>
+            <button id="addTicketBtn" class="ms-2 p-2" type="button"
+                data-ng-show="!submitPayload[userContext.pageContext].ticket_id && !addTicket"
+                data-ng-click="addTicket = true">Add Ticket ID</button>
+            <input id="add-ticket-id" type="text" aria-label="Ticket ID" data-ng-show="addTicket"
+                data-ng-model="submitPayload[userContext.pageContext].ticket_id">
+            <button id="conBtn" class="ms-2 p-2" type="button" data-ng-show="addTicket"
+                data-ng-click="addTicket = false">Confirm</button>
+            <button id="canBtn" class="ms-2 p-2 dark-orange" type="button" data-ng-show="addTicket"
+                data-ng-click="addTicket = false; submitPayload[userContext.pageContext].ticket_id = ''">Cancel</button>
         </div>
     </div>
 </div>
