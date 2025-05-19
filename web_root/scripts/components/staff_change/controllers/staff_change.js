@@ -229,6 +229,19 @@ define(function (require) {
 				$scope.userContext.invalidDate = !isBusinessDay(checkDate)
 			}
 
+			$scope.isOtherSchool = schoolId => [130, 131, 160, 189, 210, 211, 264, 437].includes(Number(schoolId))
+
+			$scope.additionalSchoolPairs = [
+				{ from: 130, to: 131 },
+				{ from: 131, to: 130 },
+				{ from: 160, to: 264 },
+				{ from: 264, to: 160 },
+				{ from: 189, to: 437 },
+				{ from: 437, to: 189 },
+				{ from: 210, to: 211 },
+				{ from: 211, to: 210 }
+			]
+
 			// setting up universal formatKeys that will be used in API calls to format fields or delete fields
 			$scope.formatKeys = {
 				dateKeys: ['_date', 'dob', 'deadline'],
@@ -785,6 +798,21 @@ define(function (require) {
 				// Return input unchanged if it's not a string
 				return input
 			}
+		}
+	})
+	module.filter('otherSchoolName', function () {
+		const map = {
+			130: 'Lourdes Central Catholic Elementary School',
+			131: 'Lourdes Central Catholic Middle/High School',
+			160: 'Aquinas Catholic Elementary',
+			189: 'St. Michael Hastings',
+			210: 'Falls City Sacred Heart Elementary',
+			211: 'Falls City Sacred Heart Jr/Sr High School',
+			264: 'Aquinas Catholic Middle/High',
+			437: 'St. Cecilia Middle & High School'
+		}
+		return function (input) {
+			return map[input] || ''
 		}
 	})
 })

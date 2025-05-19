@@ -223,4 +223,19 @@ define(function (require) {
 			}
 		}
 	})
+	module.filter('otherSchoolName', function () {
+		const map = {
+			130: 'Lourdes Central Catholic Elementary School',
+			131: 'Lourdes Central Catholic Middle/High School',
+			160: 'Aquinas Catholic Elementary',
+			189: 'St. Michael Hastings',
+			210: 'Falls City Sacred Heart Elementary',
+			211: 'Falls City Sacred Heart Jr/Sr High School',
+			264: 'Aquinas Catholic Middle/High',
+			437: 'St. Cecilia Middle & High School'
+		}
+		return function (input) {
+			return map[input] || ''
+		}
+	})
 })
