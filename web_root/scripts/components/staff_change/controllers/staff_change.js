@@ -231,16 +231,19 @@ define(function (require) {
 
 			$scope.isOtherSchool = schoolId => [130, 131, 160, 189, 210, 211, 264, 437].includes(Number(schoolId))
 
-			$scope.additionalSchoolPairs = [
-				{ from: 130, to: 131 },
-				{ from: 131, to: 130 },
-				{ from: 160, to: 264 },
-				{ from: 264, to: 160 },
-				{ from: 189, to: 437 },
-				{ from: 437, to: 189 },
-				{ from: 210, to: 211 },
-				{ from: 211, to: 210 }
-			]
+			$scope.getAdditionalSchoolId = schoolId => {
+				const pairs = {
+					130: 131,
+					131: 130,
+					160: 264,
+					264: 160,
+					189: 437,
+					437: 189,
+					210: 211,
+					211: 210
+				}
+				return pairs[schoolId] || null
+			}
 
 			// setting up universal formatKeys that will be used in API calls to format fields or delete fields
 			$scope.formatKeys = {
