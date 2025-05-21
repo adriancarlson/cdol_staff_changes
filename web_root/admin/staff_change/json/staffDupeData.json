@@ -2,7 +2,6 @@
     SELECT 
         json_arrayagg(
             json_object(
-                'dcid' VALUE users.dcid,
                 'identifier' VALUE users.dcid,
                 'ssdcid' VALUE schoolstaff.dcid,
                 'title' VALUE users.title,
