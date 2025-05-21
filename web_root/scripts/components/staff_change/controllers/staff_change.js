@@ -487,7 +487,7 @@ define(function (require) {
 				$scope.submitPayload.transferringStaff = { ...newStaff, users_dcid: identifier }
 
 				// Step 2: Find the matching item
-				let foundItem = ($scope.usersData && $scope.usersData.length && $scope.usersData.find(item => item.identifier === identifier)) || ($scope.staffDupeData && $scope.staffDupeData.length && $scope.staffDupeData.find(item => item.identifier === identifier))
+				let foundItem = $scope.staffDupeData && $scope.staffDupeData.length && $scope.staffDupeData.find(item => item.identifier === identifier)
 
 				// Step 3: Override only matching keys from foundItem
 				if (foundItem) {
