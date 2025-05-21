@@ -375,6 +375,7 @@ define(function (require) {
 				if (pageContext === 'transferringStaff' || pageContext === 'newStaff' || pageContext === 'subStaff') {
 					await $scope.getJSONData('schoolsData')
 				}
+				$scope.$applyAsync()
 				//add and remove form payload objects based on directions of buttons
 				switch (direction) {
 					case 'reset':
@@ -400,7 +401,6 @@ define(function (require) {
 						$scope.submitPayload[pageContext] = { ...$scope.submitPayload[prevContext] }
 						delete $scope.submitPayload[prevContext]
 				}
-				$scope.$applyAsync()
 				//adding scroll to top when switching between forms
 				// had to change from $window.scrollTo(0, 0) because it broke in the enhanced UI
 				$anchorScroll('staff-change-scroll-top')
@@ -482,15 +482,25 @@ define(function (require) {
 			}
 
 			$scope.newToTransferringIn = identifier => {
-				delete $scope.submitPayload.newStaff
+				// Step 1: Copy all properties from newStaff (if it exists)
+				const newStaff = $scope.submitPayload.newStaff || {}
+				$scope.submitPayload.transferringStaff = { ...newStaff, users_dcid: identifier }
 
-				$scope.submitPayload.transferringStaff = { users_dcid: identifier }
-
+				// Step 2: Find the matching item
 				let foundItem = ($scope.usersData && $scope.usersData.length && $scope.usersData.find(item => item.identifier === identifier)) || ($scope.staffDupeData && $scope.staffDupeData.length && $scope.staffDupeData.find(item => item.identifier === identifier))
-				
-				$scope.submitPayload.transferringStaff = Object.assign($scope.submitPayload.transferringStaff, foundItem)
+
+				// Step 3: Override only matching keys from foundItem
+				if (foundItem) {
+					Object.keys(foundItem).forEach(key => {
+						$scope.submitPayload.transferringStaff[key] = foundItem[key]
+					})
+				}
+
 				$scope.submitPayload.transferringStaff.prev_school_number = $scope.submitPayload.transferringStaff.homeschoolid
 				$scope.submitPayload.transferringStaff.prev_school_name = $scope.submitPayload.transferringStaff.homeschoolname
+
+				// Step 4: Remove newStaff
+				delete $scope.submitPayload.newStaff
 			}
 
 			$scope.checkStaffType = staffType => {
