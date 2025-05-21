@@ -500,6 +500,8 @@ define(function (require) {
 				formatService.objIterator($scope.submitPayload.transferringStaff, specificDeleteKeys, 'deleteKeys')
 				// Step 4: Remove newStaff
 				delete $scope.submitPayload.newStaff
+				$scope.userContext.formType = 'transferringStaff'
+				$scope.userContext.formTypeHover = 'transferringStaff'
 			}
 
 			$scope.checkStaffType = staffType => {
