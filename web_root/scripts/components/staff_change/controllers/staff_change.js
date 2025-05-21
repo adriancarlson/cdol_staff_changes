@@ -365,15 +365,15 @@ define(function (require) {
 				}
 			}
 			// function to switch forms and set scope to hold form data
-			$scope.formDisplay = (pageContext, prevContext, direction) => {
+			$scope.formDisplay = async (pageContext, prevContext, direction) => {
 				$scope.userContext.pageContext = pageContext
 				$scope.userContext.prevContext = prevContext
 				//load user data now needed on all forms
-				$scope.getJSONData('usersData')
+				await $scope.getJSONData('usersData')
 
 				//only loading school data if it is needed
 				if (pageContext === 'transferringStaff' || pageContext === 'newStaff' || pageContext === 'subStaff') {
-					$scope.getJSONData('schoolsData')
+					await $scope.getJSONData('schoolsData')
 				}
 				//add and remove form payload objects based on directions of buttons
 				switch (direction) {
@@ -400,6 +400,7 @@ define(function (require) {
 						$scope.submitPayload[pageContext] = { ...$scope.submitPayload[prevContext] }
 						delete $scope.submitPayload[prevContext]
 				}
+				$scope.$applyAsync()
 				//adding scroll to top when switching between forms
 				// had to change from $window.scrollTo(0, 0) because it broke in the enhanced UI
 				$anchorScroll('staff-change-scroll-top')
@@ -485,9 +486,8 @@ define(function (require) {
 
 				$scope.submitPayload.transferringStaff = { users_dcid: identifier }
 
-				let foundItem = $scope.usersData.find(item => {
-					return item.identifier === identifier
-				})
+				let foundItem = ($scope.usersData && $scope.usersData.length && $scope.usersData.find(item => item.identifier === identifier)) || ($scope.staffDupeData && $scope.staffDupeData.length && $scope.staffDupeData.find(item => item.identifier === identifier))
+				
 				$scope.submitPayload.transferringStaff = Object.assign($scope.submitPayload.transferringStaff, foundItem)
 				$scope.submitPayload.transferringStaff.prev_school_number = $scope.submitPayload.transferringStaff.homeschoolid
 				$scope.submitPayload.transferringStaff.prev_school_name = $scope.submitPayload.transferringStaff.homeschoolname

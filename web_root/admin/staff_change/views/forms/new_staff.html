@@ -7,7 +7,7 @@
     <div data-ng-if="userContext.pageStatus =='Edit' && staffDupeData.length > 0 && !submitPayload.newStaff.ps_created">
         <div class="container-fluid mb-2">
             <div class="row">
-                <div class="col-5">
+                <div class="col-8">
                     <div class="card">
                         <div class="card-header alert alert-danger fw-semibold p-2 mb-0">
                             <i class="bi bi-exclamation-octagon-fill"></i> Potential matches for
@@ -22,16 +22,20 @@
                                 <thead class="table-primary ">
                                     <tr>
                                         <th class="text-center" scope="col">Potential Duplicate</th>
-                                        <th class="text-center" scope="col">Status</th>
                                         <th class="text-center" scope="col">School</th>
+                                        <th class="text-center" scope="col">Status</th>
+                                        <th class="text-center" scope="col">Transferring-In?</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr data-ng-repeat="dupe in staffDupeData">
                                         <td><a href="/admin/faculty/home.html?frn=005{{dupe.ssdcid}}"
                                                 target="_blank">{{dupe.first_name}} {{dupe.last_name}}</a></td>
-                                        <td>{{dupe.status}}</td>
                                         <td>{{dupe.school_name}}</td>
+                                        <td>{{dupe.status}}</td>
+                                        <td><button type="button" class="button"
+                                                data-ng-click="formDisplay('transferringStaff',userContext.formType, 'convert');newToTransferringIn(staffDupe.dcid.toString())">Convert
+                                                to Transferring-In Staff Change</button></td>
                                     </tr>
                                 </tbody>
                             </table>
