@@ -498,7 +498,8 @@ define(function (require) {
 
 				$scope.submitPayload.transferringStaff.prev_school_number = $scope.submitPayload.transferringStaff.homeschoolid
 				$scope.submitPayload.transferringStaff.prev_school_name = $scope.submitPayload.transferringStaff.homeschoolname
-
+				let specificDeleteKeys = [...$scope.formatKeys.deleteKeys, 'ssdcid', 'status', 'school_name']
+				formatService.objIterator($scope.submitPayload.transferringStaff, specificDeleteKeys, 'deleteKeys')
 				// Step 4: Remove newStaff
 				delete $scope.submitPayload.newStaff
 			}
