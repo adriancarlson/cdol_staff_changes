@@ -563,6 +563,7 @@ define(function (require) {
 			}
 
 			$scope.createStaffChange = async () => {
+				loadingDialog()
 				//adding generic fields and values needed for any payload
 				const commonPayload = {
 					schoolid: $scope.userContext.curSchoolId,
@@ -626,10 +627,13 @@ define(function (require) {
 				})
 				//sending to confirm screen after submission
 				$scope.formDisplay('confirm', $scope.userContext.pageContext)
+				closeLoading()
 			}
 
 			$scope.updateStaffChange = async form => {
+				loadingDialog()
 				// copy formatKeys
+
 				let updateFormatKeys = { ...$scope.formatKeys }
 				//delete updateFormatKeys key not needed for PUT API Call
 				delete updateFormatKeys['deleteKeys']
@@ -722,12 +726,15 @@ define(function (require) {
 						$scope.toListRedirect(form)
 					}
 				})
+				closeLoading()
 			}
 			$scope.deleteStaffChange = async form => {
+				loadingDialog()
 				if ($scope.userContext.staffChangeId) {
 					await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, $scope.userContext.staffChangeId)
 					await $scope.toListRedirect(form)
 				}
+				closeLoading()
 			}
 			$scope.toListRedirect = form => {
 				let redirectPath = '/admin/staff_change/list.html'
