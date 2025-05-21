@@ -31,7 +31,7 @@
                                     <tr data-ng-repeat="dupe in staffDupeData">
                                         <td><a href="/admin/faculty/home.html?frn=005{{dupe.ssdcid}}"
                                                 target="_blank">{{dupe.first_name}} {{dupe.last_name}}</a></td>
-                                        <td>{{dupe.school_name}}</td>
+                                        <td>{{dupe.prev_school_name}}</td>
                                         <td>{{dupe.status}}</td>
                                         <td class="text-end"><button type="button" class="button"
                                                 data-ng-click="formDisplay('transferringStaff',userContext.formType, 'back'); newToTransferringIn(dupe.identifier.toString())">Convert

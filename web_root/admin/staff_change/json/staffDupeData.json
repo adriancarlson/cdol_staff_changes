@@ -9,16 +9,12 @@
                 'last_name' VALUE users.last_name,
                 'email_addr' VALUE users.email_addr,
                 'license_microsoft' VALUE u_users_additional_info.license_microsoft,
-                'homeschoolid' VALUE users.homeschoolid,
-                'homeschoolname' VALUE schools.name,
+                'prev_school_number' VALUE users.homeschoolid,
+                'prev_school_name' VALUE schools.name,
                 'status' VALUE CASE 
                                 WHEN schoolstaff.status = 1 THEN 'Active'
                                 ELSE 'Inactive'
-                                END,
-                'school_name' VALUE CASE
-                                        WHEN schoolstaff.schoolid = 0 THEN 'Diocesan Office'
-                                        ELSE schools.name
-                                    END
+                                END
                 RETURNING CLOB
             )
             RETURNING CLOB
