@@ -98,13 +98,39 @@ define(function (require) {
 				return !changeType.ps_complete || !changeType.ad_complete || !changeType.o365_complete || !changeType.lms_complete || needsCanva ? 'req-notation' : ''
 			}
 			$scope.exportGridData = () => {
-				const listName = `filtered${$scope.changeType.charAt(0).toUpperCase()}${$scope.changeType.slice(1)}List`
-				const items = $scope[listName]
-				if (Array.isArray(items)) {
-					items.forEach(item => {
-						console.log(item)
-					})
+				const changeType = $scope.changeType
+				const listName = `filtered${changeType.charAt(0).toUpperCase()}${changeType.slice(1)}List`
+				const data = $scope[listName]
+
+				if (!Array.isArray(data) || data.length === 0) {
+					alert('No data to export.')
+					return
 				}
+
+				// Collect headers from the first item if it's an object
+				const headers = Object.keys(data[0])
+				let csvContent = headers.join(',') + '\r\n'
+
+				data.forEach(item => {
+					const row = headers.map(header => {
+						let value = item[header]
+						// Escape quotes and commas
+						if (typeof value === 'string') {
+							value = `"${value.replace(/"/g, '""')}"`
+						}
+						return value
+					})
+					csvContent += row.join(',') + '\r\n'
+				})
+
+				const encodedUri = 'data:attachment/csv;charset=utf-8,' + encodeURIComponent(csvContent)
+				const link = document.createElement('a')
+				link.setAttribute('href', encodedUri)
+				const currentDateTime = new Date().toISOString().replace(/T/, '_').replace(/:/g, '-').split('.')[0]
+				link.setAttribute('download', `${changeType}_${currentDateTime}.csv`)
+				document.body.appendChild(link)
+				link.click()
+				document.body.removeChild(link)
 			}
 
 			$scope.loadData = async changeType => {
