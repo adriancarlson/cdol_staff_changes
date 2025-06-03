@@ -19,6 +19,7 @@ define(function (require) {
 			$scope.curDate = new Date($attrs.ngCurDate)
 			$scope.calendarYear = new Date().getFullYear()
 			$scope.selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context')
+			$scope.changeType = ''
 			$scope.booleanMap = { Yes: true, No: false }
 			$scope.titleMap = {
 				'Mr.': 'Mr.',
@@ -96,9 +97,19 @@ define(function (require) {
 
 				return !changeType.ps_complete || !changeType.ad_complete || !changeType.o365_complete || !changeType.lms_complete || needsCanva ? 'req-notation' : ''
 			}
+			$scope.exportGridData = () => {
+				const listName = `filtered${$scope.changeType.charAt(0).toUpperCase()}${$scope.changeType.slice(1)}List`
+				const items = $scope[listName]
+				if (Array.isArray(items)) {
+					items.forEach(item => {
+						console.log(item)
+					})
+				}
+			}
 
 			$scope.loadData = async changeType => {
 				loadingDialog()
+				$scope.changeType = changeType
 				//only make API call to get the data if
 				if (!$scope.staffList.hasOwnProperty(changeType)) {
 					//setting up arguments for PQ call
