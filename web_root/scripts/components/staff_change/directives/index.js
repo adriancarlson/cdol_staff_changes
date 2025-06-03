@@ -18,4 +18,5 @@ define(function (require) {
 	require('components/staff_change/directives/tabs/transfer_staff_list')
 	require('components/staff_change/directives/tabs/sub_staff_list')
 	require('components/staff_change/directives/tabs/all_staff_list')
+	require('components/staff_change/directives/tabs/export_button')
 })
