@@ -99,42 +99,6 @@ define(function (require) {
 				return !changeType.ps_complete || !changeType.ad_complete || !changeType.o365_complete || !changeType.lms_complete || needsCanva ? 'req-notation' : ''
 			}
 
-			$scope.exportGridData = () => {
-				const changeType = $scope.changeType
-				const listName = `filtered${changeType.charAt(0).toUpperCase()}${changeType.slice(1)}List`
-				const data = $scope[listName]
-
-				if (!Array.isArray(data) || data.length === 0) {
-					alert('No data to export.')
-					return
-				}
-
-				// Collect headers from the first item if it's an object
-				const headers = Object.keys(data[0])
-				let csvContent = headers.join(',') + '\r\n'
-
-				data.forEach(item => {
-					const row = headers.map(header => {
-						let value = item[header]
-						// Escape quotes and commas
-						if (typeof value === 'string') {
-							value = `"${value.replace(/"/g, '""')}"`
-						}
-						return value
-					})
-					csvContent += row.join(',') + '\r\n'
-				})
-
-				const encodedUri = 'data:attachment/csv;charset=utf-8,' + encodeURIComponent(csvContent)
-				const link = document.createElement('a')
-				link.setAttribute('href', encodedUri)
-				const currentDateTime = new Date().toISOString().replace(/T/, '_').replace(/:/g, '-').split('.')[0]
-				link.setAttribute('download', `${changeType}_${currentDateTime}.csv`)
-				document.body.appendChild(link)
-				link.click()
-				document.body.removeChild(link)
-			}
-
 			$scope.loadData = async changeType => {
 				loadingDialog()
 				$scope.changeType = changeType
@@ -257,6 +221,148 @@ define(function (require) {
 				// $scope.schoolMap ={}
 				$scope.selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context')
 				$scope.loadData($scope.selectedTab)
+			}
+
+			$scope.exportGridData = () => {
+				const changeType = $scope.changeType
+				const listName = `filtered${changeType.charAt(0).toUpperCase()}${changeType.slice(1)}List`
+				const data = $scope[listName]
+
+				if (!Array.isArray(data) || data.length === 0) {
+					alert('No data to export.')
+					return
+				}
+
+				let fieldMap = [
+					{
+						label: changeType === 'allStaff' ? 'Staff Name' : $filter('changeTypeFilter')(changeType),
+						key: row => `${row.title || ''} ${row.first_name || ''} ${row.last_name || ''}`.trim()
+					},
+					{ label: 'School', key: 'schname' },
+					{ label: 'Submitted By', key: 'submittedstaff' },
+					{ label: 'Submission Date', key: 'submission_date' },
+					{ label: 'Submission Time', key: 'submission_time' },
+					{ label: 'Deadline', key: 'completion_date' },
+					{ label: 'PS Created', key: 'ps_complete' },
+					{ label: 'AD Created', key: 'ad_complete' },
+					{ label: 'O365 Created', key: 'o365_complete' },
+					{ label: 'LMS Created', key: 'lms_complete' },
+					{ label: 'Canva Created', key: 'canva_complete' },
+					{ label: 'Completion Date', key: 'final_completion_date' },
+					{ label: 'Notes', key: 'notes' },
+					{ label: 'Microsoft License', key: 'license_microsoft' },
+					{ label: 'Gender', key: 'gender' },
+					{ label: 'DOB', key: 'dob' },
+					{ label: 'Religion', key: 'religion' },
+					{ label: 'Religious Clergy Lay', key: 'religiousclergylay' },
+					{ label: 'Staff Type', key: 'staff_type_desc' },
+					{ label: 'Position', key: 'position' },
+					{ label: 'FTE', key: 'fte' },
+					{ label: 'Calendar Year', key: 'calendar_year' },
+					{ label: 'Jitbit Ticket ID', key: 'ticket_id' }
+				]
+
+				if (changeType === 'transferringStaff') {
+					fieldMap[1].label = 'New School'
+					fieldMap.splice(2, 0, { label: 'Original School', key: 'prev_school_name' })
+					fieldMap = fieldMap.map(f => {
+						if (f.label === 'PS Created') f.label = 'PS Moved'
+						if (f.label === 'AD Created') f.label = 'AD Moved'
+						if (f.label === 'O365 Created') f.label = 'O365 Moved'
+						if (f.label === 'LMS Created') f.label = 'LMS Moved'
+						if (f.label === 'Canva Created') f.label = 'Canva Moved'
+						return f
+					})
+				}
+
+				if (changeType === 'jobChange') {
+					const schoolIndex = fieldMap.findIndex(f => f.label === 'School')
+					if (schoolIndex !== -1) {
+						fieldMap.splice(schoolIndex, 0, { label: 'Previous Position', key: 'previous_position' }, { label: 'New Position', key: 'new_position' })
+					}
+					fieldMap = fieldMap.filter(f => !['O365 Created', 'LMS Created', 'Canva Created'].includes(f.label))
+					fieldMap = fieldMap.map(f => {
+						if (f.label === 'PS Created') f.label = 'PS Changed'
+						if (f.label === 'AD Created') f.label = 'AD Changed'
+						return f
+					})
+				}
+
+				if (changeType === 'subStaff') {
+					fieldMap[0].label = $filter('changeTypeFilter')(changeType) + ' Name'
+					const schoolIndex = fieldMap.findIndex(f => f.label === 'School')
+					if (schoolIndex !== -1) {
+						fieldMap.splice(schoolIndex + 1, 0, { label: 'Sub Type', key: 'sub_type' })
+					}
+					fieldMap = fieldMap.filter(f => f.label !== 'Canva Created')
+				}
+
+				if (changeType === 'nameChange') {
+					fieldMap[0].label = "Staff's New Name"
+					fieldMap.splice(1, 0, { label: "Staff's Previous Name", key: 'old_name_placeholder' })
+					fieldMap = fieldMap.map(f => {
+						if (f.label === 'PS Created') f.label = 'PS Changed'
+						if (f.label === 'AD Created') f.label = 'AD Changed'
+						if (f.label === 'O365 Created') f.label = 'O365 Changed'
+						if (f.label === 'LMS Created') f.label = 'LMS Changed'
+						if (f.label === 'Canva Created') f.label = 'Canva Transferred'
+						return f
+					})
+				}
+
+				if (changeType === 'exitingStaff') {
+					fieldMap = fieldMap.filter(f => !['O365 Created', 'LMS Created'].includes(f.label))
+					fieldMap = fieldMap.map(f => {
+						if (f.label === 'PS Created') f.label = 'PS Deactivated'
+						if (f.label === 'AD Created') f.label = 'AD Deactivated'
+						if (f.label === 'Canva Created') f.label = 'Canva Transferred'
+						return f
+					})
+				}
+
+				if (changeType === 'allStaff') {
+					// Override to force specific wording
+					fieldMap = fieldMap.map(f => {
+						if (f.label === 'Staff Name' || f.label === $filter('changeTypeFilter')(changeType)) {
+							f.label = 'Staff Name'
+						}
+						if (f.label === 'PS Created') f.label = 'PS Created'
+						if (f.label === 'AD Created') f.label = 'AD Created'
+						if (f.label === 'O365 Created') f.label = 'O365 Created'
+						if (f.label === 'LMS Created') f.label = 'LMS Created'
+						if (f.label === 'Canva Created') f.label = 'Canva Created'
+						return f
+					})
+					fieldMap.push({
+						label: 'Change Type',
+						key: row => $filter('changeTypeFilter')(row.change_type) || row.change_type
+					})
+				}
+
+				const headers = fieldMap.map(f => f.label)
+				let csvContent = headers.join(',') + '\r\n'
+
+				data.forEach(row => {
+					const csvRow = fieldMap.map(field => {
+						let value = typeof field.key === 'function' ? field.key(row) : row[field.key]
+						if (typeof value === 'boolean') value = value ? 'TRUE' : 'FALSE'
+						if (value instanceof Date) value = value.toISOString().split('T')[0]
+						if (typeof value === 'string') value = `"${value.replace(/"/g, '""')}"`
+						return value != null ? value : ''
+					})
+					csvContent += csvRow.join(',') + '\r\n'
+				})
+
+				const encodedUri = 'data:attachment/csv;charset=utf-8,' + encodeURIComponent(csvContent)
+				const currentDateTime = new Date().toISOString().replace(/T/, '_').replace(/:/g, '-').split('.')[0]
+				const formattedChangeType = $filter('changeTypeFilter')(changeType) || changeType
+				const safeFileName = formattedChangeType.replace(/\s+/g, '_')
+				const link = document.createElement('a')
+				link.setAttribute('href', encodedUri)
+				link.setAttribute('download', `${safeFileName}_${currentDateTime}.csv`)
+				document.body.appendChild(link)
+				link.click()
+				document.body.removeChild(link)
 			}
 		}
 	])
