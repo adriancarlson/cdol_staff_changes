@@ -5,9 +5,10 @@ define(function (require) {
 	module.controller('staffChangeListCtrl', [
 		'$scope',
 		'$attrs',
+		'$filter',
 		'pqService',
 		'formatService',
-		function ($scope, $attrs, pqService, formatService) {
+		function ($scope, $attrs, $filter, pqService, formatService) {
 			//This is here for troubleshooting purposes.
 			//Allows us to double click anywhere on the page and logs scope to console
 			$j(document).dblclick(() => console.log($scope))
@@ -97,6 +98,7 @@ define(function (require) {
 
 				return !changeType.ps_complete || !changeType.ad_complete || !changeType.o365_complete || !changeType.lms_complete || needsCanva ? 'req-notation' : ''
 			}
+
 			$scope.exportGridData = () => {
 				const changeType = $scope.changeType
 				const listName = `filtered${changeType.charAt(0).toUpperCase()}${changeType.slice(1)}List`
@@ -218,11 +220,56 @@ define(function (require) {
 						$scope.staffList[changeType] = {}
 					}
 
+					let baseHeaders = ['School', 'Submitted By', 'Submission Date', 'Deadline']
+
+					if ($scope.changeType === 'newStaff') {
+						$scope.listHeaders = [$filter('changeTypeFilter')($scope.changeType), ...baseHeaders, 'PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date']
+					} else if ($scope.changeType === 'transferringStaff') {
+						$scope.listHeaders = [
+							$filter('changeTypeFilter')($scope.changeType),
+							'New School',
+							'Original School',
+							...baseHeaders.slice(1), // omit 'School'
+							'PS Moved',
+							'AD Moved',
+							'O365 Moved',
+							'LMS Moved',
+							'Canva Moved',
+							'Completion Date'
+						]
+					} else if ($scope.changeType === 'jobChange') {
+						$scope.listHeaders = ['Staff Name', 'Previous Position/Job', 'New Position/Job', ...baseHeaders, 'PS Changed', 'AD Changed', 'Completion Date']
+					} else if ($scope.changeType === 'subStaff') {
+						$scope.listHeaders = [
+							$filter('changeTypeFilter')($scope.changeType) + ' Staff',
+							baseHeaders[0], // 'School'
+							'Sub Type',
+							...baseHeaders.slice(1), // everything after 'School'
+							'PS Created',
+							'AD Created',
+							'O365 Created',
+							'LMS Created',
+							'Completion Date'
+						]
+					} else if ($scope.changeType === 'nameChange') {
+						$scope.listHeaders = ["Staff's New  Name", "Staff's Previous Name", ...baseHeaders, 'Canva Transferred', 'PS Changed', 'AD Changed', 'O365 Changed', 'LMS Changed', 'Completion Date']
+					} else if ($scope.changeType === 'exitingStaff') {
+						$scope.listHeaders = [$filter('changeTypeFilter')($scope.changeType), ...baseHeaders, 'Canva Transferred', 'PS Deactivated', 'AD Deactivated', 'Completion Date']
+					} else if ($scope.changeType === 'allStaff') {
+						$scope.listHeaders = ['Staff', 'Change Type', ...baseHeaders, 'PS Complete', 'AD Complete', 'O365 Complete', 'LMS Complete', 'Completion Date']
+					} else {
+						// fallback/default
+						$scope.listHeaders = [$filter('changeTypeFilter')($scope.changeType), ...baseHeaders, 'PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date']
+					}
+
 					$scope.$digest()
+
+					console.log('$scope.listHeaders', $scope.listHeaders)
 
 					//setting left nav count
 					$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`)
 				}
+
 				closeLoading()
 			}
 
@@ -242,11 +289,11 @@ define(function (require) {
 	module.filter('changeTypeFilter', function () {
 		const reverseMap = {
 			newStaff: 'New Staff',
-			exitingStaff: 'Exiting Staff',
-			nameChange: 'Name Change',
-			subStaff: 'Substitute',
+			transferringStaff: 'Transferring-In Staff',
 			jobChange: 'Job Change',
-			transferringStaff: 'Transferring-In Staff'
+			subStaff: 'Substitute',
+			nameChange: 'Name Change',
+			exitingStaff: 'Exiting Staff'
 		}
 
 		return function (input) {
