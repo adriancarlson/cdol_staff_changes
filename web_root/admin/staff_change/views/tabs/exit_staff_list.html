@@ -14,16 +14,18 @@
         <thead class="sticky-header">
             <tr>
                 <th></th>
-                <th data-pss-sort-fields="old_name_placeholder, replacing_other" class="nowrap">Exiting Staff</th>
-                <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">School</th>
-                <th data-pss-sort-fields="submittedstaff">Submitted By</th>
+                <th data-pss-sort-fields="old_name_placeholder, replacing_other" class="nowrap">{{listHeaders[0]}}</th>
+                <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">{{listHeaders[1]}}
+                </th>
+                <th data-pss-sort-fields="submittedstaff">{{listHeaders[2]}}</th>
                 <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending">
-                    Submission Date</th>
-                <th data-pss-sort-fields="completion_date|date">Deadline</th>
-                <th data-pss-sort-fields="canva_created" data-exclude-from-filter="true">Canva Transferred</th>
-                <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">PS Deactivated</th>
-                <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">AD Deactivated</th>
-                <th data-pss-sort-fields="final_completion_date|date">Completion Date</th>
+                    {{listHeaders[3]}}</th>
+                <th data-pss-sort-fields="completion_date|date">{{listHeaders[4]}}</th>
+                <th data-pss-sort-fields="canva_created" data-exclude-from-filter="true">{{listHeaders[5]}}</th>
+                <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">{{listHeaders[6]}}</th>
+                <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">{{listHeaders[7]}}
+                </th>
+                <th data-pss-sort-fields="final_completion_date|date">{{listHeaders[8]}}</th>
             </tr>
         </thead>
         <tbody>

@@ -12,17 +12,19 @@
         <thead class="sticky-header">
             <tr>
                 <th></th>
-                <th data-pss-sort-fields="last_name" class="nowrap">Staff</th>
-                <th data-pss-sort-fields="previous_position" class="nowrap">Previous Position/Job</th>
-                <th data-pss-sort-fields="new_position" class="nowrap">New Position/Job</th>
-                <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">School</th>
-                <th data-pss-sort-fields="submittedstaff">Submitted By</th>
+                <th data-pss-sort-fields="last_name" class="nowrap">{{listHeaders[0]}}</th>
+                <th data-pss-sort-fields="previous_position" class="nowrap">{{listHeaders[1]}}</th>
+                <th data-pss-sort-fields="new_position" class="nowrap">{{listHeaders[2]}}</th>
+                <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">{{listHeaders[3]}}
+                </th>
+                <th data-pss-sort-fields="submittedstaff">{{listHeaders[4]}}</th>
                 <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending">
-                    Submission Date</th>
-                <th data-pss-sort-fields="completion_date|date">Deadline</th>
-                <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">PS Changed</th>
-                <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">AD Changed</th>
-                <th data-pss-sort-fields="final_completion_date|date">Completion Date</th>
+                    {{listHeaders[5]}}</th>
+                <th data-pss-sort-fields="completion_date|date">{{listHeaders[6]}}</th>
+                <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">{{listHeaders[7]}}</th>
+                <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">{{listHeaders[8]}}
+                </th>
+                <th data-pss-sort-fields="final_completion_date|date">{{listHeaders[9]}}</th>
             </tr>
         </thead>
         <tbody>
