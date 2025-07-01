@@ -637,6 +637,8 @@ define(function (require) {
 				let updateFormatKeys = { ...$scope.formatKeys }
 				//delete updateFormatKeys key not needed for PUT API Call
 				delete updateFormatKeys['deleteKeys']
+				// re-add deleteKeys to original $scope.formatKeys
+				updateFormatKeys.deleteKeys = ['whocreated', 'whencreated', 'whomodified', 'whenmodified']
 
 				Object.keys($scope.submitPayload).forEach(async (key, index) => {
 					let formPayload = $scope.submitPayload[key]
