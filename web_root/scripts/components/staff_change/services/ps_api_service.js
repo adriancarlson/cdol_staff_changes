@@ -75,6 +75,18 @@ define(function (require) {
 									if (apiPayload.checkBoxKeys) {
 										resData = formatService.objIterator(resData, apiPayload.checkBoxKeys, 'formatChecksFromApi')
 									}
+									// Remove unwanted keys change needed with version 25.6
+									const keysToRemove = ['whocreated', 'whencreated', 'whomodified', 'whenmodified']
+									if (Array.isArray(resData)) {
+										resData = resData.map(item => {
+											const filteredItem = { ...item }
+											keysToRemove.forEach(key => delete filteredItem[key])
+											return filteredItem
+										})
+									} else if (resData && typeof resData === 'object') {
+										keysToRemove.forEach(key => delete resData[key])
+									}
+									console.log('res.data.tables[tableName]', res.data.tables[tableName])
 									deferredResponse.resolve(resData)
 									break
 								case 'DELETE':

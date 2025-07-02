@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin version="25.6.0.3" name="CDOL Staff Changes" description="Submitting Tracking Staff Changes"
+<plugin version="25.6.0.4" name="CDOL Staff Changes" description="Submitting Tracking Staff Changes"
 	xmlns="http://plugin.powerschool.pearson.com"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd">
 	<publisher name="Adrian Carlson">
