@@ -195,15 +195,13 @@ define(function (require) {
 				} else if ($scope.changeType === 'exitingStaff') {
 					$scope.listHeaders = [$filter('changeTypeFilter')($scope.changeType), ...baseHeaders, 'Canva Transferred', 'PS Deactivated', 'AD Deactivated', 'Completion Date']
 				} else if ($scope.changeType === 'allStaff') {
-					$scope.listHeaders = ['Staff Name', 'Change Type', ...baseHeaders, 'PS Complete', 'AD Complete', 'O365 Complete', 'LMS Complete', 'Completion Date']
+					$scope.listHeaders = ['Staff Name', 'Change Type', ...baseHeaders, 'PS Complete', 'AD Complete', 'O365 Complete', 'LMS Complete', 'Canva Complete', 'Completion Date']
 				} else {
 					// fallback
 					$scope.listHeaders = [$filter('changeTypeFilter')($scope.changeType), ...baseHeaders, 'PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date']
 				}
 
 				$scope.$applyAsync()
-
-				console.log('$scope.listHeaders', $scope.listHeaders)
 
 				// Update nav count
 				$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`)
@@ -330,10 +328,10 @@ define(function (require) {
 				if (changeType === 'nameChange') {
 					fieldMap[0].label = "Staff's New Name"
 					fieldMap.splice(1, 0, { label: "Staff's Previous Name", key: 'old_name_placeholder' })
-					
+
 					// Remove unwanted columns first
 					fieldMap = fieldMap.filter(f => !['Gender', 'DOB', 'Religion', 'Religious Clergy Lay', 'Staff Type', 'Position', 'FTE', 'Previous Employer', 'Replacing'].includes(f.label))
-					
+
 					// Move Canva Created to before PS Created
 					const canvaIndex = fieldMap.findIndex(f => f.label === 'Canva Created')
 					const psIndex = fieldMap.findIndex(f => f.label === 'PS Created')
@@ -341,7 +339,7 @@ define(function (require) {
 						const canvaField = fieldMap.splice(canvaIndex, 1)[0]
 						fieldMap.splice(psIndex, 0, canvaField)
 					}
-					
+
 					// Update labels
 					fieldMap = fieldMap.map(f => {
 						if (f.label === 'PS Created') f.label = 'PS Changed'
@@ -354,7 +352,16 @@ define(function (require) {
 				}
 
 				if (changeType === 'exitingStaff') {
-					fieldMap = fieldMap.filter(f => !['O365 Created', 'LMS Created'].includes(f.label))
+					fieldMap = fieldMap.filter(f => !['O365 Created', 'LMS Created', 'Microsoft License', 'Gender', 'DOB', 'Religion', 'Religious Clergy Lay', 'Staff Type', 'Position', 'FTE', 'Previous Employer', 'Replacing'].includes(f.label))
+
+					// Move Canva Created to before PS Created
+					const canvaIndex = fieldMap.findIndex(f => f.label === 'Canva Created')
+					const psIndex = fieldMap.findIndex(f => f.label === 'PS Created')
+					if (canvaIndex !== -1 && psIndex !== -1 && canvaIndex > psIndex) {
+						const canvaField = fieldMap.splice(canvaIndex, 1)[0]
+						fieldMap.splice(psIndex, 0, canvaField)
+					}
+
 					fieldMap = fieldMap.map(f => {
 						if (f.label === 'PS Created') f.label = 'PS Deactivated'
 						if (f.label === 'AD Created') f.label = 'AD Deactivated'
@@ -369,14 +376,16 @@ define(function (require) {
 						if (f.label === 'Staff Name' || f.label === $filter('changeTypeFilter')(changeType)) {
 							f.label = 'Staff Name'
 						}
-						if (f.label === 'PS Created') f.label = 'PS Created'
-						if (f.label === 'AD Created') f.label = 'AD Created'
-						if (f.label === 'O365 Created') f.label = 'O365 Created'
-						if (f.label === 'LMS Created') f.label = 'LMS Created'
-						if (f.label === 'Canva Created') f.label = 'Canva Created'
+						if (f.label === 'PS Created') f.label = 'PS Complete'
+						if (f.label === 'AD Created') f.label = 'AD Complete'
+						if (f.label === 'O365 Created') f.label = 'O365 Complete'
+						if (f.label === 'LMS Created') f.label = 'LMS Complete'
+						if (f.label === 'Canva Created') f.label = 'Canva Complete'
 						return f
 					})
-					fieldMap.push({
+
+					// Insert Change Type column after Staff Name (position 1)
+					fieldMap.splice(1, 0, {
 						label: 'Change Type',
 						key: row => $filter('changeTypeFilter')(row.change_type) || row.change_type
 					})
@@ -416,7 +425,8 @@ define(function (require) {
 			jobChange: 'Job Change',
 			subStaff: 'Substitute',
 			nameChange: 'Name Change',
-			exitingStaff: 'Exiting Staff'
+			exitingStaff: 'Exiting Staff',
+			allStaff: 'All Staff'
 		}
 
 		return function (input) {
