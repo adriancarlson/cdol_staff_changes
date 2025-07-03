@@ -316,7 +316,15 @@ define(function (require) {
 					if (schoolIndex !== -1) {
 						fieldMap.splice(schoolIndex + 1, 0, { label: 'Sub Type', key: 'sub_type' })
 					}
-					fieldMap = fieldMap.filter(f => f.label !== 'Canva Created')
+
+					// Move Replacing column to position 1 (after Substitute Name)
+					const replacingIndex = fieldMap.findIndex(f => f.label === 'Replacing')
+					if (replacingIndex !== -1) {
+						const replacingField = fieldMap.splice(replacingIndex, 1)[0]
+						fieldMap.splice(1, 0, replacingField)
+					}
+
+					fieldMap = fieldMap.filter(f => !['Canva Created', 'Position', 'Previous Employer'].includes(f.label))
 				}
 
 				if (changeType === 'nameChange') {
