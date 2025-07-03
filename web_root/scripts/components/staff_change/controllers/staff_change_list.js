@@ -233,10 +233,25 @@ define(function (require) {
 					return
 				}
 
+				// Helper function to format names with title filtering
+				const formatNameWithTitle = (titleField, firstNameField, lastNameField) => {
+					return row => {
+						const title = row[titleField] || ''
+						const firstName = row[firstNameField] || ''
+						const excludedTitlePrefixes = ['Fr.', 'Msgr.', 'Sr.', 'Br.']
+
+						// Check if first name starts with any of the excluded religious titles
+						const hasReligiousPrefix = excludedTitlePrefixes.some(prefix => firstName.startsWith(prefix))
+						const displayTitle = title && !hasReligiousPrefix ? title : ''
+
+						return `${displayTitle} ${firstName} ${row[lastNameField] || ''}`.trim()
+					}
+				}
+
 				let fieldMap = [
 					{
 						label: changeType === 'allStaff' ? 'Staff Name' : $filter('changeTypeFilter')(changeType),
-						key: row => `${row.title || ''} ${row.first_name || ''} ${row.last_name || ''}`.trim()
+						key: formatNameWithTitle('title', 'first_name', 'last_name')
 					},
 					{ label: 'School', key: 'schname' },
 					{ label: 'Submitted By', key: 'submittedstaff' },
@@ -258,11 +273,18 @@ define(function (require) {
 					{ label: 'Staff Type', key: 'staff_type_desc' },
 					{ label: 'Position', key: 'position' },
 					{ label: 'FTE', key: 'fte' },
+					{ label: 'Previous Employer', key: 'prev_school_name' },
+					{
+						label: 'Replacing',
+						key: formatNameWithTitle('replace_title', 'replace_first_name', 'replace_last_name')
+					},
 					{ label: 'Calendar Year', key: 'calendar_year' },
 					{ label: 'Jitbit Ticket ID', key: 'ticket_id' }
 				]
 
 				if (changeType === 'transferringStaff') {
+					// Remove any existing prev_school_name field first
+					fieldMap = fieldMap.filter(f => f.key !== 'prev_school_name')
 					fieldMap[1].label = 'New School'
 					fieldMap.splice(2, 0, { label: 'Original School', key: 'prev_school_name' })
 					fieldMap = fieldMap.map(f => {
