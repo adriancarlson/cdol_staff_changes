@@ -330,6 +330,19 @@ define(function (require) {
 				if (changeType === 'nameChange') {
 					fieldMap[0].label = "Staff's New Name"
 					fieldMap.splice(1, 0, { label: "Staff's Previous Name", key: 'old_name_placeholder' })
+					
+					// Remove unwanted columns first
+					fieldMap = fieldMap.filter(f => !['Gender', 'DOB', 'Religion', 'Religious Clergy Lay', 'Staff Type', 'Position', 'FTE', 'Previous Employer', 'Replacing'].includes(f.label))
+					
+					// Move Canva Created to before PS Created
+					const canvaIndex = fieldMap.findIndex(f => f.label === 'Canva Created')
+					const psIndex = fieldMap.findIndex(f => f.label === 'PS Created')
+					if (canvaIndex !== -1 && psIndex !== -1 && canvaIndex > psIndex) {
+						const canvaField = fieldMap.splice(canvaIndex, 1)[0]
+						fieldMap.splice(psIndex, 0, canvaField)
+					}
+					
+					// Update labels
 					fieldMap = fieldMap.map(f => {
 						if (f.label === 'PS Created') f.label = 'PS Changed'
 						if (f.label === 'AD Created') f.label = 'AD Changed'
