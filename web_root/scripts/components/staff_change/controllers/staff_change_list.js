@@ -302,7 +302,7 @@ define(function (require) {
 					if (schoolIndex !== -1) {
 						fieldMap.splice(schoolIndex, 0, { label: 'Previous Position', key: 'previous_position' }, { label: 'New Position', key: 'new_position' })
 					}
-					fieldMap = fieldMap.filter(f => !['O365 Created', 'LMS Created', 'Canva Created'].includes(f.label))
+					fieldMap = fieldMap.filter(f => !['O365 Created', 'LMS Created', 'Canva Created', 'Gender', 'DOB', 'Religion', 'Religious Clergy Lay', 'Staff Type', 'Position', 'FTE', 'Previous Employer', 'Replacing'].includes(f.label))
 					fieldMap = fieldMap.map(f => {
 						if (f.label === 'PS Created') f.label = 'PS Changed'
 						if (f.label === 'AD Created') f.label = 'AD Changed'
