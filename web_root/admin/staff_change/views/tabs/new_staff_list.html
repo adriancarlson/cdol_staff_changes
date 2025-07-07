@@ -1,6 +1,6 @@
 <div id="new-staff-grid" data-pss-grid-widget data-data="staffList.newStaff" data-filtered-data="filteredNewStaffList"
     data-client-side-pagination="false">
-    <export-button></export-button>
+    <export-button data-ng-if="filteredNewStaffList.length > 0"></export-button>
     <!-- Adding before the table so it will put this filter at the top of the list in the drop down -->
     <label data-pss-filter-field="ad_complete|multiselect" data-filter-info="booleanMap">Active Directory
         Complete?</label>
