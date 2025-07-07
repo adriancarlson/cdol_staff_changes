@@ -4,7 +4,7 @@
         <div class="card-body">
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
-                    <div class="col-auto">
+                    <div class="col-6">
                         <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Who is
                             changing
                             Positions/Jobs?</label>
@@ -29,12 +29,15 @@
                             <option value="-1">-- Other --</option>
                         </select>
                     </div>
+                    <div class="col-3" data-ng-if="userContext.pageStatus =='Edit'">
+                        <label for="jobchange-staff-school" class="form-label form-label-sm label-reset">School</label>
+                        <div class="input-group">{{submitPayload.jobChange.schoolid | schoolName}}</div>
+                    </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.users_dcid == -1">
                     <div class="col-6">
-                        <label for="job-change-name"
-                            class="form-label form-label-sm  label-reset staff-change-req">Exiting Staff
-                            Name</label>
+                        <label for="job-change-name" class="form-label form-label-sm  label-reset staff-change-req">Name
+                            of Staff changing Positions/Jobs</label>
                         <div class="input-group">
                             <select class="form-select form-select-sm" aria-label="title"
                                 data-ng-model="submitPayload.jobChange.title">

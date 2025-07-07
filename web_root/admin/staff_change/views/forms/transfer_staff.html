@@ -65,6 +65,16 @@
                                 data-ng-required="true">
                         </div>
                     </div>
+                    <div class="col-3">
+                        <label for="new-staff-school" class="form-label form-label-sm label-reset">New School</label>
+                        <div class="input-group">{{submitPayload.transferringStaff.schoolid | schoolName}}</div>
+                    </div>
+                    <div class="col-3">
+                        <label for="original-staff-school" class="form-label form-label-sm label-reset">Original
+                            School</label>
+                        <div class="input-group">{{submitPayload.transferringStaff.prev_school_name}}</div>
+
+                    </div>
                 </div>
                 <div class="row align-items-center mb-3 gx-2" data-ng-if="submitPayload.transferringStaff.users_dcid">
                     <div class="col-auto">

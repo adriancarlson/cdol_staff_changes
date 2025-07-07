@@ -11,7 +11,7 @@
         <div class="card-body">
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
-                    <div class="col-auto">
+                    <div class="col-6">
                         <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req"
                             data-ng-if="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && submitPayload.exitingStaff.users_dcid != -1)">Who
                             is not
@@ -43,6 +43,10 @@
                             class="blockquote ms-2 mt-1">
                             {{submitPayload.exitingStaff.old_name_placeholder}}
                         </div>
+                    </div>
+                    <div class="col-3">
+                        <label for="exit-staff-school" class="form-label form-label-sm label-reset">School</label>
+                        <div class="input-group">{{submitPayload.exitingStaff.schoolid | schoolName}}</div>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.users_dcid == -1">

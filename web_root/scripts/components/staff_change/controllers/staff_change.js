@@ -829,6 +829,7 @@ define(function (require) {
 
 	module.filter('schoolName', function () {
 		const map = {
+			0: 'Diocesan Office',
 			101: 'Pius X High School',
 			102: 'Cathedral of the Risen Christ School',
 			103: 'Sacred Heart Elementary School',

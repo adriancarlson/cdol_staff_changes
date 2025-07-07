@@ -88,6 +88,10 @@
                             <strong><u>Preferred Name</u></strong>: is how the staff name will appear on reports and in
                             the gradebook.<br>It is also used to create username and email address.
                         </div>
+                        <div data-ng-if="userContext.pageStatus !='Submit'"> <label for="new-staff-school"
+                                class="form-label form-label-sm label-reset">School</label>
+                            <div class="input-group">{{submitPayload.newStaff.schoolid | schoolName}}</div>
+                        </div>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3">

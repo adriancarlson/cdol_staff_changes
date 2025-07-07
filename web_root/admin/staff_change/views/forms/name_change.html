@@ -29,10 +29,15 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Edit'">
-                    <div class="col-auto">
+                    <div class="col-6">
                         <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Previous
                             Name:</label><br />
                         <span class="blockquote ms-2 mt-1">{{submitPayload.nameChange.old_name_placeholder}}</span>
+                    </div>
+                    <div class="col-3" data-ng-if="userContext.pageStatus =='Edit'">
+                        <label for="name-change-staff-school"
+                            class="form-label form-label-sm label-reset">School</label>
+                        <div class="input-group">{{submitPayload.nameChange.schoolid | schoolName}}</div>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.users_dcid">
