@@ -274,6 +274,14 @@ define(function (require) {
 					if ($scope.userContext.pageContext === 'newStaff' || $scope.userContext.pageContext === 'subStaff') {
 						await $scope.checkDupesOnEdit(res)
 					}
+					if ($scope.userContext.pageContext === 'transferringStaff' || $scope.userContext.pageContext === 'jobChange' || $scope.userContext.pageContext === 'subStaff' || $scope.userContext.pageContext === 'nameChange' || $scope.userContext.pageContext === 'exitingStaff') {
+						let schoolStaffParams = {
+							userDCID: $scope.submitPayload[res.change_type].users_dcid,
+							schoolID: $scope.userContext.pageContext === 'transferringStaff' ? $scope.submitPayload[res.change_type].prev_school_number : $scope.submitPayload[res.change_type].schoolid
+						}
+						console.log('schoolStaffParams', schoolStaffParams)
+						await $scope.getJSONData('schoolStaffData', schoolStaffParams)
+					}
 				}
 
 				$scope.$digest()
@@ -808,11 +816,11 @@ define(function (require) {
 	module.filter('changeTypeFilter', function () {
 		const reverseMap = {
 			newStaff: 'New Staff',
-			exitingStaff: 'Exiting Staff',
-			nameChange: 'Name Change',
-			subStaff: 'Substitute',
+			transferringStaff: 'Transferring-In Staff',
 			jobChange: 'Job Change',
-			transferringStaff: 'Transferring-In Staff'
+			subStaff: 'Substitute',
+			nameChange: 'Name Change',
+			exitingStaff: 'Exiting Staff'
 		}
 
 		return function (input) {

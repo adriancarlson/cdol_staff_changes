@@ -1,0 +1,44 @@
+~[tlist_sql;
+    SELECT 
+        JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'ssdcid' VALUE data.dcid,
+                'schoolid' VALUE data.schoolid
+                RETURNING CLOB
+            )
+            RETURNING CLOB
+        ) AS result_json
+        FROM (
+        SELECT
+            schoolstaff.dcid,
+            schoolstaff.schoolid
+        FROM
+            schoolstaff
+            INNER JOIN users ON users.dcid = schoolstaff.users_dcid
+        WHERE
+            users.dcid = ~(gpv.userDCID)
+            AND schoolstaff.schoolid = ~(gpv.schoolID)
+
+        UNION ALL
+
+        SELECT
+            schoolstaff.dcid,
+            schoolstaff.schoolid
+        FROM
+            schoolstaff
+            INNER JOIN users ON users.dcid = schoolstaff.users_dcid
+        WHERE
+            users.dcid = ~(gpv.userDCID)
+            AND schoolstaff.dcid = (
+                SELECT MAX(ss.dcid)
+                FROM schoolstaff ss
+                WHERE ss.users_dcid = ~(gpv.userDCID)
+            )
+            AND NOT EXISTS (
+                SELECT 1
+                FROM schoolstaff ss
+                WHERE ss.users_dcid = ~(gpv.userDCID)
+                AND ss.schoolid = ~(gpv.schoolID)
+            )
+    ) data
+]~(data)[/tlist_sql]
