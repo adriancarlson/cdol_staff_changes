@@ -1,6 +1,5 @@
 <div id="new-staff-grid" data-pss-grid-widget data-data="staffList.newStaff" data-filtered-data="filteredNewStaffList"
     data-client-side-pagination="false">
-    <export-button data-ng-if="filteredNewStaffList.length > 0"></export-button>
     <!-- Adding before the table so it will put this filter at the top of the list in the drop down -->
     <label data-pss-filter-field="ad_complete|multiselect" data-filter-info="booleanMap">Active Directory
         Complete?</label>
@@ -17,30 +16,33 @@
         <thead class="sticky-header">
             <tr>
                 <th></th>
-                <th data-pss-sort-fields="last_name" class="nowrap">{{listHeaders[0]}}</th>
-                <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">{{listHeaders[1]}}
-                </th>
-                <th data-pss-sort-fields="submittedstaff">{{listHeaders[2]}}</th>
+                <th data-pss-sort-fields="last_name" class="nowrap">New Staff</th>
+                <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">School</th>
+                <th data-pss-sort-fields="submittedstaff">Submitted By</th>
                 <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending">
-                    {{listHeaders[3]}}</th>
-                <th data-pss-sort-fields="completion_date|date">{{listHeaders[4]}}</th>
-                <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">{{listHeaders[5]}}</th>
-                <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">{{listHeaders[6]}}
-                </th>
-                <th data-pss-sort-fields="o365_created, o365_ignored" data-exclude-from-filter="true">{{listHeaders[7]}}
-                </th>
-                <th data-pss-sort-fields="lms_created" data-exclude-from-filter="true">{{listHeaders[8]}}</th>
-                <th data-pss-sort-fields="canva_created" data-exclude-from-filter="true">{{listHeaders[9]}}</th>
-                <th data-pss-sort-fields="final_completion_date|date">{{listHeaders[10]}}</th>
+                    Submission Date</th>
+                <th data-pss-sort-fields="completion_date|date">Deadline</th>
+                <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">PS Created</th>
+                <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">AD Created</th>
+                <th data-pss-sort-fields="o365_created, o365_ignored" data-exclude-from-filter="true">O365 Created</th>
+                <th data-pss-sort-fields="lms_created" data-exclude-from-filter="true">LMS Created</th>
+                <th data-pss-sort-fields="canva_created" data-exclude-from-filter="true">Canva Created</th>
+                <th data-pss-sort-fields="final_completion_date|date">Completion Date</th>
             </tr>
         </thead>
         <tbody>
             <tr data-ng-repeat="newStaff in filteredNewStaffList">
                 <td>{{$index +1}}</td>
-                <td class="nowrap"><a
-                        href="/admin/staff_change/submit.html?status=Edit&id={{newStaff.staffid}}">{{newStaff.title}}
-                        {{newStaff.first_name}}
-                        {{newStaff.last_name}}</a></td>
+                <td class="nowrap staff-name-cell">
+                    <a href="/admin/staff_change/submit.html?status=Edit&id={{newStaff.staffid}}">
+                        {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}}</a>
+                    <span class="ms-2 external-link-hover">
+                        <a href="/admin/staff_change/submit.html?status=Edit&id={{newStaff.staffid}}"
+                            target="_blank"><pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
+                                pds-widget="pds-widget" style="zoom: 0.55;"></pds-icon>
+                        </a>
+                    </span>
+                </td>
                 <td class="nowrap">{{newStaff.schname}}</td>
                 <td class="nowrap">{{newStaff.submittedstaff}}</td>
                 <td class="nowrap">{{newStaff.submission_date | date : 'MM/dd/yyyy'}}
