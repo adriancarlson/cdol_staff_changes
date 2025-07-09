@@ -38,15 +38,20 @@
         <tbody>
             <tr data-ng-repeat="allStaff in filteredAllStaffList">
                 <td>{{$index +1}}</td>
-                <td class="nowrap"><a href="/admin/staff_change/submit.html?status=Edit&id={{allStaff.staffid}}"> <span
-                            data-ng-show="!allStaff.first_name.startsWith('Fr.') &&
+                <td class="nowrap staff-name-cell">
+                    <a href="/admin/staff_change/submit.html?status=Edit&id={{allStaff.staffid}}"> <span data-ng-show="!allStaff.first_name.startsWith('Fr.') &&
                     !allStaff.first_name.startsWith('Msgr.') &&
                     !allStaff.first_name.startsWith('Sr.') &&
-                    !allStaff.first_name.startsWith('Br.')">
-                            {{allStaff.title}}
-                        </span>
+                    !allStaff.first_name.startsWith('Br.')">{{allStaff.title}}</span>
                         {{allStaff.first_name}}
-                        {{allStaff.last_name}}</a></td>
+                        {{allStaff.last_name}}</a>
+                    <span class="ms-2 external-link-hover">
+                        <a href="/admin/staff_change/submit.html?status=Edit&id={{allStaff.staffid}}"
+                            target="_blank"><pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
+                                pds-widget="pds-widget" style="zoom: 0.55;"></pds-icon>
+                        </a>
+                    </span>
+                </td>
                 <td class="nowrap fw-semibold" data-ng-class="{
         'text-success': allStaff.change_type === 'newStaff',
         'text-primary': allStaff.change_type  === 'transferringStaff',

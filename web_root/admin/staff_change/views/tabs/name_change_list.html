@@ -37,13 +37,21 @@
         <tbody>
             <tr data-ng-repeat="nameChange in filteredNameChangeList">
                 <td>{{$index +1}}</td>
-                <td class="nowrap"><a href="/admin/staff_change/submit.html?status=Edit&id={{nameChange.staffid}}">
+                <td class="nowrap staff-name-cell">
+                    <a href="/admin/staff_change/submit.html?status=Edit&id={{nameChange.staffid}}">
                         <span data-ng-show="nameChange.title !== 'Fr.' &&
                     nameChange.title !== 'Msgr.' &&
                     nameChange.title !== 'Sr.' &&
                     nameChange.title !== 'Br.' "> {{nameChange.title}}</span>
                         {{nameChange.first_name}}
-                        {{nameChange.last_name}}</a></td>
+                        {{nameChange.last_name}}</a>
+                    <span class="ms-2 external-link-hover">
+                        <a href="/admin/staff_change/submit.html?status=Edit&id={{nameChange.staffid}}"
+                            target="_blank"><pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
+                                pds-widget="pds-widget" style="zoom: 0.55;"></pds-icon>
+                        </a>
+                    </span>
+                </td>
                 <td class="nowrap">{{nameChange.old_name_placeholder}}</td>
                 <td class="nowrap">{{nameChange.schname}}</td>
                 <td class="nowrap">{{nameChange.submittedstaff}}</td>

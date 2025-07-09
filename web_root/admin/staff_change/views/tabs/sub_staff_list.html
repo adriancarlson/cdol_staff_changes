@@ -36,10 +36,17 @@
         <tbody>
             <tr data-ng-repeat="subStaff in filteredSubStaffList">
                 <td>{{$index +1}}</td>
-                <td class="nowrap"><a
-                        href="/admin/staff_change/submit.html?status=Edit&id={{subStaff.staffid}}">{{subStaff.title}}
+                <td class="nowrap staff-name-cell">
+                    <a href="/admin/staff_change/submit.html?status=Edit&id={{subStaff.staffid}}">{{subStaff.title}}
                         {{subStaff.first_name}}
-                        {{subStaff.last_name}}</a></td>
+                        {{subStaff.last_name}}</a>
+                    <span class="ms-2 external-link-hover">
+                        <a href="/admin/staff_change/submit.html?status=Edit&id={{subStaff.staffid}}"
+                            target="_blank"><pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
+                                pds-widget="pds-widget" style="zoom: 0.55;"></pds-icon>
+                        </a>
+                    </span>
+                </td>
                 <td class="nowrap">{{subStaff.schname}}</td>
                 <td>{{subStaff.sub_type}}</td>
                 <td class="nowrap">{{subStaff.submittedstaff}}</td>

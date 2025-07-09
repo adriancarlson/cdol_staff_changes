@@ -38,15 +38,22 @@
         <tbody>
             <tr data-ng-repeat="transferringStaff in filteredTransferringStaffList">
                 <td>{{$index +1}}</td>
-                <td class="nowrap"><a
-                        href="/admin/staff_change/submit.html?status=Edit&id={{transferringStaff.staffid}}">
+                <td class="nowrap staff-name-cell">
+                    <a href="/admin/staff_change/submit.html?status=Edit&id={{transferringStaff.staffid}}">
                         <span data-ng-show="!transferringStaff.first_name.startsWith('Fr.') &&
                     !transferringStaff.first_name.startsWith('Msgr.') &&
                     !transferringStaff.first_name.startsWith('Sr.') &&
                     !transferringStaff.first_name.startsWith('Br.')">
                             {{transferringStaff.title}}
                         </span> {{transferringStaff.first_name}}
-                        {{transferringStaff.last_name}}</a></td>
+                        {{transferringStaff.last_name}}</a>
+                    <span class="ms-2 external-link-hover">
+                        <a href="/admin/staff_change/submit.html?status=Edit&id={{transferringStaff.staffid}}"
+                            target="_blank"><pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
+                                pds-widget="pds-widget" style="zoom: 0.55;"></pds-icon>
+                        </a>
+                    </span>
+                </td>
                 <td class="nowrap">{{transferringStaff.schname}}</td>
                 <td class="nowrap">{{transferringStaff.prev_school_name}}</td>
                 <td class="nowrap">{{transferringStaff.submittedstaff}}</td>

@@ -31,8 +31,8 @@
         <tbody>
             <tr data-ng-repeat="exitingStaff in filteredExitingStaffList">
                 <td>{{$index +1}}</td>
-                <td class="nowrap"><a
-                        href="/admin/staff_change/submit.html?status=Edit&id={{exitingStaff.staffid}}"><span
+                <td class="nowrap staff-name-cell">
+                    <a href="/admin/staff_change/submit.html?status=Edit&id={{exitingStaff.staffid}}"><span
                             data-ng-show="!exitingStaff.first_name">{{exitingStaff.old_name_placeholder}}
                             {{exitingStaff.replacing_other}}</span>
                         <span data-ng-show="exitingStaff.title !== 'Fr.' &&
@@ -40,6 +40,12 @@
 								exitingStaff.title !== 'Sr.' &&
 								exitingStaff.title !== 'Br.' "> {{exitingStaff.title}}</span> {{exitingStaff.first_name}}
                         {{exitingStaff.last_name}}</a>
+                    <span class="ms-2 external-link-hover">
+                        <a href="/admin/staff_change/submit.html?status=Edit&id={{exitingStaff.staffid}}"
+                            target="_blank"><pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
+                                pds-widget="pds-widget" style="zoom: 0.55;"></pds-icon>
+                        </a>
+                    </span>
                 </td>
                 <td class="nowrap">{{exitingStaff.schname}}</td>
                 <td class="nowrap">{{exitingStaff.submittedstaff}}</td>
