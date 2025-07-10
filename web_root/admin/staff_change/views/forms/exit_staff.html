@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Edit'  && submitPayload.exitingStaff.users_dcid != -1">
+                    data-ng-if="userContext.pageStatus =='Edit' && submitPayload.exitingStaff.users_dcid != -1">
                     <div class="col-6">
                         <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Who is not
                             returning?</label><br />
@@ -94,8 +94,6 @@
                         </div>
                     </div>
                 </div>
-
-
                 <div class="row align-items-center mb-3"
                     data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.exitingStaff.users_dcid) || (userContext.pageStatus =='Edit' && submitPayload.exitingStaff.canva_dcid)">
                     <div class="col">
