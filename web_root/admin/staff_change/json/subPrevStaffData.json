@@ -18,7 +18,6 @@ SELECT
         WHERE
             users.first_name = '~(gpv.first_name)'
             AND users.last_name = '~(gpv.last_name)'
-            AND schoolstaff.schoolid = ~(gpv.schoolID)
 
         UNION ALL
 
@@ -44,7 +43,6 @@ SELECT
                 INNER JOIN users ON users.dcid = schoolstaff.users_dcid
                 WHERE users.first_name = '~(gpv.first_name)'
                 AND users.last_name = '~(gpv.last_name)'
-                AND schoolstaff.schoolid = ~(gpv.schoolID)
             )
     ) data
 ]~(data)[/tlist_sql]

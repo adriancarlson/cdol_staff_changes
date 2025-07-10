@@ -282,16 +282,13 @@ define(function (require) {
 							userDCID: $scope.submitPayload[res.change_type].users_dcid,
 							schoolID: $scope.userContext.pageContext === 'transferringStaff' ? $scope.submitPayload[res.change_type].prev_school_number : $scope.submitPayload[res.change_type].schoolid
 						}
-						console.log('schoolStaffParams', schoolStaffParams)
 						await $scope.getJSONData('schoolStaffData', schoolStaffParams)
 					}
 					if ($scope.userContext.pageContext === 'subStaff' && $scope.submitPayload[res.change_type].prev_school_number) {
 						let subPrevStaffParams = {
 							first_name: $scope.submitPayload[res.change_type].first_name,
-							last_name: $scope.submitPayload[res.change_type].last_name,
-							schoolID: $scope.submitPayload[res.change_type].prev_school_number
+							last_name: $scope.submitPayload[res.change_type].last_name
 						}
-						console.log('subPrevStaffParams', subPrevStaffParams)
 						await $scope.getJSONData('subPrevStaffData', subPrevStaffParams)
 					}
 				}
