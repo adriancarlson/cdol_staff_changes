@@ -127,9 +127,12 @@ define(function (require) {
 				curUserName: $attrs.ngCurUserName,
 				curUserEmail: $attrs.ngCurUserEmail,
 				curUserSchoolAbbr: $attrs.ngCurUserSchoolAbbr,
+				curUserSecurityRoles: $attrs.ngCurUserSecurityRoles,
+				districtUser: $attrs.ngCurUserSecurityRoles && $attrs.ngCurUserSecurityRoles.split(',').includes('9'),
 				pageContext: 'start',
 				prevContext: undefined,
 				serverName: $attrs.ngServerName,
+				isTestServer: $attrs.ngServerName && $attrs.ngServerName.indexOf('.test.') !== -1,
 				sendJitbit: !($attrs.ngServerName && $attrs.ngServerName.indexOf('.test.') !== -1)
 			}
 

@@ -327,8 +327,8 @@
                         </div>
                     </div>
                 </div>
-                ~[if#distCheck.security.inrole=9]<creation-checks
-                    data-ng-if="userContext.pageStatus =='Edit'"></creation-checks>[/if#distCheck]
+                <creation-checks
+                    data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser"></creation-checks>
             </form>
         </div>
         <form-buttons></form-buttons>

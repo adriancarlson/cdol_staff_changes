@@ -21,7 +21,7 @@
         data-ng-cur-time="~[time]" data-ng-staff-change-id="~(gpv.id)" data-ng-cur-user-dcid="~[x:users_dcid]"
         data-ng-cur-user-name="~[x:username;firstlast]" data-ng-cur-user-email="~[x:useremail]"
         data-ng-cur-user-school-abbr="~(schoolabbr)" data-ng-server-name="~[x:WEB_GetServerInfo;name=HostName]"
-        data-ng-cloak>
+        data-ng-cur-user-security-roles="~[x:usersroles]" data-ng-cloak>
         ~[wc:admin_header_css]
         <a href="/admin/home.html" target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a>
         <span data-ng-show="userContext.pageStatus =='Edit'">&gt;<a href="/admin/staff_change/list.html" target="_top">
@@ -44,7 +44,7 @@
                 <input type="hidden" name="ac" value="prim" />
             </div>
         </div>
-        ~[if#distCheck.security.inrole=9]~[if.is_prod][else]<tests></tests>[/if][/if#distCheck]
+        <tests data-ng-if="userContext.districtUser && userContext.isTestServer"></tests>
         ~[wc:admin_footer_css]
     </body>
 
