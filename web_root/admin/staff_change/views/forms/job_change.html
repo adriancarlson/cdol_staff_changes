@@ -32,7 +32,7 @@
                                 <option value="-1">-- Other --</option>
                             </select>
                             <a type="button" class="button m-0" style="padding: 6px"
-                                data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser"
+                                data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && schoolStaffData[0].ssdcid"
                                 data-ng-href="/admin/faculty/editpw.html?frn=005{{schoolStaffData[0].ssdcid}}"
                                 target="_blank">
                                 Open Staff Record
