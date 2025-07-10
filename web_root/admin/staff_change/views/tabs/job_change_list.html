@@ -31,7 +31,10 @@
             <tr data-ng-repeat="jobChange in filteredJobChangeList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap staff-name-cell">
-                    <a href="/admin/staff_change/submit.html?status=Edit&id={{jobChange.staffid}}">
+                    <a href="/admin/staff_change/submit.html?status=Edit&id={{jobChange.staffid}}"><span data-ng-show="jobChange.users_dcid == -1 || jobChange.title !== 'Fr.' &&
+                                        jobChange.title !== 'Msgr.' &&
+                                        jobChange.title !== 'Sr.' &&
+                                        jobChange.title !== 'Br.' "> {{jobChange.title}}</span>
                         {{jobChange.first_name}}
                         {{jobChange.last_name}}</a>
                     <span class="ms-2 external-link-hover">

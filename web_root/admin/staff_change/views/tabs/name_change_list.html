@@ -39,7 +39,7 @@
                 <td>{{$index +1}}</td>
                 <td class="nowrap staff-name-cell">
                     <a href="/admin/staff_change/submit.html?status=Edit&id={{nameChange.staffid}}">
-                        <span data-ng-show="nameChange.title !== 'Fr.' &&
+                        <span data-ng-show="nameChange.users_dcid == -1 || nameChange.title !== 'Fr.' &&
                     nameChange.title !== 'Msgr.' &&
                     nameChange.title !== 'Sr.' &&
                     nameChange.title !== 'Br.' "> {{nameChange.title}}</span>

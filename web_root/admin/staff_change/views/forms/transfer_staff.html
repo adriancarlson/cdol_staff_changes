@@ -168,9 +168,12 @@
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid">
                     <div class="col-auto">
                         <label for="prev_school_number"
-                            class="form-label form-label-sm label-reset staff-change-req">Where was {{
-                            submitPayload.transferringStaff.first_name}} {{
-                            submitPayload.transferringStaff.last_name}}'s previously employed?</label><span
+                            class="form-label form-label-sm label-reset staff-change-req">Where was <span
+                                data-ng-show="submitPayload.transferringStaff.users_dcid == -1 || 
+                                    (submitPayload.transferringStaff.title !== 'Fr.' && submitPayload.transferringStaff.title !== 'Msgr.' && submitPayload.transferringStaff.title !== 'Sr.' && submitPayload.transferringStaff.title !== 'Br.')">
+                                {{submitPayload.transferringStaff.title}}</span>
+                            {{submitPayload.transferringStaff.first_name}}
+                            {{submitPayload.transferringStaff.last_name}}'s previously employed?</label><span
                             class="text-muted" data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose
                                     --Other-- if employer is not
                                     listed)</em></small></span>
