@@ -2,7 +2,6 @@
     <div class="alert alert-warning" role="alert" data-ng-if="userContext.pageStatus =='Submit'"><i
             class="bi bi-exclamation-triangle-fill"></i> If this Exiting Staff member is being replaced by a
         New or Transferring-In staff member, go back to the previous screen and submit the New or Transferring-In staff
-        member
         member form first. When you fill out that form you can choose who the New or Transfering In Staff
         member is replacing and an Exiting Staff Record will automatically submitted for the replaced staff.
     </div>
@@ -43,26 +42,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Edit' && submitPayload.exitingStaff.users_dcid != -1">
-                    <div class="col-6">
-                        <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Who is not
-                            returning?</label><br />
-                        <span class="blockquote ms-2 mt-1">{{submitPayload.exitingStaff.old_name_placeholder}}</span>
-                        <a type="button" class="button ms-2 p-1" style="padding: 6px"
-                            data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && schoolStaffData[0].ssdcid"
-                            data-ng-href="/admin/faculty/editpw.html?frn=005{{schoolStaffData[0].ssdcid}}"
-                            target="_blank">
-                            Open Staff Record
-                            <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
-                                pds-widget="pds-widget" style="zoom: 0.55; color: white; fill: white;"></pds-icon>
-                        </a>
-                    </div>
-                    <div class="col-3">
-                        <label for="exit-staff-school" class="form-label form-label-sm label-reset">School</label>
-                        <div class="input-group">{{submitPayload.exitingStaff.schoolid | schoolName}}</div>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.users_dcid == -1">
+                    data-ng-if="submitPayload.exitingStaff.users_dcid == -1 && userContext.pageStatus =='Submit'">
                     <div class="col-6">
                         <label for="exiting-staff-name"
                             class="form-label form-label-sm  label-reset staff-change-req">Exiting Staff
@@ -92,6 +72,25 @@
                                 data-ng-blur="submitPayload.exitingStaff.last_name = (submitPayload.exitingStaff.last_name | titleCase)"
                                 data-ng-required="true">
                         </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Edit'">
+                    <div class="col-6">
+                        <label for="exiting-staff-name" class="form-label form-label-sm label-reset">Who is not
+                            returning?</label><br />
+                        <span class="blockquote ms-2 mt-1">{{submitPayload.exitingStaff.old_name_placeholder}}</span>
+                        <a type="button" class="button ms-2 p-1" style="padding: 6px"
+                            data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && schoolStaffData[0].ssdcid"
+                            data-ng-href="/admin/faculty/editpw.html?frn=005{{schoolStaffData[0].ssdcid}}"
+                            target="_blank">
+                            Open Staff Record
+                            <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
+                                pds-widget="pds-widget" style="zoom: 0.55; color: white; fill: white;"></pds-icon>
+                        </a>
+                    </div>
+                    <div class="col-3">
+                        <label for="exit-staff-school" class="form-label form-label-sm label-reset">School</label>
+                        <div class="input-group">{{submitPayload.exitingStaff.schoolid | schoolName}}</div>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"

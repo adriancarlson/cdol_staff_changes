@@ -35,10 +35,10 @@
                     <a href="/admin/staff_change/submit.html?status=Edit&id={{exitingStaff.staffid}}"><span
                             data-ng-show="!exitingStaff.first_name">{{exitingStaff.old_name_placeholder}}
                             {{exitingStaff.replacing_other}}</span>
-                        <span data-ng-show="exitingStaff.title !== 'Fr.' &&
+                        <span data-ng-show="exitingStaff.users_dcid == -1 || (exitingStaff.title !== 'Fr.' &&
 								exitingStaff.title !== 'Msgr.' &&
 								exitingStaff.title !== 'Sr.' &&
-								exitingStaff.title !== 'Br.' "> {{exitingStaff.title}}</span> {{exitingStaff.first_name}}
+								exitingStaff.title !== 'Br.')"> {{exitingStaff.title}}</span> {{exitingStaff.first_name}}
                         {{exitingStaff.last_name}}</a>
                     <span class="ms-2 external-link-hover">
                         <a href="/admin/staff_change/submit.html?status=Edit&id={{exitingStaff.staffid}}"

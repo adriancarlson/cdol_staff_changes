@@ -30,7 +30,6 @@
                         </select>
                     </div>
                 </div>
-                <!-- convert to just other -->
                 <div class="row align-items-center mb-3"
                     data-ng-if="submitPayload.transferringStaff.users_dcid == -1 && userContext.pageStatus =='Submit'">
                     <div class="col-6">
@@ -67,23 +66,18 @@
                         </div>
                     </div>
                 </div>
-                <!-- convert to  edit-->
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Edit'">
                     <div class="col-6">
                         <label for="transferring-staff-name"
                             class="form-label form-label-sm  label-reset">Transferring-In Staff
                             Name</label><br />
                         <span class="blockquote ms-2 mt-1">
-                            <span data-ng-show="submitPayload.transferringStaff.users_dcid == -1 || 
-        (submitPayload.transferringStaff.title !== 'Fr.' &&
-         submitPayload.transferringStaff.title !== 'Msgr.' &&
-         submitPayload.transferringStaff.title !== 'Sr.' &&
-         submitPayload.transferringStaff.title !== 'Br.')">
-                                {{submitPayload.transferringStaff.title}}
-                            </span>
+                            <span
+                                data-ng-show="submitPayload.transferringStaff.users_dcid == -1 || 
+        (submitPayload.transferringStaff.title !== 'Fr.' &&  submitPayload.transferringStaff.title !== 'Msgr.' && submitPayload.transferringStaff.title !== 'Sr.' && submitPayload.transferringStaff.title !== 'Br.')">
+                                {{submitPayload.transferringStaff.title}}</span>
                             {{submitPayload.transferringStaff.first_name}} {{submitPayload.transferringStaff.last_name}}
                         </span>
-
                         <a type="button" class="button ms-2 p-1" style="padding: 6px"
                             data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && schoolStaffData[0].ssdcid"
                             data-ng-href="/admin/faculty/edit.html?frn=005{{schoolStaffData[0].ssdcid}}"
@@ -99,7 +93,6 @@
                         <label for="original-staff-school" class="form-label form-label-sm label-reset">Original
                             School</label>
                         <div class="input-group">{{submitPayload.transferringStaff.prev_school_name}}</div>
-
                     </div>
                 </div>
                 <div class="row align-items-center mb-3 gx-2" data-ng-if="submitPayload.transferringStaff.users_dcid">
