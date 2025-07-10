@@ -13,11 +13,12 @@
                 <div class="row align-items-center mb-3">
                     <div class="col-6">
                         <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req"
-                            data-ng-if="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && submitPayload.exitingStaff.users_dcid != -1)">Who
-                            is not
-                            returning?</label><span data-ng-if="userContext.pageStatus =='Submit'"
-                            class="text-muted"><small><em>(Choose --Other-- if staff member is
-                                    not listed)</em></small></span>
+                            data-ng-if="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && submitPayload.exitingStaff.users_dcid != -1)">
+                            Who is not returning?
+                        </label>
+                        <span data-ng-if="userContext.pageStatus =='Submit'" class="text-muted">
+                            <small><em>(Choose --Other-- if staff member is not listed)</em></small>
+                        </span>
                         <select data-ng-if="userContext.pageStatus =='Submit'" class="form-select form-select-sm"
                             id="users_dcid" aria-label="Who is not returning?"
                             data-ng-model="submitPayload.exitingStaff.users_dcid" data-ng-required="true"
@@ -40,8 +41,16 @@
                             <option value="-1">-- Other --</option>
                         </select>
                         <div data-ng-if="userContext.pageStatus =='Edit' && submitPayload.exitingStaff.users_dcid != -1"
-                            class="blockquote ms-2 mt-1">
-                            {{submitPayload.exitingStaff.old_name_placeholder}}
+                            class="d-flex align-items-center gap-2 ms-2 mt-1">
+                            <div>{{submitPayload.exitingStaff.old_name_placeholder}}</div>
+                            <a type="button" class="button m-0 p-2 ps-1"
+                                data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser"
+                                data-ng-href="/admin/faculty/editpw.html?frn=005{{schoolStaffData[0].ssdcid}}"
+                                target="_blank">
+                                Open Staff Record
+                                <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
+                                    pds-widget="pds-widget" style="zoom: 0.55; color: white; fill: white;"></pds-icon>
+                            </a>
                         </div>
                     </div>
                     <div class="col-3">

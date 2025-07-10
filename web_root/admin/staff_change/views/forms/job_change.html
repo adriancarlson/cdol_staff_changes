@@ -5,29 +5,41 @@
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
                     <div class="col-6">
-                        <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Who is
-                            changing
-                            Positions/Jobs?</label>
-                        <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
-                            data-ng-model="submitPayload.jobChange.users_dcid" data-ng-required="true"
-                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.jobChange.users_dcid, 'users_dcid');dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
-                            <option selected></option>
-                            ~[tlist_sql;SELECT
-                            users.dcid,
-                            users.first_name,
-                            users.last_name
-                            FROM SCHOOLSTAFF
-                            inner join users
-                            on users.dcid = schoolstaff.users_dcid
-                            WHERE schoolstaff.status = 1
-                            ~[if.is.a.school]
-                            AND schoolstaff.schoolid = ~(curschoolid)
-                            [/if.is.a.school]
-                            Order BY users.last_name , users.first_name]
-                            <option value="~(dcid)">~(first) ~(last)</option>
-                            [/tlist_sql]
-                            <option value="-1">-- Other --</option>
-                        </select>
+                        <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">
+                            Who is changing Positions/Jobs?
+                        </label>
+
+                        <div class="d-flex align-items-center gap-2"> <!-- Flex container -->
+                            <select class="form-select form-select-sm flex-grow-1" id="users_dcid"
+                                aria-label="Who is not returning?" data-ng-model="submitPayload.jobChange.users_dcid"
+                                data-ng-required="true"
+                                data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.jobChange.users_dcid, 'users_dcid');dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
+                                <option selected></option>
+                                ~[tlist_sql;SELECT
+                                users.dcid,
+                                users.first_name,
+                                users.last_name
+                                FROM SCHOOLSTAFF
+                                inner join users
+                                on users.dcid = schoolstaff.users_dcid
+                                WHERE schoolstaff.status = 1
+                                ~[if.is.a.school]
+                                AND schoolstaff.schoolid = ~(curschoolid)
+                                [/if.is.a.school]
+                                Order BY users.last_name , users.first_name]
+                                <option value="~(dcid)">~(first) ~(last)</option>
+                                [/tlist_sql]
+                                <option value="-1">-- Other --</option>
+                            </select>
+                            <a type="button" class="button m-0 p-2 ps-1"
+                                data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser"
+                                data-ng-href="/admin/faculty/editpw.html?frn=005{{schoolStaffData[0].ssdcid}}"
+                                target="_blank">
+                                Open Staff Record
+                                <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
+                                    pds-widget="pds-widget" style="zoom: 0.55; color: white; fill: white;"></pds-icon>
+                            </a>
+                        </div>
                     </div>
                     <div class="col-3" data-ng-if="userContext.pageStatus =='Edit'">
                         <label for="jobchange-staff-school" class="form-label form-label-sm label-reset">School</label>
