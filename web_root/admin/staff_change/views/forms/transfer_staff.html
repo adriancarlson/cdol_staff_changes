@@ -63,6 +63,13 @@
                                 aria-label="Last name" data-ng-model="submitPayload.transferringStaff.last_name"
                                 data-ng-blur="submitPayload.transferringStaff.last_name = (submitPayload.transferringStaff.last_name | titleCase)"
                                 data-ng-required="true">
+                            <a type="button" class="button m-0 p-2 ps-1"
+                                data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser"
+                                data-ng-href="/admin/faculty/editpw.html?frn=005{{schoolStaffData[0].ssdcid}}"
+                                target="_blank">Open Staff
+                                Record <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
+                                    pds-widget="pds-widget"
+                                    style="zoom: 0.55; color: white; fill: white;"></pds-icon></a>
                         </div>
                     </div>
                     <div class="col-3">
