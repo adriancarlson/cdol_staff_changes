@@ -285,6 +285,15 @@ define(function (require) {
 						console.log('schoolStaffParams', schoolStaffParams)
 						await $scope.getJSONData('schoolStaffData', schoolStaffParams)
 					}
+					if ($scope.userContext.pageContext === 'subStaff' && $scope.submitPayload[res.change_type].prev_school_number) {
+						let subPrevStaffParams = {
+							first_name: $scope.submitPayload[res.change_type].first_name,
+							last_name: $scope.submitPayload[res.change_type].last_name,
+							schoolID: $scope.submitPayload[res.change_type].prev_school_number
+						}
+						console.log('subPrevStaffParams', subPrevStaffParams)
+						await $scope.getJSONData('subPrevStaffData', subPrevStaffParams)
+					}
 				}
 
 				$scope.$digest()
