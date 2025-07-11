@@ -1,0 +1,68 @@
+<!-- create a hidden table with added rows, use jQuery to move the inserted rows to target table -->
+<table id="staffchangeCustomTable" style="display: none;">
+    <tr id="staffIdTr">
+        <td><strong>Staff ID</strong></td>
+        <td>
+            <!-- tlist_sql convert teachernumber from text (varchar(20)) to a number and skip any alphanumeric values using regex (Thanks Michelle M. Devino!)-->
+            <strong>Current Highest Staff ID: <span id="currstaffidval">~[tlist_sql;select
+                    max(to_number(teachers.teachernumber)) from teachers where
+                    REGEXP_LIKE(teachers.teachernumber,CHR(94)||'\d+$')]~(maxTeacherID;t)[/tlist_sql]</span></strong>
+        </td>
+    </tr>
+    <tr id="staffChangeNameTR">
+        <td><strong>New Staff Name (Title, First, Middle, Last)</strong></td>
+        <td>
+            <select id="title_select" name="title">
+                <option value="">(none)</option>
+                ~[tlist_sql;
+                select
+                distinct title
+                from
+                teachers
+                where
+                status = 1
+                and title is not null
+                order by
+                title
+                ;]
+                <option value="~(title)">~(title)</option>
+                [/tlist_sql]
+            </select>
+            <input type="text" ~[getValidation:teachers.first_name] name="First_Name" value="" size="15">
+            <input type="text" ~[getValidation:teachers.middle_name] name="middle_name" value="" size="10">
+            <input type="text" ~[getValidation:teachers.last_name] name="Last_Name" value="" size="15">
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+    $j(() => {
+
+        /* add one to max id value and populate into teachernumber field */
+        const nextstaffid = parseInt($j("#currstaffidval").text(), 10) + 1;
+        $j("input[name='teachernumber']").val(nextstaffid);
+
+
+        $j('#newPageTRLastFirst').remove()
+        $j('#newPageTRPreferredName').remove()
+        $j('#newPageTREthnicity').remove()
+        $j('#newPageTRHomeroom').remove()
+        $j('#newPageTRLunchId').remove()
+        $j('#newPageTRHomePhone').remove()
+        $j('#newPageTRSchoolPhone').remove()
+        $j('#newPageTRStreet').remove()
+        $j('#newPageTRZip').remove()
+        $j('#newPageTRSSN').remove()
+        $j('#newPageTRTitle').remove()
+
+        $j("#staffChangeNameTR").insertBefore($j("#newPageTREmailAddress"))
+        $j("#newPageTRTeacherNumber").insertBefore($j("#staffChangeNameTR"))
+        $j("#staffIdTr").insertBefore($j("#newPageTRTeacherNumber"))
+        $j("#newPageTRDOB").insertAfter($j("#newPageTRGender"))
+        $j("#newPageTRStaffType").insertBefore($j("#newPageTRSchoolName"))
+
+        $j("#staffchangeCustomTable").remove()
+
+    })
+
+</script>

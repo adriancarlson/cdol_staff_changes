@@ -1,0 +1,33 @@
+<!-- From Eric Miletich's Staff Title Dropdowns # 896. Adding to this because had to modify the New Staff functions now do not need his plugin -->
+
+<span id="title_dropdown">
+	<select name="~(JSFieldParam;[05]title)">
+		<option value="~([05]title)">~([05]title)</option>
+		~[tlist_sql;
+		select
+		distinct title
+		from
+		teachers
+		where
+		status = 1
+		and title is not null
+		order by
+		title
+		;]
+		<option value="~(title)">~(title)</option>
+		[/tlist_sql]
+	</select>
+	<a href="#" onclick="manual_title();">Other</a>
+</span>
+
+<script>
+	$j(document).ready(function () {
+		$j("input[name='~(JSFieldParam;[05]title)']").replaceWith($j("span#title_dropdown"));
+		$j("span#title_dropdown select").val(("~([05]title;js)").trim());
+	}
+	);
+	function manual_title() {
+		$j("span#title_dropdown").replaceWith("<input type='text' name='~(JSFieldParam;[05]title)' value=''>");
+		$j("input[name='~(JSFieldParam;[05]title)']").val(("~([05]title;js)").trim());
+	}
+</script>
