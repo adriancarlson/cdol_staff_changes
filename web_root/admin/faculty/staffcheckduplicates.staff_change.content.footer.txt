@@ -1,0 +1,8 @@
+<p>License Microsoft: ~[gpv:License_Microsoft] <br>
+    gpv encoded: ~[gpv:License_Microsoft;;encodehtml]</p>
+<script>
+    alert('loading staff change custom');
+    $j(() => {
+        $j('.postvals').append(`<input type="hidden" name="[Users.U_USERS_ADDITIONAL_INFO]License_Microsoft" value="~[gpv:License_Microsoft;;encodehtml]">`)
+    });
+</script>

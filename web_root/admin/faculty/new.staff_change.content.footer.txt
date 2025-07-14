@@ -93,6 +93,11 @@
             const buildEmail = (`${emailPrefix}${cleanedFirst}-${cleanedLast}@cdolinc.net`).toLowerCase()
             $j('input[name="email_addr"]').val(buildEmail)
 
+            //  custom fields 
+            $j('form#staffCreateForm').append(
+                `<input type="hidden" name="License_Microsoft" value="${newStaffData.license_microsoft}">`
+            )
+
             // Clear data
             sessionStorage.removeItem('newStaffData')
         }

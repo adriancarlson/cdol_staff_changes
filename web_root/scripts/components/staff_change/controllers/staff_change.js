@@ -745,6 +745,7 @@ define(function (require) {
 				})
 				closeLoading()
 			}
+
 			$scope.deleteStaffChange = async form => {
 				loadingDialog()
 				if ($scope.userContext.staffChangeId) {
