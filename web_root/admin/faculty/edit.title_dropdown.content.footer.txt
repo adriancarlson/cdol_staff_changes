@@ -4,14 +4,14 @@
 	<select name="~(JSFieldParam;[05]title)">
 		<option value="~([05]title)">~([05]title)</option>
 		~[tlist_sql;
-		select
-		distinct title
-		from
+		SELECT
+		DISTINCT title
+		FROM
 		teachers
-		where
+		WHERE
 		status = 1
-		and title is not null
-		order by
+		AND REGEXP_LIKE(title, '[A-Za-z0-9]')
+		ORDER BY
 		title
 		;]
 		<option value="~(title)">~(title)</option>
