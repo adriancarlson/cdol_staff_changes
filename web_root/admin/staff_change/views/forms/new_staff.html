@@ -82,8 +82,10 @@
                                 data-ng-blur="submitPayload.newStaff.last_name = (submitPayload.newStaff.last_name | titleCase);dupeSearch(userContext.pageContext, submitPayload[userContext.formType])"
                                 data-ng-required="true">
                             <a type="button" class="button m-0 p-2 ps-1"
+                                title="Only available at {{submitPayload.newStaff.schoolid | schoolName}}"
                                 data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && !submitPayload.newStaff.ps_created"
-                                data-ng-click="openNewStaffRecord(submitPayload.newStaff)" target="_blank">New Staff
+                                data-ng-click="openNewStaffRecord(submitPayload.newStaff)" target="_blank"
+                                data-ng-disabled="userContext.curSchoolId != submitPayload.newStaff.schoolid">New Staff
                                 Record <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
                                     pds-widget="pds-widget" style="zoom: 0.55; color: white; fill: white;"></pds-icon>
                             </a>
