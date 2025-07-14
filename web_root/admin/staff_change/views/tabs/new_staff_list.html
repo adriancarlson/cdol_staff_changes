@@ -12,7 +12,6 @@
     <label data-pss-filter-field="title|multiselect" data-filter-info="titleMap">Title</label>
     <label data-pss-filter-field="first_name">First Name</label>
     <label data-pss-filter-field="last_name">Last Name</label>
-
     <table class="grid">
         <thead class="sticky-header">
             <tr>
@@ -38,9 +37,10 @@
                     <a href="/admin/staff_change/submit.html?status=Edit&id={{newStaff.staffid}}">
                         {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}}</a>
                     <span class="ms-2 external-link-hover">
-                        <a href="/admin/staff_change/submit.html?status=Edit&id={{newStaff.staffid}}"
-                            target="_blank"><pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
-                                pds-widget="pds-widget" style="zoom: 0.55;"></pds-icon>
+                        <a href="/admin/staff_change/submit.html?status=Edit&id={{newStaff.staffid}}" target="_blank"
+                            title="Open in new tab"><pds-icon name="external"
+                                class="style-scope x-scope pds-icon-0 pds-widget" pds-widget="pds-widget"
+                                style="zoom: 0.55;"></pds-icon>
                         </a>
                     </span>
                 </td>
