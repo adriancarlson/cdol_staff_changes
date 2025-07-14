@@ -753,6 +753,12 @@ define(function (require) {
 				}
 				closeLoading()
 			}
+
+			$scope.openNewStaffRecord = function (newStaff) {
+				sessionStorage.setItem('newStaffData', JSON.stringify(newStaff))
+				window.open('/admin/faculty/new.html?frn=005-99', '_blank')
+			}
+
 			$scope.toListRedirect = form => {
 				let redirectPath = '/admin/staff_change/list.html'
 				switch (form) {

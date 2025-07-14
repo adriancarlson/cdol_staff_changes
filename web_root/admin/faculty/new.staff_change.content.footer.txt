@@ -63,6 +63,12 @@
 
         $j("#staffchangeCustomTable").remove()
 
+        // new data coming in from staff change
+        const newStaffData = JSON.parse(sessionStorage.getItem('newStaffData') || '{}');
+        if (!newStaffData) return
+        if (newStaffData) {
+            console.log('newStaffData', newStaffData)
+        }
     })
 
 </script>
