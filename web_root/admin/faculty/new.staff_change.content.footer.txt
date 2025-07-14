@@ -15,14 +15,14 @@
             <select id="title_select" name="title">
                 <option value="">(none)</option>
                 ~[tlist_sql;
-                select
-                distinct title
-                from
+                SELECT
+                DISTINCT title
+                FROM
                 teachers
-                where
+                WHERE
                 status = 1
-                and title is not null
-                order by
+                AND REGEXP_LIKE(title, '[A-Za-z0-9]')
+                ORDER BY
                 title
                 ;]
                 <option value="~(title)">~(title)</option>
@@ -67,7 +67,20 @@
         const newStaffData = JSON.parse(sessionStorage.getItem('newStaffData') || '{}');
         if (!newStaffData) return
         if (newStaffData) {
-            console.log('newStaffData', newStaffData)
+            $j('select[name="title"]').val(newStaffData.title);
+            $j('input[name="First_Name"]').val(newStaffData.first_name);
+            $j('input[name="middle_name"]').val(newStaffData.middle_name);
+            $j('input[name="Last_Name"]').val(newStaffData.last_name);
+            $j('select[name="gender"]').val(newStaffData.gender);
+            $j('input[name="dob"]').val(newStaffData.dob);
+            $j('select[name="StaffStatus"]').val(newStaffData.staff_type)
+
+            const { title = '', first_name = '', last_name = '' } = newStaffData;
+            const prefix = ['Fr.', 'Msgr.', 'Sr.', 'Br.'].includes(title) ? title.toLowerCase() : '';
+            const buildEmail = (`${prefix}${first_name}-${last_name}@cdolinc.net`).toLowerCase();
+            $j('input[name="email_addr"]').val(buildEmail);
+
+            sessionStorage.removeItem('newStaffData')
         }
     })
 
