@@ -754,7 +754,7 @@ define(function (require) {
 				closeLoading()
 			}
 
-			$scope.openNewStaffRecord = function (newStaff) {
+			$scope.openNewStaffRecord = newStaff => {
 				sessionStorage.setItem('newStaffData', JSON.stringify(newStaff))
 				window.open('/admin/faculty/new.html?frn=005-99', '_blank')
 			}

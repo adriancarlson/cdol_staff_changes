@@ -64,37 +64,37 @@
         $j("#staffchangeCustomTable").remove()
 
         // new data coming in from staff change
-        const newStaffData = JSON.parse(sessionStorage.getItem('newStaffData') || '{}');
-        if (!newStaffData) return;
+        const newStaffData = JSON.parse(sessionStorage.getItem('newStaffData') || '{}')
+        if (!newStaffData) return
 
         if (newStaffData) {
-            const { title = '', first_name = '', last_name = '' } = newStaffData;
-            const prefixTitles = ['Fr.', 'Msgr.', 'Sr.', 'Br.'];
+            const { title = '', first_name = '', last_name = '' } = newStaffData
+            const prefixTitles = ['Fr.', 'Msgr.', 'Sr.', 'Br.']
 
-            const prefix = prefixTitles.includes(title) ? title : '';
+            const prefix = prefixTitles.includes(title) ? title : ''
 
             // Build first name with title prefix if needed (with space)
-            const displayFirstName = prefix ? `${prefix} ${first_name}` : first_name;
+            const displayFirstName = prefix ? `${prefix} ${first_name}` : first_name
 
             // Set fields
-            $j('select[name="title"]').val(title);
-            $j('input[name="First_Name"]').val(displayFirstName);
-            $j('input[name="middle_name"]').val(newStaffData.middle_name);
-            $j('input[name="Last_Name"]').val(last_name);
-            $j('select[name="gender"]').val(newStaffData.gender);
-            $j('input[name="dob"]').val(newStaffData.dob);
-            $j('select[name="StaffStatus"]').val(newStaffData.staff_type);
+            $j('select[name="title"]').val(title)
+            $j('input[name="First_Name"]').val(displayFirstName)
+            $j('input[name="middle_name"]').val(newStaffData.middle_name)
+            $j('input[name="Last_Name"]').val(newStaffData.last_name)
+            $j('select[name="gender"]').val(newStaffData.gender)
+            $j('input[name="dob"]').val(newStaffData.dob)
+            $j('select[name="StaffStatus"]').val(newStaffData.staff_type)
 
             // Build email
             const clean = str => (str || '').trim().replace(/\s+/g, '-'); // trim and replace internal spaces with dashes
-            const cleanedFirst = clean(first_name);
-            const cleanedLast = clean(last_name);
-            const emailPrefix = prefixTitles.includes(title) ? title.toLowerCase() : '';
-            const buildEmail = (`${emailPrefix}${cleanedFirst}-${cleanedLast}@cdolinc.net`).toLowerCase();
-            $j('input[name="email_addr"]').val(buildEmail);
+            const cleanedFirst = clean(first_name)
+            const cleanedLast = clean(last_name)
+            const emailPrefix = prefixTitles.includes(title) ? title.toLowerCase() : ''
+            const buildEmail = (`${emailPrefix}${cleanedFirst}-${cleanedLast}@cdolinc.net`).toLowerCase()
+            $j('input[name="email_addr"]').val(buildEmail)
 
             // Clear data
-            sessionStorage.removeItem('newStaffData');
+            sessionStorage.removeItem('newStaffData')
         }
 
     })
