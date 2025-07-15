@@ -1,8 +1,18 @@
-<p>License Microsoft: ~[gpv:License_Microsoft] <br>
-    gpv encoded: ~[gpv:License_Microsoft;;encodehtml]</p>
+<p>License Microsoft: ~[gpv:License_Microsoft;;encodehtml]<br>
+    Legal Name: ~[gpv:legal_first_name;;encodehtml] ~[gpv:legal_middle_name;;encodehtml]
+    ~[gpv:legal_last_name;;encodehtml]<br>
+    Religion: ~[gpv:religion;;encodehtml] ~[gpv:religiousclergylay;;encodehtml] <br>
+    fte: ~[gpv:fte;;encodehtml] <br>
+</p>
 <script>
     alert('loading staff change custom');
     $j(() => {
         $j('.postvals').append(`<input type="hidden" name="[Users.U_USERS_ADDITIONAL_INFO]License_Microsoft" value="~[gpv:License_Microsoft;;encodehtml]">`)
-    });
+        $j('.postvals').append(`<input type="hidden" name="[Users.userscorefields]pscore_legal_last_name" value="~[gpv:legal_last_name;;encodehtml]">`)
+        $j('.postvals').append(`<input type="hidden" name="[Users.userscorefields]pscore_legal_first_name" value="~[gpv:legal_first_name;;encodehtml]">`)
+        $j('.postvals').append(`<input type="hidden" name="[Users.userscorefields]pscore_legal_middle_name" value="~[gpv:legal_middle_name;;encodehtml]">`)
+        $j('.postvals').append(`<input type="hidden" name="[Users.S_USR_NCEA_X]ReligiousAffiliation" value="~[gpv:religion;;encodehtml]">`)
+        $j('.postvals').append(`<input type="hidden" name="[Users.S_USR_NCEA_X]ReligiousClergyLay" value="~[gpv:religiousclergylay;;encodehtml]">`)
+        $j('.postvals').append(`<input type="hidden" name="[Users.S_USR_NCEA_X]FTE_Code" value="~[gpv:fte;;encodehtml]">`)
+    })
 </script>

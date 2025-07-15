@@ -33,6 +33,53 @@
             <input type="text" ~[getValidation:teachers.last_name] name="Last_Name" value="" size="15">
         </td>
     </tr>
+    <tr id="staffChangeLegalNameTR">
+        <td><strong>Legal Name (First, Middle, Last)</strong></td>
+        <td>
+            <input type="text" id="staff_change_legal_first_name" name="legal_first_name" value="" size="15">
+            <input type="text" id="staff_change_legal_middle_name" name="legal_middle_name" value="" size="10">
+            <input type="text" id="staff_change_legal_last_name" name="legal_last_name" value="" size="15">
+        </td>
+    </tr>
+    <tr id="staffChangeReligionTR">
+        <td><strong>Religion</strong></td>
+        <td>
+            <select id="religion_select" name="religion">
+                <option value="">Select affiliation</option>
+                <option value="C">C - Catholic</option>
+                <option value="N">N - Non-Catholic</option>
+            </select>
+        </td>
+    </tr>
+    <tr id="staffChangeReligiousClergyLayTR">
+        <td><strong>Religious Clergy Lay</strong></td>
+        <td>
+            <select id="religiousclergylay_select" name="religiousclergylay">
+                <option value="">Select </option>
+                <option value="R">R - Religious</option>
+                <option value="C">C - Clergy</option>
+                <option value="L">L - Lay</option>
+            </select>
+        </td>
+    </tr>
+    <tr id="staffChangeFteTR">
+        <td><strong>FTE</strong></td>
+        <td>
+            <select id="fte_select" name="fte">
+                <option value="">Select FTE (this school only)</option>
+                <option value="FT">FT - Full-time</option>
+                <option value="PT">PT - Part-time</option>
+            </select>
+        </td>
+    </tr>
+    <tr id="staffChangeLicenseMicrosoftTR">
+        <td><strong>Microsoft License</strong></td>
+        <td>
+            <select id="license_microsoft_select" name="License_Microsoft">
+                <option value="A1">A1 (Free)</option>
+                <option value="A3" selected="">A3 (Paid)</option>
+            </select>
+        </td>
 </table>
 
 <script type="text/javascript">
@@ -55,11 +102,18 @@
         $j('#newPageTRSSN').remove()
         $j('#newPageTRTitle').remove()
 
-        $j("#staffChangeNameTR").insertBefore($j("#newPageTREmailAddress"))
+        $j("#staffChangeLegalNameTR").insertBefore($j("#newPageTREmailAddress"))
+        $j("#staffChangeNameTR").insertBefore($j("#staffChangeLegalNameTR"))
+
         $j("#newPageTRTeacherNumber").insertBefore($j("#staffChangeNameTR"))
         $j("#staffIdTr").insertBefore($j("#newPageTRTeacherNumber"))
         $j("#newPageTRDOB").insertAfter($j("#newPageTRGender"))
+        $j('#staffChangeReligionTR').insertAfter($j("#newPageTRDOB"))
+        $j("#staffChangeReligiousClergyLayTR").insertAfter($j("#staffChangeReligionTR"))
+        $j("#staffChangeFteTR").insertAfter($j("#staffChangeReligiousClergyLayTR"))
+
         $j("#newPageTRStaffType").insertBefore($j("#newPageTRSchoolName"))
+        $j("#staffChangeLicenseMicrosoftTR").insertAfter($j("#newPageTRSchoolName"))
 
         $j("#staffchangeCustomTable").remove()
 
@@ -81,9 +135,16 @@
             $j('input[name="First_Name"]').val(displayFirstName)
             $j('input[name="middle_name"]').val(newStaffData.middle_name)
             $j('input[name="Last_Name"]').val(newStaffData.last_name)
+            $j('input#staff_change_legal_first_name').val(newStaffData.legal_first_name)
+            $j('input#staff_change_legal_middle_name').val(newStaffData.legal_middle_name)
+            $j('input#staff_change_legal_last_name').val(newStaffData.legal_last_name)
             $j('select[name="gender"]').val(newStaffData.gender)
             $j('input[name="dob"]').val(newStaffData.dob)
+            $j('select#religion_select').val(newStaffData.religion)
+            $j('select#religiousclergylay_select').val(newStaffData.religiousclergylay)
             $j('select[name="StaffStatus"]').val(newStaffData.staff_type)
+            $j('select#fte_select').val(newStaffData.fte)
+            $j('select#license_microsoft_select').val(newStaffData.license_microsoft)
 
             // Build email
             const clean = str => (str || '').trim().replace(/\s+/g, '-'); // trim and replace internal spaces with dashes
@@ -93,10 +154,7 @@
             const buildEmail = (`${emailPrefix}${cleanedFirst}-${cleanedLast}@cdolinc.net`).toLowerCase()
             $j('input[name="email_addr"]').val(buildEmail)
 
-            //  custom fields 
-            $j('form#staffCreateForm').append(
-                `<input type="hidden" name="License_Microsoft" value="${newStaffData.license_microsoft}">`
-            )
+
 
             // Clear data
             sessionStorage.removeItem('newStaffData')
