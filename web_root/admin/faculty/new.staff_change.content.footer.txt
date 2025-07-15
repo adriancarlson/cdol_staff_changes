@@ -36,15 +36,18 @@
     <tr id="staffChangeLegalNameTR">
         <td><strong>Legal Name (First, Middle, Last)</strong></td>
         <td>
-            <input type="text" id="staff_change_legal_first_name" name="legal_first_name" value="" size="15">
-            <input type="text" id="staff_change_legal_middle_name" name="legal_middle_name" value="" size="10">
-            <input type="text" id="staff_change_legal_last_name" name="legal_last_name" value="" size="15">
+            <input type="text" id="staff_change_legal_first_name" name="[Users.userscorefields]pscore_legal_first_name"
+                value="" size="15">
+            <input type="text" id="staff_change_legal_middle_name"
+                name="[Users.userscorefields]pscore_legal_middle_name" value="" size="10">
+            <input type="text" id="staff_change_legal_last_name" name="[Users.userscorefields]pscore_legal_last_name"
+                value="" size="15">
         </td>
     </tr>
     <tr id="staffChangeReligionTR">
         <td><strong>Religion</strong></td>
         <td>
-            <select id="religion_select" name="religion">
+            <select id="religion_select" name="[Users.S_USR_NCEA_X]ReligiousAffiliation">
                 <option value="">Select affiliation</option>
                 <option value="C">C - Catholic</option>
                 <option value="N">N - Non-Catholic</option>
@@ -54,7 +57,7 @@
     <tr id="staffChangeReligiousClergyLayTR">
         <td><strong>Religious Clergy Lay</strong></td>
         <td>
-            <select id="religiousclergylay_select" name="religiousclergylay">
+            <select id="religiousclergylay_select" name="[Users.S_USR_NCEA_X]ReligiousClergyLay">
                 <option value="">Select </option>
                 <option value="R">R - Religious</option>
                 <option value="C">C - Clergy</option>
@@ -65,7 +68,7 @@
     <tr id="staffChangeFteTR">
         <td><strong>FTE</strong></td>
         <td>
-            <select id="fte_select" name="fte">
+            <select id="fte_select" name="[schoolstaff.s_ssf_ncea_x]FTE_Code">
                 <option value="">Select FTE (this school only)</option>
                 <option value="FT">FT - Full-time</option>
                 <option value="PT">PT - Part-time</option>
@@ -75,12 +78,21 @@
     <tr id="staffChangeLicenseMicrosoftTR">
         <td><strong>Microsoft License</strong></td>
         <td>
-            <select id="license_microsoft_select" name="License_Microsoft">
+            <select id="license_microsoft_select" name="[Users.U_USERS_ADDITIONAL_INFO]License_Microsoft">
                 <option value="A1">A1 (Free)</option>
                 <option value="A3" selected="">A3 (Paid)</option>
             </select>
         </td>
 </table>
+
+<input type="hidden" id="legal_first_name" name="legal_first_name" value="">
+<input type="hidden" id="legal_middle_name" name="legal_middle_name" value="">
+<input type="hidden" id="legal_last_name" name="legal_last_name" value="">
+<input type="hidden" id="legal_gender" name="[Users.userscorefields]PSCore_Legal_Gender" value="">
+<input type="hidden" id="religion" name="religion" value="">
+<input type="hidden" id="religiousclergylay" name="religiousclergylay" value="">
+<input type="hidden" id="fte" name="fte" value="">
+<input type="hidden" id="license_microsoft" name="license_microsoft" value="">
 
 <script type="text/javascript">
     $j(() => {
@@ -114,6 +126,14 @@
 
         $j("#newPageTRStaffType").insertBefore($j("#newPageTRSchoolName"))
         $j("#staffChangeLicenseMicrosoftTR").insertAfter($j("#newPageTRSchoolName"))
+        $j(".button-row").append($j('#legal_first_name'))
+        $j(".button-row").append($j('#legal_middle_name'))
+        $j(".button-row").append($j('#legal_last_name'))
+        $j(".button-row").append($j('#legal_gender'))
+        $j(".button-row").append($j('#religion'))
+        $j(".button-row").append($j('#religiousclergylay'))
+        $j(".button-row").append($j('#fte'))
+        $j(".button-row").append($j('#license_microsoft'))
 
         $j("#staffchangeCustomTable").remove()
 
@@ -136,15 +156,23 @@
             $j('input[name="middle_name"]').val(newStaffData.middle_name)
             $j('input[name="Last_Name"]').val(newStaffData.last_name)
             $j('input#staff_change_legal_first_name').val(newStaffData.legal_first_name)
+            $j('input#legal_first_name').val(newStaffData.legal_first_name)
             $j('input#staff_change_legal_middle_name').val(newStaffData.legal_middle_name)
+            $j('input#legal_middle_name').val(newStaffData.legal_middle_name)
             $j('input#staff_change_legal_last_name').val(newStaffData.legal_last_name)
+            $j('input#legal_last_name').val(newStaffData.legal_last_name)
             $j('select[name="gender"]').val(newStaffData.gender)
+            $j('input#legal_gender').val(newStaffData.gender)
             $j('input[name="dob"]').val(newStaffData.dob)
             $j('select#religion_select').val(newStaffData.religion)
+            $j('input#religion').val(newStaffData.religion)
+            $j('input#religiousclergylay').val(newStaffData.religiousclergylay)
             $j('select#religiousclergylay_select').val(newStaffData.religiousclergylay)
             $j('select[name="StaffStatus"]').val(newStaffData.staff_type)
             $j('select#fte_select').val(newStaffData.fte)
+            $j('input#fte').val(newStaffData.fte)
             $j('select#license_microsoft_select').val(newStaffData.license_microsoft)
+            $j('input#license_microsoft').val(newStaffData.license_microsoft)
 
             // Build email
             const clean = str => (str || '').trim().replace(/\s+/g, '-'); // trim and replace internal spaces with dashes
