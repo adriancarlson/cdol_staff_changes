@@ -669,7 +669,7 @@ define(function (require) {
 
 					const lmsCondition = formPayload => formPayload.lms_created
 
-					const canvaCondition = formPayload => formPayload.canva_created
+					const canvaCondition = formPayload => formPayload.canva_created || formPayload.canva_ignored
 
 					switch (key) {
 						case 'newStaff':

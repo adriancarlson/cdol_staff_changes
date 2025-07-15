@@ -223,15 +223,27 @@
                     <div class="card">
                         <div
                             class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
-                            <input class="form-check-input me-1" type="checkbox" id="canva"
-                                data-ng-model="submitPayload[userContext.pageContext].canva_created">
-                            <label class="form-check-label stretched-link" for="canva">Canva<span data-ng-switch
-                                    on="submitPayload[userContext.pageContext].change_type">
-                                    <span data-ng-switch-when="newStaff"> Created</span>
-                                    <span data-ng-switch-when="transferringStaff"> Moved</span>
-                                    <span data-ng-switch-when="nameChange"> Transferred</span>
-                                    <span data-ng-switch-when="exitingStaff"> Transferred</span>
-                                </span>?</label>
+                            <div class="row">
+                                <div class="col-auto me-auto">
+                                    <input class="form-check-input me-1" tid="canva_created" type="checkbox"
+                                        data-ng-model="submitPayload[userContext.pageContext].canva_created"
+                                        data-ng-disabled="submitPayload[userContext.pageContext].canva_ignored">
+                                    <label class="form-check-label" for="canva_created">Canva<span data-ng-switch
+                                            on="submitPayload[userContext.pageContext].change_type">
+                                            <span data-ng-switch-when="newStaff"> Created</span>
+                                            <span data-ng-switch-when="transferringStaff"> Moved</span>
+                                            <span data-ng-switch-when="nameChange"> Transferred</span>
+                                            <span data-ng-switch-when="exitingStaff"> Transferred</span>
+                                        </span>?</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input class="form-check-input me-1" id="canva_ignored" type="checkbox"
+                                        data-ng-model="submitPayload[userContext.pageContext].canva_ignored"
+                                        data-ng-disabled="submitPayload[userContext.pageContext].canva_created">
+                                    <label class="form-check-label" for="canva_ignored"><em>Not
+                                            Applicable</em></label>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body p-0" data-ng-switch
                             on="submitPayload[userContext.pageContext].change_type">
@@ -245,7 +257,8 @@
                             <ul class="list-group list-group-flush m-0" data-ng-switch-when="transferringStaff">
                                 <li class="list-group-item">Email sent to
                                     {{submitPayload[userContext.pageContext].first_name}}
-                                    {{submitPayload[userContext.pageContext].last_name}} explaining how Canva projects
+                                    {{submitPayload[userContext.pageContext].last_name}} explaining how Canva
+                                    projects
                                     work, including how to navigate between multiple teams
                                     and share projects across them?</li>
                                 <li class="list-group-item">Canva account moved properly to new school team?</li>
@@ -262,12 +275,15 @@
                         <div class="card-body p-0" data-ng-switch
                             on="submitPayload[userContext.pageContext].change_type">
                             <ul class="list-group list-group-flush m-0" data-ng-switch-when="exitingStaff">
-                                <li class="list-group-item">Did {{submitPayload[userContext.pageContext].first_name}}
-                                    {{submitPayload[userContext.pageContext].last_name}} download any desired projects?
+                                <li class="list-group-item">Did
+                                    {{submitPayload[userContext.pageContext].first_name}}
+                                    {{submitPayload[userContext.pageContext].last_name}} download any desired
+                                    projects?
                                 </li>
                                 <li class="list-group-item">Did
                                     {{submitPayload[userContext.pageContext].first_name}}
-                                    {{submitPayload[userContext.pageContext].last_name}}'s projects get transferred to
+                                    {{submitPayload[userContext.pageContext].last_name}}'s projects get transferred
+                                    to
                                     {{submitPayload[userContext.pageContext].replace_first_name}}
                                     {{submitPayload[userContext.pageContext].replace_last_name}}?
                                 </li>
