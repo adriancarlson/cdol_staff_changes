@@ -9,5 +9,8 @@
         $j('.postvals').append(`<input type="hidden" name="[Users.S_USR_NCEA_X]ReligiousClergyLay" value="~[gpv:religiousclergylay;;encodehtml]">`)
         $j('.postvals').append(`<input type="hidden" name="[schoolstaff.s_ssf_ncea_x]FTE_Code" value="~[gpv:fte;;encodehtml]">`)
         $j('.postvals').append(`<input type="hidden" name="[Users.U_USERS_ADDITIONAL_INFO]License_Microsoft" value="~[gpv:License_Microsoft;;encodehtml]">`)
+        $j('.postvals').append(`<input type="hidden" name="sp.globalid.for.teacher" value="~[gpv:sp.globalid.for.teacher;;encodehtml]">`)
+        $j('.postvals').append(`<input type="hidden" name="commonUser.openIdUserAccountId" value="~[gpv:commonUser.openIdUserAccountId;;encodehtml]">`)
+        $j('.postvals').append(`<input type="hidden" name="ac" value="sp.globalid.save.teacher">`)
     })
 </script>

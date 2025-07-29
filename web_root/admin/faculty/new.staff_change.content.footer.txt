@@ -93,6 +93,9 @@
 <input type="hidden" id="religiousclergylay" name="religiousclergylay" value="">
 <input type="hidden" id="fte" name="fte" value="">
 <input type="hidden" id="license_microsoft" name="license_microsoft" value="">
+<input type="hidden" id="sp.globalid.for.teacher" name="sp.globalid.for.teacher" value="" />
+<input type="hidden" id="commonUser.openIdUserAccountId" name="commonUser.openIdUserAccountId" value="">
+<input type="hidden" name="ac" value="sp.globalid.save.teacher">
 
 <script type="text/javascript">
     $j(() => {
@@ -181,6 +184,8 @@
             const emailPrefix = prefixTitles.includes(title) ? title.toLowerCase() : ''
             const buildEmail = (`${emailPrefix}${cleanedFirst}-${cleanedLast}@cdolinc.net`).toLowerCase()
             $j('input[name="email_addr"]').val(buildEmail)
+            $j('input#sp.globalid.for.teacher').val(buildEmail)
+            $j('input#commonUser.openIdUserAccountId').val(buildEmail)
 
 
 
