@@ -23,5 +23,6 @@
     LEFT JOIN u_users_additional_info 
         ON users.dcid = u_users_additional_info.usersdcid
     WHERE 
-        schoolstaff.status = 1
+    (users.homeschoolid = '~(gpv.curSchoolID)' OR '~(gpv.curSchoolID)' = 0)
+        AND schoolstaff.status in ('~(gpv.staffStatus)')
 ]~(data)[/tlist_sql]

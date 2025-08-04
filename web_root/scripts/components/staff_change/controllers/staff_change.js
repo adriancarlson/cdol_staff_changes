@@ -385,8 +385,13 @@ define(function (require) {
 			$scope.formDisplay = async (pageContext, prevContext, direction) => {
 				$scope.userContext.pageContext = pageContext
 				$scope.userContext.prevContext = prevContext
+
+				let usersDataParams = {
+					curSchoolID: $scope.userContext.curSchoolId,
+					staffStatus: '1'
+				}
 				//load user data now needed on all forms
-				await $scope.getJSONData('usersData')
+				await $scope.getJSONData('usersData', usersDataParams)
 
 				//only loading school data if it is needed
 				if (pageContext === 'transferringStaff' || pageContext === 'newStaff' || pageContext === 'subStaff') {
