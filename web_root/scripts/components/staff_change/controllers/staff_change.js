@@ -387,9 +387,10 @@ define(function (require) {
 				$scope.userContext.prevContext = prevContext
 
 				let usersDataParams = {
-					curSchoolID: $scope.userContext.curSchoolId,
-					staffStatus: '1'
+					curSchoolID: $scope.userContext.pageContext === 'transferringStaff' ? '0' : $scope.userContext.curSchoolId,
+					staffStatus: $scope.userContext.pageContext === 'transferringStaff' ? '1,2' : '1'
 				}
+
 				//load user data now needed on all forms
 				await $scope.getJSONData('usersData', usersDataParams)
 
