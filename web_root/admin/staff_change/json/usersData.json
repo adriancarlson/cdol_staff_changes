@@ -2,45 +2,48 @@
     SELECT 
         json_arrayagg(
             json_object(
-                'identifier' VALUE identifier,
+                'identifier' VALUE users_dcid,
                 'title' VALUE title,
                 'first_name' VALUE first_name,
                 'last_name' VALUE last_name,
-                'staff_status' VALUE staff_status,  -- <== Added here
                 'email_addr' VALUE email_addr,
                 'license_microsoft' VALUE license_microsoft,
                 'homeschoolid' VALUE homeschoolid,
                 'homeschoolname' VALUE homeschoolname,
-                'schoolstaff_dcid' VALUE schoolstaff_dcid
+                'staff_status' VALUE staff_status
                 RETURNING CLOB
             )
-            ORDER BY last_name, first_name
             RETURNING CLOB
-        )
+    )
     FROM (
-        SELECT 
-            users.dcid AS identifier,
+        SELECT
+            users.dcid AS users_dcid,
             users.title,
             users.first_name,
             users.last_name,
-            schoolstaff.status AS staff_status,
             users.email_addr,
             u_users_additional_info.license_microsoft,
             users.homeschoolid,
             schools.name AS homeschoolname,
-            schoolstaff.dcid AS schoolstaff_dcid,
+            schoolstaff.status AS staff_status,
             ROW_NUMBER() OVER (
-                PARTITION BY users.dcid
-                ORDER BY schoolstaff.status ASC, schoolstaff.dcid DESC
+                PARTITION BY users.dcid, users.first_name, users.last_name
+                ORDER BY 
+                    CASE WHEN schoolstaff.status = 1 THEN 0 ELSE 1 END,
+                    schoolstaff.dcid DESC
             ) AS rn
         FROM 
             schoolstaff
-        INNER JOIN users ON users.dcid = schoolstaff.users_dcid
-        LEFT JOIN schools ON users.homeschoolid = schools.school_number
-        LEFT JOIN u_users_additional_info ON users.dcid = u_users_additional_info.usersdcid
+        INNER JOIN users
+            ON users.dcid = schoolstaff.users_dcid
+        LEFT JOIN schools 
+            ON users.homeschoolid = schools.school_number
+        LEFT JOIN u_users_additional_info 
+            ON users.dcid = u_users_additional_info.usersdcid
         WHERE 
-            (users.homeschoolid = '~(gpv.curSchoolID)' OR '~(gpv.curSchoolID)' = 0)
-            AND schoolstaff.status IN (~(gpv.staffStatus))
-    )
+            schoolstaff.status IN (1, 2)
+            AND (users.homeschoolid = '~(gpv.curSchoolID)' OR '~(gpv.curSchoolID)' = 0)
+            AND users.dcid NOT IN (1,5,5858,5859,5907)
+        ) filtered
     WHERE rn = 1
 ]~(data)[/tlist_sql]

@@ -15,16 +15,35 @@
                             data-ng-model="submitPayload.transferringStaff.users_dcid" data-ng-required="true"
                             data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.transferringStaff.users_dcid, 'users_dcid')">
                             <option selected></option>
-                            ~[tlist_sql;SELECT DISTINCT
-                            users.dcid,
+                            ~[tlist_sql;
+                            SELECT
+                            users_dcid,
+                            first_name,
+                            last_name,
+                            CASE WHEN status = 1 THEN '' ELSE '*' END,
+                            schoolstaff_dcid
+                            FROM (
+                            SELECT
+                            users.dcid AS users_dcid,
+                            schoolstaff.dcid AS schoolstaff_dcid,
                             users.first_name,
-                            users.last_name
-                            FROM SCHOOLSTAFF
-                            inner join users
-                            on users.dcid = schoolstaff.users_dcid
-                            WHERE schoolstaff.status = 1
-                            Order BY users.last_name , users.first_name]
-                            <option value="~(dcid)">~(first) ~(last)</option>
+                            users.last_name,
+                            schoolstaff.status,
+                            ROW_NUMBER() OVER (
+                            PARTITION BY users.dcid, users.first_name, users.last_name
+                            ORDER BY
+                            CASE WHEN schoolstaff.status = 1 THEN 0 ELSE 1 END,
+                            schoolstaff.dcid DESC
+                            ) AS rn
+                            FROM
+                            schoolstaff
+                            INNER JOIN users ON users.dcid = schoolstaff.users_dcid
+                            )
+                            WHERE rn = 1
+                            AND users_dcid NOT IN (1,5,5858,5859,5907)
+                            ORDER BY
+                            last_name, first_name]
+                            <option value="~(dcid)">~(first) ~(last) ~(status)</option>
                             [/tlist_sql]
                             <option value="-1">Other</option>
                         </select>
