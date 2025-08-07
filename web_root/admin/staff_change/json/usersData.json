@@ -24,7 +24,7 @@
             users.email_addr,
             u_users_additional_info.license_microsoft,
             users.homeschoolid,
-            schools.name AS homeschoolname,
+            CASE WHEN schools.name IS NULL THEN 'Diocesan Office' ELSE schools.name END AS homeschoolname,
             schoolstaff.status AS staff_status,
             ROW_NUMBER() OVER (
                 PARTITION BY users.dcid, users.first_name, users.last_name
