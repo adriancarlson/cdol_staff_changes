@@ -53,8 +53,10 @@
                                 data-ng-if="!submitPayload.transferringStaff.users_dcid"><em> * indicates inactive staff
                                     member</em></small>
                             <small
-                                data-ng-if="submitPayload.transferringStaff.users_dcid && submitPayload.transferringStaff.staff_status"><em>
-                                    Well Hello there</em></small>
+                                data-ng-if="submitPayload.transferringStaff.users_dcid && submitPayload.transferringStaff.staff_status == 2"><em>
+                                    inactive staff <span
+                                        data-ng-if="submitPayload.transferringStaff.prev_school_name">previously at
+                                        {{submitPayload.transferringStaff.prev_school_name}}</span></em></small>
                         </span>
                     </div>
                 </div>
