@@ -4,7 +4,7 @@
         <div class="card-body">
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">
-                    <div class="col-auto">
+                    <div class="col-6">
                         <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Who is
                             Transferring-In
                             to {{ userContext.curSchoolName }}?</label><span class="text-muted"
@@ -46,7 +46,16 @@
                             <option value="~(dcid)">~(first) ~(last) ~(status)</option>
                             [/tlist_sql]
                             <option value="-1">Other</option>
-                        </select>
+                        </select><span><small class="text-muted"></small></span>
+                    </div>
+                    <div class="col-3">
+                        <span class="text-muted" data-ng-if="userContext.pageStatus =='Submit'"><small
+                                data-ng-if="!submitPayload.transferringStaff.users_dcid"><em> * indicates inactive staff
+                                    member</em></small>
+                            <small
+                                data-ng-if="submitPayload.transferringStaff.users_dcid && submitPayload.transferringStaff.staff_status"><em>
+                                    Well Hello there</em></small>
+                        </span>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
