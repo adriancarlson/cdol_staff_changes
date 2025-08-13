@@ -76,5 +76,6 @@
         <field name="canva_middle_name" type="String" length="100" />
         <field name="canva_last_name" type="String" length="100" />
         <field name="staff_status" type="Integer"/>
+        <field name="replace_staff_status" type="Integer"/>
     </extendedTable>
 </psExtension>
