@@ -373,8 +373,8 @@
                                             users.dcid,
                                             users.first_name,
                                             users.last_name
-                                            FROM SCHOOLSTAFF
-                                            inner join users
+                                            FROM schoolstaff
+                                            INNER JOIN users
                                             on users.dcid = schoolstaff.users_dcid
                                             WHERE schoolstaff.status = 1
                                             ~[if.is.a.school]

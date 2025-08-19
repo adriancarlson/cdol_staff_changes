@@ -484,10 +484,12 @@ define(function (require) {
 							const prefix = field === 'replace_dcid' ? 'replace_' : 'canva_'
 							// Set an empty object
 							const dynamicObject = {}
+
 							// Find all the keys in the found item and add the prefix to the front of the key
 							// Keep the same value and set those key-value pairs to dynamicObject
 							for (let key in foundItem) {
 								if (foundItem.hasOwnProperty(key)) {
+									if (key.startsWith('$$')) continue
 									// Skip license_microsoft if prefix is canva_
 									if (prefix === 'canva_' && key === 'license_microsoft') continue
 									dynamicObject[`${prefix}${key}`] = foundItem[key]

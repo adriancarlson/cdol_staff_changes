@@ -277,10 +277,20 @@
                                             data-ng-required="true"
                                             data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.transferringStaff.replace_dcid, 'replace_dcid')">
                                             <option selected></option>
-                                            <option data-ng-repeat="user in $parent.usersData"
-                                                value="{{user.identifier}}">
-                                                {{user.first_name}} {{user.last_name}} {{user.staff_status}}
-                                            </option>
+                                            ~[tlist_sql;SELECT
+                                            users.dcid,
+                                            users.first_name,
+                                            users.last_name
+                                            FROM schoolstaff
+                                            INNER JOIN users
+                                            on users.dcid = schoolstaff.users_dcid
+                                            WHERE schoolstaff.status = 1
+                                            ~[if.is.a.school]
+                                            AND schoolstaff.schoolid = ~(curschoolid)
+                                            [/if.is.a.school]
+                                            Order BY users.last_name , users.first_name]
+                                            <option value="~(dcid)">~(first) ~(last)</option>
+                                            [/tlist_sql]
                                             <option value="-1">-- Other --</option>
                                         </select>
                                     </div>
