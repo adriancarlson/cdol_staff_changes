@@ -675,7 +675,7 @@ define(function (require) {
 
 					const o365Condition = formPayload => formPayload.o365_created || formPayload.o365_ignored
 
-					const lmsCondition = formPayload => formPayload.lms_created
+					const lmsCondition = formPayload => formPayload.lms_created || formPayload.lms_ignored
 
 					const canvaCondition = formPayload => formPayload.canva_created || formPayload.canva_ignored
 

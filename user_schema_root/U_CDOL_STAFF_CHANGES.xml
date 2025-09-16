@@ -26,6 +26,7 @@
         <field name="ad_created" type="Boolean" />
         <field name="ad_ignored" type="Boolean" />
         <field name="lms_created" type="Boolean" />
+        <field name="lms_ignored" type="Boolean" />
         <field name="dob" type="Date" />
         <field name="name_change" type="String" length="100" />
         <field name="early_setup" type="String" length="5" />
