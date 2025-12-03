@@ -42,7 +42,7 @@
             ON users.dcid = u_users_additional_info.usersdcid
         WHERE 
             schoolstaff.status IN (1, 2)
-            AND (users.homeschoolid = '~(gpv.curSchoolID)' OR '~(gpv.curSchoolID)' = 0)
+            AND (schoolstaff.schoolid = '~(gpv.curSchoolID)' OR '~(gpv.curSchoolID)' = 0)
             AND users.dcid NOT IN (1,5,5858,5859,5907)
         ) filtered
     WHERE rn = 1

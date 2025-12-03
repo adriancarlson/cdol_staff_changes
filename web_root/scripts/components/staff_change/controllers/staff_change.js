@@ -259,6 +259,7 @@ define(function (require) {
 				checkBoxKeys: ['_created', '_ignored'],
 				deleteKeys: ['_radio', 'homeschool', 'identifier', 'email_addr']
 			}
+
 			//initilazing empty payload
 			$scope.submitPayload = {}
 
