@@ -151,23 +151,23 @@ define(function (require) {
 				new Date(`01/01/${curYear}`), // New Year's Day
 				new Date(`01/02/${curYear}`), // Christmas Break
 				new Date(`01/03/${curYear}`), // Christmas Break
-				new Date(`01/20/${curYear}`), // MLK Jr. Day
-				new Date(`04/17/${curYear}`), // Holy Thursday
-				new Date(`04/18/${curYear}`), // Good Friday
-				new Date(`04/19/${curYear}`), // Saturday
-				new Date(`04/20/${curYear}`), // Easter
-				new Date(`04/21/${curYear}`), // Easter Monday
-				new Date(`04/22/${curYear}`), // Easter Tuesday
-				new Date(`05/26/${curYear}`), // Memorial Day
-				new Date(`05/29/${curYear}`), // Ascension Day
+				new Date(`01/04/${curYear}`), // Christmas Break
+				new Date(`01/19/${curYear}`), // MLK Jr. Day
+				new Date(`04/02/${curYear}`), // Holy Thursday
+				new Date(`04/03/${curYear}`), // Good Friday
+				new Date(`04/04/${curYear}`), // Saturday
+				new Date(`04/05/${curYear}`), // Easter
+				new Date(`04/06/${curYear}`), // Easter Monday
+				new Date(`04/07/${curYear}`), // Easter Tuesday
+				new Date(`05/25/${curYear}`), // Memorial Day
+				new Date(`05/14/${curYear}`), // Ascension Day
 				new Date(`07/01/${curYear}`), // PowerSchool Roll Over
-				new Date(`07/04/${curYear}`), // Independence Day
-				new Date(`08/15/${curYear}`), // Assumption of Mary
-				new Date(`09/01/${curYear}`), // Labor Day
-				new Date(`11/01/${curYear}`), // All Saints' Day
+				new Date(`07/03/${curYear}`), // Independence Day
+				new Date(`09/07/${curYear}`), // Labor Day
+				new Date(`11/02/${curYear}`), // All Saints' Day
+				new Date(`11/25/${curYear}`), // Thanksgiving Break
 				new Date(`11/26/${curYear}`), // Thanksgiving Break
 				new Date(`11/27/${curYear}`), // Thanksgiving Break
-				new Date(`11/28/${curYear}`), // Thanksgiving Break
 				new Date(`12/08/${curYear}`), // Immaculate Conception
 				new Date(`12/23/${curYear}`), // Christmas Break
 				new Date(`12/24/${curYear}`), // Christmas Break
