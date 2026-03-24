@@ -174,6 +174,16 @@
                                     aria-label="Last name" data-ng-model="submitPayload.subStaff.last_name"
                                     data-ng-blur="submitPayload.subStaff.last_name = (submitPayload.subStaff.last_name | titleCase);dupeSearch(userContext.pageContext, submitPayload[userContext.formType])"
                                     data-ng-required="true">
+                                <button type="button" class="button m-0 p-2 ps-1"
+                                    title="Only available at {{submitPayload.subStaff.schoolid | schoolName}}"
+                                    data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && !submitPayload.subStaff.ps_created && submitPayload.subStaff.sub_type == 'LTS'"
+                                    data-ng-click="openNewStaffRecord(submitPayload.subStaff)" target="_blank"
+                                    data-ng-disabled="userContext.curSchoolId != submitPayload.subStaff.schoolid">New
+                                    Staff
+                                    Record <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
+                                        pds-widget="pds-widget"
+                                        style="zoom: 0.55; color: white; fill: white;"></pds-icon>
+                                </button>
                                 <a type="button" class="button m-0 p-2 ps-1"
                                     data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && subPrevStaffData[0].ssdcid"
                                     data-ng-href="/admin/faculty/editpw.html?frn=005{{subPrevStaffData[0].ssdcid}}"
@@ -277,7 +287,7 @@
                     <div class="row align-items-center mb-3">
                         <div class="col-auto">
                             <label for="sub-staff-personal-email" class="form-label form-label-sm  label-reset">Personal
-                                Email <span class="text-muted"><small><em>(for communication during account setup and
+                                Email <span class="text-muted"><small><em>(for communication during account setup andF
                                             summer
                                             trainings)</em></small></span></label>
                             <input id="sub-staff-personal-email" type="text" class="form-control form-control-sm"
@@ -454,7 +464,7 @@
                                     <div class="row align-items-center mb-3"
                                         data-ng-if="submitPayload.subStaff.replace_dcid == -1">
                                         <div class="col-6">
-                                            <label for="exiting-staff-name"
+                                            <label for="sub-staff-name"
                                                 class="form-label form-label-sm  label-reset staff-change-req">Name
                                                 of the staff member
                                                 {{submitPayload.subStaff.title}} {{
