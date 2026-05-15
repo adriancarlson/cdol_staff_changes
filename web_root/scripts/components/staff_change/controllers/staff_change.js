@@ -303,12 +303,16 @@ define(function (require) {
 			}
 			//had to switch from PQ's to pulling this data through t_list SQL and JSON files because of PowerSchools Data Restriction Framework on PQs
 			$scope.getJSONData = async (resource, params = {}) => {
-				if (!$scope[resource]) {
+				const paramSignature = JSON.stringify(params)
+				const paramSignatureKey = `${resource}ParamSignature`
+
+				if (!$scope[resource] || $scope[paramSignatureKey] !== paramSignature) {
 					const res = await $http({
 						url: `/admin/staff_change/json/${resource}.json`,
 						method: 'GET',
 						params: params
 					})
+					$scope[paramSignatureKey] = paramSignature
 					$scope[resource] = res.data || []
 					// Convert all numeric values in each object to stringsl
 					$scope[resource] = $scope[resource].map(obj => {
@@ -449,8 +453,16 @@ define(function (require) {
 				if (identifier && identifier != -1) {
 					// find the field in the dataset (resource) passed in
 					let foundItem = $scope[resource].find(item => {
-						return item.identifier === identifier
+						return item.identifier && item.identifier.toString() === identifier.toString()
 					})
+
+					if (!foundItem) {
+						psAlert({
+							title: 'Staff Lookup Error',
+							message: 'The selected staff member could not be loaded. Please reselect the staff member before continuing.'
+						})
+						return
+					}
 					//if the resource is school data then set the prev_school_name to the school name of the dataset (resource) passed in
 					if (resource === 'schoolsData') {
 						$scope.submitPayload[pageContext].prev_school_name = foundItem.schoolname
@@ -588,6 +600,45 @@ define(function (require) {
 				}
 			}
 
+			const isMissingStaffName = formPayload => !formPayload.first_name || !formPayload.last_name
+
+			const findUserDataByDcid = dcid => {
+				if (!dcid || !$scope.usersData) return
+				return $scope.usersData.find(user => user.identifier && user.identifier.toString() === dcid.toString())
+			}
+
+			$scope.hydrateTransferringStaffName = async formPayload => {
+				if (formPayload.change_type !== 'transferringStaff' || !formPayload.users_dcid || formPayload.users_dcid == -1 || !isMissingStaffName(formPayload)) return true
+
+				await $scope.getJSONData('usersData', {
+					curSchoolID: '0',
+					staffStatus: '1,2'
+				})
+
+				const foundStaff = findUserDataByDcid(formPayload.users_dcid)
+				if (!foundStaff) return false
+
+				;['title', 'first_name', 'last_name', 'license_microsoft', 'staff_status'].forEach(key => {
+					formPayload[key] = foundStaff[key]
+				})
+				formPayload.prev_school_number = formPayload.prev_school_number || foundStaff.homeschoolid
+				formPayload.prev_school_name = formPayload.prev_school_name || foundStaff.homeschoolname
+				return !isMissingStaffName(formPayload)
+			}
+
+			$scope.validateStaffChangePayload = async formPayload => {
+				if (formPayload.change_type !== 'transferringStaff') return true
+
+				const hydrated = await $scope.hydrateTransferringStaffName(formPayload)
+				if (hydrated && !isMissingStaffName(formPayload)) return true
+
+				psAlert({
+					title: 'Missing Transferring-In Staff Name',
+					message: 'The selected transferring-in staff member did not load a first and last name. Please reselect the staff member and submit again.'
+				})
+				return false
+			}
+
 			$scope.createStaffChange = async () => {
 				loadingDialog()
 				//adding generic fields and values needed for any payload
@@ -603,9 +654,14 @@ define(function (require) {
 				// delete formatKeys key that is not needed for POST API Call
 				delete createFormatKeys['checkBoxKeys']
 				//loop though submitPayload object
-				Object.keys($scope.submitPayload).forEach(async (key, index) => {
+				for (const key of Object.keys($scope.submitPayload)) {
 					let formPayload = $scope.submitPayload[key]
 					formPayload.change_type = key
+
+					if (!(await $scope.validateStaffChangePayload(formPayload))) {
+						closeLoading()
+						return
+					}
 
 					if (formPayload.change_type == 'exitingStaff') {
 						formPayload.old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => formPayload.first_name.startsWith(prefix)) && formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name}`
@@ -650,7 +706,7 @@ define(function (require) {
 					}
 
 					formPayload.staffChangeId = staffChangeId
-				})
+				}
 				//sending to confirm screen after submission
 				$scope.formDisplay('confirm', $scope.userContext.pageContext)
 				closeLoading()
@@ -664,9 +720,14 @@ define(function (require) {
 				//delete updateFormatKeys key not needed for PUT API Call
 				delete updateFormatKeys['deleteKeys']
 
-				Object.keys($scope.submitPayload).forEach(async (key, index) => {
+				for (const key of Object.keys($scope.submitPayload)) {
 					let formPayload = $scope.submitPayload[key]
 					formPayload.change_type = key
+
+					if (!(await $scope.validateStaffChangePayload(formPayload))) {
+						closeLoading()
+						return
+					}
 
 					//add updateFormatKeys to each object in submitPayload
 					formPayload = Object.assign(formPayload, updateFormatKeys)
@@ -751,7 +812,7 @@ define(function (require) {
 						await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', formPayload, $scope.userContext.staffChangeId)
 						$scope.toListRedirect(form)
 					}
-				})
+				}
 				closeLoading()
 			}
 
