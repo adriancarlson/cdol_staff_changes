@@ -79,5 +79,8 @@
         <field name="staff_status" type="Integer"/>
         <field name="replace_staff_status" type="Integer"/>
         <field name="canva_staff_status" type="Integer"/>
+        <field name="ipad_needed" type="Integer" />
+        <field name="ipad_created" type="Boolean" />
+        <field name="ipad_ignored" type="Boolean" />
     </extendedTable>
 </psExtension>

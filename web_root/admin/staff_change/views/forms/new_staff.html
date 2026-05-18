@@ -233,7 +233,7 @@
                     <div class="col-4">
                         <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
                             class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
-                                data-ng-if="submitPayload.newStaff.deadline =='06/30/2024'">We recommend June
+                                data-ng-if="submitPayload.newStaff.deadline =='06/30/2026'">We recommend June
                                 30<sup>th</sup> for all new staff that will start next school year.<br></span> Please
                             allow <strong><em>at least</em></strong> 3 business days for account creation.
                         </div>
@@ -539,6 +539,47 @@
                                                 tabindex="0">
                                             <label class="form-check-label"
                                                 for="additional-schoolid-radio-no">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.newStaff.first_name">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header fw-semibold ps-1">iPad Information</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label for="new-staff-license-microsoft"
+                                            class="form-label form-label-sm label-reset staff-change-req">Will
+                                            {{submitPayload.newStaff.title}} {{submitPayload.newStaff.first_name}}
+                                            {{submitPayload.newStaff.last_name}} be assigned an iPad and need a JAMF
+                                            account created for them?</label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="ipad-radio-group"
+                                                id="ipad-radio-yes" data-ng-model="submitPayload.newStaff.ipad_needed"
+                                                value="1" data-ng-required="!submitPayload.newStaff.ipad_needed"
+                                                tabindex="0">
+                                            <label class="form-check-label" for="ipad-radio-yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="ipad-radio-group"
+                                                id="ipad-radio-no" data-ng-model="submitPayload.newStaff.ipad_needed"
+                                                value="0" data-ng-required="!submitPayload.newStaff.ipad_needed"
+                                                tabindex="0">
+                                            <label class="form-check-label" for="ipad-radio-no">No</label>
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <div class="col-7" data-ng-if="userContext.pageStatus =='Submit'">
+                                        <div class="alert alert-primary" role="alert"><i
+                                                class="bi bi-chat-right-text-fill"></i>
+                                            Typically, only Teachers and some Paras are issued iPads. Please check
+                                            with your school administrator before checking yes.<br>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
