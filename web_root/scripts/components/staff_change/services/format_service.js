@@ -163,8 +163,13 @@ define(function (require) {
 					objKeys.forEach(keyName => {
 						// looping through first object
 						iterKeys.forEach(iterKey => {
-							// using index of to check if the object key name have a matched string if so deleting it from the payload
-							if (keyName.indexOf(iterKey) !== -1) {
+							const isMatch = iterType.includes('delete')
+								? keyName.indexOf(iterKey) !== -1
+								: iterKey.charAt(0) === '_'
+									? keyName.slice(-iterKey.length) === iterKey
+									: keyName === iterKey
+
+							if (isMatch) {
 								// if iterType contains delete than delete the key
 								if (iterType.includes('delete')) {
 									delete obj[keyName]

@@ -64,9 +64,20 @@ define(function (require) {
 						res => {
 							switch (method) {
 								case 'POST':
-								case 'PUT':
-									deferredResponse.resolve(res.data.result[0].success_message.id || [])
+								case 'PUT': {
+									const result = res.data && res.data.result && res.data.result[0]
+									const successMessage = result && result.success_message
+									const errorMessage = result && result.error_message
+
+									if (errorMessage) {
+										psAlert({ message: errorMessage, title: `${method} Error` })
+										deferredResponse.reject(errorMessage)
+										break
+									}
+
+									deferredResponse.resolve((successMessage && successMessage.id) || recId || [])
 									break
+								}
 								case 'GET':
 									let resData = res.data.tables[tableName]
 									if (apiPayload.dateKeys) {
