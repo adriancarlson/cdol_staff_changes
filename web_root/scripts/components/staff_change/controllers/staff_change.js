@@ -690,6 +690,7 @@ define(function (require) {
 							curDate: $scope.userContext.curDate,
 							curTime: $scope.userContext.curTime,
 							userEmail: $scope.userContext.curUserEmail,
+							isTestServer: $scope.userContext.isTestServer,
 							readableChangeType: formPayload.change_type === 'subStaff' ? `${formatService.changeMap(formPayload.change_type)} (${formPayload.sub_type})` : `${formatService.changeMap(formPayload.change_type)}`
 						}
 
