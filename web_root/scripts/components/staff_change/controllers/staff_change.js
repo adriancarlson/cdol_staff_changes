@@ -472,6 +472,7 @@ define(function (require) {
 						//and the field is users_dcid
 						if (field === 'users_dcid') {
 							$scope.submitPayload[pageContext] = Object.assign($scope.submitPayload[pageContext], foundItem)
+							removeNullableTitleFields($scope.submitPayload[pageContext])
 
 							if (pageContext === 'nameChange') {
 								if ($scope.submitPayload[pageContext].title === 'Fr.' || $scope.submitPayload[pageContext].title === 'Msgr.' || $scope.submitPayload[pageContext].title === 'Sr.' || $scope.submitPayload[pageContext].title === 'Br.') {
@@ -510,6 +511,7 @@ define(function (require) {
 							}
 							// Assign the dynamicObject to the submitPayload
 							Object.assign($scope.submitPayload[pageContext], dynamicObject)
+							removeNullableTitleFields($scope.submitPayload[pageContext])
 						}
 
 						if (pageContext === 'subStaff') {
@@ -601,6 +603,19 @@ define(function (require) {
 			}
 
 			const isMissingStaffName = formPayload => !formPayload.first_name || !formPayload.last_name
+			const titleFields = ['title', 'replace_title', 'canva_title']
+
+			const removeNullableTitleFields = formPayload => {
+				if (!formPayload) return formPayload
+
+				titleFields.forEach(titleField => {
+					if (Object.prototype.hasOwnProperty.call(formPayload, titleField) && formPayload[titleField] == null) {
+						delete formPayload[titleField]
+					}
+				})
+
+				return formPayload
+			}
 
 			const findUserDataByDcid = dcid => {
 				if (!dcid || !$scope.usersData) return
@@ -621,6 +636,7 @@ define(function (require) {
 				;['title', 'first_name', 'last_name', 'license_microsoft', 'staff_status'].forEach(key => {
 					formPayload[key] = foundStaff[key]
 				})
+				removeNullableTitleFields(formPayload)
 				formPayload.prev_school_number = formPayload.prev_school_number || foundStaff.homeschoolid
 				formPayload.prev_school_name = formPayload.prev_school_name || foundStaff.homeschoolname
 				return !isMissingStaffName(formPayload)
@@ -657,6 +673,7 @@ define(function (require) {
 				for (const key of Object.keys($scope.submitPayload)) {
 					let formPayload = $scope.submitPayload[key]
 					formPayload.change_type = key
+					removeNullableTitleFields(formPayload)
 
 					if (!(await $scope.validateStaffChangePayload(formPayload))) {
 						closeLoading()
@@ -724,6 +741,7 @@ define(function (require) {
 				for (const key of Object.keys($scope.submitPayload)) {
 					let formPayload = $scope.submitPayload[key]
 					formPayload.change_type = key
+					removeNullableTitleFields(formPayload)
 
 					if (!(await $scope.validateStaffChangePayload(formPayload))) {
 						closeLoading()
