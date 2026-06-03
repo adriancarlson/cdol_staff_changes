@@ -205,9 +205,10 @@ define(function (require) {
 			}
 
 			$scope.userContext.minDate = formatDate(addBusinessDays(today, 3))
+			$scope.userContext.lastDay = formatDate(lastDay)
 
 			if (today >= firstDay && today < lastDay) {
-				$scope.userContext.tempDeadline = formatDate(lastDay)
+				$scope.userContext.tempDeadline = $scope.userContext.lastDay
 			} else {
 				$scope.userContext.tempDeadline = $scope.userContext.minDate
 			}
