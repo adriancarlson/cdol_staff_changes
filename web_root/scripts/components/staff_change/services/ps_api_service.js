@@ -107,6 +107,7 @@ define(function (require) {
 						},
 						res => {
 							psAlert({ message: `There was an error ${method}ing the data to ${tableName}`, title: `${method} Error` })
+							deferredResponse.reject(res)
 						}
 					)
 					return deferredResponse.promise

@@ -14,7 +14,97 @@ define(function (require) {
 				Authorization: `Bearer  ${JITBIT_ACCESS_TOKEN}`
 			}
 
+			const createJitbitError = (stage, originalError) => {
+				const error = new Error(stage)
+				error.jitbitStage = stage
+				error.originalError = originalError
+				return error
+			}
+
+			const getStaffChangeName = formPayload => {
+				const firstName = formPayload.first_name || ''
+				const title = !['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => firstName.startsWith(prefix)) && formPayload.title ? `${formPayload.title} ` : ''
+				return `${title}${firstName} ${formPayload.last_name || ''}`.trim()
+			}
+
+			const getAssignedUserId = formPayload => {
+				// send to Adrian (14088108) first unless it's a subStaff FSTS then to Brad (14093457) or if exitingStaff or nameChange and  canva_transfer == '1' then send to Carrie (14088738)
+				if ((formPayload.change_type === 'exitingStaff' || formPayload.change_type === 'nameChange') && formPayload.canva_transfer === '1') {
+					return 14088738 // Carrie
+				}
+
+				if (formPayload.change_type === 'subStaff' && formPayload.sub_type === 'FSTS') {
+					return 14093457 // Brad
+				}
+
+				return 14088108 // Adrian
+			}
+
+			const getSubmissionLine = formPayload => `Submission from ${formPayload.curUserName} (${formPayload.curUserSchoolAbbr}) | ${formPayload.userEmail}`
+
+			const extractSubmissionLine = body => {
+				const bodyText = body || ''
+				const submissionMatch = bodyText.match(/Submission from[\s\S]*$/)
+				return submissionMatch ? submissionMatch[0].trim() : ''
+			}
+
+			const buildBody = (formPayload, submissionLine) => {
+				const testTicketPrefix = formPayload.isTestServer ? 'TEST: ' : ''
+				const bodySegments = []
+
+				if (formPayload.change_type === 'transferringStaff' && formPayload.prev_school_name) {
+					bodySegments.push(`Transferring-in from: ${formPayload.prev_school_name}`)
+				}
+				if (formPayload.change_type === 'nameChange' && formPayload.old_name_placeholder) {
+					bodySegments.push(`Previous Name: ${formPayload.old_name_placeholder}`)
+				}
+				if (formPayload.position) bodySegments.push(`Position: ${formPayload.position}`)
+				if (formPayload.previous_position) bodySegments.push(`Previous Position: ${formPayload.previous_position}`)
+				if (formPayload.new_position) bodySegments.push(`New Position: ${formPayload.new_position}`)
+				bodySegments.push(`Due Date: ${formPayload.deadline}`)
+				if (typeof formPayload.license_microsoft !== 'undefined') bodySegments.push(`Microsoft License: ${formPayload.license_microsoft}`)
+				if (typeof formPayload.notes !== 'undefined') bodySegments.push(`Notes: ${formPayload.notes}`)
+				bodySegments.push(submissionLine || getSubmissionLine(formPayload))
+
+				if (bodySegments.length) {
+					bodySegments[0] = `${testTicketPrefix}${bodySegments[0]}`
+				}
+
+				return bodySegments.join('\n\n')
+			}
+
+			const buildTicketPayload = (formPayload, userId, options = {}) => {
+				const staffChangeName = getStaffChangeName(formPayload)
+				const testTicketPrefix = formPayload.isTestServer ? 'TEST: ' : ''
+
+				return {
+					categoryId: 588445,
+					priorityId: 0,
+					origin: 3,
+					assignedToUserId: getAssignedUserId(formPayload),
+					...(userId ? { userId: userId } : {}),
+					subject: `${testTicketPrefix}${formPayload.readableChangeType} Submission ${staffChangeName} | Due Date: ${formPayload.deadline}`,
+					body: buildBody(formPayload, options.submissionLine),
+					customFields: JSON.stringify({ 59314: `${staffChangeName}` })
+				}
+			}
+
+			const formatBodyForUpdate = body => (body || '').replace(/\r\n|\n|\r/g, '<br>')
+
+			const buildSyncPayload = (ticketId, formPayload, dueDate, ticket) => {
+				const submissionLine = extractSubmissionLine(ticket.Body) || getSubmissionLine(formPayload)
+				const ticketPayload = buildTicketPayload(formPayload, null, { submissionLine: submissionLine })
+
+				return {
+					id: ticketId,
+					dueDate: dueDate,
+					subject: ticketPayload.subject,
+					body: formatBodyForUpdate(ticketPayload.body)
+				}
+			}
+
 			return {
+				buildTicketPayload: buildTicketPayload,
 				gitJitbitUser: function (email) {
 					let deferredResponse = $q.defer()
 					let getUserUrl = `${JITBIT_API_URL}/UserByEmail?email=${email}`
@@ -28,7 +118,27 @@ define(function (require) {
 							deferredResponse.resolve(res.data || [])
 						},
 						res => {
-							psAlert({ message: `There was an error hitting ${getUserUrl}`, title: 'Error getting user' })
+							deferredResponse.reject(createJitbitError('requesterLookup', res))
+						}
+					)
+
+					return deferredResponse.promise
+				},
+				getJitbitTicket: function (ticketId, options = {}) {
+					let deferredResponse = $q.defer()
+					let getTicketUrl = `${JITBIT_API_URL}ticket`
+
+					$http({
+						method: 'GET',
+						url: getTicketUrl,
+						params: { id: ticketId },
+						headers: jibit_headers
+					}).then(
+						res => {
+							deferredResponse.resolve(res.data || {})
+						},
+						res => {
+							deferredResponse.reject(createJitbitError(options.errorStage || 'ticketFetch', res))
 						}
 					)
 
@@ -36,31 +146,7 @@ define(function (require) {
 				},
 				createJitbitTicket: async function (formPayload) {
 					let userData = await this.gitJitbitUser(formPayload.userEmail)
-					let staffChangeName = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => formPayload.first_name.startsWith(prefix)) && formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name}`
-
-					// send to Adrian (14088108) first unless it's a subStaff FSTS then to Brad (14093457) or if exitingStaff or nameChange and  canva_transfer == '1' then send to Carrie (14088738)
-					let assignedUserId
-
-					if ((formPayload.change_type === 'exitingStaff' || formPayload.change_type === 'nameChange') && formPayload.canva_transfer === '1') {
-						assignedUserId = 14088738 // Carrie
-					} else if (formPayload.change_type === 'subStaff' && formPayload.sub_type === 'FSTS') {
-						assignedUserId = 14093457 // Brad
-					} else {
-						assignedUserId = 14088108 // Adrian
-					}
-
-					const testTicketPrefix = formPayload.isTestServer ? 'TEST: ' : ''
-
-					let ticketPayload = {
-						categoryId: 588445,
-						priorityId: 0,
-						origin: 3,
-						assignedToUserId: assignedUserId,
-						userId: userData.UserID,
-						subject: `${testTicketPrefix}${formPayload.readableChangeType} Submission ${staffChangeName} | Due Date: ${formPayload.deadline}`,
-						body: `${testTicketPrefix}${formPayload.change_type === 'transferringStaff' && formPayload.prev_school_name ? `Transferring-in from: ${formPayload.prev_school_name}\n\n` : ''}${formPayload.change_type === 'nameChange' && formPayload.old_name_placeholder ? `Previous Name: ${formPayload.old_name_placeholder}\n\n` : ''}${formPayload.position ? `Position: ${formPayload.position}\n\n` : ''}${formPayload.previous_position ? `Previous Position: ${formPayload.previous_position}\n\n` : ''}${formPayload.new_position ? `New Position: ${formPayload.new_position}\n\n` : ''}Due Date: ${formPayload.deadline}\n\n${typeof formPayload.license_microsoft === 'undefined' ? '' : `Microsoft License: ${formPayload.license_microsoft}`}\n\n${typeof formPayload.notes === 'undefined' ? '' : `Notes: ${formPayload.notes}`}\n\nSubmission from ${formPayload.curUserName} (${formPayload.curUserSchoolAbbr}) | ${formPayload.userEmail}`,
-						customFields: { 59314: `${staffChangeName}` }
-					}
+					let ticketPayload = buildTicketPayload(formPayload, userData.UserID)
 
 					let deferredResponse = $q.defer()
 					let createTicketUrl = `${JITBIT_API_URL}/ticket`
@@ -75,15 +161,15 @@ define(function (require) {
 							deferredResponse.resolve(res.data || [])
 						},
 						res => {
-							psAlert({ message: `There was an error hitting ${getUserUrl}`, title: 'Error getting user' })
+							deferredResponse.reject(createJitbitError('ticketCreate', res))
 						}
 					)
 
 					return deferredResponse.promise
 				},
-				updateJitbitTicket: function (updateTicketPayload) {
+				updateJitbitTicket: function (updateTicketPayload, options = {}) {
 					let deferredResponse = $q.defer()
-					let updateTicketUrl = `${JITBIT_API_URL}/UpdateTicket`
+					let updateTicketUrl = `${JITBIT_API_URL}UpdateTicket`
 
 					$http({
 						method: 'POST',
@@ -95,9 +181,39 @@ define(function (require) {
 							deferredResponse.resolve(res.data || [])
 						},
 						res => {
-							psAlert({ message: `There was an error hitting ${getUserUrl}`, title: 'Error getting user' })
+							deferredResponse.reject(createJitbitError(options.errorStage || 'ticketUpdate', res))
 						}
 					)
+
+					return deferredResponse.promise
+				},
+				setJitbitCustomField: function (ticketId, fieldId, value, options = {}) {
+					let deferredResponse = $q.defer()
+					let setCustomFieldUrl = `${JITBIT_API_URL}SetCustomField`
+
+					$http({
+						method: 'POST',
+						url: setCustomFieldUrl,
+						params: { ticketId: ticketId, fieldId: fieldId, value: value },
+						headers: jibit_headers
+					}).then(
+						res => {
+							deferredResponse.resolve(res.data || [])
+						},
+						res => {
+							deferredResponse.reject(createJitbitError(options.errorStage || 'ticketUpdate', res))
+						}
+					)
+
+					return deferredResponse.promise
+				},
+				syncJitbitTicketFromStaffChange: async function (ticketId, formPayload, dueDate) {
+					const ticket = await this.getJitbitTicket(ticketId, { errorStage: 'ticketFetch' })
+					const syncPayload = buildSyncPayload(ticketId, formPayload, dueDate, ticket)
+					const staffChangeName = getStaffChangeName(formPayload)
+
+					await this.updateJitbitTicket(syncPayload, { errorStage: 'ticketUpdate' })
+					return this.setJitbitCustomField(ticketId, 59314, staffChangeName, { errorStage: 'ticketUpdate' })
 				}
 			}
 		}

@@ -263,6 +263,8 @@ define(function (require) {
 
 			//initilazing empty payload
 			$scope.submitPayload = {}
+			$scope.originalStaffChangePayloads = {}
+			$scope.originalJitbitSnapshots = {}
 
 			//pull exiting Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
 			$scope.getStaffChange = async staffChangeId => {
@@ -275,6 +277,8 @@ define(function (require) {
 					const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, getFormatKeys, staffChangeId)
 					$scope.submitPayload[res.change_type] = await res
 					$scope.userContext.pageContext = await res.change_type
+					$scope.originalStaffChangePayloads[res.change_type] = copyPayload(res)
+					$scope.originalJitbitSnapshots[res.change_type] = buildJitbitSnapshot(res)
 
 					if ($scope.userContext.pageContext === 'newStaff' || $scope.userContext.pageContext === 'subStaff') {
 						await $scope.checkDupesOnEdit(res)
@@ -605,6 +609,107 @@ define(function (require) {
 
 			const isMissingStaffName = formPayload => !formPayload.first_name || !formPayload.last_name
 			const titleFields = ['title', 'replace_title', 'canva_title']
+			const SUPPORT_TICKET_URL = 'https://cdol.jitbit.com/Tickets/New?categoryId=585011'
+
+			const normalizeDeadlineForComparison = deadline => {
+				if (!deadline) return ''
+
+				const dateParts = deadline.split('/')
+				if (dateParts.length !== 3) return deadline
+
+				return `${Number(dateParts[0])}/${Number(dateParts[1])}/${dateParts[2]}`
+			}
+
+			const copyPayload = payload => JSON.parse(JSON.stringify(payload || {}))
+
+			const getReadableChangeType = formPayload => (formPayload.change_type === 'subStaff' ? `${formatService.changeMap(formPayload.change_type)} (${formPayload.sub_type})` : `${formatService.changeMap(formPayload.change_type)}`)
+
+			const buildJitbitPayload = formPayload => ({
+				...formPayload,
+				curUserName: $scope.userContext.curUserName,
+				curUserSchoolAbbr: $scope.userContext.curUserSchoolAbbr,
+				curDate: $scope.userContext.curDate,
+				curTime: $scope.userContext.curTime,
+				userEmail: $scope.userContext.curUserEmail,
+				isTestServer: $scope.userContext.isTestServer,
+				readableChangeType: getReadableChangeType(formPayload)
+			})
+
+			const buildJitbitSnapshot = formPayload => {
+				const jitbitPayload = buildJitbitPayload(formPayload)
+				const ticketPayload = jitbitService.buildTicketPayload(jitbitPayload, null)
+
+				return {
+					subject: ticketPayload.subject,
+					body: ticketPayload.body.replace(/Submission from[\s\S]*$/, '').trim(),
+					customFields: ticketPayload.customFields,
+					deadline: normalizeDeadlineForComparison(jitbitPayload.deadline),
+				}
+			}
+
+			const hasJitbitSnapshotChanged = (originalSnapshot, currentSnapshot) => JSON.stringify(originalSnapshot || {}) !== JSON.stringify(currentSnapshot || {})
+
+			const formatJitbitDueDate = deadline => `${formatService.formatDateForApi(deadline)}T23:59:00Z`
+
+			const jitbitSupportMessage = message => `${message} Please take a screenshot of this error and attach it to a new support ticket by <a href="${SUPPORT_TICKET_URL}" target="_blank" rel="noopener noreferrer">clicking here</a>.`
+
+			const showJitbitSupportError = (title, message, error) => {
+				console.error(title, error)
+				let hasRedirected = false
+				const redirectToList = () => {
+					if (hasRedirected) return
+					hasRedirected = true
+					$scope.toListRedirect($scope.userContext.pageContext)
+				}
+
+				psDialog({
+					type: 'dialogM',
+					width: 600,
+					title: title,
+					content: `<p>${jitbitSupportMessage(message)}</p>`,
+					close: redirectToList,
+					buttons: [
+						{
+							id: 'jitbitErrorOkButton',
+							text: 'OK',
+							title: 'OK',
+							click: function () {
+								psDialogClose()
+								redirectToList()
+							}
+						}
+					]
+				})
+			}
+
+			const getCreateJitbitErrorMessage = error => {
+				switch (error && error.jitbitStage) {
+					case 'requesterLookup':
+						return 'The staff change was not submitted because the Jitbit requester could not be found.'
+					case 'ticketCreate':
+						return 'The staff change was not submitted because the Jitbit ticket could not be created.'
+					case 'dueDateUpdate':
+						return 'The staff change was not submitted because the Jitbit ticket due date could not be updated.'
+					default:
+						return 'The Jitbit ticket update failed, so the staff change was not submitted.'
+				}
+			}
+
+			const getEditJitbitErrorMessage = error => {
+				switch (error && error.jitbitStage) {
+					case 'ticketFetch':
+						return 'The staff change was not updated because the existing Jitbit ticket could not be loaded.'
+					case 'ticketUpdate':
+						return 'The staff change was not updated because the Jitbit ticket could not be updated.'
+					default:
+						return 'The Jitbit ticket update failed, so the PowerSchool staff change was restored to its previous values.'
+				}
+			}
+
+			const restorePowerSchoolPayload = async (formPayload, updateFormatKeys) => {
+				const originalPayload = copyPayload($scope.originalStaffChangePayloads[formPayload.change_type])
+				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', Object.assign(originalPayload, updateFormatKeys), $scope.userContext.staffChangeId)
+			}
 
 			const removeNullableTitleFields = formPayload => {
 				if (!formPayload) return formPayload
@@ -701,27 +806,26 @@ define(function (require) {
 
 					// only create a Jitbit ticket if the form is not a test server
 					if ($scope.userContext.sendJitbit) {
-						let jitbitPayload = {
-							...formPayload,
-							curUserName: $scope.userContext.curUserName,
-							curUserSchoolAbbr: $scope.userContext.curUserSchoolAbbr,
-							curDate: $scope.userContext.curDate,
-							curTime: $scope.userContext.curTime,
-							userEmail: $scope.userContext.curUserEmail,
-							isTestServer: $scope.userContext.isTestServer,
-							readableChangeType: formPayload.change_type === 'subStaff' ? `${formatService.changeMap(formPayload.change_type)} (${formPayload.sub_type})` : `${formatService.changeMap(formPayload.change_type)}`
+						try {
+							let jitbitPayload = buildJitbitPayload(formPayload)
+							let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
+							let concatenatedDateTime = formatJitbitDueDate(formPayload.deadline)
+
+							await jitbitService.updateJitbitTicket({ id: jitbitTicketId, dueDate: concatenatedDateTime }, { errorStage: 'dueDateUpdate' })
+							await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
+
+							formPayload.ticket_id = jitbitTicketId
+						} catch (error) {
+							try {
+								await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, staffChangeId)
+								closeLoading()
+								showJitbitSupportError('Jitbit Ticket Error', getCreateJitbitErrorMessage(error), error)
+							} catch (rollbackError) {
+								closeLoading()
+								showJitbitSupportError('Manual Cleanup Needed', 'The Jitbit ticket update failed, and the staff change may have been partially saved in PowerSchool.', { error: error, rollbackError: rollbackError })
+							}
+							return
 						}
-
-						let jitbitTicketId = await jitbitService.createJitbitTicket(jitbitPayload)
-
-						await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
-
-						let formattedDate = formatService.formatDateForApi(formPayload.deadline)
-						let concatenatedDateTime = `${formattedDate}T23:59:00Z`
-
-						await jitbitService.updateJitbitTicket({ id: jitbitTicketId, dueDate: concatenatedDateTime })
-
-						formPayload.ticket_id = jitbitTicketId
 					}
 
 					formPayload.staffChangeId = staffChangeId
@@ -743,6 +847,11 @@ define(function (require) {
 					let formPayload = $scope.submitPayload[key]
 					formPayload.change_type = key
 					removeNullableTitleFields(formPayload)
+					const currentJitbitSnapshot = buildJitbitSnapshot(formPayload)
+					const shouldSyncJitbitTicket =
+						$scope.userContext.pageStatus === 'Edit' &&
+						formPayload.ticket_id &&
+						hasJitbitSnapshotChanged($scope.originalJitbitSnapshots[key], currentJitbitSnapshot)
 
 					if (!(await $scope.validateStaffChangePayload(formPayload))) {
 						closeLoading()
@@ -830,6 +939,22 @@ define(function (require) {
 
 					if ($scope.userContext.staffChangeId) {
 						await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', formPayload, $scope.userContext.staffChangeId)
+						if (shouldSyncJitbitTicket) {
+							try {
+								const concatenatedDateTime = formatJitbitDueDate(formPayload.deadline)
+								await jitbitService.syncJitbitTicketFromStaffChange(formPayload.ticket_id, buildJitbitPayload(formPayload), concatenatedDateTime)
+							} catch (error) {
+								try {
+									await restorePowerSchoolPayload(formPayload, updateFormatKeys)
+									closeLoading()
+									showJitbitSupportError('Jitbit Ticket Error', getEditJitbitErrorMessage(error), error)
+								} catch (restoreError) {
+									closeLoading()
+									showJitbitSupportError('Manual Cleanup Needed', 'The Jitbit ticket update failed, and PowerSchool may not match the Jitbit ticket.', { error: error, restoreError: restoreError })
+								}
+								return
+							}
+						}
 						$scope.toListRedirect(form)
 					}
 				}
