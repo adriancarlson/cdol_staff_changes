@@ -77,16 +77,17 @@ define(function (require) {
 				const staffChangeName = getStaffChangeName(formPayload)
 				const testTicketPrefix = formPayload.isTestServer ? 'TEST: ' : ''
 
-				return {
+				const ticketPayload = {
 					categoryId: 588445,
 					priorityId: formPayload.emergencyRequest ? 1 : 0,
 					origin: 3,
 					assignedToUserId: getAssignedUserId(formPayload),
-					...(userId ? { userId: userId } : {}),
 					subject: `${testTicketPrefix}${formPayload.readableChangeType} Submission ${staffChangeName} | Due Date: ${formPayload.deadline}`,
 					body: buildBody(formPayload, options.submissionLine),
 					customFields: JSON.stringify({ 59314: `${staffChangeName}` })
 				}
+				if (userId) ticketPayload.userId = userId
+				return ticketPayload
 			}
 
 			const formatBodyForUpdate = body => (body || '').replace(/\r\n|\n|\r/g, '<br>')
@@ -106,114 +107,85 @@ define(function (require) {
 			return {
 				buildTicketPayload: buildTicketPayload,
 				gitJitbitUser: function (email) {
-					let deferredResponse = $q.defer()
 					let getUserUrl = `${JITBIT_API_URL}/UserByEmail?email=${email}`
 
-					$http({
+					return $http({
 						method: 'GET',
 						url: getUserUrl,
 						headers: jibit_headers
-					}).then(
-						res => {
-							deferredResponse.resolve(res.data || [])
-						},
-						res => {
-							deferredResponse.reject(createJitbitError('requesterLookup', res))
-						}
-					)
-
-					return deferredResponse.promise
+					}).then(res => {
+						return res.data || []
+					}, res => {
+						return $q.reject(createJitbitError('requesterLookup', res))
+					})
 				},
 				getJitbitTicket: function (ticketId, options = {}) {
-					let deferredResponse = $q.defer()
 					let getTicketUrl = `${JITBIT_API_URL}ticket`
 
-					$http({
+					return $http({
 						method: 'GET',
 						url: getTicketUrl,
 						params: { id: ticketId },
 						headers: jibit_headers
-					}).then(
-						res => {
-							deferredResponse.resolve(res.data || {})
-						},
-						res => {
-							deferredResponse.reject(createJitbitError(options.errorStage || 'ticketFetch', res))
-						}
-					)
-
-					return deferredResponse.promise
+					}).then(res => {
+						return res.data || {}
+					}, res => {
+						return $q.reject(createJitbitError(options.errorStage || 'ticketFetch', res))
+					})
 				},
-				createJitbitTicket: async function (formPayload) {
-					let userData = await this.gitJitbitUser(formPayload.userEmail)
-					let ticketPayload = buildTicketPayload(formPayload, userData.UserID)
-
-					let deferredResponse = $q.defer()
+				createJitbitTicket: function (formPayload) {
 					let createTicketUrl = `${JITBIT_API_URL}/ticket`
 
-					$http({
-						method: 'POST',
-						url: createTicketUrl,
-						params: ticketPayload,
-						headers: jibit_headers
-					}).then(
-						res => {
-							deferredResponse.resolve(res.data || [])
-						},
-						res => {
-							deferredResponse.reject(createJitbitError('ticketCreate', res))
-						}
-					)
-
-					return deferredResponse.promise
+					return this.gitJitbitUser(formPayload.userEmail).then(userData => {
+						return $http({
+							method: 'POST',
+							url: createTicketUrl,
+							params: buildTicketPayload(formPayload, userData.UserID),
+							headers: jibit_headers
+						})
+					}).then(res => {
+						return res.data || []
+					}, res => {
+						if (res && res.jitbitStage) return $q.reject(res)
+						return $q.reject(createJitbitError('ticketCreate', res))
+					})
 				},
 				updateJitbitTicket: function (updateTicketPayload, options = {}) {
-					let deferredResponse = $q.defer()
 					let updateTicketUrl = `${JITBIT_API_URL}UpdateTicket`
 
-					$http({
+					return $http({
 						method: 'POST',
 						url: updateTicketUrl,
 						params: updateTicketPayload,
 						headers: jibit_headers
-					}).then(
-						res => {
-							deferredResponse.resolve(res.data || [])
-						},
-						res => {
-							deferredResponse.reject(createJitbitError(options.errorStage || 'ticketUpdate', res))
-						}
-					)
-
-					return deferredResponse.promise
+					}).then(res => {
+						return res.data || []
+					}, res => {
+						return $q.reject(createJitbitError(options.errorStage || 'ticketUpdate', res))
+					})
 				},
 				setJitbitCustomField: function (ticketId, fieldId, value, options = {}) {
-					let deferredResponse = $q.defer()
 					let setCustomFieldUrl = `${JITBIT_API_URL}SetCustomField`
 
-					$http({
+					return $http({
 						method: 'POST',
 						url: setCustomFieldUrl,
 						params: { ticketId: ticketId, fieldId: fieldId, value: value },
 						headers: jibit_headers
-					}).then(
-						res => {
-							deferredResponse.resolve(res.data || [])
-						},
-						res => {
-							deferredResponse.reject(createJitbitError(options.errorStage || 'ticketUpdate', res))
-						}
-					)
-
-					return deferredResponse.promise
+					}).then(res => {
+						return res.data || []
+					}, res => {
+						return $q.reject(createJitbitError(options.errorStage || 'ticketUpdate', res))
+					})
 				},
-				syncJitbitTicketFromStaffChange: async function (ticketId, formPayload, dueDate) {
-					const ticket = await this.getJitbitTicket(ticketId, { errorStage: 'ticketFetch' })
-					const syncPayload = buildSyncPayload(ticketId, formPayload, dueDate, ticket)
-					const staffChangeName = getStaffChangeName(formPayload)
-
-					await this.updateJitbitTicket(syncPayload, { errorStage: 'ticketUpdate' })
-					return this.setJitbitCustomField(ticketId, 59314, staffChangeName, { errorStage: 'ticketUpdate' })
+				syncJitbitTicketFromStaffChange: function (ticketId, formPayload, dueDate) {
+					const service = this
+					return service.getJitbitTicket(ticketId, { errorStage: 'ticketFetch' }).then(ticket => {
+						const syncPayload = buildSyncPayload(ticketId, formPayload, dueDate, ticket)
+						return service.updateJitbitTicket(syncPayload, { errorStage: 'ticketUpdate' })
+					}).then(() => {
+						return service.setJitbitCustomField(ticketId, 59314, getStaffChangeName(formPayload), { errorStage: 'ticketUpdate' })
+					})
 				}
 			}
 		}

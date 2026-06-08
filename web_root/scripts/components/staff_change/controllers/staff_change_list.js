@@ -6,9 +6,10 @@ define(function (require) {
 		'$scope',
 		'$attrs',
 		'$filter',
+		'$q',
 		'pqService',
 		'formatService',
-		function ($scope, $attrs, $filter, pqService, formatService) {
+		function ($scope, $attrs, $filter, $q, pqService, formatService) {
 			//This is here for troubleshooting purposes.
 			//Allows us to double click anywhere on the page and logs scope to console
 			$j(document).dblclick(() => console.log($scope))
@@ -99,27 +100,32 @@ define(function (require) {
 				return !changeType.ps_complete || !changeType.ad_complete || !changeType.o365_complete || !changeType.lms_complete || needsCanva ? 'req-notation' : ''
 			}
 
-			$scope.loadData = async changeType => {
+			$scope.loadData = changeType => {
 				loadingDialog()
 				$scope.changeType = changeType
 
-				// Only fetch data from API if we haven't already cached it
-				if (!$scope.staffList.hasOwnProperty(changeType)) {
-					const pqData = { curSchoolID: $scope.curSchoolId, calendarYear: $scope.calendarYear }
+				const loadPromise = $scope.staffList.hasOwnProperty(changeType)
+					? $q.when()
+					: $q.all({
+						counts: pqService.getPQResults('net.cdolinc.staffChanges.staff.counts', {
+							curSchoolID: $scope.curSchoolId,
+							calendarYear: $scope.calendarYear
+						}),
+						staff: pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
+							curSchoolID: $scope.curSchoolId,
+							calendarYear: $scope.calendarYear,
+							changeType: changeType
+						})
+					}).then(preload => {
+						$scope.staffChangeCounts = preload.counts[0]
+						const staffResults = preload.staff
 
-					// Get staff counts
-					const countRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.counts', pqData)
-					$scope.staffChangeCounts = countRes[0]
+						if (!staffResults.length) {
+							$scope.staffList[changeType] = {}
+							return
+						}
 
-					// Add changeType for PQ call
-					pqData.changeType = changeType
-
-					// Fetch staff list for this changeType
-					const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', pqData)
-
-					if (res.length > 0) {
-						$scope.staffList[changeType] = res
-
+						$scope.staffList[changeType] = staffResults
 						const keys = ['ps', 'ad', 'o365', 'lms', 'canva']
 
 						$scope.staffList[changeType].forEach(item => {
@@ -149,64 +155,47 @@ define(function (require) {
 							item.completed = !!item.final_completion_date
 
 							if (item.submission_time) {
-								const [time, period] = item.submission_time.split(' ')
-								const [hours, minutes] = time.split(':')
-								let hours24 = parseInt(hours, 10)
+								const timeParts = item.submission_time.split(' ')
+								const clockParts = timeParts[0].split(':')
+								const period = timeParts[1]
+								let hours24 = parseInt(clockParts[0], 10)
 
 								if (period === 'PM' && hours24 !== 12) hours24 += 12
 								else if (period === 'AM' && hours24 === 12) hours24 = 0
 
 								const submissionDate = new Date()
 								submissionDate.setHours(hours24)
-								submissionDate.setMinutes(parseInt(minutes, 10))
+								submissionDate.setMinutes(parseInt(clockParts[1], 10))
 								submissionDate.setSeconds(0)
-
 								item.sort_time = submissionDate
 							}
 						})
+					})
+
+				return loadPromise.then(() => {
+					const baseHeaders = ['School', 'Submitted By', 'Submission Date', 'Deadline']
+					const changeTypeLabel = $filter('changeTypeFilter')($scope.changeType)
+
+					if ($scope.changeType === 'newStaff') {
+						$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date'])
+					} else if ($scope.changeType === 'transferringStaff') {
+						$scope.listHeaders = [changeTypeLabel, 'New School', 'Original School'].concat(baseHeaders.slice(1), ['PS Moved', 'AD Moved', 'O365 Moved', 'LMS Moved', 'Canva Moved', 'Completion Date'])
+					} else if ($scope.changeType === 'jobChange') {
+						$scope.listHeaders = ['Staff Name', 'Previous Position/Job', 'New Position/Job'].concat(baseHeaders, ['PS Changed', 'AD Changed', 'Completion Date'])
+					} else if ($scope.changeType === 'subStaff') {
+						$scope.listHeaders = [changeTypeLabel + ' Name', baseHeaders[0], 'Sub Type'].concat(baseHeaders.slice(1), ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Completion Date'])
+					} else if ($scope.changeType === 'nameChange') {
+						$scope.listHeaders = ["Staff's New Name", "Staff's Previous Name"].concat(baseHeaders, ['Canva Transferred', 'PS Changed', 'AD Changed', 'O365 Changed', 'LMS Changed', 'Completion Date'])
+					} else if ($scope.changeType === 'exitingStaff') {
+						$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['Canva Transferred', 'PS Deactivated', 'AD Deactivated', 'Completion Date'])
+					} else if ($scope.changeType === 'allStaff') {
+						$scope.listHeaders = ['Staff Name', 'Change Type'].concat(baseHeaders, ['PS Complete', 'AD Complete', 'O365 Complete', 'LMS Complete', 'Canva Complete', 'Completion Date'])
 					} else {
-						$scope.staffList[changeType] = {}
+						$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date'])
 					}
-				}
 
-				// ✅ Always update listHeaders, even if data is cached
-				let baseHeaders = ['School', 'Submitted By', 'Submission Date', 'Deadline']
-
-				if ($scope.changeType === 'newStaff') {
-					$scope.listHeaders = [$filter('changeTypeFilter')($scope.changeType), ...baseHeaders, 'PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date']
-				} else if ($scope.changeType === 'transferringStaff') {
-					$scope.listHeaders = [$filter('changeTypeFilter')($scope.changeType), 'New School', 'Original School', ...baseHeaders.slice(1), 'PS Moved', 'AD Moved', 'O365 Moved', 'LMS Moved', 'Canva Moved', 'Completion Date']
-				} else if ($scope.changeType === 'jobChange') {
-					$scope.listHeaders = ['Staff Name', 'Previous Position/Job', 'New Position/Job', ...baseHeaders, 'PS Changed', 'AD Changed', 'Completion Date']
-				} else if ($scope.changeType === 'subStaff') {
-					$scope.listHeaders = [
-						$filter('changeTypeFilter')($scope.changeType) + ' Name',
-						baseHeaders[0], // School
-						'Sub Type',
-						...baseHeaders.slice(1),
-						'PS Created',
-						'AD Created',
-						'O365 Created',
-						'LMS Created',
-						'Completion Date'
-					]
-				} else if ($scope.changeType === 'nameChange') {
-					$scope.listHeaders = ["Staff's New Name", "Staff's Previous Name", ...baseHeaders, 'Canva Transferred', 'PS Changed', 'AD Changed', 'O365 Changed', 'LMS Changed', 'Completion Date']
-				} else if ($scope.changeType === 'exitingStaff') {
-					$scope.listHeaders = [$filter('changeTypeFilter')($scope.changeType), ...baseHeaders, 'Canva Transferred', 'PS Deactivated', 'AD Deactivated', 'Completion Date']
-				} else if ($scope.changeType === 'allStaff') {
-					$scope.listHeaders = ['Staff Name', 'Change Type', ...baseHeaders, 'PS Complete', 'AD Complete', 'O365 Complete', 'LMS Complete', 'Canva Complete', 'Completion Date']
-				} else {
-					// fallback
-					$scope.listHeaders = [$filter('changeTypeFilter')($scope.changeType), ...baseHeaders, 'PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date']
-				}
-
-				$scope.$applyAsync()
-
-				// Update nav count
-				$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`)
-
-				closeLoading()
+					$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`)
+				}).finally(closeLoading)
 			}
 
 			// fire the function to load the data

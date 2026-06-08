@@ -1,5 +1,6 @@
 'use strict'
 define(function (require) {
+	var angular = require('angular')
 	var module = require('components/staff_change/module')
 	module.factory('psApiService', [
 		'$http',
@@ -8,7 +9,6 @@ define(function (require) {
 		function ($http, $q, formatService) {
 			return {
 				psApiCall: (tableName, method, payload, recId) => {
-					let deferredResponse = $q.defer()
 					tableName = tableName.toLowerCase()
 					let path = `/ws/schema/table/${tableName}`
 					let url = `${path}${recId ? `/${recId}` : ''}`
@@ -21,8 +21,8 @@ define(function (require) {
 						method: method,
 						headers: headers
 					}
-					// copying payload using spread, to keep original payload object in tact. apiPayload is what will be submitted with any API call below.
-					let apiPayload = { ...payload }
+					// Keep formatting mutations isolated from the controller payload.
+					let apiPayload = angular.copy(payload || {})
 					// Unique Headers
 					switch (method) {
 						//Create
@@ -60,7 +60,7 @@ define(function (require) {
 							break
 					}
 
-					$http(httpObject).then(
+					return $http(httpObject).then(
 						res => {
 							switch (method) {
 								case 'POST':
@@ -71,12 +71,10 @@ define(function (require) {
 
 									if (errorMessage) {
 										psAlert({ message: errorMessage, title: `${method} Error` })
-										deferredResponse.reject(errorMessage)
-										break
+										return $q.reject(errorMessage)
 									}
 
-									deferredResponse.resolve((successMessage && successMessage.id) || recId || [])
-									break
+									return (successMessage && successMessage.id) || recId || []
 								}
 								case 'GET':
 									let resData = res.data.tables[tableName]
@@ -90,7 +88,7 @@ define(function (require) {
 									const keysToRemove = ['whocreated', 'whencreated', 'whomodified', 'whenmodified']
 									if (Array.isArray(resData)) {
 										resData = resData.map(item => {
-											const filteredItem = { ...item }
+											const filteredItem = angular.copy(item)
 											keysToRemove.forEach(key => delete filteredItem[key])
 											return filteredItem
 										})
@@ -98,19 +96,16 @@ define(function (require) {
 										keysToRemove.forEach(key => delete resData[key])
 									}
 									console.log('res.data.tables[tableName]', res.data.tables[tableName])
-									deferredResponse.resolve(resData)
-									break
+									return resData
 								case 'DELETE':
-									deferredResponse.resolve(res)
-									break
+									return res
 							}
 						},
 						res => {
 							psAlert({ message: `There was an error ${method}ing the data to ${tableName}`, title: `${method} Error` })
-							deferredResponse.reject(res)
+							return $q.reject(res)
 						}
 					)
-					return deferredResponse.promise
 				}
 			}
 		}

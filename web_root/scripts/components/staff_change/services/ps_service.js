@@ -9,8 +9,7 @@ define(function (require) {
 				//query - the name of the PowerQuery
 				//data - JavaScript Object including any parameters that must be passed to the query
 				getPQResults: (query, data) => {
-					var deferredResponse = $q.defer()
-					$http({
+					return $http({
 						url: '/ws/schema/query/' + query,
 						method: 'POST',
 						data: data || {},
@@ -19,15 +18,12 @@ define(function (require) {
 							Accept: 'application/json',
 							'Content-Type': 'application/json'
 						}
-					}).then(
-						res => {
-							deferredResponse.resolve(res.data.record || [])
-						},
-						res => {
+					}).then(res => {
+						return res.data.record || []
+					}, res => {
 							psAlert({ message: `There was an error loading the data from ${query}`, title: 'Error Loading Data' })
-						}
-					)
-					return deferredResponse.promise
+							return $q.reject(res)
+						})
 				}
 			}
 		}
