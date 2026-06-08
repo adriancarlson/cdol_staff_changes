@@ -79,7 +79,7 @@ define(function (require) {
 
 				return {
 					categoryId: 588445,
-					priorityId: 0,
+					priorityId: formPayload.emergencyRequest ? 1 : 0,
 					origin: 3,
 					assignedToUserId: getAssignedUserId(formPayload),
 					...(userId ? { userId: userId } : {}),

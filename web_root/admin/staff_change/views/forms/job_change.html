@@ -111,14 +111,26 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.first_name">
-                    <div class="col-2">
+                    <div class="col-auto">
                         <label class="form-label form-label-sm label-reset staff-change-req">Requested
                             Change Date</label><br>
-                        <input title="Transfer Date" type="text" class="psDateWidget"
-                            data-minDate="{{userContext.minDate}}" data-ng-model="submitPayload.jobChange.deadline"
-                            data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.jobChange.deadline = userContext.tempDeadline : submitPayload.jobChange.deadline"
-                            data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
-                        <script type="text/javascript">initBehaviors();</script>
+                        <div class="d-flex align-items-center flex-nowrap">
+                            <input id="jobChange-deadline" title="Transfer Date" type="text" class="psDateWidget"
+                                data-minDate="{{getDeadlineMinDate('jobChange')}}" data-ng-model="submitPayload.jobChange.deadline"
+                                data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.jobChange.deadline = userContext.tempDeadline : submitPayload.jobChange.deadline"
+                                data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
+                            <script type="text/javascript">initBehaviors();</script>
+                            <button type="button" class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
+                                data-ng-class="{'emergency-override-enabled': isEmergencyRequestEnabled('jobChange')}"
+                                data-ng-if="userContext.pageStatus === 'Submit'"
+                                data-ng-click="openEmergencyRequest('jobChange')"
+                                aria-label="Emergency override"
+                                data-tooltip="Click here to override the suggested 3 Business days. Only use in urgent situations.">
+                                <i class="bi"
+                                    data-ng-class="isEmergencyRequestEnabled('jobChange') ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'"></i>
+                                {{isEmergencyRequestEnabled('jobChange') ? 'Emergency Enabled' : 'Emergency?'}}
+                            </button>
+                        </div>
                     </div>
                     <div class="col-auto">
                         <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
@@ -130,8 +142,7 @@
                         </div>
                         <div data-ng-if="userContext.invalidDate" class="alert alert-danger" role="alert"><i
                                 class="bi bi-exclamation-octagon-fill"></i>
-                            <strong>{{submitPayload.jobChange.deadline}}</strong> is not a Business Day.<br> Please
-                            choose another date.
+                            {{userContext.invalidDateMessage}}
                         </div>
                     </div>
                 </div>

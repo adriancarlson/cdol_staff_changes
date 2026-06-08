@@ -146,6 +146,7 @@ define(function (require) {
 			const firstDay = new Date(`01/01/${curYear}`)
 			const lastDay = new Date(`06/30/${curYear}`)
 			const today = new Date()
+			today.setHours(0, 0, 0, 0)
 
 			$scope.holidays = [
 				new Date(`01/01/${curYear}`), // New Year's Day
@@ -187,6 +188,28 @@ define(function (require) {
 				return `${month}/${day}/${year}`
 			}
 
+			const parseDate = dateString => {
+				if (!dateString) return null
+
+				const dateParts = dateString.split('/')
+				if (dateParts.length !== 3) return null
+
+				const month = Number(dateParts[0])
+				const day = Number(dateParts[1])
+				const year = Number(dateParts[2])
+				const date = new Date(year, month - 1, day)
+
+				if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) return null
+
+				date.setHours(0, 0, 0, 0)
+				return date
+			}
+
+			const isBusinessDay = date => {
+				if (!date || date.getDay() === 0 || date.getDay() === 6) return false
+				return !$scope.holidays.some(holiday => holiday.getTime() === date.getTime())
+			}
+
 			const addBusinessDays = (startDate, days) => {
 				let date = new Date(startDate)
 				while (days > 0) {
@@ -205,7 +228,9 @@ define(function (require) {
 			}
 
 			$scope.userContext.minDate = formatDate(addBusinessDays(today, 3))
+			$scope.userContext.today = formatDate(today)
 			$scope.userContext.lastDay = formatDate(lastDay)
+			$scope.userContext.emergencyRequests = {}
 
 			if (today >= firstDay && today < lastDay) {
 				$scope.userContext.tempDeadline = $scope.userContext.lastDay
@@ -213,24 +238,170 @@ define(function (require) {
 				$scope.userContext.tempDeadline = $scope.userContext.minDate
 			}
 
-			$scope.checkIfBusinessDay = pageContext => {
-				const checkDate = new Date($scope.submitPayload[pageContext].deadline)
+			const getEmergencyRequest = pageContext => $scope.userContext.emergencyRequests[pageContext]
+			const emergencyOverrideLabels = {
+				exitingStaff: 'Emergency Deactivation Date Override',
+				nameChange: 'Emergency Change Date Override',
+				subStaff: 'Emergency Creation Date Override',
+				jobChange: 'Emergency Change Date Override',
+				transferringStaff: 'Emergency Account Transfer Date Override',
+				newStaff: 'Emergency Creation Date Override'
+			}
+			const getEmergencyOverrideLabel = pageContext => emergencyOverrideLabels[pageContext] || 'Emergency Date Override'
+			const getEmergencyNote = (pageContext, reason) => `${getEmergencyOverrideLabel(pageContext)}: ${reason}`
 
-				// Function to check if a date is a business day
-				const isBusinessDay = date => {
-					// Check if it's a weekend
-					if (date.getDay() === 0 || date.getDay() === 6) {
-						return false
+			const removeEmergencyReasonFromNotes = (pageContext, emergencyRequest = getEmergencyRequest(pageContext)) => {
+				const formPayload = $scope.submitPayload[pageContext]
+				if (!formPayload || !emergencyRequest) return
+
+				const emergencyNote = getEmergencyNote(pageContext, emergencyRequest.reason)
+				const notes = (formPayload.notes || '').trim()
+
+				if (notes === emergencyNote) {
+					formPayload.notes = ''
+				} else if (notes.endsWith(`\n\n${emergencyNote}`)) {
+					formPayload.notes = notes.slice(0, -(`\n\n${emergencyNote}`).length).trim()
+				}
+			}
+
+			const appendEmergencyReasonToNotes = (formPayload, pageContext) => {
+				const emergencyRequest = getEmergencyRequest(pageContext)
+				if (!emergencyRequest) return
+
+				const emergencyNote = getEmergencyNote(pageContext, emergencyRequest.reason)
+				const notes = (formPayload.notes || '').trim()
+				if (notes.endsWith(emergencyNote)) return
+
+				formPayload.notes = notes ? `${notes}\n\n${emergencyNote}` : emergencyNote
+			}
+
+			const updateDeadlinePickerMinimum = (pageContext, minimumDate) => {
+				const deadlinePicker = $j(`#${pageContext}-deadline`)
+				if (!deadlinePicker.length) return
+
+				deadlinePicker.attr('data-minDate', minimumDate)
+				try {
+					if (typeof deadlinePicker.datepicker === 'function') {
+						deadlinePicker.datepicker('option', 'minDate', parseDate(minimumDate))
 					}
-					// Check if it's a holiday
-					if ($scope.holidays.some(holiday => holiday.getTime() === date.getTime())) {
-						return false
-					}
-					return true
+				} catch (error) {
+					console.warn('Unable to update the deadline picker minimum date.', error)
+				}
+			}
+
+			const clearEmergencyRequest = pageContext => {
+				removeEmergencyReasonFromNotes(pageContext)
+				delete $scope.userContext.emergencyRequests[pageContext]
+				updateDeadlinePickerMinimum(pageContext, $scope.userContext.minDate)
+			}
+
+			$scope.getDeadlineMinDate = pageContext => (getEmergencyRequest(pageContext) ? $scope.userContext.today : $scope.userContext.minDate)
+
+			$scope.isEmergencyRequestEnabled = pageContext => !!getEmergencyRequest(pageContext)
+
+			$scope.checkIfBusinessDay = pageContext => {
+				const formPayload = $scope.submitPayload[pageContext]
+				const checkDate = parseDate(formPayload && formPayload.deadline)
+				const minimumDate = parseDate($scope.userContext.minDate)
+				const emergencyRequest = getEmergencyRequest(pageContext)
+
+				$scope.userContext.invalidDateMessage = ''
+
+				if (!checkDate) {
+					$scope.userContext.invalidDate = true
+					$scope.userContext.invalidDateMessage = 'Please enter a valid date.'
+					return false
 				}
 
-				// Check if the checkDate is a business day
-				$scope.userContext.invalidDate = !isBusinessDay(checkDate)
+				if ($scope.userContext.pageStatus !== 'Submit') {
+					$scope.userContext.invalidDate = !isBusinessDay(checkDate)
+					$scope.userContext.invalidDateMessage = $scope.userContext.invalidDate ? `${formPayload.deadline} is not a Business Day. Please choose another date.` : ''
+					return !$scope.userContext.invalidDate
+				}
+
+				if (checkDate < today) {
+					$scope.userContext.invalidDate = true
+					$scope.userContext.invalidDateMessage = 'Past dates are not allowed.'
+					return false
+				}
+
+				if (emergencyRequest && checkDate >= minimumDate) {
+					clearEmergencyRequest(pageContext)
+				}
+
+				if (checkDate < minimumDate && !getEmergencyRequest(pageContext)) {
+					$scope.userContext.invalidDate = true
+					$scope.userContext.invalidDateMessage = 'Deadlines sooner than three business days require an Emergency override.'
+					return false
+				}
+
+				const isToday = checkDate.getTime() === today.getTime()
+				$scope.userContext.invalidDate = !isToday && !isBusinessDay(checkDate)
+				$scope.userContext.invalidDateMessage = $scope.userContext.invalidDate ? `${formPayload.deadline} is not a Business Day. Please choose another date.` : ''
+				return !$scope.userContext.invalidDate
+			}
+
+			$scope.openEmergencyRequest = pageContext => {
+				if ($scope.userContext.pageStatus !== 'Submit') return
+
+				const existingRequest = getEmergencyRequest(pageContext)
+				const emergencyOverrideLabel = getEmergencyOverrideLabel(pageContext)
+				const dialogContent = `
+					<div class="p-2">
+						<p><strong>Use this override only when immediate action is needed, such as an immediate staff termination, a new staff member starting today, a security concern, or another urgent situation.</strong></p>
+						<p>This high priority request does not guarantee same-day completion, but our staff will do their best to complete it as soon as possible.</p>
+						<div class="form-floating">
+							<textarea id="emergencyRequestReason" class="form-control" maxlength="250" spellcheck="true" wrap="soft" placeholder="${emergencyOverrideLabel}" style="min-height: 100px;"></textarea>
+							<label for="emergencyRequestReason" class="fw-semibold">Reason for ${emergencyOverrideLabel}</label>
+						</div>
+						<div id="emergencyRequestReasonError" class="text-danger mt-1 hide">Please enter a reason for the ${emergencyOverrideLabel}.</div>
+					</div>`
+
+				psDialog({
+					type: 'dialogM',
+					width: 600,
+					title: emergencyOverrideLabel,
+					content: dialogContent,
+					initBehaviors: true,
+					buttons: [
+						{
+							id: 'cancelEmergencyRequestButton',
+							text: 'Cancel',
+							title: 'Cancel',
+							click: function () {
+								psDialogClose()
+							}
+						},
+						{
+							id: 'enableEmergencyRequestButton',
+							text: 'Enable emergency override',
+							title: 'Enable emergency override',
+							click: function () {
+								const reason = ($j('#emergencyRequestReason').val() || '').trim()
+								if (!reason) {
+									$j('#emergencyRequestReasonError').removeClass('hide')
+									$j('#emergencyRequestReason').trigger('focus')
+									return
+								}
+
+								$scope.$applyAsync(() => {
+									removeEmergencyReasonFromNotes(pageContext, existingRequest)
+									$scope.userContext.emergencyRequests[pageContext] = { reason: reason }
+									appendEmergencyReasonToNotes($scope.submitPayload[pageContext], pageContext)
+									$scope.submitPayload[pageContext].deadline = $scope.userContext.today
+									$scope.checkIfBusinessDay(pageContext)
+									updateDeadlinePickerMinimum(pageContext, $scope.userContext.today)
+								})
+								psDialogClose()
+							}
+						}
+					]
+				})
+
+				if (existingRequest) {
+					$j('#emergencyRequestReason').val(existingRequest.reason)
+				}
+				$j('#emergencyRequestReason').trigger('focus')
 			}
 
 			$scope.isOtherSchool = schoolId => [130, 131, 160, 189, 210, 211, 264, 437].includes(Number(schoolId))
@@ -634,6 +805,7 @@ define(function (require) {
 				curTime: $scope.userContext.curTime,
 				userEmail: $scope.userContext.curUserEmail,
 				isTestServer: $scope.userContext.isTestServer,
+				emergencyRequest: $scope.userContext.pageStatus === 'Submit' && $scope.isEmergencyRequestEnabled(formPayload.change_type),
 				readableChangeType: getReadableChangeType(formPayload)
 			})
 
@@ -783,10 +955,17 @@ define(function (require) {
 					formPayload.change_type = key
 					removeNullableTitleFields(formPayload)
 
+					if (!$scope.checkIfBusinessDay(key)) {
+						closeLoading()
+						return
+					}
+
 					if (!(await $scope.validateStaffChangePayload(formPayload))) {
 						closeLoading()
 						return
 					}
+
+					appendEmergencyReasonToNotes(formPayload, key)
 
 					if (formPayload.change_type == 'exitingStaff') {
 						formPayload.old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => formPayload.first_name.startsWith(prefix)) && formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name}`
