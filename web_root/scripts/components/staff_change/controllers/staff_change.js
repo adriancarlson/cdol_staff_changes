@@ -265,6 +265,7 @@ define(function (require) {
 			$scope.submitPayload = {}
 			$scope.originalStaffChangePayloads = {}
 			$scope.originalJitbitSnapshots = {}
+			$scope.originalChangeType = undefined
 
 			//pull exiting Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
 			$scope.getStaffChange = async staffChangeId => {
@@ -277,6 +278,7 @@ define(function (require) {
 					const res = await psApiService.psApiCall(`U_CDOL_STAFF_CHANGES`, `GET`, getFormatKeys, staffChangeId)
 					$scope.submitPayload[res.change_type] = await res
 					$scope.userContext.pageContext = await res.change_type
+					$scope.originalChangeType = res.change_type
 					$scope.originalStaffChangePayloads[res.change_type] = copyPayload(res)
 					$scope.originalJitbitSnapshots[res.change_type] = buildJitbitSnapshot(res)
 
@@ -706,8 +708,8 @@ define(function (require) {
 				}
 			}
 
-			const restorePowerSchoolPayload = async (formPayload, updateFormatKeys) => {
-				const originalPayload = copyPayload($scope.originalStaffChangePayloads[formPayload.change_type])
+			const restorePowerSchoolPayload = async updateFormatKeys => {
+				const originalPayload = copyPayload($scope.originalStaffChangePayloads[$scope.originalChangeType])
 				await psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', Object.assign(originalPayload, updateFormatKeys), $scope.userContext.staffChangeId)
 			}
 
@@ -851,7 +853,7 @@ define(function (require) {
 					const shouldSyncJitbitTicket =
 						$scope.userContext.pageStatus === 'Edit' &&
 						formPayload.ticket_id &&
-						hasJitbitSnapshotChanged($scope.originalJitbitSnapshots[key], currentJitbitSnapshot)
+						hasJitbitSnapshotChanged($scope.originalJitbitSnapshots[$scope.originalChangeType], currentJitbitSnapshot)
 
 					if (!(await $scope.validateStaffChangePayload(formPayload))) {
 						closeLoading()
@@ -945,7 +947,7 @@ define(function (require) {
 								await jitbitService.syncJitbitTicketFromStaffChange(formPayload.ticket_id, buildJitbitPayload(formPayload), concatenatedDateTime)
 							} catch (error) {
 								try {
-									await restorePowerSchoolPayload(formPayload, updateFormatKeys)
+									await restorePowerSchoolPayload(updateFormatKeys)
 									closeLoading()
 									showJitbitSupportError('Jitbit Ticket Error', getEditJitbitErrorMessage(error), error)
 								} catch (restoreError) {
