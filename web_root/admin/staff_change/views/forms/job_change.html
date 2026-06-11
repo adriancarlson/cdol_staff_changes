@@ -5,15 +5,15 @@
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
                     <div class="col-6">
-                        <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">
+                        <label for="job-change-user" class="form-label form-label-sm label-reset staff-change-req">
                             Who is changing Positions/Jobs?
                         </label>
 
                         <div class="d-flex align-items-center gap-2"> <!-- Flex container -->
-                            <select class="form-select form-select-sm flex-grow-1" id="users_dcid"
-                                aria-label="Who is not returning?" data-ng-model="submitPayload.jobChange.users_dcid"
+                            <select class="form-select form-select-sm flex-grow-1" id="job-change-user"
+                                aria-label="Whose position or job is changing?" data-ng-model="submitPayload.jobChange.users_dcid"
                                 data-ng-required="true"
-                                data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.jobChange.users_dcid, 'users_dcid');dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
+                                data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.jobChange.users_dcid, 'users_dcid');dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
                                 <option selected></option>
                                 ~[tlist_sql;SELECT
                                 users.dcid,
@@ -31,9 +31,9 @@
                                 [/tlist_sql]
                                 <option value="-1">-- Other --</option>
                             </select>
-                            <a type="button" class="button m-0" style="padding: 6px"
-                                data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && schoolStaffData[0].ssdcid"
-                                data-ng-href="/admin/faculty/editpw.html?frn=005{{schoolStaffData[0].ssdcid}}"
+                            <a class="button m-0" style="padding: 6px"
+                                data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && schoolStaffRecordData[0].ssdcid"
+                                data-ng-href="/admin/faculty/editpw.html?frn=005{{schoolStaffRecordData[0].ssdcid}}"
                                 target="_blank">
                                 Open Staff Record
                                 <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
@@ -43,15 +43,15 @@
                     </div>
                     <div class="col-3" data-ng-if="userContext.pageStatus =='Edit'">
                         <label for="jobchange-staff-school" class="form-label form-label-sm label-reset">School</label>
-                        <div class="input-group">{{submitPayload.jobChange.schoolid | schoolName}}</div>
+                        <div id="jobchange-staff-school" class="input-group">{{submitPayload.jobChange.schoolid | schoolName}}</div>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.users_dcid == -1">
                     <div class="col-6">
-                        <label for="job-change-name" class="form-label form-label-sm  label-reset staff-change-req">Name
+                        <label for="job-change-title" class="form-label form-label-sm  label-reset staff-change-req">Name
                             of Staff changing Positions/Jobs</label>
                         <div class="input-group">
-                            <select class="form-select form-select-sm" aria-label="title"
+                            <select id="job-change-title" class="form-select form-select-sm" aria-label="Job change staff title"
                                 data-ng-model="submitPayload.jobChange.title">
                                 <option selected></option>
                                 <option value="Mr.">Mr.</option>
@@ -98,11 +98,11 @@
                                 <div class="col">
                                     <div class="form-floating">
                                         <textarea class="form-control" placeholder="New Position/Job:"
-                                            id="job-change-previous-new" spellcheck="true" wrap="absolute"
+                                            id="job-change-new-position" spellcheck="true" wrap="absolute"
                                             data-ng-model="submitPayload.jobChange.new_position"
                                             data-ng-blur="submitPayload.jobChange.new_position = (submitPayload.jobChange.new_position | sentenceCase)"
                                             data-ng-required="true"></textarea>
-                                        <label class="fw-semibold" for="job-change-previous-new">New
+                                        <label class="fw-semibold" for="job-change-new-position">New
                                             Position/Job:</label>
                                     </div>
                                 </div>
@@ -115,7 +115,7 @@
                         <label class="form-label form-label-sm label-reset staff-change-req">Requested
                             Change Date</label><br>
                         <div class="d-flex align-items-center flex-nowrap">
-                            <input id="jobChange-deadline" title="Transfer Date" type="text" class="psDateWidget"
+                            <input id="jobChange-deadline" title="Requested Position or Job Change Date" type="text" class="psDateWidget"
                                 data-minDate="{{getDeadlineMinDate('jobChange')}}" data-ng-model="submitPayload.jobChange.deadline"
                                 data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.jobChange.deadline = userContext.tempDeadline : submitPayload.jobChange.deadline"
                                 data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
@@ -157,7 +157,7 @@
                                             class="form-label form-label-sm label-reset staff-change-req">Microsoft
                                             Licensing</label>
                                         <select id="job-change-license-microsoft" class="form-select form-select-sm"
-                                            aria-label="job-change-license-microsoft"
+                                    aria-label="Job change Microsoft license"
                                             data-ng-model="submitPayload.jobChange.license_microsoft"
                                             data-ng-init="submitPayload.jobChange.license_microsoft = submitPayload.jobChange.license_microsoft || 'A1'"
                                             data-ng-required="true">
@@ -206,10 +206,10 @@
                             submitPayload.jobChange.replace_last_name}}'s form. Feel free to add, remove, or edit note
                             for {{ submitPayload.jobChange.first_name}} {{ submitPayload.jobChange.last_name}} </span>
                         <div class="form-floating">
-                            <textarea class="form-control" placeholder="Additional Notes/Details?" id="exit-add-notes"
+                            <textarea class="form-control" placeholder="Additional Notes/Details?" id="job-change-notes"
                                 spellcheck="true" wrap="absolute"
                                 data-ng-model="submitPayload.jobChange.notes"></textarea>
-                            <label class="fw-semibold" for="exit-add-notes">Additional Notes/Details?</label>
+                            <label class="fw-semibold" for="job-change-notes">Additional Notes/Details?</label>
                         </div>
                     </div>
                 </div>

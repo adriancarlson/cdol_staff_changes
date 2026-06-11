@@ -14,7 +14,7 @@
         <thead class="sticky-header">
             <tr>
                 <th></th>
-                <th data-pss-sort-fields="old_name_placeholder, replacing_other" class="nowrap">{{listHeaders[0]}}</th>
+                <th data-pss-sort-fields="old_name_placeholder" class="nowrap">{{listHeaders[0]}}</th>
                 <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">{{listHeaders[1]}}
                 </th>
                 <th data-pss-sort-fields="submittedstaff">{{listHeaders[2]}}</th>
@@ -34,8 +34,7 @@
                 <td>{{$index +1}}</td>
                 <td class="nowrap staff-name-cell">
                     <a href="/admin/staff_change/submit.html?status=Edit&id={{exitingStaff.staffid}}"><span
-                            data-ng-show="!exitingStaff.first_name">{{exitingStaff.old_name_placeholder}}
-                            {{exitingStaff.replacing_other}}</span>
+                            data-ng-show="!exitingStaff.first_name">{{exitingStaff.old_name_placeholder}}</span>
                         <span data-ng-show="exitingStaff.users_dcid == -1 || (exitingStaff.title !== 'Fr.' &&
 								exitingStaff.title !== 'Msgr.' &&
 								exitingStaff.title !== 'Sr.' &&

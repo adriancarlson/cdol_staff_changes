@@ -23,6 +23,14 @@ define(function (require) {
 				$window.location.reload()
 			}
 
+			const scrollToFormTop = () => {
+				$window.requestAnimationFrame(() => {
+					const scrollTarget = $window.document.getElementById('staff-change-scroll-top')
+					if (scrollTarget) scrollTarget.scrollIntoView({ block: 'start' })
+					else $window.scrollTo(0, 0)
+				})
+			}
+
 			let psDialogHolder = null
 
 			$scope.openDialog = function (type) {
@@ -466,14 +474,14 @@ define(function (require) {
 							userDCID: $scope.submitPayload[res.change_type].users_dcid,
 							schoolID: $scope.userContext.pageContext === 'transferringStaff' ? $scope.submitPayload[res.change_type].prev_school_number : $scope.submitPayload[res.change_type].schoolid
 						}
-						preload.schoolStaff = $scope.getJSONData('schoolStaffData', schoolStaffParams)
+						preload.schoolStaff = $scope.getJSONData('schoolStaffRecordData', schoolStaffParams)
 					}
 					if ($scope.userContext.pageContext === 'subStaff' && $scope.submitPayload[res.change_type].prev_school_number) {
 						const subPrevStaffParams = {
 							first_name: $scope.submitPayload[res.change_type].first_name,
 							last_name: $scope.submitPayload[res.change_type].last_name
 						}
-						preload.previousSubstitute = $scope.getJSONData('subPrevStaffData', subPrevStaffParams)
+						preload.previousSubstitute = $scope.getJSONData('substituteSchoolStaffRecordData', subPrevStaffParams)
 					}
 
 					return $q.all(preload)
@@ -505,12 +513,12 @@ define(function (require) {
 				}
 				if (staffToSearch.maiden_name) staffDupeParams.maidenName = staffToSearch.maiden_name
 
-				return $scope.getJSONData('staffDupeData', staffDupeParams)
+				return $scope.getJSONData('duplicatePowerSchoolStaffData', staffDupeParams)
 			}
 
 			$scope.dupeSearch = (pageContext, formPayload, searchType) => {
-				if ($scope.staffChangeDupeData) {
-					delete $scope.staffChangeDupeData
+				if ($scope.duplicateStaffChangeData) {
+					delete $scope.duplicateStaffChangeData
 				}
 
 				let staffChangeDupeParams = {
@@ -526,20 +534,20 @@ define(function (require) {
 					staffChangeDupeParams.lastName = formPayload.replace_last_name ? formPayload.replace_last_name : formPayload.last_name
 				}
 
-				return $scope.getJSONData('staffChangeDupeData', staffChangeDupeParams).then(() => {
+				return $scope.getJSONData('duplicateStaffChangeData', staffChangeDupeParams).then(() => {
 					if (pageContext === 'newStaff' || pageContext === 'transferringStaff' || pageContext === 'subStaff') {
-						$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === 'newStaff' || item.change_type === 'transferringStaff' || item.change_type === 'subStaff')
+						$scope.duplicateStaffChangeData = $scope.duplicateStaffChangeData.filter(item => item.change_type === 'newStaff' || item.change_type === 'transferringStaff' || item.change_type === 'subStaff')
 					} else {
-						$scope.staffChangeDupeData = $scope.staffChangeDupeData.filter(item => item.change_type === pageContext)
+						$scope.duplicateStaffChangeData = $scope.duplicateStaffChangeData.filter(item => item.change_type === pageContext)
 					}
 
-					if ($scope.staffChangeDupeData.length > 0) {
+					if ($scope.duplicateStaffChangeData.length > 0) {
 						$scope.openDialog('staffChangeDupe')
 						return
 					}
 
 					if (pageContext !== 'newStaff') return
-					if ($scope.staffDupeData) delete $scope.staffDupeData
+					if ($scope.duplicatePowerSchoolStaffData) delete $scope.duplicatePowerSchoolStaffData
 
 					const staffDupeParams = {
 						firstName: formPayload.first_name,
@@ -547,8 +555,8 @@ define(function (require) {
 					}
 					if (formPayload.maiden_name) staffDupeParams.maidenName = formPayload.maiden_name
 
-					return $scope.getJSONData('staffDupeData', staffDupeParams).then(() => {
-						if ($scope.staffDupeData.length > 0) {
+					return $scope.getJSONData('duplicatePowerSchoolStaffData', staffDupeParams).then(() => {
+						if ($scope.duplicatePowerSchoolStaffData.length > 0) {
 							$scope.openDialog('staffDupe')
 						}
 					})
@@ -559,16 +567,16 @@ define(function (require) {
 				$scope.userContext.pageContext = pageContext
 				$scope.userContext.prevContext = prevContext
 
-				let usersDataParams = {
+				let userDataParams = {
 					curSchoolID: $scope.userContext.pageContext === 'transferringStaff' ? '0' : $scope.userContext.curSchoolId,
 					staffStatus: $scope.userContext.pageContext === 'transferringStaff' ? '1,2' : '1'
 				}
 
 				const preload = {
-					users: $scope.getJSONData('usersData', usersDataParams)
+					users: $scope.getJSONData('userData', userDataParams)
 				}
 				if (pageContext === 'transferringStaff' || pageContext === 'newStaff' || pageContext === 'subStaff') {
-					preload.schools = $scope.getJSONData('schoolsData')
+					preload.schools = $scope.getJSONData('schoolData')
 				}
 
 				return $q.all(preload).then(() => {
@@ -590,26 +598,26 @@ define(function (require) {
 							break
 						case 'forward':
 							$scope.updateAdditionalPayload(prevContext)
-							delete $scope.staffChangeDupeData
+							delete $scope.duplicateStaffChangeData
 							break
 						case 'convert':
 							$scope.submitPayload[pageContext] = angular.copy($scope.submitPayload[prevContext])
 							delete $scope.submitPayload[prevContext]
 					}
-					$anchorScroll('staff-change-scroll-top')
+					scrollToFormTop()
 				})
 			}
 
 			$scope.updateScopeFromDropdown = (pageContext, resource, identifier, field) => {
 				//if dropdown source is user data
-				if (resource === 'usersData') {
+				if (resource === 'userData') {
 					//if the field is the users_dcid find all the fields related to that user and set them in the submit payload
 					if (field === 'users_dcid') {
 						$scope.submitPayload[pageContext] = { [field]: identifier }
 					}
 				}
 				//if dropdown source is school data
-				if (resource === 'schoolsData') {
+				if (resource === 'schoolData') {
 					//if the drop down is set to -1 aka --Other-- then set the prev_school_name to blank
 					if (identifier == -1) {
 						$scope.submitPayload[pageContext].prev_school_name = ''
@@ -630,11 +638,11 @@ define(function (require) {
 						return
 					}
 					//if the resource is school data then set the prev_school_name to the school name of the dataset (resource) passed in
-					if (resource === 'schoolsData') {
+					if (resource === 'schoolData') {
 						$scope.submitPayload[pageContext].prev_school_name = foundItem.schoolname
 					}
 					//if the resource is user data
-					if (resource === 'usersData') {
+					if (resource === 'userData') {
 						//and the field is users_dcid
 						if (field === 'users_dcid') {
 							$scope.submitPayload[pageContext] = angular.extend($scope.submitPayload[pageContext], foundItem)
@@ -694,7 +702,7 @@ define(function (require) {
 				$scope.submitPayload.transferringStaff.users_dcid = identifier
 
 				// Step 2: Find the matching item
-				let foundItem = $scope.staffDupeData && $scope.staffDupeData.length && $scope.staffDupeData.find(item => item.identifier === identifier)
+				let foundItem = $scope.duplicatePowerSchoolStaffData && $scope.duplicatePowerSchoolStaffData.length && $scope.duplicatePowerSchoolStaffData.find(item => item.identifier === identifier)
 
 				// Step 3: Override only matching keys from foundItem
 				if (foundItem) {
@@ -723,9 +731,15 @@ define(function (require) {
 				$scope.submitPayload[pageContext].legal_last_name = $scope.submitPayload[pageContext].last_name
 			}
 
+			const createAdditionalPayload = () => {
+				return $scope.userContext.pageStatus === 'Submit'
+					? { deadline: $scope.userContext.tempDeadline }
+					: {}
+			}
+
 			$scope.updateAdditionalPayload = pageContext => {
 				if ($scope.submitPayload[pageContext].leaving_radio == 1) {
-					$scope.submitPayload.exitingStaff = {}
+					$scope.submitPayload.exitingStaff = createAdditionalPayload()
 					$scope.submitPayload.exitingStaff.users_dcid = $scope.submitPayload[pageContext].replace_dcid
 					$scope.submitPayload.exitingStaff.title = $scope.submitPayload[pageContext].replace_title
 					$scope.submitPayload.exitingStaff.first_name = $scope.submitPayload[pageContext].replace_first_name
@@ -742,7 +756,7 @@ define(function (require) {
 					delete $scope.submitPayload.exitingStaff
 				}
 				if ($scope.submitPayload[pageContext].position_radio == 1) {
-					$scope.submitPayload.jobChange = {}
+					$scope.submitPayload.jobChange = createAdditionalPayload()
 					$scope.submitPayload.jobChange.users_dcid = $scope.submitPayload[pageContext].replace_dcid
 					$scope.submitPayload.jobChange.title = $scope.submitPayload[pageContext].replace_title
 					$scope.submitPayload.jobChange.first_name = $scope.submitPayload[pageContext].replace_first_name
@@ -889,8 +903,8 @@ define(function (require) {
 			}
 
 			const findUserDataByDcid = dcid => {
-				if (!dcid || !$scope.usersData) return
-				return $scope.usersData.find(user => user.identifier && user.identifier.toString() === dcid.toString())
+				if (!dcid || !$scope.userData) return
+				return $scope.userData.find(user => user.identifier && user.identifier.toString() === dcid.toString())
 			}
 
 			$scope.hydrateTransferringStaffName = formPayload => {
@@ -898,7 +912,7 @@ define(function (require) {
 					return $q.when(true)
 				}
 
-				return $scope.getJSONData('usersData', {
+				return $scope.getJSONData('userData', {
 					curSchoolID: '0',
 					staffStatus: '1,2'
 				}).then(() => {

@@ -107,11 +107,11 @@ define(function (require) {
 				const loadPromise = $scope.staffList.hasOwnProperty(changeType)
 					? $q.when()
 					: $q.all({
-						counts: jsonDataService.getData('staffCountsData', {
+						counts: jsonDataService.getData('staffChangeCountData', {
 							curSchoolID: $scope.curSchoolId,
 							calendarYear: $scope.calendarYear
 						}),
-						staff: jsonDataService.getData('staffChangesData', {
+						staff: jsonDataService.getData('staffChangeData', {
 							curSchoolID: $scope.curSchoolId,
 							calendarYear: $scope.calendarYear,
 							changeType: changeType

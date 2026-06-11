@@ -1,7 +1,7 @@
 <div id='form-button-card-footer' class="card-footer">
     <div class="row" data-ng-if="userContext.pageStatus =='Submit'">
         <div class="col-auto me-auto">
-            <div id="bk-btn-group">
+            <div id="submit-back-button-group">
                 <!-- back to previous screen -->
                 <button type="button" class="m-0 p-2 ps-1"
                     data-ng-show="userContext.prevContext != userContext.pageContext && (submitPayload[userContext.prevContext].leaving_radio == 1 || submitPayload[userContext.prevContext].position_radio == 1)"
@@ -14,54 +14,54 @@
                         class="bi bi-chevron-left fw-bold"></i> Back</button>
             </div>
         </div>
-        <div id="nxt-btn-group" class="col-auto"
+        <div id="submit-next-button-group" class="col-auto"
             data-ng-if="(submitPayload[userContext.pageContext].leaving_radio == 1 || submitPayload[userContext.pageContext].position_radio == 1)">
             <!-- Send to exiting staff form -->
-            <button type="button" id="nxtExtBtn" class="m-0 p-2"
+            <button type="button" id="continue-to-exiting-staff-button" class="m-0 p-2"
                 data-ng-show="submitPayload[userContext.formType].leaving_radio == 1"
                 data-ng-disabled="userContext.invalidDate"
                 data-ng-click="formDisplay('exitingStaff',userContext.formType, 'forward');dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
                 Continue <i class="bi bi-chevron-right fw-bold"></i></button>
             <!-- Send to jobchange form -->
-            <button type="button" id="nxtJobBtn" class="m-0 p-2"
+            <button type="button" id="continue-to-job-change-button" class="m-0 p-2"
                 data-ng-show="submitPayload[userContext.formType].position_radio == 1"
                 data-ng-disabled="userContext.invalidDate"
                 data-ng-click="formDisplay('jobChange',userContext.formType, 'forward');dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
                 Continue <i class="bi bi-chevron-right fw-bold"></i></button>
         </div>
-        <div class="col-auto" id="sub-btn-group"
+        <div class="col-auto" id="submit-button-group"
             data-ng-if="(submitPayload[userContext.pageContext].leaving_radio != 1 && submitPayload[userContext.pageContext].position_radio != 1)">
             <span class="req-notation me-2"
                 data-ng-if="(staffChangeForm.$invalid && staffChangeForm.$dirty) || !submitPayload[userContext.formType].users_dcid">Please
                 fill all required fields prior to submitting.</span>
-            <button type="button" id="subBtn" class="m-0 p-2"
+            <button type="button" id="show-submit-confirmation-button" class="m-0 p-2"
                 data-ng-disabled="staffChangeForm.$invalid || userContext.invalidDate || userContext.subTypeHover == 'STS'"
                 data-ng-show="!subConfirm" data-ng-click="subConfirm = true">Submit</button>
-            <button type="button" id="cancBtn" class="m-0 p-2" data-ng-show="subConfirm"
+            <button type="button" id="cancel-submit-button" class="m-0 p-2" data-ng-show="subConfirm"
                 data-ng-click="subConfirm = false;">Cancel</button>
-            <button type="button" id="confBtn" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
+            <button type="button" id="confirm-submit-button" class="m-0 p-2 dark-orange" data-ng-show="subConfirm"
                 data-ng-click="createStaffChange()">Confirm Submit</button>
         </div>
     </div>
     <div class="row" data-ng-if="userContext.pageStatus =='Edit'">
         <div class="col-auto me-auto">
-            <div id="bk-btn-group">
-                <button title="bkBtn" id="bkBtn" type="button" class="m-0 p-2 ps-1" data-ng-show="!delUpdate"
+            <div id="edit-back-button-group">
+                <button title="Back to Staff Change List" id="edit-back-button" type="button" class="m-0 p-2 ps-1" data-ng-show="!delUpdate"
                     data-ng-click="toListRedirect(userContext.pageContext)"><i class="bi bi-chevron-left fw-bold"></i>
                     Back</button>
             </div>
         </div>
-        <div class="col-auto" id="sub-btn-group">
+        <div class="col-auto" id="edit-button-group">
             <span class="req-notation" data-ng-show="staffChangeForm.$invalid && staffChangeForm.$dirty">Please
                 fill all required fields prior to submitting.</span>
-            <button id="canBtn" class="ms-2 p-2" type="button" data-ng-show="delUpdate"
+            <button id="cancel-delete-button" class="ms-2 p-2" type="button" data-ng-show="delUpdate"
                 data-ng-click="delUpdate = false">Cancel</button>
-            <button id="conBtn" class="ms-2 p-2 dark-orange" type="button" data-ng-show="delUpdate"
+            <button id="confirm-delete-button" class="ms-2 p-2 dark-orange" type="button" data-ng-show="delUpdate"
                 data-ng-click="deleteStaffChange(userContext.pageContext)">Confirm Deletion</button>
-            <button id="delBtn" class="ms-2 p-2" type="button" data-ng-show="!delUpdate"
+            <button id="show-delete-confirmation-button" class="ms-2 p-2" type="button" data-ng-show="!delUpdate"
                 data-ng-click="delUpdate = true">Delete
                 Submission</button>
-            <button id="upBtn" class="ms-2 p-2" type="button"
+            <button id="submit-update-button" class="ms-2 p-2" type="button"
                 data-ng-disabled="staffChangeForm.$invalid || userContext.invalidDate" data-ng-show="!delUpdate"
                 data-ng-click="updateStaffChange(userContext.pageContext)">Submit
                 Update</button>
@@ -70,7 +70,7 @@
 </div>
 <div class="hide" id="staffChangeDupeDialogContainer">
     <div id="staffChangeDupeDiv" class="container-fluid">
-        <div data-ng-repeat="staffChangeDupe in staffChangeDupeData" class="card m-2">
+        <div data-ng-repeat="staffChangeDupe in duplicateStaffChangeData" class="card m-2">
             <div class="card-body p-0">
                 <div class="p-2">It appears that <strong>{{staffChangeDupe.submittedstaff}}</strong> <span
                         data-ng-if="staffChangeDupe.schoolid !== userContext.curSchoolId"> from
@@ -114,7 +114,7 @@
                     <div class="button-row">
                         <a data-ng-if="!submitPayload[userContext.pageContext].replace_first_name"
                             data-ng-href="/admin/staff_change/submit.html?status=Edit&id={{staffChangeDupe.staffid}}"
-                            type="button" id="review" class="button mt-1 mb-0">Go to this Submission</a>
+                            id="duplicate-review-{{$index}}" class="button mt-1 mb-0">Go to this Submission</a>
                         <button type="button" class="button mt-1 mb-0"
                             data-ng-if="submitPayload[userContext.pageContext].replace_first_name"
                             data-ng-click="closeDialog(userContext.formType, userContext.pageContext,'staffChangeDupe');formDisplay(userContext.prevContext,userContext.formType, 'back')"><i
@@ -127,7 +127,7 @@
 </div>
 <div class="hide" id="staffDupeDialogContainer">
     <div id="staffDupeDiv" class="container-fluid">
-        <div data-ng-repeat="staffDupe in staffDupeData" class="card m-2">
+        <div data-ng-repeat="staffDupe in duplicatePowerSchoolStaffData" class="card m-2">
             <div class="card-body p-0">
                 <div class="p-2"><strong>{{staffDupe.first_name}} {{staffDupe.last_name}}</strong> is
                     <em>{{staffDupe.status}}</em> at <strong> {{staffDupe.prev_school_name}}</strong><br>

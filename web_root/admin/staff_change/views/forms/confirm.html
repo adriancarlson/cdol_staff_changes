@@ -36,7 +36,7 @@
                         </span> around {{payload.deadline}} unless specified
                         otherwise.</p>
                     <a data-ng-href="/admin/staff_change/submit.html?status=Edit&id={{payload.staffChangeId}}"
-                        target="_blank" type="button" id="review" class="btn btn-sm btn-primary btn-ps-blue ms-1">Review
+                        target="_blank" id="confirmation-review-{{$index}}" class="btn btn-sm btn-primary btn-ps-blue ms-1">Review
                         Submission</a>
                 </div>
             </div>
@@ -48,10 +48,10 @@
                     <button id="subAnother" class="btn btn-sm btn-primary btn-ps-blue ms-1"
                         data-ng-click="refreshPage()">Submit
                         Another Staff Change</button>
-                    <a href="list.html" type="button" id="listAll" class="btn btn-sm btn-primary btn-ps-blue ms-1">View
+                    <a href="list.html" id="listAll" class="btn btn-sm btn-primary btn-ps-blue ms-1">View
                         All
                         Submissions</a>
-                    <a href="/admin/home.html" type="button" id="exit"
+                    <a href="/admin/home.html" id="exit"
                         class="btn btn-sm btn-primary btn-ps-blue ms-1">Exit</a>
                 </div>
             </div>

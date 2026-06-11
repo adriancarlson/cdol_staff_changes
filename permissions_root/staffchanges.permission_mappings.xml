@@ -1,5 +1,5 @@
 <permission_mappings>
-	<permission name='/admin/staffchange/list.html'>
+	<permission name="/admin/staff_change/list.html">
 		<implies allow="post">/ws/schema/table/U_CDOL_STAFF_CHANGES</implies>
 		<implies allow="put">/ws/schema/table/U_CDOL_STAFF_CHANGES/#</implies>
 		<implies allow="delete">/ws/schema/table/U_CDOL_STAFF_CHANGES/#</implies>

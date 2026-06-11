@@ -22,7 +22,7 @@ define(function (require) {
 			return {
 				normalizeRecords: normalizeRecords,
 				getData: (resource, params = {}) => {
-					const dataURL = `/admin/staff_change/json/${resource}.json`
+					const dataURL = `/admin/staff_change/data/${resource}.json`
 					const rejectWithAlert = error => {
 						psAlert({ message: `There was an error loading the data from ${dataURL}`, title: 'Error Loading Data' })
 						return $q.reject(error)

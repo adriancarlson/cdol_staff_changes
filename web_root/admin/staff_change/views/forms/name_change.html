@@ -5,11 +5,11 @@
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">
                     <div class="col-auto">
-                        <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Whose name
+                        <label for="name-change-user" class="form-label form-label-sm label-reset staff-change-req">Whose name
                             is changing?</label>
-                        <select class="form-select form-select-sm" id="users_dcid" aria-label="Who is not returning?"
+                        <select class="form-select form-select-sm" id="name-change-user" aria-label="Whose name is changing?"
                             data-ng-model="submitPayload.nameChange.users_dcid" data-ng-required="true"
-                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'usersData', submitPayload.nameChange.users_dcid, 'users_dcid')">
+                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.nameChange.users_dcid, 'users_dcid')">
                             <option selected></option>
                             ~[tlist_sql;SELECT
                             users.dcid,
@@ -30,12 +30,12 @@
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Edit'">
                     <div class="col-6">
-                        <label for="users_dcid" class="form-label form-label-sm label-reset staff-change-req">Previous
+                        <label for="name-change-user" class="form-label form-label-sm label-reset staff-change-req">Previous
                             Name:</label><br />
                         <span class="blockquote ms-2 mt-1">{{submitPayload.nameChange.old_name_placeholder}}</span>
-                        <a type="button" class="button ms-2 p-1" style="padding: 6px"
-                            data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && schoolStaffData[0].ssdcid"
-                            data-ng-href="/admin/faculty/edit.html?frn=005{{schoolStaffData[0].ssdcid}}"
+                        <a class="button ms-2 p-1" style="padding: 6px"
+                            data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && schoolStaffRecordData[0].ssdcid"
+                            data-ng-href="/admin/faculty/edit.html?frn=005{{schoolStaffRecordData[0].ssdcid}}"
                             target="_blank">Open Staff
                             Record <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
                                 pds-widget="pds-widget" style="zoom: 0.5; color: white; fill: white;"></pds-icon></a>
@@ -43,21 +43,21 @@
                     <div class="col-3" data-ng-if="userContext.pageStatus =='Edit'">
                         <label for="name-change-staff-school"
                             class="form-label form-label-sm label-reset">School</label>
-                        <div class="input-group">{{submitPayload.nameChange.schoolid | schoolName}}</div>
+                        <div id="name-change-staff-school" class="input-group">{{submitPayload.nameChange.schoolid | schoolName}}</div>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.users_dcid">
                     <div class="col-6">
-                        <label for="name-change-staff-name"
+                        <label for="name-change-title"
                             class="form-label form-label-sm  label-reset staff-change-req"
                             data-ng-if="userContext.pageStatus =='Submit'">Please
                             <mark>change name below</mark> to {{submitPayload.nameChange.old_name_placeholder}}'s new
                             name</label>
-                        <label for="name-change-staff-name"
+                        <label for="name-change-title"
                             class="form-label form-label-sm  label-reset staff-change-req"
                             data-ng-if="userContext.pageStatus =='Edit'">New Name:</label>
                         <div class="input-group">
-                            <select class="form-select form-select-sm" aria-label="title"
+                            <select id="name-change-title" class="form-select form-select-sm" aria-label="New staff title"
                                 data-ng-model="submitPayload.nameChange.title" data-ng-required="true">
                                 <option selected></option>
                                 <option value="Mr.">Mr.</option>
@@ -96,16 +96,16 @@
                             {{submitPayload.nameChange.old_name_placeholder}} needs
                             to keep access to <em>Canva</em> projects?</label><br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="canva-radio-group" id="canva-radio-yes"
+                            <input class="form-check-input" type="radio" name="canva-radio-group" id="name-change-canva-radio-yes"
                                 data-ng-model="submitPayload.nameChange.canva_transfer" value="1"
                                 data-ng-required="!submitPayload.nameChange.canva_transfer" tabindex="0">
-                            <label class="form-check-label" for="canva-radio-yes">Yes</label>
+                            <label class="form-check-label" for="name-change-canva-radio-yes">Yes</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="canva-radio-group" id="canva-radio-no"
+                            <input class="form-check-input" type="radio" name="canva-radio-group" id="name-change-canva-radio-no"
                                 data-ng-model="submitPayload.nameChange.canva_transfer" value="0"
                                 data-ng-required="!submitPayload.nameChange.canva_transfer" tabindex="0">
-                            <label class="form-check-label" for="canva-radio-no">No</label>
+                            <label class="form-check-label" for="name-change-canva-radio-no">No</label>
                         </div>
                         <br>
                         <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary" role="alert">
@@ -124,7 +124,7 @@
                         <label class="form-label form-label-sm label-reset staff-change-req">Requested
                             Change Date</label><br>
                         <div class="d-flex align-items-center flex-nowrap">
-                            <input id="nameChange-deadline" title="Transfer Date" type="text" class="psDateWidget"
+                            <input id="nameChange-deadline" title="Requested Name Change Date" type="text" class="psDateWidget"
                                 data-minDate="{{getDeadlineMinDate('nameChange')}}" data-ng-model="submitPayload.nameChange.deadline"
                                 data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.nameChange.deadline = userContext.tempDeadline : submitPayload.nameChange.deadline"
                                 data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
@@ -161,9 +161,9 @@
                         <div class="form-floating">
                             <textarea class="form-control"
                                 placeholder="Reason for Name Change and/or additional Notes/Details?"
-                                id="exit-add-notes" spellcheck="true" wrap="absolute"
+                                id="name-change-notes" spellcheck="true" wrap="absolute"
                                 data-ng-model="submitPayload.nameChange.notes"></textarea>
-                            <label class="fw-semibold" for="exit-add-notes">Reason for Name Change and/or additional
+                            <label class="fw-semibold" for="name-change-notes">Reason for Name Change and/or additional
                                 Notes/Details?</label>
                         </div>
                     </div>
