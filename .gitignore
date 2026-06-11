@@ -1,4 +1,3 @@
 *.zip
 archive
-.vscode
 .pytest_cache

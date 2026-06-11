@@ -1,0 +1,10 @@
+<permission_mappings>
+	<permission name='/admin/staffchange/list.html'>
+		<implies allow="post">/ws/schema/table/U_CDOL_STAFF_CHANGES</implies>
+		<implies allow="put">/ws/schema/table/U_CDOL_STAFF_CHANGES/#</implies>
+		<implies allow="delete">/ws/schema/table/U_CDOL_STAFF_CHANGES/#</implies>
+		<implies allow="get">/ws/schema/table/U_CDOL_STAFF_CHANGES/#</implies>
+		<implies allow="get">/ws/schema/table/U_CDOL_STAFF_CHANGES/count</implies>
+		<implies allow="get">/ws/schema/table/U_CDOL_STAFF_CHANGES</implies>
+	</permission>
+</permission_mappings>
