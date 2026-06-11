@@ -148,7 +148,7 @@ define(function (require) {
 
 							Object.keys(item).forEach(key => {
 								if (key.endsWith('_date')) {
-									item[key] = new Date(formatService.formatDateFromApi(item[key]))
+									item[key] = item[key] ? new Date(formatService.formatDateFromApi(item[key])) : null
 								}
 							})
 
