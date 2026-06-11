@@ -5,17 +5,16 @@ define(function (require) {
 
 	module.controller('staffChangeCtrl', [
 		'$scope',
-		'$http',
 		'$attrs',
 		'$window',
 		'$anchorScroll',
 		'$location',
 		'$q',
-		'pqService',
+		'jsonDataService',
 		'formatService',
 		'psApiService',
 		'jitbitService',
-		function ($scope, $http, $attrs, $window, $anchorScroll, $location, $q, pqService, formatService, psApiService, jitbitService) {
+		function ($scope, $attrs, $window, $anchorScroll, $location, $q, jsonDataService, formatService, psApiService, jitbitService) {
 			//This is here for troubleshooting purposes.
 			//Allows us to double click anywhere on the page and logs scope to console
 			$j(document).dblclick(() => console.log($scope))
@@ -484,7 +483,6 @@ define(function (require) {
 			if ($scope.userContext.staffChangeId) {
 				$scope.getStaffChange($scope.userContext.staffChangeId)
 			}
-			//had to switch from PQ's to pulling this data through t_list SQL and JSON files because of PowerSchools Data Restriction Framework on PQs
 			$scope.getJSONData = (resource, params = {}) => {
 				const paramSignature = JSON.stringify(params)
 				const paramSignatureKey = `${resource}ParamSignature`
@@ -493,24 +491,9 @@ define(function (require) {
 					return $q.when($scope[resource])
 				}
 
-				return $http({
-					url: `/admin/staff_change/json/${resource}.json`,
-					method: 'GET',
-					params: params
-				}).then(res => {
+				return jsonDataService.getData(resource, params).then(records => {
 					$scope[paramSignatureKey] = paramSignature
-					$scope[resource] = res.data || []
-					// Convert all numeric values in each object to strings.
-					$scope[resource] = $scope[resource].map(obj => {
-						const newObj = {}
-						for (const key in obj) {
-							if (obj.hasOwnProperty(key)) {
-								newObj[key] = typeof obj[key] === 'number' ? obj[key].toString() : obj[key]
-							}
-						}
-						return newObj
-					})
-					$scope[resource] = psUtils.htmlEntitiesToCharCode($scope[resource])
+					$scope[resource] = records
 					return $scope[resource]
 				})
 			}

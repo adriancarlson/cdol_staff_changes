@@ -1,37 +1,38 @@
 ~[tlist_sql;
-    SELECT 
-        json_arrayagg(
-            json_object(
-                'staffid' VALUE u_cdol_staff_changes.id,
-                'change_type' VALUE u_cdol_staff_changes.change_type,
-                'title' VALUE u_cdol_staff_changes.title,
-                'first_name' VALUE u_cdol_staff_changes.first_name,
-                'last_name' VALUE u_cdol_staff_changes.last_name,
-                'submittedstaff' VALUE users_submitted.first_name || ' ' || users_submitted.last_name,
-                'submission_date' VALUE TO_CHAR(u_cdol_staff_changes.submission_date, 'MM/DD/YYYY'),
-                'submission_time' VALUE u_cdol_staff_changes.submission_time,
-                'schname' VALUE CASE
-                                WHEN u_cdol_staff_changes.schoolid = 0 THEN 'Diocesan Office'
-                                ELSE schools.name
-                            END,
-                'schoolid' VALUE u_cdol_staff_changes.schoolid
-                RETURNING CLOB
-            )
-        RETURNING CLOB
-    )   
-    FROM 
-        u_cdol_staff_changes
-    LEFT OUTER JOIN schools 
-        ON u_cdol_staff_changes.schoolid = schools.school_number
-    LEFT OUTER JOIN users users_submitted 
-        ON u_cdol_staff_changes.who_submitted = users_submitted.DCID
-    WHERE 
-        (UTL_MATCH.JARO_WINKLER_SIMILARITY(UPPER(u_cdol_staff_changes.first_name), UPPER('~(gpv.firstName)')) >= 75)
-        AND (UTL_MATCH.JARO_WINKLER_SIMILARITY(UPPER(u_cdol_staff_changes.last_name), UPPER('~(gpv.lastName)')) >= 90)
-        AND (u_cdol_staff_changes.schoolid = '~(gpv.curSchoolID)' OR '~(gpv.curSchoolID)' = 0)
-        AND (u_cdol_staff_changes.calendar_year = '~(gpv.calendarYear)' OR '~(gpv.calendarYear)' = 0)
-        AND ('~(gpv.changeType)' = 'allStaff' OR u_cdol_staff_changes.change_type IN ('~(gpv.changeType)'))
-    ORDER BY
-        u_cdol_staff_changes.submission_date DESC,
-        u_cdol_staff_changes.last_name
-]~(data)[/tlist_sql]
+	SELECT
+		COALESCE(
+			JSON_ARRAYAGG(
+				JSON_OBJECT(
+					'staffid' VALUE TO_CHAR(sc.id),
+					'change_type' VALUE sc.change_type,
+					'title' VALUE sc.title,
+					'first_name' VALUE sc.first_name,
+					'last_name' VALUE sc.last_name,
+					'submittedstaff' VALUE users_submitted.first_name || ' ' || users_submitted.last_name,
+					'submission_date' VALUE TO_CHAR(sc.submission_date, 'MM/DD/YYYY'),
+					'submission_time' VALUE sc.submission_time,
+					'schname' VALUE CASE
+						WHEN sc.schoolid = 0 THEN 'Diocesan Office'
+						ELSE schools.name
+					END,
+					'schoolid' VALUE TO_CHAR(sc.schoolid)
+					RETURNING CLOB
+				)
+				ORDER BY sc.submission_date DESC, sc.last_name
+				RETURNING CLOB
+			),
+			TO_CLOB('[]')
+		)
+	FROM
+		u_cdol_staff_changes sc
+		LEFT OUTER JOIN schools
+			ON sc.schoolid = schools.school_number
+		LEFT OUTER JOIN users users_submitted
+			ON sc.who_submitted = users_submitted.dcid
+	WHERE
+		UTL_MATCH.JARO_WINKLER_SIMILARITY(UPPER(sc.first_name), UPPER('~(gpv.firstName;sqlText)')) >= 75
+		AND UTL_MATCH.JARO_WINKLER_SIMILARITY(UPPER(sc.last_name), UPPER('~(gpv.lastName;sqlText)')) >= 90
+		AND (sc.schoolid = ~(gpv.curSchoolID;num) OR ~(gpv.curSchoolID;num) = 0)
+		AND (sc.calendar_year = ~(gpv.calendarYear;num) OR ~(gpv.calendarYear;num) = 0)
+		AND ('~(gpv.changeType;sqlText)' = 'allStaff' OR sc.change_type = '~(gpv.changeType;sqlText)')
+;]~(data)[/tlist_sql]

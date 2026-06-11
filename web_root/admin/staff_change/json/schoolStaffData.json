@@ -1,44 +1,49 @@
 ~[tlist_sql;
-    SELECT 
-        JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'ssdcid' VALUE data.dcid,
-                'schoolid' VALUE data.schoolid
-                RETURNING CLOB
-            )
-            RETURNING CLOB
-        ) AS result_json
-        FROM (
-        SELECT
-            schoolstaff.dcid,
-            schoolstaff.schoolid
-        FROM
-            schoolstaff
-            INNER JOIN users ON users.dcid = schoolstaff.users_dcid
-        WHERE
-            users.dcid = ~(gpv.userDCID)
-            AND schoolstaff.schoolid = ~(gpv.schoolID)
+	SELECT
+		COALESCE(
+			JSON_ARRAYAGG(
+				JSON_OBJECT(
+					'ssdcid' VALUE TO_CHAR(data.dcid),
+					'schoolid' VALUE TO_CHAR(data.schoolid)
+					RETURNING CLOB
+				)
+				ORDER BY data.dcid
+				RETURNING CLOB
+			),
+			TO_CLOB('[]')
+		)
+	FROM (
+		SELECT
+			schoolstaff.dcid,
+			schoolstaff.schoolid
+		FROM
+			schoolstaff
+			INNER JOIN users ON users.dcid = schoolstaff.users_dcid
+		WHERE
+			users.dcid = ~(gpv.userDCID;num)
+			AND schoolstaff.schoolid = ~(gpv.schoolID;num)
 
-        UNION ALL
+		UNION ALL
 
-        SELECT
-            schoolstaff.dcid,
-            schoolstaff.schoolid
-        FROM
-            schoolstaff
-            INNER JOIN users ON users.dcid = schoolstaff.users_dcid
-        WHERE
-            users.dcid = ~(gpv.userDCID)
-            AND schoolstaff.dcid = (
-                SELECT MAX(ss.dcid)
-                FROM schoolstaff ss
-                WHERE ss.users_dcid = ~(gpv.userDCID)
-            )
-            AND NOT EXISTS (
-                SELECT 1
-                FROM schoolstaff ss
-                WHERE ss.users_dcid = ~(gpv.userDCID)
-                AND ss.schoolid = ~(gpv.schoolID)
-            )
-    ) data
-]~(data)[/tlist_sql]
+		SELECT
+			schoolstaff.dcid,
+			schoolstaff.schoolid
+		FROM
+			schoolstaff
+			INNER JOIN users ON users.dcid = schoolstaff.users_dcid
+		WHERE
+			users.dcid = ~(gpv.userDCID;num)
+			AND schoolstaff.dcid = (
+				SELECT MAX(ss.dcid)
+				FROM schoolstaff ss
+				WHERE ss.users_dcid = ~(gpv.userDCID;num)
+			)
+			AND NOT EXISTS (
+				SELECT 1
+				FROM schoolstaff ss
+				WHERE
+					ss.users_dcid = ~(gpv.userDCID;num)
+					AND ss.schoolid = ~(gpv.schoolID;num)
+			)
+	) data
+;]~(data)[/tlist_sql]

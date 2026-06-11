@@ -7,9 +7,9 @@ define(function (require) {
 		'$attrs',
 		'$filter',
 		'$q',
-		'pqService',
+		'jsonDataService',
 		'formatService',
-		function ($scope, $attrs, $filter, $q, pqService, formatService) {
+		function ($scope, $attrs, $filter, $q, jsonDataService, formatService) {
 			//This is here for troubleshooting purposes.
 			//Allows us to double click anywhere on the page and logs scope to console
 			$j(document).dblclick(() => console.log($scope))
@@ -107,17 +107,17 @@ define(function (require) {
 				const loadPromise = $scope.staffList.hasOwnProperty(changeType)
 					? $q.when()
 					: $q.all({
-						counts: pqService.getPQResults('net.cdolinc.staffChanges.staff.counts', {
+						counts: jsonDataService.getData('staffCountsData', {
 							curSchoolID: $scope.curSchoolId,
 							calendarYear: $scope.calendarYear
 						}),
-						staff: pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', {
+						staff: jsonDataService.getData('staffChangesData', {
 							curSchoolID: $scope.curSchoolId,
 							calendarYear: $scope.calendarYear,
 							changeType: changeType
 						})
 					}).then(preload => {
-						$scope.staffChangeCounts = preload.counts[0]
+						$scope.staffChangeCounts = preload.counts[0] || {}
 						const staffResults = preload.staff
 
 						if (!staffResults.length) {

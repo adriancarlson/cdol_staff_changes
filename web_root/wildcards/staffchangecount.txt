@@ -38,6 +38,34 @@
     </li>
 </ul>
 
+<script type="text/javascript">
+    const loadStaffChangeCount = async () => {
+        try {
+            let records = await $j.ajax({
+                url: '/admin/staff_change/json/staffCountsData.json',
+                method: 'GET',
+                data: {
+                    curSchoolID: '~(curschoolid)',
+                    calendarYear: '~(f.currentdate;format= YYYY)'
+                }
+            })
+
+            if (typeof psUtils !== 'undefined' && psUtils.htmlEntitiesToCharCode) {
+                records = psUtils.htmlEntitiesToCharCode(records)
+            }
+            if (typeof records === 'string') {
+                records = JSON.parse(records)
+            }
+
+            const countRecord = Array.isArray(records) ? records[0] : records
+            return Number(countRecord && countRecord.total_remaining) || 0
+        } catch (err) {
+            console.log(err)
+            return 0
+        }
+    }
+</script>
+
 ~[if.admin_pds_uptake_access]
 <script type="text/javascript">
     const findStaffNavItemById = (itemId, startWith) => {
@@ -72,18 +100,7 @@
 
     $j(() =>
         (async () => {
-            let staffCount
-            try {
-                staffCount = await $j.ajax({
-                    url: '/ws/schema/query/net.cdolinc.staffChanges.staff.counts?pagesize=0',
-                    method: 'POST',
-                    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-                    data: JSON.stringify({ curSchoolID: '~(curschoolid)', calendarYear: '~(f.currentdate;format= YYYY)' })
-                })
-            } catch (err) {
-                console.log(err)
-            }
-            staffCount = Number(staffCount.record[0].total_remaining)
+            const staffCount = await loadStaffChangeCount()
             updateStaffCount('staff-changes-list', staffCount)
         })()
     )
@@ -92,18 +109,7 @@
 <script type="text/javascript">
     $j(() =>
         (async () => {
-            let staffCount
-            try {
-                staffCount = await $j.ajax({
-                    url: '/ws/schema/query/net.cdolinc.staffChanges.staff.counts?pagesize=0',
-                    method: 'POST',
-                    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-                    data: JSON.stringify({ curSchoolID: '~(curschoolid)', calendarYear: '~(f.currentdate;format= YYYY)' })
-                })
-            } catch (err) {
-                console.log(err)
-            }
-            staffCount = Number(staffCount.record[0].total_remaining)
+            const staffCount = await loadStaffChangeCount()
             if (staffCount > 0) {
                 $j('#staffCountSpan').text(staffCount)
             } else {
