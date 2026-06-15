@@ -3,111 +3,111 @@
 		COALESCE(
 			JSON_ARRAYAGG(
 				JSON_OBJECT(
-					'staffid' VALUE TO_CHAR(sc.id),
-					'yearid' VALUE TO_CHAR(sc.yearid),
-					'schoolid' VALUE TO_CHAR(sc.schoolid),
+					'staffid' VALUE TO_CHAR(u_cdol_staff_changes.id),
+					'yearid' VALUE TO_CHAR(u_cdol_staff_changes.yearid),
+					'schoolid' VALUE TO_CHAR(u_cdol_staff_changes.schoolid),
 					'schname' VALUE CASE
-						WHEN sc.schoolid = 0 THEN 'Diocesan Office'
+						WHEN u_cdol_staff_changes.schoolid = 0 THEN 'Diocesan Office'
 						ELSE schools.name
 					END,
-					'name_change' VALUE sc.name_change,
-					'title' VALUE sc.title,
-					'first_name' VALUE sc.first_name,
-					'middle_name' VALUE sc.middle_name,
-					'last_name' VALUE sc.last_name,
-					'legal_first_name' VALUE sc.legal_first_name,
-					'legal_middle_name' VALUE sc.legal_middle_name,
-					'legal_last_name' VALUE sc.legal_last_name,
-					'preferred_name' VALUE sc.preferred_name,
-					'maiden_name' VALUE sc.maiden_name,
-					'gender' VALUE sc.gender,
-					'dob' VALUE TO_CHAR(sc.dob, 'YYYY-MM-DD'),
-					'religion' VALUE sc.religion,
-					'religiousclergylay' VALUE sc.religiousclergylay,
-					'personal_email' VALUE sc.personal_email,
-					'staff_type' VALUE sc.staff_type,
+					'name_change' VALUE u_cdol_staff_changes.name_change,
+					'title' VALUE u_cdol_staff_changes.title,
+					'first_name' VALUE u_cdol_staff_changes.first_name,
+					'middle_name' VALUE u_cdol_staff_changes.middle_name,
+					'last_name' VALUE u_cdol_staff_changes.last_name,
+					'legal_first_name' VALUE u_cdol_staff_changes.legal_first_name,
+					'legal_middle_name' VALUE u_cdol_staff_changes.legal_middle_name,
+					'legal_last_name' VALUE u_cdol_staff_changes.legal_last_name,
+					'preferred_name' VALUE u_cdol_staff_changes.preferred_name,
+					'maiden_name' VALUE u_cdol_staff_changes.maiden_name,
+					'gender' VALUE u_cdol_staff_changes.gender,
+					'dob' VALUE TO_CHAR(u_cdol_staff_changes.dob, 'YYYY-MM-DD'),
+					'religion' VALUE u_cdol_staff_changes.religion,
+					'religiousclergylay' VALUE u_cdol_staff_changes.religiousclergylay,
+					'personal_email' VALUE u_cdol_staff_changes.personal_email,
+					'staff_type' VALUE u_cdol_staff_changes.staff_type,
 					'staff_type_desc' VALUE CASE
-						WHEN sc.staff_type = '0' THEN 'Not Assigned'
-						WHEN sc.staff_type = '1' THEN 'Teacher'
-						WHEN sc.staff_type = '2' THEN 'Staff'
-						WHEN sc.staff_type = '3' THEN 'Lunch Staff'
-						WHEN sc.staff_type = '4' THEN 'Substitute'
+						WHEN u_cdol_staff_changes.staff_type = '0' THEN 'Not Assigned'
+						WHEN u_cdol_staff_changes.staff_type = '1' THEN 'Teacher'
+						WHEN u_cdol_staff_changes.staff_type = '2' THEN 'Staff'
+						WHEN u_cdol_staff_changes.staff_type = '3' THEN 'Lunch Staff'
+						WHEN u_cdol_staff_changes.staff_type = '4' THEN 'Substitute'
 						ELSE ''
 					END,
-					'position' VALUE sc.position,
-					'fte' VALUE sc.fte,
-					'replace_dcid' VALUE TO_CHAR(sc.replace_dcid),
-					'replace_title' VALUE sc.replace_title,
-					'replace_first_name' VALUE sc.replace_first_name,
-					'replace_middle_name' VALUE sc.replace_middle_name,
-					'replace_last_name' VALUE sc.replace_last_name,
-					'replace_license_microsoft' VALUE sc.replace_license_microsoft,
-					'additional_schoolid' VALUE TO_CHAR(sc.additional_schoolid),
-					'old_name_placeholder' VALUE sc.old_name_placeholder,
-					'start_date' VALUE TO_CHAR(sc.start_date, 'YYYY-MM-DD'),
-					'early_setup' VALUE sc.early_setup,
-					'deadline' VALUE TO_CHAR(sc.deadline, 'YYYY-MM-DD'),
-					'completion_date' VALUE TO_CHAR(COALESCE(sc.deadline, sc.start_date), 'YYYY-MM-DD'),
-					'previous_employer' VALUE sc.previous_employer,
-					'previous_employer_other' VALUE sc.previous_employer_other,
+					'position' VALUE u_cdol_staff_changes.position,
+					'fte' VALUE u_cdol_staff_changes.fte,
+					'replace_dcid' VALUE TO_CHAR(u_cdol_staff_changes.replace_dcid),
+					'replace_title' VALUE u_cdol_staff_changes.replace_title,
+					'replace_first_name' VALUE u_cdol_staff_changes.replace_first_name,
+					'replace_middle_name' VALUE u_cdol_staff_changes.replace_middle_name,
+					'replace_last_name' VALUE u_cdol_staff_changes.replace_last_name,
+					'replace_license_microsoft' VALUE u_cdol_staff_changes.replace_license_microsoft,
+					'additional_schoolid' VALUE TO_CHAR(u_cdol_staff_changes.additional_schoolid),
+					'old_name_placeholder' VALUE u_cdol_staff_changes.old_name_placeholder,
+					'start_date' VALUE TO_CHAR(u_cdol_staff_changes.start_date, 'YYYY-MM-DD'),
+					'early_setup' VALUE u_cdol_staff_changes.early_setup,
+					'deadline' VALUE TO_CHAR(u_cdol_staff_changes.deadline, 'YYYY-MM-DD'),
+					'completion_date' VALUE TO_CHAR(COALESCE(u_cdol_staff_changes.deadline, u_cdol_staff_changes.start_date), 'YYYY-MM-DD'),
+					'previous_employer' VALUE u_cdol_staff_changes.previous_employer,
+					'previous_employer_other' VALUE u_cdol_staff_changes.previous_employer_other,
 					'previous_school_name' VALUE CASE
-						WHEN sc.previous_employer = 'Other' THEN sc.previous_employer_other
+						WHEN u_cdol_staff_changes.previous_employer = 'Other' THEN u_cdol_staff_changes.previous_employer_other
 						ELSE previous_school.name
 					END,
-					'submission_date' VALUE TO_CHAR(sc.submission_date, 'YYYY-MM-DD'),
-					'submission_time' VALUE sc.submission_time,
-					'who_submitted' VALUE TO_CHAR(sc.who_submitted),
-					'submittedstaff' VALUE users_submitted.first_name || ' ' || users_submitted.last_name,
-					'final_completion_date' VALUE TO_CHAR(sc.final_completion_date, 'YYYY-MM-DD'),
-					'ps_created' VALUE TO_CHAR(sc.ps_created),
-					'ad_created' VALUE TO_CHAR(sc.ad_created),
-					'ad_ignored' VALUE TO_CHAR(sc.ad_ignored),
-					'lms_created' VALUE TO_CHAR(sc.lms_created),
-					'lms_ignored' VALUE TO_CHAR(sc.lms_ignored),
-					'o365_created' VALUE TO_CHAR(sc.o365_created),
-					'o365_ignored' VALUE TO_CHAR(sc.o365_ignored),
-					'notes' VALUE sc.notes,
-					'suggestions' VALUE sc.suggestions,
-					'exit_date_radio' VALUE sc.exit_date_radio,
-					'exit_radio' VALUE sc.exit_radio,
-					'position_radio' VALUE sc.position_radio,
-					'leaving_radio' VALUE sc.leaving_radio,
-					'previous_position' VALUE sc.previous_position,
-					'new_position' VALUE sc.new_position,
-					'change_type' VALUE sc.change_type,
-					'users_dcid' VALUE TO_CHAR(sc.users_dcid),
-					'prev_school_number' VALUE TO_CHAR(sc.prev_school_number),
-					'prev_school_name' VALUE sc.prev_school_name,
-					'calendar_year' VALUE TO_CHAR(sc.calendar_year),
-					'license_microsoft' VALUE sc.license_microsoft,
-					'sub_type' VALUE sc.sub_type,
-					'ticket_id' VALUE TO_CHAR(sc.ticket_id),
-					'canva_transfer' VALUE TO_CHAR(sc.canva_transfer),
-					'canva_created' VALUE TO_CHAR(sc.canva_created),
-					'canva_ignored' VALUE TO_CHAR(sc.canva_ignored),
-					'canva_dcid' VALUE TO_CHAR(sc.canva_dcid),
-					'canva_title' VALUE sc.canva_title,
-					'canva_first_name' VALUE sc.canva_first_name,
-					'canva_middle_name' VALUE sc.canva_middle_name,
-					'canva_last_name' VALUE sc.canva_last_name
+					'submission_date' VALUE TO_CHAR(u_cdol_staff_changes.submission_date, 'YYYY-MM-DD'),
+					'submission_time' VALUE u_cdol_staff_changes.submission_time,
+					'who_submitted' VALUE TO_CHAR(u_cdol_staff_changes.who_submitted),
+					'submittedstaff' VALUE users.first_name || ' ' || users.last_name,
+					'final_completion_date' VALUE TO_CHAR(u_cdol_staff_changes.final_completion_date, 'YYYY-MM-DD'),
+					'ps_created' VALUE TO_CHAR(u_cdol_staff_changes.ps_created),
+					'ad_created' VALUE TO_CHAR(u_cdol_staff_changes.ad_created),
+					'ad_ignored' VALUE TO_CHAR(u_cdol_staff_changes.ad_ignored),
+					'lms_created' VALUE TO_CHAR(u_cdol_staff_changes.lms_created),
+					'lms_ignored' VALUE TO_CHAR(u_cdol_staff_changes.lms_ignored),
+					'o365_created' VALUE TO_CHAR(u_cdol_staff_changes.o365_created),
+					'o365_ignored' VALUE TO_CHAR(u_cdol_staff_changes.o365_ignored),
+					'notes' VALUE u_cdol_staff_changes.notes,
+					'suggestions' VALUE u_cdol_staff_changes.suggestions,
+					'exit_date_radio' VALUE u_cdol_staff_changes.exit_date_radio,
+					'exit_radio' VALUE u_cdol_staff_changes.exit_radio,
+					'position_radio' VALUE u_cdol_staff_changes.position_radio,
+					'leaving_radio' VALUE u_cdol_staff_changes.leaving_radio,
+					'previous_position' VALUE u_cdol_staff_changes.previous_position,
+					'new_position' VALUE u_cdol_staff_changes.new_position,
+					'change_type' VALUE u_cdol_staff_changes.change_type,
+					'users_dcid' VALUE TO_CHAR(u_cdol_staff_changes.users_dcid),
+					'prev_school_number' VALUE TO_CHAR(u_cdol_staff_changes.prev_school_number),
+					'prev_school_name' VALUE u_cdol_staff_changes.prev_school_name,
+					'calendar_year' VALUE TO_CHAR(u_cdol_staff_changes.calendar_year),
+					'license_microsoft' VALUE u_cdol_staff_changes.license_microsoft,
+					'sub_type' VALUE u_cdol_staff_changes.sub_type,
+					'ticket_id' VALUE TO_CHAR(u_cdol_staff_changes.ticket_id),
+					'canva_transfer' VALUE TO_CHAR(u_cdol_staff_changes.canva_transfer),
+					'canva_created' VALUE TO_CHAR(u_cdol_staff_changes.canva_created),
+					'canva_ignored' VALUE TO_CHAR(u_cdol_staff_changes.canva_ignored),
+					'canva_dcid' VALUE TO_CHAR(u_cdol_staff_changes.canva_dcid),
+					'canva_title' VALUE u_cdol_staff_changes.canva_title,
+					'canva_first_name' VALUE u_cdol_staff_changes.canva_first_name,
+					'canva_middle_name' VALUE u_cdol_staff_changes.canva_middle_name,
+					'canva_last_name' VALUE u_cdol_staff_changes.canva_last_name
 					NULL ON NULL
 					RETURNING CLOB
 				)
-				ORDER BY sc.submission_date DESC, sc.last_name
+				ORDER BY u_cdol_staff_changes.submission_date DESC, u_cdol_staff_changes.last_name
 				RETURNING CLOB
 			),
 			TO_CLOB('[]')
 		)
 	FROM
-		u_cdol_staff_changes sc
+		u_cdol_staff_changes
 		LEFT OUTER JOIN schools
-			ON sc.schoolid = schools.school_number
+			ON u_cdol_staff_changes.schoolid = schools.school_number
 		LEFT OUTER JOIN schools previous_school
-			ON TO_CHAR(sc.previous_employer) = TO_CHAR(previous_school.school_number)
-		LEFT OUTER JOIN users users_submitted
-			ON sc.who_submitted = users_submitted.dcid
+			ON TO_CHAR(u_cdol_staff_changes.previous_employer) = TO_CHAR(previous_school.school_number)
+		LEFT OUTER JOIN users
+			ON u_cdol_staff_changes.who_submitted = users.dcid
 	WHERE
-		(sc.calendar_year = ~(gpv.calendarYear;num) OR ~(gpv.calendarYear;num) = 0)
-		AND (sc.schoolid = ~(gpv.curSchoolID;num) OR ~(gpv.curSchoolID;num) = 0)
-		AND ('~(gpv.changeType;sqlText)' = 'allStaff' OR sc.change_type = '~(gpv.changeType;sqlText)')
+		(u_cdol_staff_changes.calendar_year = ~(gpv.calendarYear;num) OR ~(gpv.calendarYear;num) = 0)
+		AND (u_cdol_staff_changes.schoolid = ~(gpv.curSchoolID;num) OR ~(gpv.curSchoolID;num) = 0)
+		AND ('~(gpv.changeType;sqlText)' = 'allStaff' OR u_cdol_staff_changes.change_type = '~(gpv.changeType;sqlText)')
 ;]~(data)[/tlist_sql]

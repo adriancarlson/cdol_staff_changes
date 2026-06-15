@@ -1,23 +1,23 @@
 ~[tlist_sql;
 	WITH base AS (
 		SELECT
-			sc.id,
-			sc.final_completion_date,
-			sc.ps_created,
-			sc.ad_created,
-			sc.ad_ignored,
-			sc.o365_created,
-			sc.o365_ignored,
-			sc.lms_created,
-			sc.lms_ignored,
-			sc.canva_created,
-			sc.canva_ignored,
-			sc.change_type
+			u_cdol_staff_changes.id,
+			u_cdol_staff_changes.final_completion_date,
+			u_cdol_staff_changes.ps_created,
+			u_cdol_staff_changes.ad_created,
+			u_cdol_staff_changes.ad_ignored,
+			u_cdol_staff_changes.o365_created,
+			u_cdol_staff_changes.o365_ignored,
+			u_cdol_staff_changes.lms_created,
+			u_cdol_staff_changes.lms_ignored,
+			u_cdol_staff_changes.canva_created,
+			u_cdol_staff_changes.canva_ignored,
+			u_cdol_staff_changes.change_type
 		FROM
-			u_cdol_staff_changes sc
+			u_cdol_staff_changes
 		WHERE
-			(sc.calendar_year = ~(gpv.calendarYear;num) OR ~(gpv.calendarYear;num) = 0)
-			AND (sc.schoolid = ~(gpv.curSchoolID;num) OR ~(gpv.curSchoolID;num) = 0)
+			(u_cdol_staff_changes.calendar_year = ~(gpv.calendarYear;num) OR ~(gpv.calendarYear;num) = 0)
+			AND (u_cdol_staff_changes.schoolid = ~(gpv.curSchoolID;num) OR ~(gpv.curSchoolID;num) = 0)
 	),
 	metrics AS (
 		SELECT

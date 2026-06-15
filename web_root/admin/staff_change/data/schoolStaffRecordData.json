@@ -34,16 +34,16 @@
 		WHERE
 			users.dcid = ~(gpv.userDCID;num)
 			AND schoolstaff.dcid = (
-				SELECT MAX(ss.dcid)
-				FROM schoolstaff ss
-				WHERE ss.users_dcid = ~(gpv.userDCID;num)
+				SELECT MAX(schoolstaff.dcid)
+				FROM schoolstaff
+				WHERE schoolstaff.users_dcid = ~(gpv.userDCID;num)
 			)
 			AND NOT EXISTS (
 				SELECT 1
-				FROM schoolstaff ss
+				FROM schoolstaff
 				WHERE
-					ss.users_dcid = ~(gpv.userDCID;num)
-					AND ss.schoolid = ~(gpv.schoolID;num)
+					schoolstaff.users_dcid = ~(gpv.userDCID;num)
+					AND schoolstaff.schoolid = ~(gpv.schoolID;num)
 			)
 	) data
 ;]~(data)[/tlist_sql]

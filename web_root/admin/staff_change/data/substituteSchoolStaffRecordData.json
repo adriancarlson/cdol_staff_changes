@@ -35,22 +35,22 @@
 			users.first_name = '~(gpv.first_name;sqlText)'
 			AND users.last_name = '~(gpv.last_name;sqlText)'
 			AND schoolstaff.dcid = (
-				SELECT MAX(ss.dcid)
+				SELECT MAX(schoolstaff.dcid)
 				FROM
-					schoolstaff ss
-					INNER JOIN users sub_users ON sub_users.dcid = ss.users_dcid
+					schoolstaff
+					INNER JOIN users ON users.dcid = schoolstaff.users_dcid
 				WHERE
-					sub_users.first_name = '~(gpv.first_name;sqlText)'
-					AND sub_users.last_name = '~(gpv.last_name;sqlText)'
+					users.first_name = '~(gpv.first_name;sqlText)'
+					AND users.last_name = '~(gpv.last_name;sqlText)'
 			)
 			AND NOT EXISTS (
 				SELECT 1
 				FROM
-					schoolstaff ss
-					INNER JOIN users sub_users ON sub_users.dcid = ss.users_dcid
+					schoolstaff
+					INNER JOIN users ON users.dcid = schoolstaff.users_dcid
 				WHERE
-					sub_users.first_name = '~(gpv.first_name;sqlText)'
-					AND sub_users.last_name = '~(gpv.last_name;sqlText)'
+					users.first_name = '~(gpv.first_name;sqlText)'
+					AND users.last_name = '~(gpv.last_name;sqlText)'
 			)
 	) data
 ;]~(data)[/tlist_sql]
