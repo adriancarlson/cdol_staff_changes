@@ -448,6 +448,112 @@ define(function (require) {
 			$scope.originalChangeType = undefined
 			$scope.titleData = []
 
+			const sameIdentifier = (leftValue, rightValue) => {
+				return leftValue !== undefined && leftValue !== null && rightValue !== undefined && rightValue !== null && leftValue.toString() === rightValue.toString()
+			}
+
+			const isLongTermSubstitute = staffChange => {
+				return staffChange && staffChange.change_type === 'subStaff' && staffChange.sub_type === 'LTS'
+			}
+
+			const findSchoolNameByNumber = schoolNumber => {
+				if (schoolNumber === undefined || schoolNumber === null || schoolNumber === '') return ''
+				if (schoolNumber.toString() === '0') return 'Diocesan Office'
+				if (schoolNumber.toString() === '-1') return ''
+
+				const foundSchool = $scope.schoolData && $scope.schoolData.find(school => sameIdentifier(school.identifier, schoolNumber))
+				return foundSchool ? foundSchool.schoolname : ''
+			}
+
+			const fillPreviousSchoolNameFromSchoolData = staffChange => {
+				if (!staffChange || staffChange.prev_school_name || !staffChange.prev_school_number) return
+
+				const previousSchoolName = findSchoolNameByNumber(staffChange.prev_school_number)
+				if (previousSchoolName) staffChange.prev_school_name = previousSchoolName
+			}
+
+			const setSubstituteSchoolStaffRecordData = staffRecord => {
+				if (!staffRecord || !staffRecord.ssdcid) return
+
+				// Keep the Open Staff Record button ready as soon as an existing PS staff record is selected.
+				$scope.substituteSchoolStaffRecordData = [{
+					ssdcid: staffRecord.ssdcid,
+					schoolid: staffRecord.prev_school_number || staffRecord.homeschoolid || staffRecord.schoolid || ''
+				}]
+			}
+
+			const hydrateSubstituteFromStaffRecord = staffRecord => {
+				if (!staffRecord || !$scope.submitPayload.subStaff) return
+
+				const subStaff = $scope.submitPayload.subStaff
+				const previousSchoolNumber = staffRecord.prev_school_number || staffRecord.homeschoolid || subStaff.prev_school_number
+				const previousSchoolName = staffRecord.prev_school_name || staffRecord.homeschoolname || subStaff.prev_school_name
+
+				// Merge only PS identity data so the LTS request keeps its school, deadline, notes, and subbing-for staff.
+				angular.extend(subStaff, {
+					users_dcid: staffRecord.identifier || staffRecord.users_dcid || subStaff.users_dcid,
+					title: staffRecord.title || subStaff.title,
+					first_name: staffRecord.first_name || subStaff.first_name,
+					last_name: staffRecord.last_name || subStaff.last_name,
+					license_microsoft: staffRecord.license_microsoft || subStaff.license_microsoft,
+					prev_school_number: previousSchoolNumber || subStaff.prev_school_number,
+					prev_school_name: previousSchoolName || subStaff.prev_school_name
+				})
+
+				removeNullableTitleFields(subStaff)
+				fillPreviousSchoolNameFromSchoolData(subStaff)
+				setSubstituteSchoolStaffRecordData(staffRecord)
+			}
+
+			const hydrateLongTermSubstituteOnEdit = subStaff => {
+				if (!subStaff) return $q.when()
+
+				const preload = {}
+				if (!$scope.schoolData) preload.schools = $scope.getJSONData('schoolData')
+
+				return $q.all(preload).then(() => {
+					if (!subStaff.users_dcid || subStaff.users_dcid == -1) {
+						fillPreviousSchoolNameFromSchoolData(subStaff)
+						if (!subStaff.prev_school_number || !subStaff.first_name || !subStaff.last_name) return
+
+						// Legacy LTS submissions may not have users_dcid, so keep the old name-based staff record lookup as fallback.
+						return $scope.getJSONData('substituteSchoolStaffRecordData', {
+							first_name: subStaff.first_name,
+							last_name: subStaff.last_name
+						})
+					}
+
+					return $scope.getJSONData('userData', {
+						curSchoolID: '0',
+						staffStatus: '1,2'
+					}).then(userRecords => {
+						const linkedUser = userRecords.find(userRecord => sameIdentifier(userRecord.identifier, subStaff.users_dcid))
+
+						if (linkedUser) {
+							if (!subStaff.title) subStaff.title = linkedUser.title
+							if (!subStaff.first_name) subStaff.first_name = linkedUser.first_name
+							if (!subStaff.last_name) subStaff.last_name = linkedUser.last_name
+							if (!subStaff.license_microsoft) subStaff.license_microsoft = linkedUser.license_microsoft
+							if (!subStaff.prev_school_number) subStaff.prev_school_number = linkedUser.homeschoolid
+							if (!subStaff.prev_school_name) subStaff.prev_school_name = linkedUser.homeschoolname
+						}
+
+						fillPreviousSchoolNameFromSchoolData(subStaff)
+
+						const schoolStaffParams = {
+							userDCID: subStaff.users_dcid,
+							schoolID: subStaff.prev_school_number || subStaff.schoolid || $scope.userContext.curSchoolId
+						}
+
+						return $scope.getJSONData('schoolStaffRecordData', schoolStaffParams).then(schoolStaffRecords => {
+							if (schoolStaffRecords && schoolStaffRecords.length) {
+								$scope.substituteSchoolStaffRecordData = schoolStaffRecords
+							}
+						})
+					})
+				})
+			}
+
 			//pull exiting Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
 			$scope.getStaffChange = staffChangeId => {
 				loadingDialog()
@@ -470,6 +576,9 @@ define(function (require) {
 					if ($scope.userContext.pageContext === 'newStaff' || $scope.userContext.pageContext === 'subStaff') {
 						preload.duplicates = $scope.checkDupesOnEdit(res)
 					}
+					if ($scope.userContext.pageContext === 'newStaff' || $scope.userContext.pageContext === 'transferringStaff') {
+						preload.schools = $scope.getJSONData('schoolData')
+					}
 					if ($scope.userContext.pageContext === 'transferringStaff' || $scope.userContext.pageContext === 'jobChange' || $scope.userContext.pageContext === 'nameChange' || $scope.userContext.pageContext === 'exitingStaff') {
 						const schoolStaffParams = {
 							userDCID: $scope.submitPayload[res.change_type].users_dcid,
@@ -477,7 +586,9 @@ define(function (require) {
 						}
 						preload.schoolStaff = $scope.getJSONData('schoolStaffRecordData', schoolStaffParams)
 					}
-					if ($scope.userContext.pageContext === 'subStaff' && $scope.submitPayload[res.change_type].prev_school_number) {
+					if (isLongTermSubstitute(res)) {
+						preload.longTermSubstitute = hydrateLongTermSubstituteOnEdit($scope.submitPayload.subStaff)
+					} else if ($scope.userContext.pageContext === 'subStaff' && $scope.submitPayload[res.change_type].prev_school_number) {
 						const subPrevStaffParams = {
 							first_name: $scope.submitPayload[res.change_type].first_name,
 							last_name: $scope.submitPayload[res.change_type].last_name
@@ -525,17 +636,19 @@ define(function (require) {
 					delete $scope.duplicateStaffChangeData
 				}
 
+				const searchSubmittedStaff = pageContext === 'subStaff' || !formPayload.replace_first_name
+
 				let staffChangeDupeParams = {
 					changeType: 'allStaff',
 					calendarYear: new Date().getFullYear().toString(),
-					curSchoolID: formPayload.replace_first_name ? formPayload.replace_homeschoolid : $scope.userContext.curSchoolId,
-					firstName: formPayload.replace_first_name ? formPayload.replace_first_name : formPayload.first_name
+					curSchoolID: searchSubmittedStaff ? $scope.userContext.curSchoolId : formPayload.replace_homeschoolid,
+					firstName: searchSubmittedStaff ? formPayload.first_name : formPayload.replace_first_name
 				}
 
 				if (searchType === 'maiden') {
 					staffChangeDupeParams.lastName = formPayload.maiden_name
 				} else {
-					staffChangeDupeParams.lastName = formPayload.replace_last_name ? formPayload.replace_last_name : formPayload.last_name
+					staffChangeDupeParams.lastName = searchSubmittedStaff ? formPayload.last_name : formPayload.replace_last_name
 				}
 
 				return $scope.getJSONData('duplicateStaffChangeData', staffChangeDupeParams).then(() => {
@@ -550,7 +663,8 @@ define(function (require) {
 						return
 					}
 
-					if (pageContext !== 'newStaff') return
+					const shouldSearchPowerSchoolStaff = pageContext === 'newStaff' || (pageContext === 'subStaff' && formPayload.sub_type === 'LTS')
+					if (!shouldSearchPowerSchoolStaff) return
 					if ($scope.duplicatePowerSchoolStaffData) delete $scope.duplicatePowerSchoolStaffData
 
 					const staffDupeParams = {
@@ -666,6 +780,10 @@ define(function (require) {
 								$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
 								$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
 							}
+							if (pageContext === 'subStaff') {
+								$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
+								$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
+							}
 							if (pageContext === 'exitingStaff') {
 								$scope.submitPayload[pageContext].old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => $scope.submitPayload[pageContext].first_name.startsWith(prefix)) && $scope.submitPayload[pageContext].title ? $scope.submitPayload[pageContext].title + ' ' : ''}${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
 							}
@@ -721,6 +839,11 @@ define(function (require) {
 				delete $scope.submitPayload.newStaff
 				$scope.userContext.formType = 'transferringStaff'
 				$scope.userContext.formTypeHover = 'transferringStaff'
+			}
+
+			$scope.useExistingSubstituteStaff = identifier => {
+				const foundItem = $scope.duplicatePowerSchoolStaffData && $scope.duplicatePowerSchoolStaffData.find(item => sameIdentifier(item.identifier, identifier))
+				hydrateSubstituteFromStaffRecord(foundItem)
 			}
 
 			$scope.checkStaffType = staffType => {
@@ -1035,7 +1158,6 @@ define(function (require) {
 			$scope.updateStaffChange = form => {
 				loadingDialog()
 				let updateFormatKeys = angular.copy($scope.formatKeys)
-				delete updateFormatKeys['deleteKeys']
 				const payloadKeys = Object.keys($scope.submitPayload)
 
 				const processPayload = key => {
@@ -1248,6 +1370,24 @@ define(function (require) {
 					return `${trimmedSentence.charAt(0).toUpperCase()}${trimmedSentence.slice(1).toLowerCase()}`
 				})
 				.join('. ')
+		}
+	})
+	module.filter('staffFullName', function () {
+		return function (staff) {
+			if (!staff) return ''
+
+			const title = staff.title || ''
+			const firstName = staff.first_name || ''
+			const middleName = staff.middle_name || ''
+			const lastName = staff.last_name || ''
+			const religiousPrefixes = ['Fr.', 'Msgr.', 'Sr.', 'Br.']
+			const shouldShowTitle = title && !religiousPrefixes.some(prefix => firstName.startsWith(prefix))
+
+			return [shouldShowTitle ? title : '', firstName, middleName, lastName]
+				.filter(namePart => namePart)
+				.join(' ')
+				.replace(/\s{2,}/g, ' ')
+				.trim()
 		}
 	})
 	module.filter('changeTypeFilter', function () {

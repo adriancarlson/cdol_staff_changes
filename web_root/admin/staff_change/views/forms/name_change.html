@@ -55,8 +55,11 @@
                             name</label>
                         <label for="name-change-title"
                             class="form-label form-label-sm  label-reset staff-change-req"
-                            data-ng-if="userContext.pageStatus =='Edit'">New Name:</label>
-                        <div class="input-group">
+                            data-ng-if="userContext.pageStatus =='Edit' && !submitPayload.nameChange.ps_created">New Name:</label>
+                        <label for="name-change-name"
+                            class="form-label form-label-sm  label-reset"
+                            data-ng-if="userContext.pageStatus =='Edit' && submitPayload.nameChange.ps_created">New Name:</label>
+                        <div class="input-group" data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.nameChange.ps_created)">
                             <select id="name-change-title" class="form-select form-select-sm" aria-label="New staff title"
                                 data-ng-model="submitPayload.nameChange.title" data-ng-required="true"
                                 data-ng-options="title.code as title.code for title in titleData">
@@ -74,6 +77,8 @@
                                 data-ng-blur="submitPayload.nameChange.last_name = (submitPayload.nameChange.last_name | titleCase);dupeSearch(userContext.pageContext, submitPayload[userContext.formType])"
                                 data-ng-required="true">
                         </div>
+                        <div data-ng-if="userContext.pageStatus == 'Edit' && submitPayload.nameChange.ps_created"
+                            id="name-change-name" class="blockquote ms-2 mt-1">{{submitPayload.nameChange | staffFullName}}</div>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.users_dcid">

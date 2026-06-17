@@ -53,11 +53,17 @@
                 <div class="row align-items-center mb-3">
                     <div
                         data-ng-class="{'col-8': userContext.pageStatus =='Edit' && userContext.districtUser && !submitPayload.newStaff.ps_created, 'col-6': !(userContext.pageStatus =='Edit' && userContext.districtUser && !submitPayload.newStaff.ps_created)}">
-                        <label for="new-staff-title" class="form-label form-label-sm  label-reset staff-change-req">New
+                        <label data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.newStaff.ps_created)"
+                            for="new-staff-title" class="form-label form-label-sm  label-reset staff-change-req">New
                             Staff
                             Preferred
                             Name</label>
-                        <div class="input-group">
+                        <label data-ng-if="userContext.pageStatus == 'Edit' && submitPayload.newStaff.ps_created"
+                            for="new-staff-name" class="form-label form-label-sm  label-reset">New
+                            Staff
+                            Preferred
+                            Name</label>
+                        <div class="input-group" data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.newStaff.ps_created)">
                             <select id="new-staff-title" class="form-select form-select-sm" aria-label="New staff title"
                                 data-ng-model="submitPayload.newStaff.title"
                                 data-ng-options="title.code as title.code for title in titleData">
@@ -83,6 +89,8 @@
                                     pds-widget="pds-widget" style="zoom: 0.55; color: white; fill: white;"></pds-icon>
                             </button>
                         </div>
+                        <div data-ng-if="userContext.pageStatus == 'Edit' && submitPayload.newStaff.ps_created"
+                            id="new-staff-name" class="blockquote ms-2 mt-1">{{submitPayload.newStaff | staffFullName}}</div>
                     </div>
                     <div class="col">
                         <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary" role="alert"><i

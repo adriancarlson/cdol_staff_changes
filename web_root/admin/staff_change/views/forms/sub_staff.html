@@ -1,9 +1,9 @@
 <div id="sub-form-container" class="container-fluid">
     ~[if#distCheck.security.inrole=9]
-    <div data-ng-if="userContext.pageStatus =='Edit' && duplicatePowerSchoolStaffData.length > 0 && !submitPayload.subStaff.ps_created">
+    <div data-ng-if="userContext.pageStatus =='Edit' && submitPayload.subStaff.sub_type == 'LTS' && duplicatePowerSchoolStaffData.length > 0 && !submitPayload.subStaff.ps_created">
         <div class="container-fluid mb-2">
             <div class="row">
-                <div class="col-5">
+                <div class="col-6">
                     <div class="card">
                         <div class="card-header alert alert-danger fw-semibold p-2 mb-0">
                             <i class="bi bi-exclamation-octagon-fill"></i> Potential matches for
@@ -20,14 +20,21 @@
                                         <th class="text-center" scope="col">Potential Duplicate</th>
                                         <th class="text-center" scope="col">Status</th>
                                         <th class="text-center" scope="col">School</th>
+                                        <th class="text-center" scope="col">Staff Record</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr data-ng-repeat="dupe in duplicatePowerSchoolStaffData">
-                                        <td><a href="/admin/faculty/home.html?frn=005{{dupe.identifier}}"
+                                        <td><a href="/admin/faculty/home.html?frn=005{{dupe.ssdcid}}"
                                                 target="_blank">{{dupe.first_name}} {{dupe.last_name}}</a></td>
                                         <td>{{dupe.status}}</td>
                                         <td>{{dupe.prev_school_name}}</td>
+                                        <td class="text-center"><a class="button"
+                                                data-ng-href="/admin/faculty/editpw.html?frn=005{{dupe.ssdcid}}"
+                                                target="_blank">Open Staff Record <pds-icon name="external"
+                                                    class="style-scope x-scope pds-icon-0 pds-widget"
+                                                    pds-widget="pds-widget"
+                                                    style="zoom: 0.55; color: white; fill: white;"></pds-icon></a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -144,13 +151,20 @@
                 <div data-ng-if="submitPayload.subStaff.sub_type == 'LTS'|| submitPayload.subStaff.sub_type == 'FSTS'">
                     <div class="row align-items-center mb-3">
                         <div
-                            data-ng-class="{'col-8': userContext.pageStatus =='Edit' && userContext.districtUser && substituteSchoolStaffRecordData[0].ssdcid, 'col-6': !(userContext.pageStatus =='Edit' && userContext.districtUser && substituteSchoolStaffRecordData[0].ssdcid)}">
-                            <label for="sub-staff-title"
+                            data-ng-class="{'col-8': userContext.pageStatus =='Edit' && userContext.districtUser && !submitPayload.subStaff.ps_created && submitPayload.subStaff.sub_type == 'LTS', 'col-6': !(userContext.pageStatus =='Edit' && userContext.districtUser && !submitPayload.subStaff.ps_created && submitPayload.subStaff.sub_type == 'LTS')}">
+                            <label data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.subStaff.ps_created)"
+                                for="sub-staff-title"
                                 class="form-label form-label-sm  label-reset staff-change-req">Substitute
                                 Staff
                                 Preferred
                                 Name</label>
-                            <div class="input-group">
+                            <label data-ng-if="userContext.pageStatus == 'Edit' && submitPayload.subStaff.ps_created"
+                                for="sub-staff-name"
+                                class="form-label form-label-sm  label-reset">Substitute
+                                Staff
+                                Preferred
+                                Name</label>
+                            <div class="input-group" data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.subStaff.ps_created)">
                                 <select id="sub-staff-title" class="form-select form-select-sm" aria-label="Substitute staff title"
                                     data-ng-model="submitPayload.subStaff.title"
                                     data-ng-options="title.code as title.code for title in titleData">
@@ -177,14 +191,9 @@
                                         pds-widget="pds-widget"
                                         style="zoom: 0.55; color: white; fill: white;"></pds-icon>
                                 </button>
-                                <a class="button m-0 p-2 ps-1"
-                                    data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && substituteSchoolStaffRecordData[0].ssdcid"
-                                    data-ng-href="/admin/faculty/editpw.html?frn=005{{substituteSchoolStaffRecordData[0].ssdcid}}"
-                                    target="_blank">Open Staff
-                                    Record <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
-                                        pds-widget="pds-widget"
-                                        style="zoom: 0.55; color: white; fill: white;"></pds-icon></a>
                             </div>
+                            <div data-ng-if="userContext.pageStatus == 'Edit' && submitPayload.subStaff.ps_created"
+                                id="sub-staff-name" class="blockquote ms-2 mt-1">{{submitPayload.subStaff | staffFullName}}</div>
                         </div>
                         <div class="col">
                             <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary"
