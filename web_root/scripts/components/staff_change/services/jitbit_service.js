@@ -164,6 +164,23 @@ define(function (require) {
 						return $q.reject(createJitbitError(options.errorStage || 'ticketUpdate', res))
 					})
 				},
+				closeJitbitTicketSilently: function (ticketId, options = {}) {
+					let closeTicketUrl = `${JITBIT_API_URL}Close`
+
+					return $http({
+						method: 'POST',
+						url: closeTicketUrl,
+						params: {
+							id: ticketId,
+							suppressNotification: true
+						},
+						headers: jibit_headers
+					}).then(res => {
+						return res.data || []
+					}, res => {
+						return $q.reject(createJitbitError(options.errorStage || 'ticketClose', res))
+					})
+				},
 				setJitbitCustomField: function (ticketId, fieldId, value, options = {}) {
 					let setCustomFieldUrl = `${JITBIT_API_URL}SetCustomField`
 

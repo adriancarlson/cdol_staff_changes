@@ -889,6 +889,15 @@ define(function (require) {
 				}
 			}
 
+			const getDeleteJitbitErrorMessage = error => {
+				switch (error && error.jitbitStage) {
+					case 'ticketClose':
+						return 'The staff change was not deleted because the Jitbit ticket could not be closed silently.'
+					default:
+						return 'The staff change was not deleted because the Jitbit ticket cleanup failed.'
+				}
+			}
+
 			const restorePowerSchoolPayload = updateFormatKeys => {
 				const originalPayload = copyPayload($scope.originalStaffChangePayloads[$scope.originalChangeType])
 				return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', angular.extend(originalPayload, updateFormatKeys), $scope.userContext.staffChangeId)
@@ -1144,14 +1153,26 @@ define(function (require) {
 
 			$scope.deleteStaffChange = form => {
 				loadingDialog()
+				const formPayload = $scope.submitPayload[form] || {}
 				const deletePromise = $scope.userContext.staffChangeId
-					? psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, $scope.userContext.staffChangeId).then(() => {
+					? (formPayload.ticket_id
+						? jitbitService.closeJitbitTicketSilently(formPayload.ticket_id)
+						: $q.when()
+					).then(() => {
+						return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, $scope.userContext.staffChangeId)
+					}).then(() => {
 						$scope.toListRedirect(form)
 					})
 					: $q.when()
 
 				return deletePromise.catch(error => {
 					console.error('Staff change deletion failed.', error)
+					if (formPayload.ticket_id) {
+						psAlert({
+							title: 'Jitbit Ticket Error',
+							message: getDeleteJitbitErrorMessage(error)
+						})
+					}
 				}).finally(closeLoading)
 			}
 
