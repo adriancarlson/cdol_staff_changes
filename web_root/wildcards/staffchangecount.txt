@@ -77,7 +77,6 @@
 
                 return Number(records[0] && records[0].total_remaining) || 0
             } catch (err) {
-                console.log(err)
                 return 0
             }
         }

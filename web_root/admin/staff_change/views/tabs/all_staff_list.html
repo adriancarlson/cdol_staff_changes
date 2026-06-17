@@ -41,12 +41,8 @@
             <tr data-ng-repeat="allStaff in filteredAllStaffList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap staff-name-cell">
-                    <a href="/admin/staff_change/submit.html?status=Edit&id={{allStaff.staffid}}"> <span data-ng-show="!allStaff.first_name.startsWith('Fr.') &&
-                    !allStaff.first_name.startsWith('Msgr.') &&
-                    !allStaff.first_name.startsWith('Sr.') &&
-                    !allStaff.first_name.startsWith('Br.')">{{allStaff.title}}</span>
-                        {{allStaff.first_name}}
-                        {{allStaff.last_name}}</a>
+                    <a href="/admin/staff_change/submit.html?status=Edit&id={{allStaff.staffid}}">
+                        {{(allStaff | staffFullName) || allStaff.old_name_placeholder}}</a>
                     <span class="ms-2 external-link-hover">
                         <a href="/admin/staff_change/submit.html?status=Edit&id={{allStaff.staffid}}" target="_blank"
                             title="Open in new tab"><pds-icon name="external"

@@ -855,7 +855,7 @@ define(function (require) {
 								if ($scope.submitPayload[pageContext].title === 'Fr.' || $scope.submitPayload[pageContext].title === 'Msgr.' || $scope.submitPayload[pageContext].title === 'Sr.' || $scope.submitPayload[pageContext].title === 'Br.') {
 									$scope.submitPayload[pageContext].title = ''
 								}
-								$scope.submitPayload[pageContext].old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => $scope.submitPayload[pageContext].first_name.startsWith(prefix)) && $scope.submitPayload[pageContext].title ? $scope.submitPayload[pageContext].title + ' ' : ''}${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
+								$scope.submitPayload[pageContext].old_name_placeholder = formatService.formatStaffFullName($scope.submitPayload[pageContext])
 							}
 							if (pageContext === 'transferringStaff') {
 								copyPreviousSchoolFromUser($scope.submitPayload[pageContext], foundItem)
@@ -867,7 +867,7 @@ define(function (require) {
 								copyPreviousSchoolFromUser($scope.submitPayload[pageContext], foundItem)
 							}
 							if (pageContext === 'exitingStaff') {
-								$scope.submitPayload[pageContext].old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => $scope.submitPayload[pageContext].first_name.startsWith(prefix)) && $scope.submitPayload[pageContext].title ? $scope.submitPayload[pageContext].title + ' ' : ''}${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
+								$scope.submitPayload[pageContext].old_name_placeholder = formatService.formatStaffFullName($scope.submitPayload[pageContext])
 							}
 							removeLookupOnlyFields($scope.submitPayload[pageContext])
 						}
@@ -1170,7 +1170,7 @@ define(function (require) {
 						appendEmergencyReasonToNotes(formPayload, key)
 
 						if (formPayload.change_type == 'exitingStaff') {
-							formPayload.old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => formPayload.first_name.startsWith(prefix)) && formPayload.title ? formPayload.title + ' ' : ''}${formPayload.first_name} ${formPayload.last_name}`
+							formPayload.old_name_placeholder = formatService.formatStaffFullName(formPayload)
 						}
 						if (formPayload.change_type == 'subStaff') {
 							formPayload.staff_type = '4'
@@ -1433,24 +1433,11 @@ define(function (require) {
 				.join('. ')
 		}
 	})
-	module.filter('staffFullName', function () {
-		return function (staff) {
-			if (!staff) return ''
-
-			const title = staff.title || ''
-			const firstName = staff.first_name || ''
-			const middleName = staff.middle_name || ''
-			const lastName = staff.last_name || ''
-			const religiousPrefixes = ['Fr.', 'Msgr.', 'Sr.', 'Br.']
-			const shouldShowTitle = title && !religiousPrefixes.some(prefix => firstName.startsWith(prefix))
-
-			return [shouldShowTitle ? title : '', firstName, middleName, lastName]
-				.filter(namePart => namePart)
-				.join(' ')
-				.replace(/\s{2,}/g, ' ')
-				.trim()
+	module.filter('staffFullName', ['formatService', function (formatService) {
+		return function (staff, options) {
+			return formatService.formatStaffFullName(staff, options)
 		}
-	})
+	}])
 	module.filter('changeTypeFilter', function () {
 		const reverseMap = {
 			newStaff: 'New Staff',

@@ -38,9 +38,8 @@
             <tr data-ng-repeat="subStaff in filteredSubStaffList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap staff-name-cell">
-                    <a href="/admin/staff_change/submit.html?status=Edit&id={{subStaff.staffid}}">{{subStaff.title}}
-                        {{subStaff.first_name}}
-                        {{subStaff.last_name}}</a>
+                    <a href="/admin/staff_change/submit.html?status=Edit&id={{subStaff.staffid}}">
+                        {{subStaff | staffFullName}}</a>
                     <span class="ms-2 external-link-hover">
                         <a href="/admin/staff_change/submit.html?status=Edit&id={{subStaff.staffid}}" target="_blank"
                             title="Open in new tab"><pds-icon name="external"

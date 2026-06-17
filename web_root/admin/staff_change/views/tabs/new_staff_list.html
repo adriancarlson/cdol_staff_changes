@@ -36,7 +36,7 @@
                 <td>{{$index +1}}</td>
                 <td class="nowrap staff-name-cell">
                     <a href="/admin/staff_change/submit.html?status=Edit&id={{newStaff.staffid}}">
-                        {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}}</a>
+                        {{newStaff | staffFullName}}</a>
                     <span class="ms-2 external-link-hover">
                         <a href="/admin/staff_change/submit.html?status=Edit&id={{newStaff.staffid}}" target="_blank"
                             title="Open in new tab"><pds-icon name="external"

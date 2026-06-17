@@ -4,7 +4,8 @@ define(function (require) {
 	module.factory('jitbitService', [
 		'$http',
 		'$q',
-		function ($http, $q) {
+		'formatService',
+		function ($http, $q, formatService) {
 			const JITBIT_API_URL = 'https://cdol.jitbit.com/helpdesk/api/'
 
 			const JITBIT_ACCESS_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE0MDkyMjMzLCJhZGQiOiI3MkJFNTdDQ0EyRTFDNDk4NzY2RUE3MThBRjM5N0ZCRkM0N0JDRkJGREUxQ0UxMUFCMjQ0NTBDM0YxMjY1NTA0In0.PsicDCu7vO0ZXA6HVwPdt7GnBnC58NpcBO5gM24If1g'
@@ -22,9 +23,7 @@ define(function (require) {
 			}
 
 			const getStaffChangeName = formPayload => {
-				const firstName = formPayload.first_name || ''
-				const title = !['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => firstName.startsWith(prefix)) && formPayload.title ? `${formPayload.title} ` : ''
-				return `${title}${firstName} ${formPayload.last_name || ''}`.trim()
+				return formatService.formatStaffFullName(formPayload, { fallbackField: 'old_name_placeholder' })
 			}
 
 			const getAssignedUserId = formPayload => {

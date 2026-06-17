@@ -83,25 +83,14 @@
         'text-warning': staffChangeDupe.change_type  === 'nameChange',
         'text-secondary': staffChangeDupe.change_type  === 'exitingStaff'
     }"><strong>{{ staffChangeDupe.change_type | changeTypeFilter }}</strong></span></em> request for
-                    <strong><span data-ng-show="staffChangeDupe.title !== 'Fr.' &&
-                        staffChangeDupe.title !== 'Msgr.' &&
-                        staffChangeDupe.title !== 'Sr.' &&
-                        staffChangeDupe.title !== 'Br.' ">{{staffChangeDupe.title}}</span>
-                        {{staffChangeDupe.first_name}}
-                        {{staffChangeDupe.last_name}}</strong> on {{staffChangeDupe.submission_date|date}}
+                    <strong>{{(staffChangeDupe | staffFullName) || staffChangeDupe.old_name_placeholder}}</strong> on {{staffChangeDupe.submission_date|date}}
                     {{staffChangeDupe.submission_time}}.<br>
                     <span data-ng-if="!submitPayload[userContext.pageContext].replace_first_name">To review this
                         previous submission click the <strong>Go to this Submission</strong> button. <br></span>
                     <span data-ng-if="submitPayload[userContext.pageContext].replace_first_name">If this is a duplicate
                         than click the <strong> Previous</strong> button, to go back to the previous screen and change
                         the response to the <br>
-                        <strong>Is <span
-                                data-ng-show="submitPayload[userContext.pageContext].title !== 'Fr.' &&
-                        submitPayload[userContext.pageContext].title !== 'Msgr.' &&
-                        submitPayload[userContext.pageContext].title !== 'Sr.' &&
-                        submitPayload[userContext.pageContext].title !== 'Br.' ">{{submitPayload[userContext.pageContext].title}}</span>
-                            {{submitPayload[userContext.pageContext].first_name}}
-                            {{submitPayload[userContext.pageContext].last_name}} <span
+                        <strong>Is {{submitPayload[userContext.pageContext] | staffFullName}} <span
                                 data-ng-if="userContext.pageContext === 'exitingStaff'">leaving</span><span
                                 data-ng-if="userContext.pageContext === 'jobChange'">changing positions/jobs
                                 within</span> ~(schoolname)?</strong>
@@ -129,7 +118,7 @@
     <div id="staffDupeDiv" class="container-fluid">
         <div data-ng-repeat="staffDupe in duplicatePowerSchoolStaffData" class="card m-2">
             <div class="card-body p-0">
-                <div class="p-2"><strong>{{staffDupe.first_name}} {{staffDupe.last_name}}</strong> is
+                <div class="p-2"><strong>{{staffDupe | staffFullName}}</strong> is
                     <em>{{staffDupe.status}}</em> at <strong> {{staffDupe.prev_school_name}}</strong><br>
                     <span data-ng-if="userContext.pageContext === 'newStaff'">If this is the same person, click the
                         <strong>Convert to Transferring-In Staff Submission</strong> button below.</span>

@@ -142,6 +142,34 @@ define(function (require) {
 						.trim()
 				},
 
+				formatStaffFullName: function (staff, options) {
+					if (!staff) return ''
+
+					if (typeof options === 'string') {
+						options = { prefix: options }
+					}
+
+					options = options || {}
+					const prefix = options.prefix || ''
+					const religiousPrefixes = ['Fr.', 'Msgr.', 'Sr.', 'Br.']
+					const normalizeNamePart = value => value === undefined || value === null ? '' : value.toString().trim()
+					const fieldName = name => `${prefix}${name}`
+
+					const title = normalizeNamePart(staff[fieldName('title')])
+					const firstName = normalizeNamePart(staff[fieldName('first_name')])
+					const middleName = normalizeNamePart(staff[fieldName('middle_name')])
+					const lastName = normalizeNamePart(staff[fieldName('last_name')])
+					const shouldShowTitle = title && !religiousPrefixes.some(religiousPrefix => firstName.startsWith(religiousPrefix))
+					const fullName = [shouldShowTitle ? title : '', firstName, middleName, lastName]
+						.filter(namePart => namePart)
+						.join(' ')
+						.replace(/\s{2,}/g, ' ')
+						.trim()
+
+					if (fullName) return fullName
+					return options.fallbackField ? normalizeNamePart(staff[options.fallbackField]) : ''
+				},
+
 				//checkmark formats
 				formatChecksForApi: function (val) {
 					val = val.toString()
