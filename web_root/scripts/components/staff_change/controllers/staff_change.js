@@ -434,13 +434,6 @@ define(function (require) {
 				return pairs[schoolId] || null
 			}
 
-			// setting up universal formatKeys that will be used in API calls to format fields or delete fields
-			$scope.formatKeys = {
-				dateKeys: ['_date', 'dob', 'deadline'],
-				checkBoxKeys: ['_created', '_ignored'],
-				deleteKeys: ['_radio', 'homeschool', 'identifier', 'email_addr']
-			}
-
 			//initilazing empty payload
 			$scope.submitPayload = {}
 			$scope.originalStaffChangePayloads = {}
@@ -557,15 +550,13 @@ define(function (require) {
 			//pull exiting Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
 			$scope.getStaffChange = staffChangeId => {
 				loadingDialog()
-				let getFormatKeys = angular.copy($scope.formatKeys)
-				delete getFormatKeys['deleteKeys']
 
 				if (!staffChangeId) {
 					closeLoading()
 					return $q.when()
 				}
 
-				return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'GET', getFormatKeys, staffChangeId).then(res => {
+				return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'GET', {}, staffChangeId).then(res => {
 					$scope.submitPayload[res.change_type] = res
 					$scope.userContext.pageContext = res.change_type
 					$scope.originalChangeType = res.change_type
@@ -1021,9 +1012,9 @@ define(function (require) {
 				}
 			}
 
-			const restorePowerSchoolPayload = updateFormatKeys => {
+			const restorePowerSchoolPayload = () => {
 				const originalPayload = copyPayload($scope.originalStaffChangePayloads[$scope.originalChangeType])
-				return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', angular.extend(originalPayload, updateFormatKeys), $scope.userContext.staffChangeId)
+				return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', originalPayload, $scope.userContext.staffChangeId)
 			}
 
 			const removeNullableTitleFields = formPayload => {
@@ -1088,8 +1079,6 @@ define(function (require) {
 					submission_time: $scope.userContext.curTime,
 					who_submitted: $scope.userContext.curUserDcid
 				}
-				let createFormatKeys = angular.copy($scope.formatKeys)
-				delete createFormatKeys['checkBoxKeys']
 				const payloadKeys = Object.keys($scope.submitPayload)
 
 				const processPayload = key => {
@@ -1117,7 +1106,7 @@ define(function (require) {
 							formPayload.position = formPayload.sub_type
 						}
 
-						angular.extend(formPayload, commonPayload, createFormatKeys)
+						angular.extend(formPayload, commonPayload)
 						return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
 					}).then(staffChangeId => {
 						formPayload.staffChangeId = staffChangeId
@@ -1157,7 +1146,6 @@ define(function (require) {
 
 			$scope.updateStaffChange = form => {
 				loadingDialog()
-				let updateFormatKeys = angular.copy($scope.formatKeys)
 				const payloadKeys = Object.keys($scope.submitPayload)
 
 				const processPayload = key => {
@@ -1173,7 +1161,6 @@ define(function (require) {
 					return $scope.validateStaffChangePayload(formPayload).then(isValid => {
 						if (!isValid) return $q.reject({ handled: true })
 
-						angular.extend(formPayload, updateFormatKeys)
 						const commonCondition = payload => payload.final_completion_date === undefined && payload.ps_created && (payload.ad_created || payload.ad_ignored)
 						const o365Condition = payload => payload.o365_created || payload.o365_ignored
 						const lmsCondition = payload => payload.lms_created || payload.lms_ignored
@@ -1252,7 +1239,7 @@ define(function (require) {
 								buildJitbitPayload(formPayload),
 								formatJitbitDueDate(formPayload.deadline)
 							).catch(error => {
-								return restorePowerSchoolPayload(updateFormatKeys).then(() => {
+								return restorePowerSchoolPayload().then(() => {
 									showJitbitSupportError('Jitbit Ticket Error', getEditJitbitErrorMessage(error), error)
 									return $q.reject({ handled: true })
 								}, restoreError => {

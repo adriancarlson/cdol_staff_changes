@@ -5,9 +5,153 @@ define(function (require) {
 	module.factory('psApiService', [
 		'$http',
 		'$q',
+		'jsonDataService',
 		'formatService',
-		function ($http, $q, formatService) {
+		function ($http, $q, jsonDataService, formatService) {
+			const tableDefinitions = {}
+			const tableDefinitionRequests = {}
+			const systemKeys = ['dcid', 'whocreated', 'whencreated', 'whomodified', 'whenmodified']
+
+			const loadTableDef = tableName => {
+				const normalizedTableName = tableName.toLowerCase()
+
+				if (tableDefinitions[normalizedTableName]) return $q.when(tableDefinitions[normalizedTableName])
+				if (tableDefinitionRequests[normalizedTableName]) return tableDefinitionRequests[normalizedTableName]
+
+				// Table metadata is a best-effort helper. If it fails, the save path falls back to the original payload.
+				tableDefinitionRequests[normalizedTableName] = $http({
+					url: '/admin/staff_change/data/tableDefinitionData.json',
+					method: 'GET',
+					params: {
+						tableName: normalizedTableName
+					}
+				}).then(response => {
+					try {
+						const fields = jsonDataService.normalizeRecords(response.data)
+						const tableDefinition = {
+							fieldNames: [],
+							dateFields: [],
+							booleanFields: []
+						}
+
+						fields.forEach(field => {
+							const fieldName = field.field_name && field.field_name.toLowerCase()
+							if (!fieldName) return
+
+							tableDefinition.fieldNames.push(fieldName)
+							if (field.data_type === 'Date') tableDefinition.dateFields.push(fieldName)
+							if (field.data_type === 'Boolean') tableDefinition.booleanFields.push(fieldName)
+						})
+
+						tableDefinitions[normalizedTableName] = tableDefinition
+						delete tableDefinitionRequests[normalizedTableName]
+						return tableDefinition
+					} catch (error) {
+						delete tableDefinitionRequests[normalizedTableName]
+						return $q.reject(error)
+					}
+				}, error => {
+					delete tableDefinitionRequests[normalizedTableName]
+					return $q.reject(error)
+				})
+
+				return tableDefinitionRequests[normalizedTableName]
+			}
+
+			const formatPayloadFields = (payload, fields, formatter) => {
+				fields.forEach(fieldName => {
+					if (Object.prototype.hasOwnProperty.call(payload, fieldName)) {
+						payload[fieldName] = formatService[formatter](payload[fieldName])
+					}
+				})
+				return payload
+			}
+
+			const stripInvalidPayloadFields = (payload, tableDefinition) => {
+				Object.keys(payload).forEach(key => {
+					const normalizedKey = key.toLowerCase()
+					if (systemKeys.indexOf(normalizedKey) !== -1 || tableDefinition.fieldNames.indexOf(normalizedKey) === -1) {
+						delete payload[key]
+					}
+				})
+				return payload
+			}
+
+			const stripSystemFields = record => {
+				if (!record || typeof record !== 'object') return record
+
+				systemKeys.forEach(key => delete record[key])
+				return record
+			}
+
+			const formatResponseFields = (records, tableDefinition) => {
+				const recordList = Array.isArray(records) ? records : [records]
+
+				recordList.forEach(record => {
+					if (!record || typeof record !== 'object') return
+
+					formatPayloadFields(record, tableDefinition.dateFields, 'formatDateFromApi')
+					formatPayloadFields(record, tableDefinition.booleanFields, 'formatChecksFromApi')
+				})
+
+				return records
+			}
+
+			const prepareApiPayload = (apiPayload, tableDefinition) => {
+				formatPayloadFields(apiPayload, tableDefinition.dateFields, 'formatDateForApi')
+				formatPayloadFields(apiPayload, tableDefinition.booleanFields, 'formatChecksForApi')
+				return stripInvalidPayloadFields(apiPayload, tableDefinition)
+			}
+
+			const sendApiRequest = (httpObject, method, tableName, recId) => {
+				return $http(httpObject).then(
+					res => {
+						switch (method) {
+							case 'POST':
+							case 'PUT': {
+								const result = res.data && res.data.result && res.data.result[0]
+								const successMessage = result && result.success_message
+								const errorMessage = result && result.error_message
+
+								if (errorMessage) {
+									psAlert({ message: errorMessage, title: `${method} Error` })
+									return $q.reject(errorMessage)
+								}
+
+								return (successMessage && successMessage.id) || recId || []
+							}
+							case 'GET':
+								let resData = res.data.tables[tableName]
+								return loadTableDef(tableName).then(tableDefinition => {
+									formatResponseFields(resData, tableDefinition)
+
+									if (Array.isArray(resData)) {
+										resData = resData.map(item => stripSystemFields(angular.copy(item)))
+									} else {
+										stripSystemFields(resData)
+									}
+
+									return resData
+								}, () => {
+									if (Array.isArray(resData)) {
+										return resData.map(item => stripSystemFields(angular.copy(item)))
+									}
+
+									return stripSystemFields(resData)
+								})
+							case 'DELETE':
+								return res
+						}
+					},
+					res => {
+						psAlert({ message: `There was an error ${method}ing the data to ${tableName}`, title: `${method} Error` })
+						return $q.reject(res)
+					}
+				)
+			}
+
 			return {
+				loadTableDef: loadTableDef,
 				psApiCall: (tableName, method, payload, recId) => {
 					tableName = tableName.toLowerCase()
 					let path = `/ws/schema/table/${tableName}`
@@ -28,30 +172,17 @@ define(function (require) {
 						//Create
 						case 'POST':
 						case 'PUT':
-							if (apiPayload.dateKeys) {
-								apiPayload = formatService.objIterator(apiPayload, apiPayload.dateKeys, 'formatDateForApi')
-							}
-							delete apiPayload.dateKeys
-							if (apiPayload.checkBoxKeys) {
-								apiPayload = formatService.objIterator(apiPayload, apiPayload.checkBoxKeys, 'formatChecksForApi')
-							}
-							delete apiPayload.checkBoxKeys
-							if (apiPayload.titleKeys) {
-								apiPayload = formatService.objIterator(apiPayload, apiPayload.titleKeys, 'titleCase')
-							}
-							delete apiPayload.titleKeys
-							if (apiPayload.sentenceKeys) {
-								apiPayload = formatService.objIterator(apiPayload, apiPayload.sentenceKeys, 'sentenceCase')
-							}
-							delete apiPayload.sentenceKeys
-							if (apiPayload.deleteKeys) {
-								apiPayload = formatService.objIterator(apiPayload, apiPayload.deleteKeys, 'deleteKeys')
-							}
-							delete apiPayload.deleteKeys
-							const data = { tables: {} }
-							data.tables[tableName] = apiPayload
-							httpObject['data'] = data
-							break
+							return loadTableDef(tableName).then(tableDefinition => {
+								const data = { tables: {} }
+								data.tables[tableName] = prepareApiPayload(apiPayload, tableDefinition)
+								httpObject['data'] = data
+								return sendApiRequest(httpObject, method, tableName, recId)
+							}, () => {
+								const data = { tables: {} }
+								data.tables[tableName] = apiPayload
+								httpObject['data'] = data
+								return sendApiRequest(httpObject, method, tableName, recId)
+							})
 						//READ
 						case 'GET':
 							httpObject['params'] = {
@@ -60,52 +191,7 @@ define(function (require) {
 							break
 					}
 
-					return $http(httpObject).then(
-						res => {
-							switch (method) {
-								case 'POST':
-								case 'PUT': {
-									const result = res.data && res.data.result && res.data.result[0]
-									const successMessage = result && result.success_message
-									const errorMessage = result && result.error_message
-
-									if (errorMessage) {
-										psAlert({ message: errorMessage, title: `${method} Error` })
-										return $q.reject(errorMessage)
-									}
-
-									return (successMessage && successMessage.id) || recId || []
-								}
-								case 'GET':
-									let resData = res.data.tables[tableName]
-									if (apiPayload.dateKeys) {
-										resData = formatService.objIterator(resData, apiPayload.dateKeys, 'formatDateFromApi')
-									}
-									if (apiPayload.checkBoxKeys) {
-										resData = formatService.objIterator(resData, apiPayload.checkBoxKeys, 'formatChecksFromApi')
-									}
-									// Remove unwanted keys change needed with version 25.6
-									const keysToRemove = ['whocreated', 'whencreated', 'whomodified', 'whenmodified']
-									if (Array.isArray(resData)) {
-										resData = resData.map(item => {
-											const filteredItem = angular.copy(item)
-											keysToRemove.forEach(key => delete filteredItem[key])
-											return filteredItem
-										})
-									} else if (resData && typeof resData === 'object') {
-										keysToRemove.forEach(key => delete resData[key])
-									}
-									console.log('res.data.tables[tableName]', res.data.tables[tableName])
-									return resData
-								case 'DELETE':
-									return res
-							}
-						},
-						res => {
-							psAlert({ message: `There was an error ${method}ing the data to ${tableName}`, title: `${method} Error` })
-							return $q.reject(res)
-						}
-					)
+					return sendApiRequest(httpObject, method, tableName, recId)
 				}
 			}
 		}
