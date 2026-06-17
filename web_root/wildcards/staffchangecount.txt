@@ -42,7 +42,7 @@
     const loadStaffChangeCount = async () => {
         try {
             let records = await $j.ajax({
-                url: '/admin/staff_change/json/staffCountsData.json',
+                url: '/admin/staff_change/data/staffChangeCountData.json',
                 method: 'GET',
                 data: {
                     curSchoolID: '~(curschoolid)',
