@@ -446,6 +446,7 @@ define(function (require) {
 			$scope.originalStaffChangePayloads = {}
 			$scope.originalJitbitSnapshots = {}
 			$scope.originalChangeType = undefined
+			$scope.titleData = []
 
 			//pull exiting Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
 			$scope.getStaffChange = staffChangeId => {
@@ -505,6 +506,9 @@ define(function (require) {
 					return $scope[resource]
 				})
 			}
+			$scope.getJSONData('titleData').catch(() => {
+				$scope.titleData = []
+			})
 
 			$scope.checkDupesOnEdit = staffToSearch => {
 				let staffDupeParams = {

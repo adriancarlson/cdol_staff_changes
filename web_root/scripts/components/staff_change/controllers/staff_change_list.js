@@ -23,16 +23,14 @@ define(function (require) {
 			$scope.selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context')
 			$scope.changeType = ''
 			$scope.booleanMap = { Yes: true, No: false }
-			$scope.titleMap = {
-				'Mr.': 'Mr.',
-				'Mrs.': 'Mrs.',
-				'Ms.': 'Ms.',
-				'Dr.': 'Dr.',
-				'Fr.': 'Fr.',
-				'Msgr.': 'Msgr.',
-				'Sr.': 'Sr.',
-				'Br.': 'Br.'
-			}
+			$scope.titleMap = {}
+			const loadTitleMap = jsonDataService.getData('titleData').then(titleData => {
+				titleData.forEach(title => {
+					$scope.titleMap[title.code] = title.code
+				})
+			}).catch(() => {
+				$scope.titleMap = {}
+			})
 			$scope.changeMap = {
 				'New Staff': 'newStaff',
 				'Transferring-In Staff': 'transferringStaff',
@@ -107,6 +105,7 @@ define(function (require) {
 				const loadPromise = $scope.staffList.hasOwnProperty(changeType)
 					? $q.when()
 					: $q.all({
+						titles: loadTitleMap,
 						counts: jsonDataService.getData('staffChangeCountData', {
 							curSchoolID: $scope.curSchoolId,
 							calendarYear: $scope.calendarYear

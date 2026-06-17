@@ -1,0 +1,21 @@
+~[tlist_sql;
+	SELECT
+		COALESCE(
+			JSON_ARRAYAGG(
+				JSON_OBJECT(
+					'code' VALUE codeset.code,
+					'description' VALUE codeset.description,
+					'uidisplayorder' VALUE TO_CHAR(codeset.uidisplayorder)
+					RETURNING CLOB
+				)
+				ORDER BY codeset.uidisplayorder
+				RETURNING CLOB
+			),
+			TO_CLOB('[]')
+		)
+	FROM
+		codeset
+	WHERE
+		codeset.codetype = 'Title'
+		AND codeset.isvisible = 1
+;]~(data)[/tlist_sql]

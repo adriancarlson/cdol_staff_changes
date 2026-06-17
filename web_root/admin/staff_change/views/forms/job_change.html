@@ -52,17 +52,9 @@
                             of Staff changing Positions/Jobs</label>
                         <div class="input-group">
                             <select id="job-change-title" class="form-select form-select-sm" aria-label="Job change staff title"
-                                data-ng-model="submitPayload.jobChange.title">
+                                data-ng-model="submitPayload.jobChange.title"
+                                data-ng-options="title.code as title.code for title in titleData">
                                 <option selected></option>
-                                <option value="Mr.">Mr.</option>
-                                <option value="Mrs.">Mrs.</option>
-                                <option value="Ms.">Ms.</option>
-                                <option value="Miss">Miss</option>
-                                <option value="Dr.">Dr.</option>
-                                <option value="Fr.">Fr.</option>
-                                <option value="Msgr.">Msgr.</option>
-                                <option value="Sr.">Sr.</option>
-                                <option value="Br.">Br.</option>
                             </select>
                             <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
                                 aria-label="First name" data-ng-model="submitPayload.jobChange.first_name"

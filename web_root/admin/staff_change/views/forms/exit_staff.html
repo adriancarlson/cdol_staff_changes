@@ -49,17 +49,9 @@
                             Name</label>
                         <div class="input-group">
                             <select id="exiting-staff-title" class="form-select form-select-sm" aria-label="Exiting staff title"
-                                data-ng-model="submitPayload.exitingStaff.title">
+                                data-ng-model="submitPayload.exitingStaff.title"
+                                data-ng-options="title.code as title.code for title in titleData">
                                 <option selected></option>
-                                <option value="Mr.">Mr.</option>
-                                <option value="Mrs.">Mrs.</option>
-                                <option value="Ms.">Ms.</option>
-                                <option value="Miss">Miss</option>
-                                <option value="Dr.">Dr.</option>
-                                <option value="Fr.">Fr.</option>
-                                <option value="Msgr.">Msgr.</option>
-                                <option value="Sr.">Sr.</option>
-                                <option value="Br.">Br.</option>
                             </select>
                             <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
                                 aria-label="First name" data-ng-model="submitPayload.exitingStaff.first_name"
@@ -175,17 +167,9 @@
                                             projects be transferred to?</label>
                                         <div class="input-group">
                                             <select id="exiting-canva-title" class="form-select form-select-sm" aria-label="Canva user title"
-                                                data-ng-model="submitPayload.exitingStaff.canva_title">
+                                                data-ng-model="submitPayload.exitingStaff.canva_title"
+                                                data-ng-options="title.code as title.code for title in titleData">
                                                 <option selected></option>
-                                                <option value="Mr.">Mr.</option>
-                                                <option value="Mrs.">Mrs.</option>
-                                                <option value="Ms.">Ms.</option>
-                                                <option value="Miss">Miss</option>
-                                                <option value="Dr.">Dr.</option>
-                                                <option value="Fr.">Fr.</option>
-                                                <option value="Msgr.">Msgr.</option>
-                                                <option value="Sr.">Sr.</option>
-                                                <option value="Br.">Br.</option>
                                             </select>
                                             <input type="text" class="form-control form-control-sm w-25"
                                                 placeholder="First name" aria-label="First name"
