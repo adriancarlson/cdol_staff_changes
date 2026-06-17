@@ -465,6 +465,100 @@ define(function (require) {
 				if (previousSchoolName) staffChange.prev_school_name = previousSchoolName
 			}
 
+			const copyMappedFields = (target, source, fieldMap) => {
+				if (!target || !source) return target
+
+				Object.keys(fieldMap).forEach(sourceField => {
+					if (source[sourceField] !== undefined) {
+						target[fieldMap[sourceField]] = source[sourceField]
+					}
+				})
+
+				return target
+			}
+
+			const copyPrimaryStaffFromUser = (target, userRecord) => {
+				copyMappedFields(target, userRecord, {
+					identifier: 'users_dcid',
+					title: 'title',
+					first_name: 'first_name',
+					last_name: 'last_name',
+					license_microsoft: 'license_microsoft',
+					staff_status: 'staff_status'
+				})
+				return target
+			}
+
+			const copyPreviousSchoolFromUser = (target, userRecord) => {
+				copyMappedFields(target, userRecord, {
+					homeschoolid: 'prev_school_number',
+					homeschoolname: 'prev_school_name'
+				})
+				return target
+			}
+
+			const copyPrefixedStaffFromUser = (target, userRecord, prefix, options = {}) => {
+				if (!target || !userRecord) return target
+
+				const prefixedFieldMap = {
+					identifier: `${prefix}dcid`,
+					title: `${prefix}title`,
+					first_name: `${prefix}first_name`,
+					last_name: `${prefix}last_name`,
+					homeschoolid: `${prefix}homeschoolid`,
+					homeschoolname: `${prefix}homeschoolname`,
+					staff_status: `${prefix}staff_status`
+				}
+				if (!options.skipLicenseMicrosoft) {
+					prefixedFieldMap.license_microsoft = `${prefix}license_microsoft`
+				}
+
+				copyMappedFields(target, userRecord, prefixedFieldMap)
+				return target
+			}
+
+			const copyTransferringStaffFromDuplicate = (target, duplicateRecord) => {
+				if (!target || !duplicateRecord) return target
+
+				copyMappedFields(target, duplicateRecord, {
+					identifier: 'users_dcid',
+					title: 'title',
+					first_name: 'first_name',
+					last_name: 'last_name',
+					license_microsoft: 'license_microsoft',
+					prev_school_number: 'prev_school_number',
+					prev_school_name: 'prev_school_name'
+				})
+				return target
+			}
+
+			const removeLookupOnlyFields = (target, prefix) => {
+				if (!target) return
+
+				const baseLookupOnlyFields = [
+					'identifier',
+					'email_addr',
+					'homeschoolid',
+					'homeschoolname',
+					'ssdcid',
+					'status',
+					'schoolstaff_dcid'
+				]
+				const prefixedLookupOnlyFields = [
+					'identifier',
+					'email_addr',
+					'ssdcid',
+					'status',
+					'schoolstaff_dcid'
+				]
+				const fieldNames = prefix ? prefixedLookupOnlyFields : baseLookupOnlyFields
+
+				// Lookup data can be broad for future use, but the form payload should keep only intentional fields.
+				fieldNames.forEach(fieldName => {
+					delete target[`${prefix || ''}${fieldName}`]
+				})
+			}
+
 			const setSubstituteSchoolStaffRecordData = staffRecord => {
 				if (!staffRecord || !staffRecord.ssdcid) return
 
@@ -754,7 +848,7 @@ define(function (require) {
 					if (resource === 'userData') {
 						//and the field is users_dcid
 						if (field === 'users_dcid') {
-							$scope.submitPayload[pageContext] = angular.extend($scope.submitPayload[pageContext], foundItem)
+							copyPrimaryStaffFromUser($scope.submitPayload[pageContext], foundItem)
 							removeNullableTitleFields($scope.submitPayload[pageContext])
 
 							if (pageContext === 'nameChange') {
@@ -764,41 +858,28 @@ define(function (require) {
 								$scope.submitPayload[pageContext].old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => $scope.submitPayload[pageContext].first_name.startsWith(prefix)) && $scope.submitPayload[pageContext].title ? $scope.submitPayload[pageContext].title + ' ' : ''}${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
 							}
 							if (pageContext === 'transferringStaff') {
-								$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
-								$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
+								copyPreviousSchoolFromUser($scope.submitPayload[pageContext], foundItem)
 							}
 							if (pageContext === 'newStaff') {
-								$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
-								$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
+								copyPreviousSchoolFromUser($scope.submitPayload[pageContext], foundItem)
 							}
 							if (pageContext === 'subStaff') {
-								$scope.submitPayload[pageContext].prev_school_number = $scope.submitPayload[pageContext].homeschoolid
-								$scope.submitPayload[pageContext].prev_school_name = $scope.submitPayload[pageContext].homeschoolname
+								copyPreviousSchoolFromUser($scope.submitPayload[pageContext], foundItem)
 							}
 							if (pageContext === 'exitingStaff') {
 								$scope.submitPayload[pageContext].old_name_placeholder = `${!['Fr.', 'Msgr.', 'Sr.', 'Br.'].some(prefix => $scope.submitPayload[pageContext].first_name.startsWith(prefix)) && $scope.submitPayload[pageContext].title ? $scope.submitPayload[pageContext].title + ' ' : ''}${$scope.submitPayload[pageContext].first_name} ${$scope.submitPayload[pageContext].last_name}`
 							}
+							removeLookupOnlyFields($scope.submitPayload[pageContext])
 						}
 						// Dynamically handle both replace_ and canva_ prefixes
 						if (field === 'replace_dcid' || field === 'canva_dcid') {
 							// Determine the prefix dynamically based on the field
 							const prefix = field === 'replace_dcid' ? 'replace_' : 'canva_'
-							// Set an empty object
-							const dynamicObject = {}
-
-							// Find all the keys in the found item and add the prefix to the front of the key
-							// Keep the same value and set those key-value pairs to dynamicObject
-							for (let key in foundItem) {
-								if (foundItem.hasOwnProperty(key)) {
-									if (key.startsWith('$$')) continue
-									// Skip license_microsoft if prefix is canva_
-									if (prefix === 'canva_' && key === 'license_microsoft') continue
-									dynamicObject[`${prefix}${key}`] = foundItem[key]
-								}
-							}
-							// Assign the dynamicObject to the submitPayload
-							angular.extend($scope.submitPayload[pageContext], dynamicObject)
+							copyPrefixedStaffFromUser($scope.submitPayload[pageContext], foundItem, prefix, {
+								skipLicenseMicrosoft: prefix === 'canva_'
+							})
 							removeNullableTitleFields($scope.submitPayload[pageContext])
+							removeLookupOnlyFields($scope.submitPayload[pageContext], prefix)
 						}
 
 						if (pageContext === 'subStaff') {
@@ -817,15 +898,8 @@ define(function (require) {
 				// Step 2: Find the matching item
 				let foundItem = $scope.duplicatePowerSchoolStaffData && $scope.duplicatePowerSchoolStaffData.length && $scope.duplicatePowerSchoolStaffData.find(item => item.identifier === identifier)
 
-				// Step 3: Override only matching keys from foundItem
-				if (foundItem) {
-					Object.keys(foundItem).forEach(key => {
-						$scope.submitPayload.transferringStaff[key] = foundItem[key]
-					})
-				}
-
-				let specificDeleteKeys = ['identifier', 'ssdcid', 'status', 'email_addr']
-				formatService.objIterator($scope.submitPayload.transferringStaff, specificDeleteKeys, 'deleteKeys')
+				// Step 3: Override only intended PowerSchool identity fields from foundItem
+				copyTransferringStaffFromDuplicate($scope.submitPayload.transferringStaff, foundItem)
 				// Step 4: Remove newStaff
 				delete $scope.submitPayload.newStaff
 				$scope.userContext.formType = 'transferringStaff'
