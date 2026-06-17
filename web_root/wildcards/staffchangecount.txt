@@ -9,7 +9,7 @@
         display: flex;
     }
 
-    #cdolBtnNotifications span {
+    #staffCountSpan {
         background-color: #C84C59;
         line-height: 1em;
         font-size: 80%;
@@ -39,87 +39,134 @@
 </ul>
 
 <script type="text/javascript">
-    const loadStaffChangeCount = async () => {
-        try {
-            let records = await $j.ajax({
-                url: '/admin/staff_change/data/staffChangeCountData.json',
-                method: 'GET',
-                data: {
-                    curSchoolID: '~(curschoolid)',
-                    calendarYear: '~(f.currentdate;format= YYYY)'
-                }
-            })
+    (function (window, $j) {
+        const staffChangeCount = window.CDOLStaffChangeCount = window.CDOLStaffChangeCount || {}
+        const countEndpoint = '/admin/staff_change/data/staffChangeCountData.json'
 
-            if (typeof psUtils !== 'undefined' && psUtils.htmlEntitiesToCharCode) {
+        // Save the hidden shortcut markup before the placeholder is removed.
+        const templateHtml = $j('#staffCount').first().html()
+        if (templateHtml) staffChangeCount.templateHtml = templateHtml
+
+        // PowerSchool can return rendered JSON as text, HTML-encoded text, an object, or an array.
+        staffChangeCount.normalizeRecords = data => {
+            let records = data
+
+            if (typeof records === 'string' && typeof psUtils !== 'undefined' && psUtils.htmlEntitiesToCharCode) {
                 records = psUtils.htmlEntitiesToCharCode(records)
             }
+
             if (typeof records === 'string') {
-                records = JSON.parse(records)
+                records = records.trim() ? JSON.parse(records) : []
             }
 
-            const countRecord = Array.isArray(records) ? records[0] : records
-            return Number(countRecord && countRecord.total_remaining) || 0
-        } catch (err) {
-            console.log(err)
-            return 0
+            if (!records) return []
+            return Array.isArray(records) ? records : [records]
         }
-    }
+
+        // Load the same remaining-count endpoint used by the Staff Changes list.
+        staffChangeCount.loadCount = async () => {
+            try {
+                const records = staffChangeCount.normalizeRecords(await $j.ajax({
+                    url: countEndpoint,
+                    method: 'GET',
+                    data: {
+                        curSchoolID: '~(curschoolid)',
+                        calendarYear: new Date().getFullYear()
+                    }
+                }))
+
+                return Number(records[0] && records[0].total_remaining) || 0
+            } catch (err) {
+                console.log(err)
+                return 0
+            }
+        }
+
+        // Remove previously inserted copies so repeated wildcard rendering is harmless.
+        staffChangeCount.removeRenderedShortcut = () => {
+            const outsideTemplate = function () {
+                return $j(this).closest('#staffCount').length === 0
+            }
+
+            $j('[id="staffCountLi"]').filter(outsideTemplate).remove()
+            $j('[id="cdolBtnNotifications"]').filter(outsideTemplate).closest('li').remove()
+        }
+
+        staffChangeCount.removeTemplate = () => {
+            $j('[id="staffCount"]').remove()
+        }
+
+        // Build the footer shortcut and only keep the red badge when there is work remaining.
+        staffChangeCount.buildShortcut = count => {
+            const shortcut = $j(staffChangeCount.templateHtml || '')
+            const badge = shortcut.find('#staffCountSpan')
+
+            if (count > 0) {
+                badge.text(count)
+            } else {
+                badge.remove()
+                shortcut.removeClass('countMargin')
+            }
+
+            return shortcut
+        }
+
+        staffChangeCount.insertShortcut = count => {
+            staffChangeCount.removeRenderedShortcut()
+            $j('#tools2').prepend(staffChangeCount.buildShortcut(count))
+        }
+
+        // PDS stores navigation items in a nested appNavItems structure.
+        staffChangeCount.findNavItemById = (itemId, startWith) => {
+            if (typeof appNavItems === 'undefined') return
+
+            const items = startWith ? startWith.children || [] : appNavItems
+            let matchedItem
+
+            items.forEach(item => {
+                if (item.id === itemId) matchedItem = item
+            })
+
+            if (matchedItem) return matchedItem
+
+            items.forEach(item => {
+                if (item.children && !matchedItem) matchedItem = staffChangeCount.findNavItemById(itemId, item)
+            })
+
+            return matchedItem
+        }
+
+        // Update the PDS nav label without stacking duplicate "(count)" suffixes.
+        staffChangeCount.updatePdsCount = (linkId, count) => {
+            const navItem = staffChangeCount.findNavItemById(linkId)
+
+            if (navItem) {
+                const navName = String(navItem.name || '').replace(/\s*\(\d+\)\s*$/, '')
+                navItem.name = count > 0 ? `${navName} (${count})` : navName
+            }
+
+            if (navItem && count > 0) staffChangeCount.insertShortcut(count)
+            else staffChangeCount.removeRenderedShortcut()
+        }
+
+        // Entry point used by both the PDS and non-PDS wildcard branches.
+        staffChangeCount.start = async usePdsNav => {
+            const count = await staffChangeCount.loadCount()
+
+            if (usePdsNav) staffChangeCount.updatePdsCount('staff-changes-list', count)
+            else staffChangeCount.insertShortcut(count)
+
+            staffChangeCount.removeTemplate()
+        }
+    })(window, $j)
 </script>
 
 ~[if.admin_pds_uptake_access]
 <script type="text/javascript">
-    const findStaffNavItemById = (itemId, startWith) => {
-        if (typeof appNavItems == 'undefined') return
-        let items = startWith ? startWith.children || [] : appNavItems
-        let matchedItem
-        items.forEach(item => {
-            if (item.id == itemId) matchedItem = item
-        })
-        if (matchedItem) return matchedItem
-        //if not found, search children
-        else {
-            items.forEach(item => {
-                if (item.children && !matchedItem) matchedItem = findStaffNavItemById(itemId, item)
-            })
-            if (matchedItem) return matchedItem
-        }
-    }
-    //update count on link and add icon
-    const updateStaffCount = (linkId, count) => {
-        let navItem = findStaffNavItemById(linkId)
-        if (!navItem || count == 0) {
-            $j('#staffCountSpan').remove()
-            $j('#staffCountLi').removeClass('countMargin')
-        } else {
-            navItem.name = `${navItem.name} (${count})`
-            $j('#staffCountSpan').text(count)
-            $j('#tools2').prepend($j('#staffCount').html())
-        }
-        $j('#staffCount').remove()
-    }
-
-    $j(() =>
-        (async () => {
-            const staffCount = await loadStaffChangeCount()
-            updateStaffCount('staff-changes-list', staffCount)
-        })()
-    )
+    $j(() => window.CDOLStaffChangeCount.start(true))
 </script>
 [else]
 <script type="text/javascript">
-    $j(() =>
-        (async () => {
-            const staffCount = await loadStaffChangeCount()
-            if (staffCount > 0) {
-                $j('#staffCountSpan').text(staffCount)
-            } else {
-                $j('#staffCountSpan').remove()
-                $j('#staffCountLi').removeClass('countMargin')
-            }
-            $j('#tools2').prepend($j('#staffCount').html())
-            $j('#staffCount').remove()
-        })()
-    )
-
+    $j(() => window.CDOLStaffChangeCount.start(false))
 </script>
 [/if]
