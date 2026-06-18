@@ -1,6 +1,6 @@
 'use strict'
 define(function (require) {
-	var module = require('components/staff_change/module')
+	const module = require('components/staff_change/module')
 
 	module.directive('staffSelect', [
 		'$timeout',

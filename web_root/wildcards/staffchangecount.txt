@@ -64,22 +64,21 @@
         }
 
         // Load the same remaining-count endpoint used by the Staff Changes list.
-        staffChangeCount.loadCount = async () => {
+        staffChangeCount.loadCount = () => $j.ajax({
+            url: countEndpoint,
+            method: 'GET',
+            data: {
+                curSchoolID: '~(curschoolid)',
+                calendarYear: new Date().getFullYear()
+            }
+        }).then(data => {
             try {
-                const records = staffChangeCount.normalizeRecords(await $j.ajax({
-                    url: countEndpoint,
-                    method: 'GET',
-                    data: {
-                        curSchoolID: '~(curschoolid)',
-                        calendarYear: new Date().getFullYear()
-                    }
-                }))
-
+                const records = staffChangeCount.normalizeRecords(data)
                 return Number(records[0] && records[0].total_remaining) || 0
-            } catch (err) {
+            } catch (error) {
                 return 0
             }
-        }
+        }, () => 0)
 
         // Remove previously inserted copies so repeated wildcard rendering is harmless.
         staffChangeCount.removeRenderedShortcut = () => {
@@ -149,14 +148,12 @@
         }
 
         // Entry point used by both the PDS and non-PDS wildcard branches.
-        staffChangeCount.start = async usePdsNav => {
-            const count = await staffChangeCount.loadCount()
-
+        staffChangeCount.start = usePdsNav => staffChangeCount.loadCount().then(count => {
             if (usePdsNav) staffChangeCount.updatePdsCount('staff-changes-list', count)
             else staffChangeCount.insertShortcut(count)
 
             staffChangeCount.removeTemplate()
-        }
+        })
     })(window, $j)
 </script>
 

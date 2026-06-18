@@ -1,7 +1,7 @@
 'use strict'
 define(function (require) {
-	var angular = require('angular')
-	var module = require('components/staff_change/module')
+	const angular = require('angular')
+	const module = require('components/staff_change/module')
 
 	module.factory('jsonDataService', [
 		'$q',
