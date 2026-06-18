@@ -146,8 +146,7 @@
                 </div>
                 <div data-ng-if="submitPayload.subStaff.sub_type == 'LTS'|| submitPayload.subStaff.sub_type == 'FSTS'">
                     <div class="row align-items-center mb-3">
-                        <div
-                            data-ng-class="{'col-8': userContext.pageStatus =='Edit' && userContext.districtUser && !submitPayload.subStaff.ps_created && submitPayload.subStaff.sub_type == 'LTS', 'col-6': !(userContext.pageStatus =='Edit' && userContext.districtUser && !submitPayload.subStaff.ps_created && submitPayload.subStaff.sub_type == 'LTS')}">
+                        <div data-ng-class="userContext.pageStatus =='Edit' && userContext.districtUser && !submitPayload.subStaff.ps_created && submitPayload.subStaff.sub_type == 'LTS' ? 'col-12 col-lg-8 col-xl-8' : 'col-12 col-lg-7 col-xl-6'">
                             <label data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.subStaff.ps_created)"
                                 for="sub-staff-title"
                                 class="form-label form-label-sm  label-reset staff-change-req">Substitute
@@ -160,24 +159,24 @@
                                 Staff
                                 Preferred
                                 Name</label>
-                            <div class="input-group" data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.subStaff.ps_created)">
-                                <select id="sub-staff-title" class="form-select form-select-sm" aria-label="Substitute staff title"
+                            <div class="input-group staff-name-input-group" data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.subStaff.ps_created)">
+                                <select id="sub-staff-title" class="form-select form-select-sm staff-title-select" aria-label="Substitute staff title"
                                     data-ng-model="submitPayload.subStaff.title"
                                     data-ng-options="title.code as title.code for title in titleData">
                                     <option selected></option>
                                 </select>
-                                <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
+                                <input type="text" class="form-control form-control-sm staff-name-field" placeholder="First name"
                                     aria-label="First name" data-ng-model="submitPayload.subStaff.first_name"
                                     data-ng-blur="submitPayload.subStaff.first_name = (submitPayload.subStaff.first_name | titleCase)"
                                     data-ng-required="true">
-                                <input type="text" class="form-control form-control-sm w-25" placeholder="Middle name"
+                                <input type="text" class="form-control form-control-sm staff-name-field" placeholder="Middle name"
                                     aria-label="Middle name" data-ng-model="submitPayload.subStaff.middle_name"
                                     data-ng-blur="submitPayload.subStaff.middle_name = (submitPayload.subStaff.middle_name | titleCase)">
-                                <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
+                                <input type="text" class="form-control form-control-sm staff-name-field" placeholder="Last name"
                                     aria-label="Last name" data-ng-model="submitPayload.subStaff.last_name"
                                     data-ng-blur="submitPayload.subStaff.last_name = (submitPayload.subStaff.last_name | titleCase);dupeSearch(userContext.pageContext, submitPayload[userContext.formType])"
                                     data-ng-required="true">
-                                <button type="button" class="button m-0 p-2 ps-1"
+                                <button type="button" class="staff-name-action button m-0 p-2 ps-1"
                                     title="Only available at {{submitPayload.subStaff.schoolid | schoolName}}"
                                     data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && !submitPayload.subStaff.ps_created && submitPayload.subStaff.sub_type == 'LTS'"
                                     data-ng-click="openNewStaffRecord(submitPayload.subStaff)"
@@ -191,7 +190,7 @@
                             <div data-ng-if="userContext.pageStatus == 'Edit' && submitPayload.subStaff.ps_created"
                                 id="sub-staff-name" class="blockquote ms-2 mt-1">{{submitPayload.subStaff | staffFullName}}</div>
                         </div>
-                        <div class="col">
+                        <div class="col-12 col-lg">
                             <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary"
                                 role="alert"><i class="bi bi-chat-right-text-fill"></i>
                                 <strong><u>Preferred Name</u></strong>: is how the staff name will appear on reports and
@@ -205,26 +204,26 @@
                         </div>
                     </div>
                     <div class="row align-items-center mb-3" data-ng-if="!submitPayload.subStaff.users_dcid">
-                        <div class="col-6">
+                        <div class="col-12 col-lg-7 col-xl-6">
                             <label for="sub-staff-legal-first-name"
                                 class="form-label form-label-sm  label-reset staff-change-req">Substitute Staff Legal
                                 Name</label>
-                            <div class="input-group">
-                                <input id="sub-staff-legal-first-name" type="text" class="form-control form-control-sm w-25"
+                            <div class="input-group staff-name-input-group">
+                                <input id="sub-staff-legal-first-name" type="text" class="form-control form-control-sm staff-name-field"
                                     placeholder="Legal first name" aria-label="Legal First name"
                                     data-ng-model="submitPayload.subStaff.legal_first_name" data-ng-required="true">
-                                <input type="text" class="form-control form-control-sm w-25"
+                                <input type="text" class="form-control form-control-sm staff-name-field"
                                     placeholder="Legal middle name" aria-label="Legal middle name"
                                     data-ng-model="submitPayload.subStaff.legal_middle_name">
-                                <input type="text" class="form-control form-control-sm w-25"
+                                <input type="text" class="form-control form-control-sm staff-name-field"
                                     placeholder="Legal last name" aria-label="Legal last name"
                                     data-ng-model="submitPayload.subStaff.legal_last_name" data-ng-required="true">
-                                <button type="button" class="m-0 p-2 ps-1"
+                                <button type="button" class="staff-name-action m-0 p-2 ps-1"
                                     data-ng-if="userContext.pageStatus =='Submit'"
                                     data-ng-click="copyNames(userContext.pageContext)">Copy from Preferred Name</button>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-12 col-lg">
                             <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary"
                                 role="alert"><i class="bi bi-chat-right-text-fill"></i>
                                 <strong><u>Legal Name</u></strong>: exactly how the staff's name appears on teaching
@@ -456,34 +455,34 @@
                                     </div>
                                     <div class="row align-items-center mb-3"
                                         data-ng-if="submitPayload.subStaff.replace_dcid == -1">
-                                        <div class="col-6">
+                                        <div class="col-12 col-lg-10 col-xl-8">
                                             <label for="sub-staff-replacement-title"
                                                 class="form-label form-label-sm  label-reset staff-change-req">Name
                                                 of the staff member
                                                 {{submitPayload.subStaff.title}} {{
                                                 submitPayload.subStaff.first_name}} {{
                                                 submitPayload.subStaff.last_name}} is replacing</label>
-                                            <div class="input-group">
-                                                <select id="sub-staff-replacement-title" class="form-select form-select-sm" aria-label="Replacement staff title"
+                                            <div class="input-group staff-name-input-group">
+                                                <select id="sub-staff-replacement-title" class="form-select form-select-sm staff-title-select" aria-label="Replacement staff title"
                                                     data-ng-model="submitPayload.subStaff.replace_title"
                                                     data-ng-options="title.code as title.code for title in titleData">
                                                     <option selected></option>
                                                 </select>
-                                                <input id="sub-staff-replacement-first-name" type="text" class="form-control form-control-sm w-25"
+                                                <input id="sub-staff-replacement-first-name" type="text" class="form-control form-control-sm staff-name-field"
                                                     placeholder="First name" aria-label="First name"
                                                     data-ng-model="submitPayload.subStaff.replace_first_name"
                                                     data-ng-blur="submitPayload.subStaff.replace_first_name = (submitPayload.subStaff.replace_first_name | titleCase)"
                                                     data-ng-required="true">
-                                                <input type="text" class="form-control form-control-sm w-25"
+                                                <input type="text" class="form-control form-control-sm staff-name-field"
                                                     placeholder="Middle name" aria-label="Middle name"
                                                     data-ng-model="submitPayload.subStaff.replace_middle_name"
                                                     data-ng-blur="submitPayload.subStaff.replace_middle_name = (submitPayload.subStaff.replace_middle_name | titleCase)">
-                                                <input type="text" class="form-control form-control-sm w-25"
+                                                <input type="text" class="form-control form-control-sm staff-name-field"
                                                     placeholder="Last name" aria-label="Last name"
                                                     data-ng-model="submitPayload.subStaff.replace_last_name"
                                                     data-ng-blur="submitPayload.subStaff.replace_last_name = (submitPayload.subStaff.replace_last_name | titleCase)"
                                                     data-ng-required="true">
-                                                <button type="button" class="button m-0 p-2 ps-1" title="Return to the existing staff selector"
+                                                <button type="button" class="staff-name-action button m-0 p-2 ps-1" title="Return to the existing staff selector"
                                                     data-ng-if="userContext.pageStatus =='Submit'"
                                                     data-ng-click="searchLookup('subStaff', 'replace_dcid', 'sub-staff-replace-dcid')">Return to Staff Select</button>
                                             </div>

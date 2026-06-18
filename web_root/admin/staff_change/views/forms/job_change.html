@@ -37,31 +37,31 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.users_dcid == -1">
-                    <div class="col-6">
+                    <div class="col-12 col-lg-10 col-xl-8">
                         <label data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.jobChange.ps_created)"
                             for="job-change-title" class="form-label form-label-sm  label-reset staff-change-req">Name
                             of Staff changing Positions/Jobs</label>
                         <label data-ng-if="userContext.pageStatus == 'Edit' && submitPayload.jobChange.ps_created"
                             for="job-change-name" class="form-label form-label-sm  label-reset">Name
                             of Staff changing Positions/Jobs</label>
-                        <div class="input-group" data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.jobChange.ps_created)">
-                            <select id="job-change-title" class="form-select form-select-sm" aria-label="Job change staff title"
+                        <div class="input-group staff-name-input-group" data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.jobChange.ps_created)">
+                            <select id="job-change-title" class="form-select form-select-sm staff-title-select" aria-label="Job change staff title"
                                 data-ng-model="submitPayload.jobChange.title"
                                 data-ng-options="title.code as title.code for title in titleData">
                                 <option selected></option>
                             </select>
-                            <input id="job-change-first-name" type="text" class="form-control form-control-sm w-25" placeholder="First name"
+                            <input id="job-change-first-name" type="text" class="form-control form-control-sm staff-name-field" placeholder="First name"
                                 aria-label="First name" data-ng-model="submitPayload.jobChange.first_name"
                                 data-ng-blur="submitPayload.jobChange.first_name = (submitPayload.jobChange.first_name | titleCase)"
                                 data-ng-required="true">
-                            <input type="text" class="form-control form-control-sm w-25" placeholder="Middle name"
+                            <input type="text" class="form-control form-control-sm staff-name-field" placeholder="Middle name"
                                 aria-label="Middle name" data-ng-model="submitPayload.jobChange.middle_name"
                                 data-ng-blur="submitPayload.jobChange.middle_name = (submitPayload.jobChange.middle_name | titleCase)">
-                            <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
+                            <input type="text" class="form-control form-control-sm staff-name-field" placeholder="Last name"
                                 aria-label="Last name" data-ng-model="submitPayload.jobChange.last_name"
                                 data-ng-blur="submitPayload.jobChange.last_name = (submitPayload.jobChange.last_name | titleCase)"
                                 data-ng-required="true">
-                            <button type="button" class="button m-0 p-2 ps-1" title="Return to the existing staff selector"
+                            <button type="button" class="staff-name-action button m-0 p-2 ps-1" title="Return to the existing staff selector"
                                 data-ng-if="userContext.pageStatus =='Submit'"
                                 data-ng-click="searchLookup('jobChange', 'users_dcid', 'job-change-user')">Return to Staff Select</button>
                         </div>

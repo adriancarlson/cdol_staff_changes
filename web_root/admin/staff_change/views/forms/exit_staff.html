@@ -31,28 +31,28 @@
                 </div>
                 <div class="row align-items-center mb-3"
                     data-ng-if="submitPayload.exitingStaff.users_dcid == -1 && userContext.pageStatus =='Submit'">
-                    <div class="col-6">
+                    <div class="col-12 col-lg-10 col-xl-8">
                         <label for="exiting-staff-title"
                             class="form-label form-label-sm  label-reset staff-change-req">Exiting Staff
                             Name</label>
-                        <div class="input-group">
-                            <select id="exiting-staff-title" class="form-select form-select-sm" aria-label="Exiting staff title"
+                        <div class="input-group staff-name-input-group">
+                            <select id="exiting-staff-title" class="form-select form-select-sm staff-title-select" aria-label="Exiting staff title"
                                 data-ng-model="submitPayload.exitingStaff.title"
                                 data-ng-options="title.code as title.code for title in titleData">
                                 <option selected></option>
                             </select>
-                            <input id="exiting-staff-first-name" type="text" class="form-control form-control-sm w-25" placeholder="First name"
+                            <input id="exiting-staff-first-name" type="text" class="form-control form-control-sm staff-name-field" placeholder="First name"
                                 aria-label="First name" data-ng-model="submitPayload.exitingStaff.first_name"
                                 data-ng-blur="submitPayload.exitingStaff.first_name = (submitPayload.exitingStaff.first_name | titleCase)"
                                 data-ng-required=" true">
-                            <input type="text" class="form-control form-control-sm w-25" placeholder="Middle name"
+                            <input type="text" class="form-control form-control-sm staff-name-field" placeholder="Middle name"
                                 aria-label="Middle name" data-ng-model="submitPayload.exitingStaff.middle_name"
                                 data-ng-blur="submitPayload.exitingStaff.middle_name = (submitPayload.exitingStaff.middle_name | titleCase)">
-                            <input type="text" class="form-control form-control-sm w-25" placeholder="Last name"
+                            <input type="text" class="form-control form-control-sm staff-name-field" placeholder="Last name"
                                 aria-label="Last name" data-ng-model="submitPayload.exitingStaff.last_name"
                                 data-ng-blur="submitPayload.exitingStaff.last_name = (submitPayload.exitingStaff.last_name | titleCase)"
                                 data-ng-required="true">
-                            <button type="button" class="button m-0 p-2 ps-1" title="Return to the existing staff selector"
+                            <button type="button" class="staff-name-action button m-0 p-2 ps-1" title="Return to the existing staff selector"
                                 data-ng-if="userContext.pageStatus =='Submit'"
                                 data-ng-click="searchLookup('exitingStaff', 'users_dcid', 'exiting-staff-user')">Return to Staff Select</button>
                         </div>
@@ -139,34 +139,34 @@
                                 </div>
                                 <div class="row align-items-center mb-3"
                                     data-ng-if="submitPayload.exitingStaff.canva_dcid == -1">
-                                    <div class="col-6">
+                                    <div class="col-12 col-lg-10 col-xl-8">
                                         <label for="exiting-canva-title"
                                             class="form-label form-label-sm  label-reset staff-change-req">Name of who
                                             should {{
                                             submitPayload.exitingStaff.first_name}} {{
                                             submitPayload.exitingStaff.last_name}}'s <em>Canva for Education</em>
                                             projects be transferred to?</label>
-                                        <div class="input-group">
-                                            <select id="exiting-canva-title" class="form-select form-select-sm" aria-label="Canva user title"
+                                        <div class="input-group staff-name-input-group">
+                                            <select id="exiting-canva-title" class="form-select form-select-sm staff-title-select" aria-label="Canva user title"
                                                 data-ng-model="submitPayload.exitingStaff.canva_title"
                                                 data-ng-options="title.code as title.code for title in titleData">
                                                 <option selected></option>
                                             </select>
-                                            <input id="exiting-canva-first-name" type="text" class="form-control form-control-sm w-25"
+                                            <input id="exiting-canva-first-name" type="text" class="form-control form-control-sm staff-name-field"
                                                 placeholder="First name" aria-label="First name"
                                                 data-ng-model="submitPayload.exitingStaff.canva_first_name"
                                                 data-ng-blur="submitPayload.exitingStaff.canva_first_name = (submitPayload.exitingStaff.canva_first_name | titleCase)"
                                                 data-ng-required="true">
-                                            <input type="text" class="form-control form-control-sm w-25"
+                                            <input type="text" class="form-control form-control-sm staff-name-field"
                                                 placeholder="Middle name" aria-label="Middle name"
                                                 data-ng-model="submitPayload.exitingStaff.canva_middle_name"
                                                 data-ng-blur="submitPayload.exitingStaff.canva_middle_name = (submitPayload.exitingStaff.canva_middle_name | titleCase)">
-                                            <input type="text" class="form-control form-control-sm w-25"
+                                            <input type="text" class="form-control form-control-sm staff-name-field"
                                                 placeholder="Last name" aria-label="Last name"
                                                 data-ng-model="submitPayload.exitingStaff.canva_last_name"
                                                 data-ng-blur="submitPayload.exitingStaff.canva_last_name = (submitPayload.exitingStaff.canva_last_name | titleCase)"
                                                 data-ng-required="true">
-                                            <button type="button" class="button m-0 p-2 ps-1" title="Return to the existing staff selector"
+                                            <button type="button" class="staff-name-action button m-0 p-2 ps-1" title="Return to the existing staff selector"
                                                 data-ng-if="userContext.pageStatus =='Submit'"
                                                 data-ng-click="searchLookup('exitingStaff', 'canva_dcid', 'canva_dcid')">Return to Staff Select</button>
                                         </div>
