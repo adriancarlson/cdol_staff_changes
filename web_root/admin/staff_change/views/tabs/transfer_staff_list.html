@@ -41,39 +41,34 @@
             <tr data-ng-repeat="transferringStaff in filteredTransferringStaffList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap staff-name-cell">
-                    <a href="/admin/staff_change/submit.html?status=Edit&id={{transferringStaff.staffid}}">
-                        {{transferringStaff | staffFullName}}</a>
+                    <a href="/admin/staff_change/submit.html?status=Edit&id={{::transferringStaff.staffid}}">
+                        {{::transferringStaff.display_name}}</a>
                     <span class="ms-2 external-link-hover">
-                        <a href="/admin/staff_change/submit.html?status=Edit&id={{transferringStaff.staffid}}"
+                        <a href="/admin/staff_change/submit.html?status=Edit&id={{::transferringStaff.staffid}}"
                             target="_blank" title="Open in new tab"><pds-icon name="external"
                                 class="style-scope x-scope pds-icon-0 pds-widget" pds-widget="pds-widget"
                                 style="zoom: 0.55;"></pds-icon>
                         </a>
                     </span>
                 </td>
-                <td class="nowrap">{{transferringStaff.schname}}</td>
-                <td class="nowrap">{{transferringStaff.prev_school_name}}</td>
-                <td class="nowrap">{{transferringStaff.submittedstaff}}</td>
-                <td class="nowrap">{{transferringStaff.submission_date | date : 'MM/dd/yyyy'}}
-                    {{transferringStaff.submission_time}}</td>
-                <td data-ng-class="getReqNotationClass(transferringStaff, curDate)">
-                    {{transferringStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <td><span
-                        data-ng-class="{'mark-complete': transferringStaff.ps_complete, 'mark-incomplete': !transferringStaff.ps_complete}"></span>
+                <td class="nowrap">{{::transferringStaff.schname}}</td>
+                <td class="nowrap">{{::transferringStaff.prev_school_name}}</td>
+                <td class="nowrap">{{::transferringStaff.submittedstaff}}</td>
+                <td class="nowrap">{{::transferringStaff.submission_date | date : 'MM/dd/yyyy'}}
+                    {{::transferringStaff.submission_time}}</td>
+                <td data-ng-class="::transferringStaff.deadline_class">
+                    {{::transferringStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td><span data-ng-class="::transferringStaff.completion_display.ps.className">{{::transferringStaff.completion_display.ps.text}}</span>
                 </td>
-                <td><span
-                        data-ng-class="{'mark-complete': transferringStaff.ad_complete, 'mark-incomplete': !transferringStaff.ad_complete}"></span>
+                <td><span data-ng-class="::transferringStaff.completion_display.ad.className">{{::transferringStaff.completion_display.ad.text}}</span>
                 </td>
-                <td><span
-                        data-ng-class="{'mark-complete': transferringStaff.o365_complete, 'mark-incomplete': !transferringStaff.o365_complete}"></span>
+                <td><span data-ng-class="::transferringStaff.completion_display.o365.className">{{::transferringStaff.completion_display.o365.text}}</span>
                 </td>
-                <td><span
-                        data-ng-class="{'mark-complete': transferringStaff.lms_complete, 'mark-incomplete': !transferringStaff.lms_complete}"></span>
+                <td><span data-ng-class="::transferringStaff.completion_display.lms.className">{{::transferringStaff.completion_display.lms.text}}</span>
                 </td>
-                <td><span
-                        data-ng-class="{'mark-complete': transferringStaff.canva_complete, 'mark-incomplete': !transferringStaff.canva_complete}"></span>
+                <td><span data-ng-class="::transferringStaff.completion_display.canva.className">{{::transferringStaff.completion_display.canva.text}}</span>
                 </td>
-                <td>{{transferringStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td>{{::transferringStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
         </tbody>
     </table>

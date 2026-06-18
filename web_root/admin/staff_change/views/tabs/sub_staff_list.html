@@ -38,42 +38,35 @@
             <tr data-ng-repeat="subStaff in filteredSubStaffList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap staff-name-cell">
-                    <a href="/admin/staff_change/submit.html?status=Edit&id={{subStaff.staffid}}">
-                        {{subStaff | staffFullName}}</a>
+                    <a href="/admin/staff_change/submit.html?status=Edit&id={{::subStaff.staffid}}">
+                        {{::subStaff.display_name}}</a>
                     <span class="ms-2 external-link-hover">
-                        <a href="/admin/staff_change/submit.html?status=Edit&id={{subStaff.staffid}}" target="_blank"
+                        <a href="/admin/staff_change/submit.html?status=Edit&id={{::subStaff.staffid}}" target="_blank"
                             title="Open in new tab"><pds-icon name="external"
                                 class="style-scope x-scope pds-icon-0 pds-widget" pds-widget="pds-widget"
                                 style="zoom: 0.55;"></pds-icon>
                         </a>
                     </span>
                 </td>
-                <td class="nowrap">{{subStaff.schname}}</td>
-                <td>{{subStaff.sub_type}}</td>
-                <td class="nowrap">{{subStaff.submittedstaff}}</td>
-                <td class="nowrap">{{subStaff.submission_date | date : 'MM/dd/yyyy'}}
-                    {{subStaff.submission_time}}</td>
+                <td class="nowrap">{{::subStaff.schname}}</td>
+                <td>{{::subStaff.sub_type}}</td>
+                <td class="nowrap">{{::subStaff.submittedstaff}}</td>
+                <td class="nowrap">{{::subStaff.submission_date | date : 'MM/dd/yyyy'}}
+                    {{::subStaff.submission_time}}</td>
                 <td>
-                    <span data-ng-class="getReqNotationClass(subStaff, curDate)">
-                        {{ subStaff.completion_date | date : 'MM/dd/yyyy' }}
+                    <span data-ng-class="::subStaff.deadline_class">
+                        {{::subStaff.completion_date | date : 'MM/dd/yyyy' }}
                     </span>
                 </td>
-                <td><span data-ng-if="subStaff.sub_type !== 'FSTS'"
-                        data-ng-class="{'mark-complete': subStaff.ps_complete, 'mark-incomplete': !subStaff.ps_complete}">
-                    </span>
-                    <span data-ng-if="subStaff.sub_type === 'FSTS'" class="text-primary fs-6 fw-medium">- - -</span>
+                <td><span data-ng-class="::subStaff.completion_display.ps.className">{{::subStaff.completion_display.ps.text}}</span>
                 </td>
-                <td><span
-                        data-ng-class="{'mark-complete': subStaff.ad_complete, 'mark-incomplete': !subStaff.ad_complete}"></span>
+                <td><span data-ng-class="::subStaff.completion_display.ad.className">{{::subStaff.completion_display.ad.text}}</span>
                 </td>
-                <td><span
-                        data-ng-class="{'mark-complete': subStaff.o365_complete, 'mark-incomplete': !subStaff.o365_complete}"></span>
+                <td><span data-ng-class="::subStaff.completion_display.o365.className">{{::subStaff.completion_display.o365.text}}</span>
                 </td>
-                <td><span data-ng-if="subStaff.sub_type !== 'FSTS'"
-                        data-ng-class="{'mark-complete': subStaff.lms_complete, 'mark-incomplete': !subStaff.lms_complete}"></span>
-                    <span data-ng-if="subStaff.sub_type === 'FSTS'" class="text-primary fs-6 fw-medium">- - -</span>
+                <td><span data-ng-class="::subStaff.completion_display.lms.className">{{::subStaff.completion_display.lms.text}}</span>
                 </td>
-                <td>{{subStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td>{{::subStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
         </tbody>
     </table>

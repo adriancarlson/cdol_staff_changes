@@ -33,34 +33,29 @@
             <tr data-ng-repeat="exitingStaff in filteredExitingStaffList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap staff-name-cell">
-                    <a href="/admin/staff_change/submit.html?status=Edit&id={{exitingStaff.staffid}}">
-                        {{(exitingStaff | staffFullName) || exitingStaff.old_name_placeholder}}</a>
+                    <a href="/admin/staff_change/submit.html?status=Edit&id={{::exitingStaff.staffid}}">
+                        {{::exitingStaff.display_name}}</a>
                     <span class="ms-2 external-link-hover">
-                        <a href="/admin/staff_change/submit.html?status=Edit&id={{exitingStaff.staffid}}"
+                        <a href="/admin/staff_change/submit.html?status=Edit&id={{::exitingStaff.staffid}}"
                             target="_blank" title="Open in new tab"><pds-icon name="external"
                                 class="style-scope x-scope pds-icon-0 pds-widget" pds-widget="pds-widget"
                                 style="zoom: 0.55;"></pds-icon>
                         </a>
                     </span>
                 </td>
-                <td class="nowrap">{{exitingStaff.schname}}</td>
-                <td class="nowrap">{{exitingStaff.submittedstaff}}</td>
-                <td class="nowrap">{{exitingStaff.submission_date | date : 'MM/dd/yyyy'}}
-                    {{exitingStaff.submission_time}}</td>
-                <td data-ng-class="getReqNotationClass(exitingStaff, curDate)">
-                    {{exitingStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <td><span data-ng-if="exitingStaff.canva_transfer == '1'"
-                        data-ng-class="{'mark-complete': exitingStaff.canva_complete, 'mark-incomplete': !exitingStaff.canva_complete}"></span>
-                    <span data-ng-if="exitingStaff.canva_transfer != '1'" class="text-primary fs-6 fw-medium">- -
-                        -</span>
+                <td class="nowrap">{{::exitingStaff.schname}}</td>
+                <td class="nowrap">{{::exitingStaff.submittedstaff}}</td>
+                <td class="nowrap">{{::exitingStaff.submission_date | date : 'MM/dd/yyyy'}}
+                    {{::exitingStaff.submission_time}}</td>
+                <td data-ng-class="::exitingStaff.deadline_class">
+                    {{::exitingStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td><span data-ng-class="::exitingStaff.completion_display.canva.className">{{::exitingStaff.completion_display.canva.text}}</span>
                 </td>
-                <td><span
-                        data-ng-class="{'mark-complete': exitingStaff.ps_complete, 'mark-incomplete': !exitingStaff.ps_complete}"></span>
+                <td><span data-ng-class="::exitingStaff.completion_display.ps.className">{{::exitingStaff.completion_display.ps.text}}</span>
                 </td>
-                <td><span
-                        data-ng-class="{'mark-complete': exitingStaff.ad_complete, 'mark-incomplete': !exitingStaff.ad_complete}"></span>
+                <td><span data-ng-class="::exitingStaff.completion_display.ad.className">{{::exitingStaff.completion_display.ad.text}}</span>
                 </td>
-                <td>{{exitingStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td>{{::exitingStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
         </tbody>
     </table>

@@ -41,64 +41,38 @@
             <tr data-ng-repeat="allStaff in filteredAllStaffList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap staff-name-cell">
-                    <a href="/admin/staff_change/submit.html?status=Edit&id={{allStaff.staffid}}">
-                        {{(allStaff | staffFullName) || allStaff.old_name_placeholder}}</a>
+                    <a href="/admin/staff_change/submit.html?status=Edit&id={{::allStaff.staffid}}">
+                        {{::allStaff.display_name}}</a>
                     <span class="ms-2 external-link-hover">
-                        <a href="/admin/staff_change/submit.html?status=Edit&id={{allStaff.staffid}}" target="_blank"
+                        <a href="/admin/staff_change/submit.html?status=Edit&id={{::allStaff.staffid}}" target="_blank"
                             title="Open in new tab"><pds-icon name="external"
                                 class="style-scope x-scope pds-icon-0 pds-widget" pds-widget="pds-widget"
                                 style="zoom: 0.55;"></pds-icon>
                         </a>
                     </span>
                 </td>
-                <td class="nowrap fw-semibold" data-ng-class="{
-        'text-success': allStaff.change_type === 'newStaff',
-        'text-primary': allStaff.change_type  === 'transferringStaff',
-        'text-info': allStaff.change_type  === 'jobChange',
-        'text-indigo': allStaff.change_type === 'subStaff',
-        'text-warning': allStaff.change_type  === 'nameChange',
-        'text-secondary': allStaff.change_type  === 'exitingStaff'
-    }">{{ allStaff.change_type | changeTypeFilter }} <span
-                        data-ng-if="allStaff.change_type === 'subStaff'">({{allStaff.sub_type}})</span></td>
-                <td class="nowrap">{{allStaff.schname}}</td>
-                <td class="nowrap">{{allStaff.submittedstaff}}</td>
-                <td class="nowrap">{{allStaff.submission_date | date : 'MM/dd/yyyy'}}
-                    {{allStaff.submission_time}}</td>
+                <td class="nowrap fw-semibold" data-ng-class="::allStaff.change_type_class">
+                    {{::allStaff.change_type_label}}{{::allStaff.sub_type_suffix}}</td>
+                <td class="nowrap">{{::allStaff.schname}}</td>
+                <td class="nowrap">{{::allStaff.submittedstaff}}</td>
+                <td class="nowrap">{{::allStaff.submission_date | date : 'MM/dd/yyyy'}}
+                    {{::allStaff.submission_time}}</td>
                 <td>
-                    <span data-ng-class="getReqNotationClass(allStaff, curDate)">
-                        {{ allStaff.completion_date | date : 'MM/dd/yyyy' }}
+                    <span data-ng-class="::allStaff.deadline_class">
+                        {{::allStaff.completion_date | date : 'MM/dd/yyyy' }}
                     </span>
                 </td>
-                <td><span
-                        data-ng-if="(allStaff.change_type === 'subStaff' && allStaff.sub_type !== 'FSTS') || allStaff.change_type !== 'subStaff'"
-                        data-ng-class="{'mark-complete': allStaff.ps_complete, 'mark-incomplete': !allStaff.ps_complete}">
-                    </span>
-                    <span data-ng-if="allStaff.change_type === 'subStaff' && allStaff.sub_type === 'FSTS'"
-                        class="text-primary fs-6 fw-medium">- - -</span>
+                <td><span data-ng-class="::allStaff.completion_display.ps.className">{{::allStaff.completion_display.ps.text}}</span>
                 </td>
-                <td><span
-                        data-ng-class="{'mark-complete': allStaff.ad_complete, 'mark-incomplete': !allStaff.ad_complete}"></span>
+                <td><span data-ng-class="::allStaff.completion_display.ad.className">{{::allStaff.completion_display.ad.text}}</span>
                 </td>
-                <td><span data-ng-if="allStaff.change_type !== 'exitingStaff' && allStaff.change_type !== 'jobChange'"
-                        data-ng-class="{'mark-complete': allStaff.o365_complete, 'mark-incomplete': !allStaff.o365_complete}"></span>
-                    <span data-ng-if="allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange'"
-                        class="text-primary fs-6 fw-medium">- - -</span>
+                <td><span data-ng-class="::allStaff.completion_display.o365.className">{{::allStaff.completion_display.o365.text}}</span>
                 </td>
-                <td><span
-                        data-ng-if="allStaff.change_type !== 'exitingStaff' && allStaff.change_type !== 'jobChange' && (allStaff.change_type === 'subStaff' && allStaff.sub_type !== 'FSTS') || allStaff.change_type === 'newStaff' || allStaff.change_type === 'transferringStaff' || allStaff.change_type === 'nameChange'"
-                        data-ng-class="{'mark-complete': allStaff.lms_complete, 'mark-incomplete': !allStaff.lms_complete}"></span>
-                    <span
-                        data-ng-if="allStaff.change_type === 'exitingStaff' || allStaff.change_type === 'jobChange' || (allStaff.change_type === 'subStaff' && allStaff.sub_type === 'FSTS')"
-                        class="text-primary fs-6 fw-medium">- - -</span>
+                <td><span data-ng-class="::allStaff.completion_display.lms.className">{{::allStaff.completion_display.lms.text}}</span>
                 </td>
-                <td><span
-                        data-ng-if="allStaff.change_type !== 'jobChange' && allStaff.change_type !== 'subStaff' && ((allStaff.change_type === 'nameChange' && allStaff.canva_transfer == '1') || (allStaff.change_type === 'exitingStaff' && allStaff.canva_transfer == '1') || allStaff.change_type === 'newStaff' || allStaff.change_type === 'transferringStaff')"
-                        data-ng-class="{'mark-complete': allStaff.canva_complete, 'mark-incomplete': !allStaff.canva_complete}"></span>
-                    <span
-                        data-ng-if="allStaff.change_type === 'jobChange' || allStaff.change_type === 'subStaff' || (allStaff.change_type === 'nameChange' && allStaff.canva_transfer != '1') || (allStaff.change_type === 'exitingStaff' && allStaff.canva_transfer != '1')"
-                        class="text-primary fs-6 fw-medium">- - -</span>
+                <td><span data-ng-class="::allStaff.completion_display.canva.className">{{::allStaff.completion_display.canva.text}}</span>
                 </td>
-                <td>{{allStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td>{{::allStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
         </tbody>
     </table>

@@ -72,24 +72,105 @@ define(function (require) {
 				LTS: 'LTS'
 			}
 
-			$scope.getReqNotationClass = (changeType, curDate) => {
-				if (changeType.completion_date >= curDate) return ''
+			const getDeadlineClass = staffRecord => {
+				if (staffRecord.completion_date >= $scope.curDate) return ''
 
-				const needsCanva = changeType.canva_transfer == '1' && !changeType.canva_complete
+				const needsCanva = staffRecord.canva_transfer == '1' && !staffRecord.canva_complete
 
-				if (changeType.sub_type === 'FSTS') {
-					return !changeType.ad_complete || !changeType.o365_complete || needsCanva ? 'req-notation' : ''
+				if (staffRecord.sub_type === 'FSTS') {
+					return !staffRecord.ad_complete || !staffRecord.o365_complete || needsCanva ? 'req-notation' : ''
 				}
 
-				if (changeType.change_type === 'exitingStaff' || changeType.change_type === 'jobChange') {
-					return !changeType.ps_complete || !changeType.ad_complete || needsCanva ? 'req-notation' : ''
+				if (staffRecord.change_type === 'exitingStaff' || staffRecord.change_type === 'jobChange') {
+					return !staffRecord.ps_complete || !staffRecord.ad_complete || needsCanva ? 'req-notation' : ''
 				}
 
-				if (changeType.change_type === 'newStaff' || changeType.change_type === 'transferringStaff') {
-					return !changeType.ps_complete || !changeType.ad_complete || !changeType.o365_complete || !changeType.lms_complete || !changeType.canva_complete ? 'req-notation' : ''
+				if (staffRecord.change_type === 'newStaff' || staffRecord.change_type === 'transferringStaff') {
+					return !staffRecord.ps_complete || !staffRecord.ad_complete || !staffRecord.o365_complete || !staffRecord.lms_complete || !staffRecord.canva_complete ? 'req-notation' : ''
 				}
 
-				return !changeType.ps_complete || !changeType.ad_complete || !changeType.o365_complete || !changeType.lms_complete || needsCanva ? 'req-notation' : ''
+				return !staffRecord.ps_complete || !staffRecord.ad_complete || !staffRecord.o365_complete || !staffRecord.lms_complete || needsCanva ? 'req-notation' : ''
+			}
+
+			const buildCompletionDisplay = (isApplicable, isComplete) => {
+				if (!isApplicable) {
+					return {
+						className: 'text-primary fs-6 fw-medium',
+						text: '- - -'
+					}
+				}
+
+				return {
+					className: isComplete ? 'mark-complete' : 'mark-incomplete',
+					text: ''
+				}
+			}
+
+			const changeTypeClasses = {
+				newStaff: 'text-success',
+				transferringStaff: 'text-primary',
+				jobChange: 'text-info',
+				subStaff: 'text-indigo',
+				nameChange: 'text-warning',
+				exitingStaff: 'text-secondary'
+			}
+
+			const prepareStaffRecord = staffRecord => {
+				const completionKeys = ['ps', 'ad', 'o365', 'lms', 'canva']
+
+				completionKeys.forEach(key => {
+					staffRecord[`${key}_complete`] = staffRecord[`${key}_created`] == 1 || staffRecord[`${key}_ignored`] == 1
+				})
+
+				const isFsts = staffRecord.change_type === 'subStaff' && staffRecord.sub_type === 'FSTS'
+				const excludesOfficeAndLms = staffRecord.change_type === 'exitingStaff' || staffRecord.change_type === 'jobChange'
+
+				if (isFsts) {
+					staffRecord.ps_complete = true
+					staffRecord.lms_complete = true
+				}
+
+				if (excludesOfficeAndLms) staffRecord.lms_complete = true
+				if (staffRecord.change_type === 'nameChange' && staffRecord.canva_transfer === '0') staffRecord.canva_complete = true
+
+				Object.keys(staffRecord).forEach(key => {
+					if (key.endsWith('_date')) {
+						staffRecord[key] = staffRecord[key] ? new Date(formatService.formatDateFromApi(staffRecord[key])) : null
+					}
+				})
+
+				const canvaApplies = staffRecord.change_type === 'newStaff' || staffRecord.change_type === 'transferringStaff' || ((staffRecord.change_type === 'nameChange' || staffRecord.change_type === 'exitingStaff') && staffRecord.canva_transfer == '1')
+
+				// Store settled display values so hidden, cached tabs do not repeatedly evaluate formatting rules.
+				staffRecord.display_name = formatService.formatStaffFullName(staffRecord, { fallbackField: 'old_name_placeholder' })
+				staffRecord.change_type_label = $filter('changeTypeFilter')(staffRecord.change_type) || staffRecord.change_type
+				staffRecord.change_type_class = changeTypeClasses[staffRecord.change_type] || ''
+				staffRecord.sub_type_suffix = staffRecord.change_type === 'subStaff' && staffRecord.sub_type ? ` (${staffRecord.sub_type})` : ''
+				staffRecord.completion_display = {
+					ps: buildCompletionDisplay(!isFsts, staffRecord.ps_complete),
+					ad: buildCompletionDisplay(true, staffRecord.ad_complete),
+					o365: buildCompletionDisplay(!excludesOfficeAndLms, staffRecord.o365_complete),
+					lms: buildCompletionDisplay(!excludesOfficeAndLms && !isFsts, staffRecord.lms_complete),
+					canva: buildCompletionDisplay(canvaApplies, staffRecord.canva_complete)
+				}
+				staffRecord.deadline_class = getDeadlineClass(staffRecord)
+				staffRecord.completed = !!staffRecord.final_completion_date
+
+				if (staffRecord.submission_time) {
+					const timeParts = staffRecord.submission_time.split(' ')
+					const clockParts = timeParts[0].split(':')
+					const period = timeParts[1]
+					let hours24 = parseInt(clockParts[0], 10)
+
+					if (period === 'PM' && hours24 !== 12) hours24 += 12
+					else if (period === 'AM' && hours24 === 12) hours24 = 0
+
+					const submissionDate = new Date()
+					submissionDate.setHours(hours24)
+					submissionDate.setMinutes(parseInt(clockParts[1], 10))
+					submissionDate.setSeconds(0)
+					staffRecord.sort_time = submissionDate
+				}
 			}
 
 			$scope.loadData = changeType => {
@@ -121,50 +202,7 @@ define(function (require) {
 								}
 
 								$scope.staffList[changeType] = staffResults
-								const keys = ['ps', 'ad', 'o365', 'lms', 'canva']
-
-								$scope.staffList[changeType].forEach(item => {
-									keys.forEach(key => {
-										item[`${key}_complete`] = item[`${key}_created`] == 1 || item[`${key}_ignored`] == 1
-									})
-
-									if (item.change_type === 'subStaff' && item.sub_type === 'FSTS') {
-										item.ps_complete = true
-										item.lms_complete = true
-									}
-
-									if (item.change_type === 'exitingStaff' || item.change_type === 'jobChange') {
-										item.lms_complete = true
-									}
-
-									if (item.change_type === 'nameChange' && item.canva_transfer === '0') {
-										item.canva_complete = true
-									}
-
-									Object.keys(item).forEach(key => {
-										if (key.endsWith('_date')) {
-											item[key] = item[key] ? new Date(formatService.formatDateFromApi(item[key])) : null
-										}
-									})
-
-									item.completed = !!item.final_completion_date
-
-									if (item.submission_time) {
-										const timeParts = item.submission_time.split(' ')
-										const clockParts = timeParts[0].split(':')
-										const period = timeParts[1]
-										let hours24 = parseInt(clockParts[0], 10)
-
-										if (period === 'PM' && hours24 !== 12) hours24 += 12
-										else if (period === 'AM' && hours24 === 12) hours24 = 0
-
-										const submissionDate = new Date()
-										submissionDate.setHours(hours24)
-										submissionDate.setMinutes(parseInt(clockParts[1], 10))
-										submissionDate.setSeconds(0)
-										item.sort_time = submissionDate
-									}
-								})
+								$scope.staffList[changeType].forEach(prepareStaffRecord)
 							})
 
 				return loadPromise
