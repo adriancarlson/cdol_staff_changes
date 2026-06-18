@@ -21,23 +21,11 @@
                         <select data-ng-if="userContext.pageStatus =='Submit'" class="form-select form-select-sm"
                             id="exiting-staff-user" aria-label="Who is exiting?"
                             data-ng-model="submitPayload.exitingStaff.users_dcid" data-ng-required="true"
-                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.exitingStaff.users_dcid,'users_dcid');dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
-                            <option selected></option>
-                            ~[tlist_sql;SELECT
-                            users.dcid,
-                            users.first_name,
-                            users.last_name
-                            FROM SCHOOLSTAFF
-                            inner join users
-                            on users.dcid = schoolstaff.users_dcid
-                            WHERE schoolstaff.status = 1
-                            ~[if.is.a.school]
-                            AND schoolstaff.schoolid = ~(curschoolid)
-                            [/if.is.a.school]
-                            Order BY users.last_name , users.first_name]
-                            <option value="~(dcid)">~(first) ~(last)</option>
-                            [/tlist_sql]
-                            <option value="-1">-- Other --</option>
+                            data-ng-disabled="lookupLoading.primaryUsers"
+                            data-staff-select="primaryUserOptions"
+                            data-ng-options="user.identifier as user.optionLabel for user in primaryUserOptions"
+                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.exitingStaff.users_dcid,'users_dcid', primaryUserOptions);dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
+                            <option value=""></option>
                         </select>
                     </div>
                 </div>
@@ -136,23 +124,11 @@
                                             aria-label="Whose Canva projects should be transferred?"
                                             data-ng-model="submitPayload.exitingStaff.canva_dcid"
                                             data-ng-required="true"
-                                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.exitingStaff.canva_dcid, 'canva_dcid')">
-                                            <option selected></option>
-                                            ~[tlist_sql;SELECT
-                                            users.dcid,
-                                            users.first_name,
-                                            users.last_name
-                                            FROM SCHOOLSTAFF
-                                            inner join users
-                                            on users.dcid = schoolstaff.users_dcid
-                                            WHERE schoolstaff.status = 1
-                                            ~[if.is.a.school]
-                                            AND schoolstaff.schoolid = ~(curschoolid)
-                                            [/if.is.a.school]
-                                            Order BY users.last_name , users.first_name]
-                                            <option value="~(dcid)">~(first) ~(last)</option>
-                                            [/tlist_sql]
-                                            <option value="-1">-- Other --</option>
+                                            data-ng-disabled="lookupLoading.relatedUsers"
+                                            data-staff-select="relatedUserOptions"
+                                            data-ng-options="user.identifier as user.optionLabel for user in relatedUserOptions"
+                                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.exitingStaff.canva_dcid, 'canva_dcid', relatedUserOptions)">
+                                            <option value=""></option>
                                         </select>
                                     </div>
                                 </div>

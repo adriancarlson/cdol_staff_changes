@@ -9,22 +9,11 @@
                             is changing?</label>
                         <select class="form-select form-select-sm" id="name-change-user" aria-label="Whose name is changing?"
                             data-ng-model="submitPayload.nameChange.users_dcid" data-ng-required="true"
-                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.nameChange.users_dcid, 'users_dcid')">
-                            <option selected></option>
-                            ~[tlist_sql;SELECT
-                            users.dcid,
-                            users.first_name,
-                            users.last_name
-                            FROM SCHOOLSTAFF
-                            inner join users
-                            on users.dcid = schoolstaff.users_dcid
-                            WHERE schoolstaff.status = 1
-                            ~[if.is.a.school]
-                            AND schoolstaff.schoolid = ~(curschoolid)
-                            [/if.is.a.school]
-                            Order BY users.last_name , users.first_name]
-                            <option value="~(dcid)">~(first) ~(last)</option>
-                            [/tlist_sql]
+                            data-ng-disabled="lookupLoading.primaryUsers"
+                            data-staff-select="primaryUserOptions"
+                            data-ng-options="user.identifier as user.optionLabel for user in primaryUserOptions"
+                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.nameChange.users_dcid, 'users_dcid', primaryUserOptions)">
+                            <option value=""></option>
                         </select>
                     </div>
                 </div>

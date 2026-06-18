@@ -401,16 +401,10 @@
                                                 aria-label="Where previously employed?"
                                                 data-ng-model="submitPayload.subStaff.prev_school_number"
                                                 data-ng-required="true"
-                                                data-ng-change="updateScopeFromDropdown(userContext.pageContext,'schoolData',submitPayload.subStaff.prev_school_number)">
-                                                <option selected></option>
-                                                ~[tlist_sql;SELECT SCHOOLS.School_number, SCHOOLS.name
-                                                FROM SCHOOLS
-                                                WHERE SCHOOLS.School_number NOT IN (888888,999999,79438)
-                                                ORDER BY schools.name;]
-                                                <option value="~(schnum)">~(schname)</option>
-                                                [/tlist_sql]
-                                                <option value="0">Diocesan Office</option>
-                                                <option value="-1">-- Other --</option>
+                                                data-ng-disabled="lookupLoading.schools"
+                                                data-ng-options="school.identifier as school.schoolname for school in schoolOptions"
+                                                data-ng-change="updateScopeFromDropdown(userContext.pageContext,'schoolData',submitPayload.subStaff.prev_school_number, undefined, schoolOptions)">
+                                                <option value=""></option>
                                             </select>
                                         </div>
                                     </div>
@@ -451,23 +445,11 @@
                                                 aria-label="Who is the substitute replacing?"
                                                 data-ng-model="submitPayload.subStaff.replace_dcid"
                                                 data-ng-required="true"
-                                                data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.subStaff.replace_dcid, 'replace_dcid')">
-                                                <option selected></option>
-                                                ~[tlist_sql;SELECT
-                                                users.dcid,
-                                                users.first_name,
-                                                users.last_name
-                                                FROM SCHOOLSTAFF
-                                                inner join users
-                                                on users.dcid = schoolstaff.users_dcid
-                                                WHERE schoolstaff.status = 1
-                                                ~[if.is.a.school]
-                                                AND schoolstaff.schoolid = ~(curschoolid)
-                                                [/if.is.a.school]
-                                                Order BY users.last_name , users.first_name]
-                                                <option value="~(dcid)">~(first) ~(last)</option>
-                                                [/tlist_sql]
-                                                <option value="-1">-- Other --</option>
+                                                data-ng-disabled="lookupLoading.relatedUsers"
+                                                data-staff-select="relatedUserOptions"
+                                                data-ng-options="user.identifier as user.optionLabel for user in relatedUserOptions"
+                                                data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.subStaff.replace_dcid, 'replace_dcid', relatedUserOptions)">
+                                                <option value=""></option>
                                             </select>
                                         </div>
                                     </div>

@@ -14,7 +14,7 @@
 					'staff_status' VALUE TO_CHAR(filtered.staff_status)
 					RETURNING CLOB
 				)
-				ORDER BY filtered.last_name, filtered.first_name
+				ORDER BY LOWER(filtered.last_name), LOWER(filtered.first_name), filtered.users_dcid
 				RETURNING CLOB
 			),
 			TO_CLOB('[]')
@@ -46,6 +46,10 @@
 			LEFT JOIN u_users_additional_info ON users.dcid = u_users_additional_info.usersdcid
 		WHERE
 			schoolstaff.status IN (1, 2)
+			AND (
+				(TRIM('~(gpv.staffStatus)') = '1' AND schoolstaff.status = 1)
+				OR (NVL(TRIM('~(gpv.staffStatus)'), '1,2') = '1,2' AND schoolstaff.status IN (1, 2))
+			)
 			AND (schoolstaff.schoolid = ~(gpv.curSchoolID;num) OR ~(gpv.curSchoolID;num) = 0)
 			AND users.dcid NOT IN (1, 5, 5858, 5859, 5907)
 	) filtered

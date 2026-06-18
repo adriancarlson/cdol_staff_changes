@@ -440,6 +440,14 @@ define(function (require) {
 			$scope.originalJitbitSnapshots = {}
 			$scope.originalChangeType = undefined
 			$scope.titleData = []
+			$scope.primaryUserOptions = []
+			$scope.relatedUserOptions = []
+			$scope.schoolOptions = []
+			$scope.lookupLoading = {
+				primaryUsers: false,
+				relatedUsers: false,
+				schools: false
+			}
 
 			const sameIdentifier = (leftValue, rightValue) => {
 				return leftValue !== undefined && leftValue !== null && rightValue !== undefined && rightValue !== null && leftValue.toString() === rightValue.toString()
@@ -447,6 +455,109 @@ define(function (require) {
 
 			const isLongTermSubstitute = staffChange => {
 				return staffChange && staffChange.change_type === 'subStaff' && staffChange.sub_type === 'LTS'
+			}
+
+			const normalizeIdentifier = identifier => {
+				if (identifier === undefined || identifier === null || identifier === '') return identifier
+				const numericIdentifier = Number(identifier)
+				return isNaN(numericIdentifier) ? identifier : numericIdentifier
+			}
+
+			const buildUserOptions = (records, markInactive) => {
+				const options = (records || []).map(record => {
+					const option = angular.copy(record)
+					const inactiveMarker = markInactive && option.staff_status != 1 ? ' *' : ''
+
+					option.identifier = normalizeIdentifier(option.identifier)
+					option.optionLabel = `${option.first_name || ''} ${option.last_name || ''}`.trim() + inactiveMarker
+					return option
+				})
+
+				options.push({ identifier: -1, optionLabel: '-- Other --' })
+				return options
+			}
+
+			const buildSchoolOptions = records => {
+				const options = (records || []).map(record => {
+					const option = angular.copy(record)
+					option.identifier = normalizeIdentifier(option.identifier)
+					return option
+				})
+
+				options.push({ identifier: 0, schoolname: 'Diocesan Office' })
+				options.push({ identifier: -1, schoolname: '-- Other --' })
+				return options
+			}
+
+			const normalizePayloadLookupIdentifiers = staffChange => {
+				if (!staffChange) return
+
+				// ngOptions compares values by type, so API integer fields and JSON option values must both be numbers.
+				const lookupFieldNames = ['users_dcid', 'replace_dcid', 'canva_dcid', 'prev_school_number']
+				lookupFieldNames.forEach(fieldName => {
+					if (staffChange[fieldName] !== undefined && staffChange[fieldName] !== null && staffChange[fieldName] !== '') {
+						staffChange[fieldName] = normalizeIdentifier(staffChange[fieldName])
+					}
+				})
+			}
+
+			// Primary staff and related staff use different filters on Transferring-In forms, so keep their option sets separate.
+			$scope.loadFormLookups = pageContext => {
+				const needsPrimaryUsers = ['transferringStaff', 'jobChange', 'nameChange', 'exitingStaff'].includes(pageContext)
+				const needsRelatedUsers = ['newStaff', 'transferringStaff', 'subStaff', 'exitingStaff'].includes(pageContext)
+				const needsSchools = ['newStaff', 'transferringStaff', 'subStaff'].includes(pageContext)
+				const preload = {}
+
+				if (needsPrimaryUsers && pageContext === 'transferringStaff') {
+					$scope.lookupLoading.primaryUsers = true
+					preload.primaryUsers = jsonDataService.getData('userData', {
+						curSchoolID: '0',
+						staffStatus: '1,2'
+					}).then(records => {
+						$scope.primaryUserOptions = buildUserOptions(records, true)
+					}, () => {
+						$scope.primaryUserOptions = buildUserOptions([], true)
+					}).finally(() => {
+						$scope.lookupLoading.primaryUsers = false
+					})
+				}
+
+				if ((needsPrimaryUsers && pageContext !== 'transferringStaff') || needsRelatedUsers) {
+					if (needsPrimaryUsers && pageContext !== 'transferringStaff') $scope.lookupLoading.primaryUsers = true
+					if (needsRelatedUsers) $scope.lookupLoading.relatedUsers = true
+
+					preload.activeUsers = jsonDataService.getData('userData', {
+						curSchoolID: $scope.userContext.curSchoolId,
+						staffStatus: '1'
+					}).then(records => {
+						if (needsPrimaryUsers && pageContext !== 'transferringStaff') {
+							$scope.primaryUserOptions = buildUserOptions(records, false)
+						}
+						if (needsRelatedUsers) $scope.relatedUserOptions = buildUserOptions(records, false)
+					}, () => {
+						if (needsPrimaryUsers && pageContext !== 'transferringStaff') {
+							$scope.primaryUserOptions = buildUserOptions([], false)
+						}
+						if (needsRelatedUsers) $scope.relatedUserOptions = buildUserOptions([], false)
+					}).finally(() => {
+						if (needsPrimaryUsers && pageContext !== 'transferringStaff') $scope.lookupLoading.primaryUsers = false
+						if (needsRelatedUsers) $scope.lookupLoading.relatedUsers = false
+					})
+				}
+
+				if (needsSchools) {
+					$scope.lookupLoading.schools = true
+					preload.schools = jsonDataService.getData('schoolData').then(records => {
+						$scope.schoolData = records
+						$scope.schoolOptions = buildSchoolOptions(records)
+					}, () => {
+						$scope.schoolOptions = buildSchoolOptions([])
+					}).finally(() => {
+						$scope.lookupLoading.schools = false
+					})
+				}
+
+				return $q.all(preload)
 			}
 
 			const findSchoolNameByNumber = schoolNumber => {
@@ -651,18 +762,17 @@ define(function (require) {
 				}
 
 				return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'GET', {}, staffChangeId).then(res => {
+					normalizePayloadLookupIdentifiers(res)
 					$scope.submitPayload[res.change_type] = res
 					$scope.userContext.pageContext = res.change_type
 					$scope.originalChangeType = res.change_type
 					$scope.originalStaffChangePayloads[res.change_type] = copyPayload(res)
 					$scope.originalJitbitSnapshots[res.change_type] = buildJitbitSnapshot(res)
 					const preload = {}
+					preload.formLookups = $scope.loadFormLookups(res.change_type)
 
 					if ($scope.userContext.pageContext === 'newStaff' || $scope.userContext.pageContext === 'subStaff') {
 						preload.duplicates = $scope.checkDupesOnEdit(res)
-					}
-					if ($scope.userContext.pageContext === 'newStaff' || $scope.userContext.pageContext === 'transferringStaff') {
-						preload.schools = $scope.getJSONData('schoolData')
 					}
 					if ($scope.userContext.pageContext === 'transferringStaff' || $scope.userContext.pageContext === 'jobChange' || $scope.userContext.pageContext === 'nameChange' || $scope.userContext.pageContext === 'exitingStaff') {
 						const schoolStaffParams = {
@@ -770,16 +880,8 @@ define(function (require) {
 				$scope.userContext.pageContext = pageContext
 				$scope.userContext.prevContext = prevContext
 
-				let userDataParams = {
-					curSchoolID: $scope.userContext.pageContext === 'transferringStaff' ? '0' : $scope.userContext.curSchoolId,
-					staffStatus: $scope.userContext.pageContext === 'transferringStaff' ? '1,2' : '1'
-				}
-
 				const preload = {
-					users: $scope.getJSONData('userData', userDataParams)
-				}
-				if (pageContext === 'transferringStaff' || pageContext === 'newStaff' || pageContext === 'subStaff') {
-					preload.schools = $scope.getJSONData('schoolData')
+					formLookups: $scope.loadFormLookups(pageContext)
 				}
 
 				return $q.all(preload).then(() => {
@@ -811,7 +913,7 @@ define(function (require) {
 				})
 			}
 
-			$scope.updateScopeFromDropdown = (pageContext, resource, identifier, field) => {
+			$scope.updateScopeFromDropdown = (pageContext, resource, identifier, field, optionRecords) => {
 				//if dropdown source is user data
 				if (resource === 'userData') {
 					//if the field is the users_dcid find all the fields related to that user and set them in the submit payload
@@ -827,11 +929,10 @@ define(function (require) {
 					}
 				}
 				// if the field being passed in is not null or -1 aka --Other--
-				if (identifier && identifier != -1) {
+				if ((identifier || identifier === 0) && identifier != -1) {
 					// find the field in the dataset (resource) passed in
-					let foundItem = $scope[resource].find(item => {
-						return item.identifier && item.identifier.toString() === identifier.toString()
-					})
+					const lookupRecords = optionRecords || $scope[resource] || []
+					let foundItem = lookupRecords.find(item => sameIdentifier(item.identifier, identifier))
 
 					if (!foundItem) {
 						psAlert({

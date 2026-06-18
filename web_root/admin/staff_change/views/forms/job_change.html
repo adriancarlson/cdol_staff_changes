@@ -13,23 +13,11 @@
                             <select class="form-select form-select-sm flex-grow-1" id="job-change-user"
                                 aria-label="Whose position or job is changing?" data-ng-model="submitPayload.jobChange.users_dcid"
                                 data-ng-required="true"
-                                data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.jobChange.users_dcid, 'users_dcid');dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
-                                <option selected></option>
-                                ~[tlist_sql;SELECT
-                                users.dcid,
-                                users.first_name,
-                                users.last_name
-                                FROM SCHOOLSTAFF
-                                inner join users
-                                on users.dcid = schoolstaff.users_dcid
-                                WHERE schoolstaff.status = 1
-                                ~[if.is.a.school]
-                                AND schoolstaff.schoolid = ~(curschoolid)
-                                [/if.is.a.school]
-                                Order BY users.last_name , users.first_name]
-                                <option value="~(dcid)">~(first) ~(last)</option>
-                                [/tlist_sql]
-                                <option value="-1">-- Other --</option>
+                                data-ng-disabled="lookupLoading.primaryUsers"
+                                data-staff-select="primaryUserOptions"
+                                data-ng-options="user.identifier as user.optionLabel for user in primaryUserOptions"
+                                data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.jobChange.users_dcid, 'users_dcid', primaryUserOptions);dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
+                                <option value=""></option>
                             </select>
                             <a class="button m-0" style="padding: 6px"
                                 data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && schoolStaffRecordData[0].ssdcid"

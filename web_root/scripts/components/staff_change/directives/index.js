@@ -1,6 +1,7 @@
 'use strict'
 define(function (require) {
 	require('components/staff_change/directives/tests')
+	require('components/staff_change/directives/staff_select')
 	require('components/staff_change/directives/forms/confirm')
 	require('components/staff_change/directives/forms/creation_checks')
 	require('components/staff_change/directives/forms/exit_staff')
