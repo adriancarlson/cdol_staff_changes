@@ -3,7 +3,7 @@
     <div data-ng-if="userContext.pageStatus =='Edit' && submitPayload.subStaff.sub_type == 'LTS' && duplicatePowerSchoolStaffData.length > 0 && !submitPayload.subStaff.ps_created">
         <div class="container-fluid mb-2">
             <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-lg-8">
                     <div class="card">
                         <div class="card-header alert alert-danger fw-semibold p-2 mb-0">
                             <i class="bi bi-exclamation-octagon-fill"></i> Potential matches for
@@ -190,7 +190,7 @@
                             <div data-ng-if="userContext.pageStatus == 'Edit' && submitPayload.subStaff.ps_created"
                                 id="sub-staff-name" class="blockquote ms-2 mt-1">{{submitPayload.subStaff | staffFullName}}</div>
                         </div>
-                        <div class="col-12 col-lg">
+                        <div class="col-12 col-lg mt-3 mt-lg-0">
                             <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary"
                                 role="alert"><i class="bi bi-chat-right-text-fill"></i>
                                 <strong><u>Preferred Name</u></strong>: is how the staff name will appear on reports and
@@ -223,7 +223,7 @@
                                     data-ng-click="copyNames(userContext.pageContext)">Copy from Preferred Name</button>
                             </div>
                         </div>
-                        <div class="col-12 col-lg">
+                        <div class="col-12 col-lg mt-3 mt-lg-0">
                             <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary"
                                 role="alert"><i class="bi bi-chat-right-text-fill"></i>
                                 <strong><u>Legal Name</u></strong>: exactly how the staff's name appears on teaching
@@ -248,7 +248,7 @@
                         </div>
                     </div>
                     <div class="row align-items-center mb-3 gx-3">
-                        <div class="col-2"
+                        <div class="col-12 col-sm-6 col-md-4 col-xl-2"
                             data-ng-if="submitPayload.subStaff.gender === 'F' && (submitPayload.subStaff.title ==='Mrs.' || submitPayload.subStaff.title ==='Dr.')">
                             <label for="sub-staff-maiden-name" class="form-label form-label-sm  label-reset">Maiden
                                 Name </label>
@@ -313,7 +313,7 @@
                         </div>
                     </div>
                     <div class="row align-items-center mb-3" data-ng-if="submitPayload.subStaff.first_name">
-                        <div class="col-auto">
+                        <div class="col-12 col-md-auto">
                             <label class="form-label form-label-sm label-reset staff-change-req">Requested
                                 Account Creation Date</label><br>
                             <div class="d-flex align-items-center flex-nowrap">
@@ -334,7 +334,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-12 col-md-7 col-xl-4 mt-3 mt-md-0">
                             <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
                                 class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i>
                                 <span data-ng-if="submitPayload.subStaff.deadline == userContext.lastDay">We recommend
@@ -409,7 +409,7 @@
                                     </div>
                                     <div class="row align-items-center mb-3"
                                         data-ng-if="submitPayload.subStaff.prev_school_number == -1">
-                                        <div class="col-auto">
+                                        <div class="col-12 col-md-10 col-lg-8">
                                             <div class="input-group flex-nowrap">
                                                 <input id="sub-staff-school-name" class="form-control" type="text"
                                                     placeholder="Please Type Name Previous Employer" aria-label="Previous employer name"
@@ -546,7 +546,7 @@
                                 <div class="card-header fw-semibold ps-1">Licensing Information</div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-2">
+                                        <div class="col-12 col-sm-4 col-lg-3 col-xl-2">
                                             <label for="sub-staff-license-microsoft"
                                                 class="form-label form-label-sm label-reset staff-change-req">Microsoft
                                                 Licensing</label>
@@ -559,7 +559,7 @@
                                                 <!-- <option value="A3P">A3 with Phone System - Paid</option> -->
                                             </select>
                                         </div>
-                                        <div class="col-10" data-ng-if="userContext.pageStatus =='Submit'">
+                                        <div class="col-12 col-sm-8 col-lg-9 col-xl-10 mt-3 mt-sm-0" data-ng-if="userContext.pageStatus =='Submit'">
                                             <div class="alert alert-primary" role="alert"><i
                                                     class="bi bi-chat-right-text-fill"></i> <span
                                                     data-ng-if="submitPayload.subStaff.replace_dcid && submitPayload.subStaff.replace_dcid != -1">{{submitPayload.subStaff.replace_first_name}}

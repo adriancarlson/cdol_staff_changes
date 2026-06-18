@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Edit'">
-                    <div class="col-6">
+                    <div class="col-12 col-md-8 col-xl-6">
                         <label for="exiting-staff-name" class="form-label form-label-sm label-reset">Who is not
                             returning?</label><br />
                         <span id="exiting-staff-name" class="blockquote ms-2 mt-1">{{submitPayload.exitingStaff.old_name_placeholder}}</span>
@@ -72,7 +72,7 @@
                                 pds-widget="pds-widget" style="zoom: 0.55; color: white; fill: white;"></pds-icon>
                         </a>
                     </div>
-                    <div class="col-3">
+                    <div class="col-12 col-md-4 col-xl-3">
                         <label for="exit-staff-school" class="form-label form-label-sm label-reset">School</label>
                         <div id="exit-staff-school" class="input-group">{{submitPayload.exitingStaff.schoolid | schoolName}}</div>
                     </div>
@@ -174,7 +174,7 @@
                                 </div>
                                 <div class="row align-items-center mb-3"
                                     data-ng-if="userContext.pageStatus =='Submit' && submitPayload.exitingStaff.users_dcid && submitPayload.exitingStaff.canva_transfer">
-                                    <div class="col-6">
+                                    <div class="col-12 col-lg-8">
                                         <div class="alert alert-primary" role="alert">
                                             <i class="bi bi-chat-right-text-fill"></i>
                                             Please
@@ -196,7 +196,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.first_name">
-                    <div class="col-auto">
+                    <div class="col-12 col-md-auto">
                         <label class="form-label form-label-sm label-reset staff-change-req">Requested
                             Deactivation Date</label><br>
                         <div class="d-flex align-items-center flex-nowrap">
@@ -217,7 +217,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-12 col-md-7 col-xl-4 mt-3 mt-md-0">
                         <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
                             class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
                                 data-ng-if="submitPayload.exitingStaff.deadline == userContext.lastDay">We recommend

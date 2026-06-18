@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Edit'">
-                    <div class="col-6">
+                    <div class="col-12 col-md-8 col-xl-6">
                         <label for="name-change-user" class="form-label form-label-sm label-reset staff-change-req">Previous
                             Name:</label><br />
                         <span class="blockquote ms-2 mt-1">{{submitPayload.nameChange.old_name_placeholder}}</span>
@@ -28,7 +28,7 @@
                             Record <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
                                 pds-widget="pds-widget" style="zoom: 0.5; color: white; fill: white;"></pds-icon></a>
                     </div>
-                    <div class="col-3" data-ng-if="userContext.pageStatus =='Edit'">
+                    <div class="col-12 col-md-4 col-xl-3" data-ng-if="userContext.pageStatus =='Edit'">
                         <label for="name-change-staff-school"
                             class="form-label form-label-sm label-reset">School</label>
                         <div id="name-change-staff-school" class="input-group">{{submitPayload.nameChange.schoolid | schoolName}}</div>
@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.first_name">
-                    <div class="col-auto">
+                    <div class="col-12 col-md-auto">
                         <label class="form-label form-label-sm label-reset staff-change-req">Requested
                             Change Date</label><br>
                         <div class="d-flex align-items-center flex-nowrap">
@@ -126,7 +126,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-12 col-md-7 col-xl-4 mt-3 mt-md-0">
                         <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
                             class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> Choose a
                             change date when the staff member can be at {{ userContext.curSchoolName }} and on the

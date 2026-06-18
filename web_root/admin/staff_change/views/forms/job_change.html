@@ -4,7 +4,7 @@
         <div class="card-body">
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3">
-                    <div class="col-6">
+                    <div class="col-12 col-md-8 col-xl-6">
                         <label for="job-change-user" class="form-label form-label-sm label-reset staff-change-req">
                             Who is changing Positions/Jobs?
                         </label>
@@ -31,7 +31,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-3" data-ng-if="userContext.pageStatus =='Edit'">
+                    <div class="col-12 col-md-4 col-xl-3" data-ng-if="userContext.pageStatus =='Edit'">
                         <label for="jobchange-staff-school" class="form-label form-label-sm label-reset">School</label>
                         <div id="jobchange-staff-school" class="input-group">{{submitPayload.jobChange.schoolid | schoolName}}</div>
                     </div>
@@ -102,7 +102,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.jobChange.first_name">
-                    <div class="col-auto">
+                    <div class="col-12 col-md-auto">
                         <label class="form-label form-label-sm label-reset staff-change-req">Requested
                             Change Date</label><br>
                         <div class="d-flex align-items-center flex-nowrap">
@@ -123,7 +123,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="col-auto">
+                    <div class="col-12 col-md mt-3 mt-md-0">
                         <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
                             class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
                                 data-ng-if="submitPayload.jobChange.deadline == userContext.lastDay">We recommend June
@@ -143,7 +143,7 @@
                             <div class="card-header fw-semibold ps-1">Licensing Information</div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-2">
+                                    <div class="col-12 col-sm-4 col-lg-3 col-xl-2">
                                         <label for="job-change-license-microsoft"
                                             class="form-label form-label-sm label-reset staff-change-req">Microsoft
                                             Licensing</label>
@@ -157,7 +157,7 @@
                                             <!-- <option value="A3P">A3 with Phone System - Paid</option> -->
                                         </select>
                                     </div>
-                                    <div class="col-10" data-ng-if="userContext.pageStatus =='Submit'">
+                                    <div class="col-12 col-sm-8 col-lg-9 col-xl-10 mt-3 mt-sm-0" data-ng-if="userContext.pageStatus =='Submit'">
                                         <div class="alert alert-primary" role="alert"><i
                                                 class="bi bi-chat-right-text-fill"></i> <strong><u>Microsoft A1 vs. A3
                                                     Licensing</u></strong><br>

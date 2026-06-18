@@ -3,7 +3,8 @@
         <div class="card-header bg-primary text-bg-primary text-dark bg-opacity-25 bg-gradient fw-semibold text-center">
             Diocesan Office Account Checks</div>
         <div class="card-body">
-            <div class="row">
+            <!-- Give each account card enough width to keep its checklist readable on smaller screens. -->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-5 g-3">
                 <div class="col order-1" data-ng-hide="userContext.pageContext =='subStaff' &&
                     submitPayload[userContext.pageContext].sub_type !=='LTS'">
                     <div class="card">
