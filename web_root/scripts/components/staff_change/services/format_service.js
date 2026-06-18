@@ -2,8 +2,10 @@
 define(function (require) {
 	const module = require('components/staff_change/module')
 
+	// Keep formatting rules outside controllers so forms, lists, exports, and integrations produce identical values.
 	module.factory('formatService', [
 		function () {
+			// PowerSchool date tokens may use a configurable order and delimiter; dateSvc records that active format.
 			const dateSvc = {
 				dateFormat: 'mm/dd/yyyy',
 				monthIndex: 0,
@@ -14,6 +16,7 @@ define(function (require) {
 
 			return {
 				dateSvc: dateSvc,
+				// Read a PowerSchool date pattern such as mm/dd/yyyy and update indexes used by the legacy helpers below.
 				setDateFormat: function (dateString) {
 					const normalizedDateString = dateString.toLowerCase()
 					const dateParts = normalizedDateString.split(/[.,\/ -]/)
@@ -28,8 +31,7 @@ define(function (require) {
 					else if (normalizedDateString.indexOf('.') > 0) dateSvc.delimiter = '.'
 					else if (normalizedDateString.indexOf('-') > 0) dateSvc.delimiter = '-'
 				},
-				//dt - date string (PS date format ~[dateformat])
-				//return date string (yyyy-mm-dd)
+				// Convert the form's MM/DD/YYYY value to the YYYY-MM-DD shape required by the schema API.
 				formatDateForApi: function (dt) {
 					if (!dt) return ''
 					const dateParts = dt.split('/')
@@ -38,8 +40,7 @@ define(function (require) {
 					const y = dateParts[2]
 					return y + '-' + m + '-' + d
 				},
-				//dt - date string (yyyy-dd-mm)
-				//return date string (PS date format ~[dateformat])
+				// Convert a schema API YYYY-MM-DD value back to the form's MM/DD/YYYY display shape.
 				formatDateFromApi: function (dt) {
 					if (!dt) return ''
 					const dateParts = dt.split('-')
@@ -85,7 +86,7 @@ define(function (require) {
 					dateVal.setDate(dateVal.getDate() + increment)
 					return this.dateToString(dateVal)
 				},
-				//case formats
+				// General string helpers retained for templates and integration payloads.
 				camelize: function (str) {
 					return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
 						if (+match === 0) return ''
@@ -142,6 +143,8 @@ define(function (require) {
 						.trim()
 				},
 
+				// Supports normal fields and prefixed groups such as replace_first_name. Religious prefixes already
+				// embedded in first_name suppress a duplicate title, and fallbackField supports legacy exit records.
 				formatStaffFullName: function (staff, options) {
 					if (!staff) return ''
 
@@ -170,7 +173,7 @@ define(function (require) {
 					return options.fallbackField ? normalizeNamePart(staff[options.fallbackField]) : ''
 				},
 
-				//checkmark formats
+				// PowerSchool stores Boolean schema fields as string values, while Angular checkboxes expect real Booleans.
 				formatChecksForApi: function (val) {
 					val = val.toString()
 					return val
@@ -185,11 +188,10 @@ define(function (require) {
 					return val
 				},
 
-				// object iterator
+				// Apply one named formatter, or deletion rule, to matching keys in an object.
 				objIterator: function (obj, iterKeys, iterType) {
 					const objKeys = Object.keys(obj)
 					objKeys.forEach(keyName => {
-						// looping through first object
 						iterKeys.forEach(iterKey => {
 							const isMatch = iterType.includes('delete')
 								? keyName.indexOf(iterKey) !== -1
@@ -198,10 +200,8 @@ define(function (require) {
 									: keyName === iterKey
 
 							if (isMatch) {
-								// if iterType contains delete than delete the key
 								if (iterType.includes('delete')) {
 									delete obj[keyName]
-									// else perfore an iterType function on the key
 								} else {
 									obj[keyName] = this[iterType](obj[keyName])
 								}

@@ -2,12 +2,15 @@
 define(function (require) {
 	const angular = require('angular')
 	const module = require('components/staff_change/module')
+
+	// Wrap PowerSchool's schema-table API so controllers work with ordinary records and form-friendly values.
 	module.factory('psApiService', [
 		'$http',
 		'$q',
 		'jsonDataService',
 		'formatService',
 		function ($http, $q, jsonDataService, formatService) {
+			// Metadata is loaded once per table. A separate promise cache deduplicates concurrent first loads.
 			const tableDefinitions = {}
 			const tableDefinitionRequests = {}
 			const systemKeys = ['dcid', 'whocreated', 'whencreated', 'whomodified', 'whenmodified']
@@ -58,6 +61,7 @@ define(function (require) {
 				return tableDefinitionRequests[normalizedTableName]
 			}
 
+			// Date and Boolean field lists come from PowerSchool metadata rather than controller-maintained key arrays.
 			const formatPayloadFields = (payload, fields, formatter) => {
 				fields.forEach(fieldName => {
 					if (Object.prototype.hasOwnProperty.call(payload, fieldName)) {
@@ -67,6 +71,7 @@ define(function (require) {
 				return payload
 			}
 
+			// Lookup rows contain useful display fields that are not database columns; never send those to the schema API.
 			const stripInvalidPayloadFields = (payload, tableDefinition) => {
 				Object.keys(payload).forEach(key => {
 					const normalizedKey = key.toLowerCase()
@@ -103,6 +108,7 @@ define(function (require) {
 				return stripInvalidPayloadFields(apiPayload, tableDefinition)
 			}
 
+			// Convert PowerSchool's different method-specific envelopes into the small return values controllers expect.
 			const sendApiRequest = (httpObject, method, tableName, recId) => {
 				return $http(httpObject).then(
 					res => {
@@ -165,11 +171,10 @@ define(function (require) {
 						method: method,
 						headers: headers
 					}
-					// Keep formatting mutations isolated from the controller payload.
+					// Keep formatting and sanitizing mutations isolated from the live form bound to $scope.
 					let apiPayload = angular.copy(payload || {})
-					// Unique Headers
+					// POST and PUT require PowerSchool's { tables: { tableName: record } } envelope.
 					switch (method) {
-						//Create
 						case 'POST':
 						case 'PUT':
 							return loadTableDef(tableName).then(tableDefinition => {
@@ -183,7 +188,7 @@ define(function (require) {
 								httpObject['data'] = data
 								return sendApiRequest(httpObject, method, tableName, recId)
 							})
-						//READ
+						// GET requests use projection=* so edit forms receive every table field.
 						case 'GET':
 							httpObject['params'] = {
 								projection: '*'

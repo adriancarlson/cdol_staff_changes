@@ -2,6 +2,7 @@
 define(function (require) {
 	const module = require('components/staff_change/module')
 
+	// The explicit dependency-name array protects AngularJS injection names during minification.
 	module.controller('staffChangeListCtrl', [
 		'$scope',
 		'$attrs',
@@ -10,10 +11,11 @@ define(function (require) {
 		'jsonDataService',
 		'formatService',
 		function ($scope, $attrs, $filter, $q, jsonDataService, formatService) {
-			//This is here for troubleshooting purposes.
-			//Allows us to double click anywhere on the page and logs scope to console
+			// Properties on $scope are consumed by the tab directives and PowerSchool grid templates.
+			// Double-clicking the page logs that shared scope for troubleshooting on any server.
 			$j(document).dblclick(() => console.log($scope))
 
+			// PowerSchool supplies the current school, year, and date as attributes on the Angular application element.
 			$scope.staffChangeCounts = []
 			$scope.staffList = {}
 			$scope.curSchoolId = $attrs.ngCurSchoolId
@@ -24,6 +26,7 @@ define(function (require) {
 			$scope.changeType = ''
 			$scope.booleanMap = { Yes: true, No: false }
 			$scope.titleMap = {}
+			// Start this stable lookup immediately; loadData includes the promise in $q.all before preparing rows.
 			const loadTitleMap = jsonDataService
 				.getData('titleData')
 				.then(titleData => {
@@ -44,6 +47,7 @@ define(function (require) {
 			}
 
 			$scope.schoolMap = {}
+			// Grid filter maps must keep the same object reference after the grid initializes, so update it in place.
 			const rebuildSchoolMap = (changeType, staffRecords) => {
 				const schoolNames = {}
 				const records = Array.isArray(staffRecords) ? staffRecords : []
@@ -115,6 +119,8 @@ define(function (require) {
 				exitingStaff: 'text-secondary'
 			}
 
+			// Normalize each API row once. Templates then bind simple display properties instead of recalculating them
+			// during every Angular digest cycle, including for hidden tabs.
 			const prepareStaffRecord = staffRecord => {
 				const completionKeys = ['ps', 'ad', 'o365', 'lms', 'canva']
 
@@ -173,6 +179,8 @@ define(function (require) {
 				}
 			}
 
+			// Each tab is loaded once per year/school view. $q.when represents an already-complete load for cached tabs,
+			// while $q.all loads counts, titles, and records together for a new tab.
 			$scope.loadData = changeType => {
 				loadingDialog()
 				$scope.changeType = changeType
@@ -234,10 +242,10 @@ define(function (require) {
 					.finally(closeLoading)
 			}
 
-			// fire the function to load the data
+			// Load the tab selected by PowerSchool when the controller first starts.
 			$scope.loadData($scope.selectedTab)
 
-			// grab selected tab reload data and have the selected tab display data
+			// Reload intentionally clears every tab cache so counts and records are fetched again from the server.
 			$scope.reloadData = () => {
 				$scope.staffChangeCounts = []
 				$scope.staffList = {}
@@ -245,6 +253,7 @@ define(function (require) {
 				$scope.loadData($scope.selectedTab)
 			}
 
+			// Export the grid's filtered collection rather than the full tab cache, matching what the user sees onscreen.
 			$scope.exportGridData = () => {
 				const changeType = $scope.changeType
 				const listName = `filtered${changeType.charAt(0).toUpperCase()}${changeType.slice(1)}List`
@@ -427,6 +436,7 @@ define(function (require) {
 			}
 		}
 	])
+	// These filters translate stored codes into labels used by list templates and exports.
 	module.filter('changeTypeFilter', function () {
 		const reverseMap = {
 			newStaff: 'New Staff',

@@ -1,6 +1,8 @@
 'use strict'
 define(function (require) {
 	const module = require('components/staff_change/module')
+
+	// Encapsulate Jitbit HTTP details so controllers coordinate workflows without knowing endpoint payload shapes.
 	module.factory('jitbitService', [
 		'$http',
 		'$q',
@@ -15,6 +17,7 @@ define(function (require) {
 				Authorization: `Bearer  ${JITBIT_ACCESS_TOKEN}`
 			}
 
+			// Attach a stable stage name so the controller can show a useful recovery message for multi-step operations.
 			const createJitbitError = (stage, originalError) => {
 				const error = new Error(stage)
 				error.jitbitStage = stage
@@ -26,8 +29,8 @@ define(function (require) {
 				return formatService.formatStaffFullName(formPayload, { fallbackField: 'old_name_placeholder' })
 			}
 
+			// Ticket ownership depends on which technical team must complete the requested work.
 			const getAssignedUserId = formPayload => {
-				// send to Adrian (14088108) first unless it's a subStaff FSTS then to Brad (14093457) or if exitingStaff or nameChange and  canva_transfer == '1' then send to Carrie (14088738)
 				if ((formPayload.change_type === 'exitingStaff' || formPayload.change_type === 'nameChange') && formPayload.canva_transfer === '1') {
 					return 14088738 // Carrie
 				}
@@ -47,6 +50,7 @@ define(function (require) {
 				return submissionMatch ? submissionMatch[0].trim() : ''
 			}
 
+			// Build plain text first. Jitbit's update endpoint is converted to HTML line breaks separately.
 			const buildBody = (formPayload, submissionLine) => {
 				const testTicketPrefix = formPayload.isTestServer ? 'TEST: ' : ''
 				const bodySegments = []
@@ -72,6 +76,7 @@ define(function (require) {
 				return bodySegments.join('\n\n')
 			}
 
+			// This is the canonical ticket representation used both for creation and change comparisons.
 			const buildTicketPayload = (formPayload, userId, options = {}) => {
 				const staffChangeName = getStaffChangeName(formPayload)
 				const testTicketPrefix = formPayload.isTestServer ? 'TEST: ' : ''
@@ -105,6 +110,7 @@ define(function (require) {
 
 			return {
 				buildTicketPayload: buildTicketPayload,
+				// Resolve the submitting user's Jitbit account before creating a ticket on their behalf.
 				gitJitbitUser: function (email) {
 					let getUserUrl = `${JITBIT_API_URL}/UserByEmail?email=${email}`
 
@@ -132,6 +138,7 @@ define(function (require) {
 						return $q.reject(createJitbitError(options.errorStage || 'ticketFetch', res))
 					})
 				},
+				// Promise chaining keeps requester lookup and ticket creation ordered without async/await.
 				createJitbitTicket: function (formPayload) {
 					let createTicketUrl = `${JITBIT_API_URL}/ticket`
 
@@ -163,6 +170,7 @@ define(function (require) {
 						return $q.reject(createJitbitError(options.errorStage || 'ticketUpdate', res))
 					})
 				},
+				// suppressNotification prevents deletion cleanup from emailing the requester.
 				closeJitbitTicketSilently: function (ticketId, options = {}) {
 					let closeTicketUrl = `${JITBIT_API_URL}Close`
 
@@ -194,6 +202,8 @@ define(function (require) {
 						return $q.reject(createJitbitError(options.errorStage || 'ticketUpdate', res))
 					})
 				},
+				// Preserve the original submission line, update the ticket, then update the staff-name custom field.
+				// Normal functions are used because this method calls sibling service methods through this.
 				syncJitbitTicketFromStaffChange: function (ticketId, formPayload, dueDate) {
 					const service = this
 					return service.getJitbitTicket(ticketId, { errorStage: 'ticketFetch' }).then(ticket => {

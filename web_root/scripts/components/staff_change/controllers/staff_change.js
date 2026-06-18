@@ -3,6 +3,7 @@ define(function (require) {
 	const angular = require('angular')
 	const module = require('components/staff_change/module')
 
+	// The string array keeps AngularJS dependency injection working if this file is minified.
 	module.controller('staffChangeCtrl', [
 		'$scope',
 		'$attrs',
@@ -15,14 +16,15 @@ define(function (require) {
 		'psApiService',
 		'jitbitService',
 		function ($scope, $attrs, $window, $anchorScroll, $location, $q, jsonDataService, formatService, psApiService, jitbitService) {
-			//This is here for troubleshooting purposes.
-			//Allows us to double click anywhere on the page and logs scope to console
+			// Values placed on $scope are available to the HTML templates; local helpers remain private to this controller.
+			// Double-clicking the page exposes the current scope in the console for PowerSchool troubleshooting.
 			$j(document).dblclick(() => console.log($scope))
 
 			$scope.refreshPage = function () {
 				$window.location.reload()
 			}
 
+			// Wait until Angular has rendered the next form before moving the viewport to its top.
 			const scrollToFormTop = () => {
 				$window.requestAnimationFrame(() => {
 					const scrollTarget = $window.document.getElementById('staff-change-scroll-top')
@@ -33,6 +35,7 @@ define(function (require) {
 
 			let psDialogHolder = null
 
+			// PowerSchool dialogs move existing DOM nodes, so detach the Angular view and return it when the dialog closes.
 			$scope.openDialog = function (type) {
 				psDialogHolder = $j(`#${type}Div`).detach()
 				let dialogMessage
@@ -123,7 +126,8 @@ define(function (require) {
 				}
 			}
 
-			//initializing overall form data
+			// PowerSchool renders these ng-* attributes on the page before Angular starts the controller.
+			// userContext is shared by all form directives and describes both the session and current workflow step.
 			$scope.userContext = {
 				pageStatus: $attrs.ngStatus,
 				curSchoolId: $attrs.ngCurSchoolId,
@@ -145,12 +149,12 @@ define(function (require) {
 				sendJitbit: !($attrs.ngServerName && $attrs.ngServerName.indexOf('.test.') !== -1)
 			}
 
-			// checkbox change handler
+			// The test-server checkbox lets a tester explicitly enable or suppress Jitbit integration.
 			$scope.toggleJitbitCheckbox = () => {
 				$scope.userContext.serverName = $scope.userContext.sendJitbit ? undefined : $attrs.ngServerName
 			}
 
-			// initializing date formatting for deadline field
+			// Deadline validation is kept here because each form shares the same business-day rules and UI state.
 			const curYear = new Date().getFullYear()
 			const firstDay = new Date(`01/01/${curYear}`)
 			const lastDay = new Date(`06/30/${curYear}`)
@@ -247,6 +251,7 @@ define(function (require) {
 				$scope.userContext.tempDeadline = $scope.userContext.minDate
 			}
 
+			// Emergency overrides are tracked per form so switching between form directives does not mix their reasons.
 			const getEmergencyRequest = pageContext => $scope.userContext.emergencyRequests[pageContext]
 			const emergencyOverrideLabels = {
 				exitingStaff: 'Emergency Deactivation Date Override',
@@ -434,7 +439,8 @@ define(function (require) {
 				return pairs[schoolId] || null
 			}
 
-			//initilazing empty payload
+			// submitPayload is keyed by change type because one submission can create related records, such as a replacement exit.
+			// The option arrays are separate from the payload so broad lookup rows never become API fields accidentally.
 			$scope.submitPayload = {}
 			$scope.originalStaffChangePayloads = {}
 			$scope.originalJitbitSnapshots = {}
@@ -498,7 +504,8 @@ define(function (require) {
 				})
 			}
 
-			// Primary staff and related staff use different filters on Transferring-In forms, so keep their option sets separate.
+			// Load only the lookups required by the active form. $q.all returns one promise that resolves after every
+			// requested lookup finishes, allowing the form directive to wait before displaying edit-time selections.
 			$scope.loadFormLookups = pageContext => {
 				const needsPrimaryUsers = ['transferringStaff', 'jobChange', 'nameChange', 'exitingStaff'].includes(pageContext)
 				const needsRelatedUsers = ['newStaff', 'transferringStaff', 'subStaff', 'exitingStaff'].includes(pageContext)
@@ -573,6 +580,7 @@ define(function (require) {
 				if (previousSchoolName) staffChange.prev_school_name = previousSchoolName
 			}
 
+			// Lookup endpoints intentionally return extra fields. These mappers copy only values owned by the form payload.
 			const copyMappedFields = (target, source, fieldMap) => {
 				if (!target || !source) return target
 
@@ -700,6 +708,7 @@ define(function (require) {
 				setSubstituteSchoolStaffRecordData(staffRecord)
 			}
 
+			// Older LTS records may lack newer link fields, so edit hydration tries the linked user first and falls back to names.
 			const hydrateLongTermSubstituteOnEdit = subStaff => {
 				if (!subStaff) return $q.when()
 
@@ -749,7 +758,7 @@ define(function (require) {
 				})
 			}
 
-			//pull exiting Staff Change Record and setting it to submitPayload if an staffChangeId was provided through URL Params
+			// Edit pages load the saved API record, then preload every lookup needed to render its current selections.
 			$scope.getStaffChange = staffChangeId => {
 				loadingDialog()
 
@@ -791,10 +800,12 @@ define(function (require) {
 					return $q.all(preload)
 				}).finally(closeLoading)
 			}
-			//check if staffChangeId was provided through URL Params and then run getStaffChange function with that staffChangeId
+			// A staffChangeId is supplied only for Edit mode; Submit mode starts with an empty payload.
 			if ($scope.userContext.staffChangeId) {
 				$scope.getStaffChange($scope.userContext.staffChangeId)
 			}
+			// Cache the latest parameter signature on this scope. Repeated template/controller requests with the same
+			// parameters receive an already-resolved $q promise instead of issuing another HTTP request.
 			$scope.getJSONData = (resource, params = {}) => {
 				const paramSignature = JSON.stringify(params)
 				const paramSignatureKey = `${resource}ParamSignature`
@@ -823,6 +834,7 @@ define(function (require) {
 				return $scope.getJSONData('duplicatePowerSchoolStaffData', staffDupeParams)
 			}
 
+			// Duplicate checks run in sequence: first existing staff-change requests, then PowerSchool users when applicable.
 			$scope.dupeSearch = (pageContext, formPayload, searchType) => {
 				if ($scope.duplicateStaffChangeData) {
 					delete $scope.duplicateStaffChangeData
@@ -872,7 +884,7 @@ define(function (require) {
 					})
 				})
 			}
-			// function to switch forms and set scope to hold form data
+			// Form directives watch pageContext. Changing it swaps the visible form while this controller retains shared state.
 			$scope.formDisplay = (pageContext, prevContext, direction) => {
 				$scope.userContext.pageContext = pageContext
 				$scope.userContext.prevContext = prevContext
@@ -910,6 +922,7 @@ define(function (require) {
 				})
 			}
 
+			// ng-change calls this after a lookup selection. It translates the selected option into intentional payload fields.
 			$scope.updateScopeFromDropdown = (pageContext, resource, identifier, field, optionRecords) => {
 				//if dropdown source is user data
 				if (resource === 'userData') {
@@ -987,6 +1000,7 @@ define(function (require) {
 				}
 			}
 
+			// These groups define which lookup-derived values must be cleared when toggling between select and manual modes.
 			const manualLookupFields = {
 				users_dcid: [
 					'users_dcid',
@@ -1038,6 +1052,7 @@ define(function (require) {
 				})
 			}
 
+			// The sentinel value -1 tells templates to hide a select and reveal its manual-entry controls.
 			$scope.startManualLookup = (pageContext, lookupField, focusControlId) => {
 				if (lookupField === 'users_dcid') {
 					// Primary staff selection previously replaced the payload when Other was selected.
@@ -1064,6 +1079,7 @@ define(function (require) {
 				})
 			}
 
+			// Convert a duplicate New Staff request without carrying lookup-only fields into the new payload.
 			$scope.newToTransferringIn = identifier => {
 				// Step 1: Copy all properties from newStaff (if it exists)
 				const newStaff = $scope.submitPayload.newStaff || {}
@@ -1098,6 +1114,7 @@ define(function (require) {
 				$scope.submitPayload[pageContext].legal_last_name = $scope.submitPayload[pageContext].last_name
 			}
 
+			// Replacement answers can create a second related change; start it with submission metadata shared by all records.
 			const createAdditionalPayload = () => {
 				return $scope.userContext.pageStatus === 'Submit'
 					? { deadline: $scope.userContext.tempDeadline }
@@ -1152,6 +1169,7 @@ define(function (require) {
 
 			const isMissingStaffName = formPayload => !formPayload.first_name || !formPayload.last_name
 			const titleFields = ['title', 'replace_title', 'canva_title']
+			// Jitbit snapshots contain only ticket-relevant values, which prevents unrelated edits from triggering a ticket update.
 			const SUPPORT_TICKET_URL = 'https://cdol.jitbit.com/Tickets/New?categoryId=585011'
 
 			const normalizeDeadlineForComparison = deadline => {
@@ -1305,6 +1323,7 @@ define(function (require) {
 				})
 			}
 
+			// Validation returns a promise because linked staff hydration may require an asynchronous lookup before saving.
 			$scope.validateStaffChangePayload = formPayload => {
 				if (formPayload.change_type !== 'transferringStaff') return $q.when(true)
 
@@ -1319,6 +1338,7 @@ define(function (require) {
 				})
 			}
 
+			// Create each payload sequentially so a related record failure is reported before navigation leaves the page.
 			$scope.createStaffChange = () => {
 				loadingDialog()
 				const commonPayload = {
@@ -1393,6 +1413,8 @@ define(function (require) {
 				}).finally(closeLoading)
 			}
 
+			// Edit saves also calculate completion state and synchronize Jitbit. If Jitbit fails, PowerSchool is restored
+			// from originalStaffChangePayloads so the two systems do not silently disagree.
 			$scope.updateStaffChange = form => {
 				loadingDialog()
 				const payloadKeys = Object.keys($scope.submitPayload)
@@ -1509,6 +1531,7 @@ define(function (require) {
 				}).finally(closeLoading)
 			}
 
+			// Close the external ticket before deleting the PowerSchool record; a ticket failure leaves the record intact.
 			$scope.deleteStaffChange = form => {
 				loadingDialog()
 				const formPayload = $scope.submitPayload[form] || {}
@@ -1571,6 +1594,7 @@ define(function (require) {
 		}
 	])
 
+	// Filters are small formatting functions that templates can invoke with Angular's | syntax.
 	module.filter('titleCase', function () {
 		return function (input) {
 			if (!input) return ''
