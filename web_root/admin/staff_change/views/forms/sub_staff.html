@@ -391,32 +391,34 @@
                                                 class="form-label form-label-sm label-reset staff-change-req">Where was
                                                 {{submitPayload.subStaff.title}} {{
                                                 submitPayload.subStaff.first_name}} {{
-                                                submitPayload.subStaff.last_name}}'s previously employed?</label><span
-                                                class="text-muted"
-                                                data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose
-                                                        --Other--
-                                                        if employer is not
-                                                        listed)</em></small></span>
-                                            <select class="form-select form-select-sm" id="sub-staff-prev-school-number"
-                                                aria-label="Where previously employed?"
-                                                data-ng-model="submitPayload.subStaff.prev_school_number"
-                                                data-ng-required="true"
-                                                data-ng-disabled="lookupLoading.schools"
-                                                data-ng-options="school.identifier as school.schoolname for school in schoolOptions"
-                                                data-ng-change="updateScopeFromDropdown(userContext.pageContext,'schoolData',submitPayload.subStaff.prev_school_number, undefined, schoolOptions)">
-                                                <option value=""></option>
-                                            </select>
+                                                submitPayload.subStaff.last_name}}'s previously employed?</label>
+                                            <div class="input-group flex-nowrap" data-ng-if="submitPayload.subStaff.prev_school_number != -1">
+                                                <select class="form-select form-select-sm" id="sub-staff-prev-school-number"
+                                                    aria-label="Where previously employed?"
+                                                    data-ng-model="submitPayload.subStaff.prev_school_number"
+                                                    data-ng-required="true"
+                                                    data-ng-disabled="lookupLoading.schools"
+                                                    data-ng-options="school.identifier as school.schoolname for school in schoolOptions"
+                                                    data-ng-change="updateScopeFromDropdown(userContext.pageContext,'schoolData',submitPayload.subStaff.prev_school_number, undefined, schoolOptions)">
+                                                    <option value=""></option>
+                                                </select>
+                                                <button type="button" class="button m-0 p-2 ps-1" title="Employer not listed? Enter it manually"
+                                                    data-ng-if="!submitPayload.subStaff.prev_school_number"
+                                                    data-ng-click="startManualLookup('subStaff', 'prev_school_number', 'sub-staff-school-name')">Employer not Listed? Click Here</button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row align-items-center mb-3"
                                         data-ng-if="submitPayload.subStaff.prev_school_number == -1">
                                         <div class="col-auto">
-                                            <label for="sub-staff-school-name"
-                                                class="form-label form-label-sm label-reset staff-change-req">Please
-                                                Type Name Previous Employer</label>
-                                            <input id="sub-staff-school-name" class="form-control" type="text"
-                                                data-ng-model="submitPayload.subStaff.prev_school_name"
-                                                data-ng-blur="submitPayload.subStaff.prev_school_name = (submitPayload.subStaff.prev_school_name | titleCase)">
+                                            <div class="input-group flex-nowrap">
+                                                <input id="sub-staff-school-name" class="form-control" type="text"
+                                                    placeholder="Please Type Name Previous Employer" aria-label="Previous employer name"
+                                                    data-ng-model="submitPayload.subStaff.prev_school_name"
+                                                    data-ng-blur="submitPayload.subStaff.prev_school_name = (submitPayload.subStaff.prev_school_name | titleCase)">
+                                                <button type="button" class="button m-0 p-2 ps-1" data-ng-if="userContext.pageStatus =='Submit'"
+                                                    data-ng-click="searchLookup('subStaff', 'prev_school_number', 'sub-staff-prev-school-number')">Return to Employer Select</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -435,22 +437,21 @@
                                                 is
                                                 {{submitPayload.subStaff.title}} {{
                                                 submitPayload.subStaff.first_name}} {{
-                                                submitPayload.subStaff.last_name}} going to substitute for?</label><span
-                                                class="text-muted"
-                                                data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose
-                                                        --Other--
-                                                        if staff member is not
-                                                        listed)</em></small></span>
-                                            <select class="form-select form-select-sm" id="sub-staff-replace-dcid"
-                                                aria-label="Who is the substitute replacing?"
-                                                data-ng-model="submitPayload.subStaff.replace_dcid"
-                                                data-ng-required="true"
-                                                data-ng-disabled="lookupLoading.relatedUsers"
-                                                data-staff-select="relatedUserOptions"
-                                                data-ng-options="user.identifier as user.optionLabel for user in relatedUserOptions"
-                                                data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.subStaff.replace_dcid, 'replace_dcid', relatedUserOptions)">
-                                                <option value=""></option>
-                                            </select>
+                                                submitPayload.subStaff.last_name}} going to substitute for?</label>
+                                            <div class="input-group flex-nowrap" data-ng-if="submitPayload.subStaff.replace_dcid != -1">
+                                                <select class="form-select form-select-sm" id="sub-staff-replace-dcid"
+                                                    aria-label="Who is the substitute replacing?"
+                                                    data-ng-model="submitPayload.subStaff.replace_dcid"
+                                                    data-ng-required="true"
+                                                    data-ng-disabled="lookupLoading.relatedUsers"
+                                                    data-ng-options="user.identifier as user.optionLabel for user in relatedUserOptions"
+                                                    data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.subStaff.replace_dcid, 'replace_dcid', relatedUserOptions)">
+                                                    <option value=""></option>
+                                                </select>
+                                                <button type="button" class="button m-0 p-2 ps-1" title="Staff not listed? Enter their information manually"
+                                                    data-ng-if="!submitPayload.subStaff.replace_dcid"
+                                                    data-ng-click="startManualLookup('subStaff', 'replace_dcid', 'sub-staff-replacement-first-name')">Staff not Listed? Click Here</button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row align-items-center mb-3"
@@ -468,7 +469,7 @@
                                                     data-ng-options="title.code as title.code for title in titleData">
                                                     <option selected></option>
                                                 </select>
-                                                <input type="text" class="form-control form-control-sm w-25"
+                                                <input id="sub-staff-replacement-first-name" type="text" class="form-control form-control-sm w-25"
                                                     placeholder="First name" aria-label="First name"
                                                     data-ng-model="submitPayload.subStaff.replace_first_name"
                                                     data-ng-blur="submitPayload.subStaff.replace_first_name = (submitPayload.subStaff.replace_first_name | titleCase)"
@@ -482,6 +483,9 @@
                                                     data-ng-model="submitPayload.subStaff.replace_last_name"
                                                     data-ng-blur="submitPayload.subStaff.replace_last_name = (submitPayload.subStaff.replace_last_name | titleCase)"
                                                     data-ng-required="true">
+                                                <button type="button" class="button m-0 p-2 ps-1" title="Return to the existing staff selector"
+                                                    data-ng-if="userContext.pageStatus =='Submit'"
+                                                    data-ng-click="searchLookup('subStaff', 'replace_dcid', 'sub-staff-replace-dcid')">Return to Staff Select</button>
                                             </div>
                                         </div>
                                     </div>

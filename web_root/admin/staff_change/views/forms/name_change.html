@@ -10,7 +10,6 @@
                         <select class="form-select form-select-sm" id="name-change-user" aria-label="Whose name is changing?"
                             data-ng-model="submitPayload.nameChange.users_dcid" data-ng-required="true"
                             data-ng-disabled="lookupLoading.primaryUsers"
-                            data-staff-select="primaryUserOptions"
                             data-ng-options="user.identifier as user.optionLabel for user in primaryUserOptions"
                             data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.nameChange.users_dcid, 'users_dcid', primaryUserOptions)">
                             <option value=""></option>

@@ -9,16 +9,18 @@
                             Who is changing Positions/Jobs?
                         </label>
 
-                        <div class="d-flex align-items-center gap-2"> <!-- Flex container -->
+                        <div class="input-group flex-nowrap" data-ng-if="submitPayload.jobChange.users_dcid != -1">
                             <select class="form-select form-select-sm flex-grow-1" id="job-change-user"
                                 aria-label="Whose position or job is changing?" data-ng-model="submitPayload.jobChange.users_dcid"
                                 data-ng-required="true"
                                 data-ng-disabled="lookupLoading.primaryUsers"
-                                data-staff-select="primaryUserOptions"
                                 data-ng-options="user.identifier as user.optionLabel for user in primaryUserOptions"
                                 data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.jobChange.users_dcid, 'users_dcid', primaryUserOptions);dupeSearch(userContext.pageContext, submitPayload[userContext.formType])">
                                 <option value=""></option>
                             </select>
+                            <button type="button" class="button m-0 p-2 ps-1" title="Staff not listed? Enter their information manually"
+                                data-ng-if="!submitPayload.jobChange.users_dcid"
+                                data-ng-click="startManualLookup('jobChange', 'users_dcid', 'job-change-first-name')">Staff not Listed? Click Here</button>
                             <a class="button m-0" style="padding: 6px"
                                 data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && schoolStaffRecordData[0].ssdcid"
                                 data-ng-href="/admin/faculty/editpw.html?frn=005{{schoolStaffRecordData[0].ssdcid}}"
@@ -48,7 +50,7 @@
                                 data-ng-options="title.code as title.code for title in titleData">
                                 <option selected></option>
                             </select>
-                            <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
+                            <input id="job-change-first-name" type="text" class="form-control form-control-sm w-25" placeholder="First name"
                                 aria-label="First name" data-ng-model="submitPayload.jobChange.first_name"
                                 data-ng-blur="submitPayload.jobChange.first_name = (submitPayload.jobChange.first_name | titleCase)"
                                 data-ng-required="true">
@@ -59,6 +61,9 @@
                                 aria-label="Last name" data-ng-model="submitPayload.jobChange.last_name"
                                 data-ng-blur="submitPayload.jobChange.last_name = (submitPayload.jobChange.last_name | titleCase)"
                                 data-ng-required="true">
+                            <button type="button" class="button m-0 p-2 ps-1" title="Return to the existing staff selector"
+                                data-ng-if="userContext.pageStatus =='Submit'"
+                                data-ng-click="searchLookup('jobChange', 'users_dcid', 'job-change-user')">Return to Staff Select</button>
                         </div>
                         <div data-ng-if="userContext.pageStatus == 'Edit' && submitPayload.jobChange.ps_created"
                             id="job-change-name" class="blockquote ms-2 mt-1">{{submitPayload.jobChange | staffFullName}}</div>

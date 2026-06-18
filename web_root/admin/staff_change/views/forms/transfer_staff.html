@@ -4,27 +4,32 @@
         <div class="card-body">
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">
-                    <div class="col-6">
-                        <label for="transferring-staff-user" class="form-label form-label-sm label-reset staff-change-req">Who is
+                    <div class="col-6" data-ng-if="submitPayload.transferringStaff.users_dcid != -1">
+                        <label for="transferring-staff-user"
+                            class="form-label form-label-sm label-reset staff-change-req">Who is
                             Transferring-In
                             to {{ userContext.curSchoolName }}?</label><span class="text-muted"
-                            data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Type Other if staff
-                                    member is not listed in the dropdown)</em></small></span>
-                        <select class="form-select form-select-sm" id="transferring-staff-user" aria-label="Who is transferring in?"
-                            data-placeholder="Type Name of Transferring-In Staff Member"
-                            data-ng-model="submitPayload.transferringStaff.users_dcid" data-ng-required="true"
-                            data-ng-disabled="lookupLoading.primaryUsers"
-                            data-staff-select="primaryUserOptions"
-                            data-ng-options="user.identifier as user.optionLabel for user in primaryUserOptions"
-                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.transferringStaff.users_dcid, 'users_dcid', primaryUserOptions)">
-                            <option value=""></option>
-                        </select><span><small class="text-muted"></small></span>
+                            data-ng-if="userContext.pageStatus =='Submit'"><small><em> * indicates inactive staff
+                                    member</em></small></span>
+                        <div class="input-group flex-nowrap">
+                            <select class="form-select form-select-sm" id="transferring-staff-user"
+                                aria-label="Who is transferring in?"
+                                data-placeholder="Search for transferring-in staff by name"
+                                data-ng-model="submitPayload.transferringStaff.users_dcid" data-ng-required="true"
+                                data-ng-disabled="lookupLoading.primaryUsers" data-staff-select="primaryUserOptions"
+                                data-ng-options="user.identifier as user.optionLabel for user in primaryUserOptions"
+                                data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.transferringStaff.users_dcid, 'users_dcid', primaryUserOptions)">
+                                <option value=""></option>
+                            </select>
+                            <button type="button" class="button m-0 p-2 ps-1"
+                                title="Staff not listed? Enter their information manually"
+                                data-ng-if="!submitPayload.transferringStaff.users_dcid"
+                                data-ng-click="startManualLookup('transferringStaff', 'users_dcid', 'transferring-staff-first-name')">Staff
+                                not Listed? Click Here</button>
+                        </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-3" data-ng-if="submitPayload.transferringStaff.users_dcid != -1">
                         <span class="text-muted" data-ng-if="userContext.pageStatus =='Submit'"><small
-                                data-ng-if="!submitPayload.transferringStaff.users_dcid"><em> * indicates inactive staff
-                                    member</em></small>
-                            <small
                                 data-ng-if="submitPayload.transferringStaff.users_dcid && submitPayload.transferringStaff.staff_status == 2"><em>
                                     inactive staff <span
                                         data-ng-if="submitPayload.transferringStaff.prev_school_name">previously at
@@ -39,15 +44,17 @@
                             class="form-label form-label-sm  label-reset staff-change-req">Transferring-In Staff
                             Name</label>
                         <div class="input-group">
-                            <select id="transferring-staff-title" class="form-select form-select-sm" aria-label="Transferring staff title"
-                                data-ng-model="submitPayload.transferringStaff.title" data-ng-show="(!submitPayload.transferringStaff.first_name.startsWith('Fr.') &&
+                            <select id="transferring-staff-title" class="form-select form-select-sm"
+                                aria-label="Transferring staff title"
+                                data-ng-model="submitPayload.transferringStaff.title" data-ng-show="(!submitPayload.transferringStaff.first_name || (!submitPayload.transferringStaff.first_name.startsWith('Fr.') &&
                         !submitPayload.transferringStaff.first_name.startsWith('Msgr.') &&
                         !submitPayload.transferringStaff.first_name.startsWith('Sr.') &&
-                        !submitPayload.transferringStaff.first_name.startsWith('Br.'))"
+                        !submitPayload.transferringStaff.first_name.startsWith('Br.')))"
                                 data-ng-options="title.code as title.code for title in titleData">
                                 <option selected></option>
                             </select>
-                            <input type="text" class="form-control form-control-sm w-25" placeholder="First name"
+                            <input id="transferring-staff-first-name" type="text"
+                                class="form-control form-control-sm w-25" placeholder="First name"
                                 aria-label="First name" data-ng-model="submitPayload.transferringStaff.first_name"
                                 data-ng-blur="submitPayload.transferringStaff.first_name = (submitPayload.transferringStaff.first_name | titleCase)"
                                 data-ng-required="true">
@@ -58,6 +65,11 @@
                                 aria-label="Last name" data-ng-model="submitPayload.transferringStaff.last_name"
                                 data-ng-blur="submitPayload.transferringStaff.last_name = (submitPayload.transferringStaff.last_name | titleCase)"
                                 data-ng-required="true">
+                            <button type="button" class="button m-0 p-2 ps-1"
+                                title="Return to the existing staff selector"
+                                data-ng-if="userContext.pageStatus =='Submit'"
+                                data-ng-click="searchLookup('transferringStaff', 'users_dcid', 'transferring-staff-user')">Return
+                                to Staff Select</button>
                         </div>
                     </div>
                 </div>
@@ -81,13 +93,16 @@
                                 pds-widget="pds-widget" style="zoom: 0.5; color: white; fill: white;"></pds-icon></a>
                     </div>
                     <div class="col-3">
-                        <label for="transferring-new-school" class="form-label form-label-sm label-reset">New School</label>
-                        <div id="transferring-new-school" class="input-group">{{submitPayload.transferringStaff.schoolid | schoolName}}</div>
+                        <label for="transferring-new-school" class="form-label form-label-sm label-reset">New
+                            School</label>
+                        <div id="transferring-new-school" class="input-group">{{submitPayload.transferringStaff.schoolid
+                            | schoolName}}</div>
                     </div>
                     <div class="col-3">
                         <label for="original-staff-school" class="form-label form-label-sm label-reset">Original
                             School</label>
-                        <div id="original-staff-school" class="input-group">{{submitPayload.transferringStaff.prev_school_name}}</div>
+                        <div id="original-staff-school" class="input-group">
+                            {{submitPayload.transferringStaff.prev_school_name}}</div>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3 gx-2" data-ng-if="submitPayload.transferringStaff.users_dcid">
@@ -118,8 +133,8 @@
                     </div>
                     <div class="col-auto">
                         <label for="transferring-fte" class="form-label form-label-sm label-reset">FTE</label>
-                        <select id="transferring-fte" class="form-select form-select-sm" aria-label="Transferring staff FTE"
-                            data-ng-model="submitPayload.transferringStaff.fte">
+                        <select id="transferring-fte" class="form-select form-select-sm"
+                            aria-label="Transferring staff FTE" data-ng-model="submitPayload.transferringStaff.fte">
                             <option></option>
                             <option value="FT">FT - Full-time</option>
                             <option value="PT">PT - Part-time</option>
@@ -131,13 +146,14 @@
                         <label class="form-label form-label-sm label-reset staff-change-req">Requested
                             Account Transfer Date</label><br>
                         <div class="d-flex align-items-center flex-nowrap">
-                            <input id="transferringStaff-deadline" title="Requested Account Transfer Date" type="text" class="psDateWidget"
-                                data-minDate="{{getDeadlineMinDate('transferringStaff')}}"
+                            <input id="transferringStaff-deadline" title="Requested Account Transfer Date" type="text"
+                                class="psDateWidget" data-minDate="{{getDeadlineMinDate('transferringStaff')}}"
                                 data-ng-model="submitPayload.transferringStaff.deadline"
                                 data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.transferringStaff.deadline = userContext.tempDeadline : submitPayload.transferringStaff.deadline"
                                 data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
                             <script type="text/javascript">initBehaviors();</script>
-                            <button type="button" class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
+                            <button type="button"
+                                class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
                                 data-ng-class="{'emergency-override-enabled': isEmergencyRequestEnabled('transferringStaff')}"
                                 data-ng-if="userContext.pageStatus === 'Submit'"
                                 data-ng-click="openEmergencyRequest('transferringStaff')"
@@ -172,29 +188,38 @@
                                     (submitPayload.transferringStaff.title !== 'Fr.' && submitPayload.transferringStaff.title !== 'Msgr.' && submitPayload.transferringStaff.title !== 'Sr.' && submitPayload.transferringStaff.title !== 'Br.')">
                                 {{submitPayload.transferringStaff.title}}</span>
                             {{submitPayload.transferringStaff.first_name}}
-                            {{submitPayload.transferringStaff.last_name}}'s previously employed?</label><span
-                            class="text-muted" data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose
-                                    --Other-- if employer is not
-                                    listed)</em></small></span>
-                        <select class="form-select form-select-sm" id="transferring-prev-school-number"
-                            aria-label="Where previously employed?"
-                            data-ng-model="submitPayload.transferringStaff.prev_school_number" data-ng-required="true"
-                            data-ng-disabled="lookupLoading.schools"
-                            data-ng-options="school.identifier as school.schoolname for school in schoolOptions"
-                            data-ng-change="updateScopeFromDropdown(userContext.pageContext,'schoolData',submitPayload.transferringStaff.prev_school_number, undefined, schoolOptions)">
-                            <option value=""></option>
-                        </select>
+                            {{submitPayload.transferringStaff.last_name}}'s previously employed?</label>
+                        <div class="input-group flex-nowrap"
+                            data-ng-if="submitPayload.transferringStaff.prev_school_number != -1">
+                            <select class="form-select form-select-sm" id="transferring-prev-school-number"
+                                aria-label="Where previously employed?"
+                                data-ng-model="submitPayload.transferringStaff.prev_school_number"
+                                data-ng-required="true" data-ng-disabled="lookupLoading.schools"
+                                data-ng-options="school.identifier as school.schoolname for school in schoolOptions"
+                                data-ng-change="updateScopeFromDropdown(userContext.pageContext,'schoolData',submitPayload.transferringStaff.prev_school_number, undefined, schoolOptions)">
+                                <option value=""></option>
+                            </select>
+                            <button type="button" class="button m-0 p-2 ps-1"
+                                title="Employer not listed? Enter it manually"
+                                data-ng-if="!submitPayload.transferringStaff.prev_school_number"
+                                data-ng-click="startManualLookup('transferringStaff', 'prev_school_number', 'transferring-staff-school-name')">Employer
+                                not Listed? Click Here</button>
+                        </div>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
                     data-ng-if="submitPayload.transferringStaff.prev_school_number == -1">
                     <div class="col-6">
-                        <label for="transferring-staff-school-name"
-                            class="form-label form-label-sm label-reset staff-change-req">Please
-                            Type Name Previous Employer</label>
-                        <input id="transferring-staff-school-name" class="form-control" type="text"
-                            data-ng-model="submitPayload.transferringStaff.prev_school_name"
-                            data-ng-blur="submitPayload.transferringStaff.prev_school_name = (submitPayload.transferringStaff.prev_school_name | titleCase)">
+                        <div class="input-group flex-nowrap">
+                            <input id="transferring-staff-school-name" class="form-control" type="text"
+                                placeholder="Please Type Name Previous Employer" aria-label="Previous employer name"
+                                data-ng-model="submitPayload.transferringStaff.prev_school_name"
+                                data-ng-blur="submitPayload.transferringStaff.prev_school_name = (submitPayload.transferringStaff.prev_school_name | titleCase)">
+                            <button type="button" class="button m-0 p-2 ps-1"
+                                data-ng-if="userContext.pageStatus =='Submit'"
+                                data-ng-click="searchLookup('transferringStaff', 'prev_school_number', 'transferring-prev-school-number')">Return
+                                to Employer Select</button>
+                        </div>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
@@ -215,7 +240,8 @@
                                                 data-ng-required="!submitPayload.transferringStaff.exit_radio"
                                                 data-ng-change="updateAdditionalPayload(userContext.pageContext)"
                                                 tabindex="0">
-                                            <label class="form-check-label" for="transferring-exit-radio-yes">Yes</label>
+                                            <label class="form-check-label"
+                                                for="transferring-exit-radio-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="exit-radio-group"
@@ -236,21 +262,23 @@
                                             is
                                             {{
                                             submitPayload.transferringStaff.first_name}} {{
-                                            submitPayload.transferringStaff.last_name}} replacing?</label><span
-                                            class="text-muted"
-                                            data-ng-if="userContext.pageStatus =='Submit'"><small><em> (Choose --Other--
-                                                    if staff member is not
-                                                    listed)</em></small></span>
-                                        <select class="form-select form-select-sm" id="transferring-replace-dcid"
-                                            aria-label="Who is the transferring staff member replacing?"
-                                            data-ng-model="submitPayload.transferringStaff.replace_dcid"
-                                            data-ng-required="true"
-                                            data-ng-disabled="lookupLoading.relatedUsers"
-                                            data-staff-select="relatedUserOptions"
-                                            data-ng-options="user.identifier as user.optionLabel for user in relatedUserOptions"
-                                            data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.transferringStaff.replace_dcid, 'replace_dcid', relatedUserOptions)">
-                                            <option value=""></option>
-                                        </select>
+                                            submitPayload.transferringStaff.last_name}} replacing?</label>
+                                        <div class="input-group flex-nowrap"
+                                            data-ng-if="submitPayload.transferringStaff.replace_dcid != -1">
+                                            <select class="form-select form-select-sm" id="transferring-replace-dcid"
+                                                aria-label="Who is the transferring staff member replacing?"
+                                                data-ng-model="submitPayload.transferringStaff.replace_dcid"
+                                                data-ng-required="true" data-ng-disabled="lookupLoading.relatedUsers"
+                                                data-ng-options="user.identifier as user.optionLabel for user in relatedUserOptions"
+                                                data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.transferringStaff.replace_dcid, 'replace_dcid', relatedUserOptions)">
+                                                <option value=""></option>
+                                            </select>
+                                            <button type="button" class="button m-0 p-2 ps-1"
+                                                title="Staff not listed? Enter their information manually"
+                                                data-ng-if="!submitPayload.transferringStaff.replace_dcid"
+                                                data-ng-click="startManualLookup('transferringStaff', 'replace_dcid', 'transferring-replacement-first-name')">Staff
+                                                not Listed? Click Here</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row align-items-center mb-3"
@@ -263,13 +291,15 @@
                                             submitPayload.transferringStaff.first_name}} {{
                                             submitPayload.transferringStaff.last_name}} is replacing</label>
                                         <div class="input-group">
-                                            <select id="transferring-replacement-title" class="form-select form-select-sm" aria-label="Replacement staff title"
+                                            <select id="transferring-replacement-title"
+                                                class="form-select form-select-sm" aria-label="Replacement staff title"
                                                 data-ng-model="submitPayload.transferringStaff.replace_title"
                                                 data-ng-options="title.code as title.code for title in titleData">
                                                 <option selected></option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm w-25"
-                                                placeholder="First name" aria-label="First name"
+                                            <input id="transferring-replacement-first-name" type="text"
+                                                class="form-control form-control-sm w-25" placeholder="First name"
+                                                aria-label="First name"
                                                 data-ng-model="submitPayload.transferringStaff.replace_first_name"
                                                 data-ng-blur="submitPayload.transferringStaff.replace_first_name = (submitPayload.transferringStaff.replace_first_name | titleCase)"
                                                 data-ng-required="true">
@@ -282,6 +312,11 @@
                                                 data-ng-model="submitPayload.transferringStaff.replace_last_name"
                                                 data-ng-blur="submitPayload.transferringStaff.replace_last_name = (submitPayload.transferringStaff.replace_last_name | titleCase)"
                                                 data-ng-required="true">
+                                            <button type="button" class="button m-0 p-2 ps-1"
+                                                title="Return to the existing staff selector"
+                                                data-ng-if="userContext.pageStatus =='Submit'"
+                                                data-ng-click="searchLookup('transferringStaff', 'replace_dcid', 'transferring-replace-dcid')">Return
+                                                to Staff Select</button>
                                         </div>
                                     </div>
                                 </div>
@@ -299,7 +334,8 @@
                                                 data-ng-required="!submitPayload.transferringStaff.leaving_radio"
                                                 data-ng-change="updateAdditionalPayload(userContext.pageContext)"
                                                 tabindex="0">
-                                            <label class="form-check-label" for="transferring-leaving-radio-yes">Yes</label>
+                                            <label class="form-check-label"
+                                                for="transferring-leaving-radio-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="leaving-radio-group"
@@ -308,7 +344,8 @@
                                                 data-ng-required="!submitPayload.transferringStaff.leaving_radio"
                                                 data-ng-change="updateAdditionalPayload(userContext.pageContext)"
                                                 tabindex="0">
-                                            <label class="form-check-label" for="transferring-leaving-radio-no">No</label>
+                                            <label class="form-check-label"
+                                                for="transferring-leaving-radio-no">No</label>
                                         </div>
                                         <div class="alert alert-warning" role="alert"
                                             data-ng-if="submitPayload.transferringStaff.leaving_radio == 1"><i
@@ -334,7 +371,8 @@
                                                 data-ng-required="!submitPayload.transferringStaff.position_radio"
                                                 data-ng-change="updateAdditionalPayload(userContext.pageContext)"
                                                 tabindex="0">
-                                            <label class="form-check-label" for="transferring-position-radio-yes">Yes</label>
+                                            <label class="form-check-label"
+                                                for="transferring-position-radio-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="position-radio-group"
@@ -343,7 +381,8 @@
                                                 data-ng-required="!submitPayload.transferringStaff.position_radio"
                                                 data-ng-change="updateAdditionalPayload(userContext.pageContext)"
                                                 tabindex="0">
-                                            <label class="form-check-label" for="transferring-position-radio-no">No</label>
+                                            <label class="form-check-label"
+                                                for="transferring-position-radio-no">No</label>
                                         </div>
                                         <div class="alert alert-warning" role="alert"
                                             data-ng-if="submitPayload.transferringStaff.position_radio == 1"><i
@@ -393,7 +432,8 @@
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
-                                                name="additional-schoolid-radio-group" id="transferring-additional-school-radio-no"
+                                                name="additional-schoolid-radio-group"
+                                                id="transferring-additional-school-radio-no"
                                                 data-ng-model="submitPayload.transferringStaff.additional_schoolid"
                                                 value="0"
                                                 data-ng-required="!submitPayload.transferringStaff.additional_schoolid"
@@ -462,8 +502,8 @@
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.first_name">
                     <div class="col-xl-6">
                         <div class="form-floating">
-                            <textarea class="form-control" placeholder="Additional Notes/Details?" id="transferring-staff-notes"
-                                spellcheck="true" wrap="absolute"
+                            <textarea class="form-control" placeholder="Additional Notes/Details?"
+                                id="transferring-staff-notes" spellcheck="true" wrap="absolute"
                                 ng-model="submitPayload.transferringStaff.notes"></textarea>
                             <label class="fw-semibold" for="transferring-staff-notes">Additional Notes/Details?</label>
                         </div>

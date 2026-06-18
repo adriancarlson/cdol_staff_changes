@@ -14,7 +14,19 @@ define(function (require) {
 
 					const destroySelect = () => {
 						const selectElement = $j(element[0])
+						selectElement.off('.staffSelect')
 						if (selectElement.hasClass('select2-hidden-accessible')) selectElement.select2('destroy')
+					}
+
+					const focusSearchInput = () => {
+						const focusVisibleSearchInput = () => {
+							const searchInput = $j('.select2-container--open .select2-search__field').last()[0]
+							if (searchInput) searchInput.focus()
+						}
+
+						// Native focus is more reliable than triggering jQuery focus with Select2 4.1.
+						focusVisibleSearchInput()
+						$timeout(focusVisibleSearchInput)
 					}
 
 					const initializeSelect = () => {
@@ -30,10 +42,15 @@ define(function (require) {
 									theme: 'bootstrap-5',
 									width: '100%',
 									placeholder: attrs.placeholder || '',
-									allowClear: true,
 									selectionCssClass: 'select2--small',
 									dropdownCssClass: 'select2--small'
 								})
+								selectElement.next('.select2-container').css({
+									flex: '1 1 auto',
+									minWidth: '0',
+									width: 'auto'
+								})
+								selectElement.on('select2:open.staffSelect', focusSearchInput)
 
 								// Refresh Select2's display without changing Angular's current model value.
 								selectElement.trigger('change.select2')

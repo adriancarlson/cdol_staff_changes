@@ -459,8 +459,7 @@ define(function (require) {
 
 			const normalizeIdentifier = identifier => {
 				if (identifier === undefined || identifier === null || identifier === '') return identifier
-				const numericIdentifier = Number(identifier)
-				return isNaN(numericIdentifier) ? identifier : numericIdentifier
+				return identifier.toString()
 			}
 
 			const buildUserOptions = (records, markInactive) => {
@@ -473,7 +472,6 @@ define(function (require) {
 					return option
 				})
 
-				options.push({ identifier: -1, optionLabel: '-- Other --' })
 				return options
 			}
 
@@ -484,15 +482,14 @@ define(function (require) {
 					return option
 				})
 
-				options.push({ identifier: 0, schoolname: 'Diocesan Office' })
-				options.push({ identifier: -1, schoolname: '-- Other --' })
+				options.push({ identifier: '0', schoolname: 'Diocesan Office' })
 				return options
 			}
 
 			const normalizePayloadLookupIdentifiers = staffChange => {
 				if (!staffChange) return
 
-				// ngOptions compares values by type, so API integer fields and JSON option values must both be numbers.
+				// PowerSchool's schema API expects integer field values as strings, matching native select behavior.
 				const lookupFieldNames = ['users_dcid', 'replace_dcid', 'canva_dcid', 'prev_school_number']
 				lookupFieldNames.forEach(fieldName => {
 					if (staffChange[fieldName] !== undefined && staffChange[fieldName] !== null && staffChange[fieldName] !== '') {
@@ -923,12 +920,12 @@ define(function (require) {
 				}
 				//if dropdown source is school data
 				if (resource === 'schoolData') {
-					//if the drop down is set to -1 aka --Other-- then set the prev_school_name to blank
+					// Manual employer entry uses -1 and starts with an empty employer name.
 					if (identifier == -1) {
 						$scope.submitPayload[pageContext].prev_school_name = ''
 					}
 				}
-				// if the field being passed in is not null or -1 aka --Other--
+				// Only map records selected from a lookup; -1 is reserved for manual entry.
 				if ((identifier || identifier === 0) && identifier != -1) {
 					// find the field in the dataset (resource) passed in
 					const lookupRecords = optionRecords || $scope[resource] || []
@@ -988,6 +985,83 @@ define(function (require) {
 						}
 					}
 				}
+			}
+
+			const manualLookupFields = {
+				users_dcid: [
+					'users_dcid',
+					'title',
+					'first_name',
+					'middle_name',
+					'last_name',
+					'license_microsoft',
+					'staff_status',
+					'prev_school_number',
+					'prev_school_name',
+					'old_name_placeholder'
+				],
+				replace_dcid: [
+					'replace_dcid',
+					'replace_title',
+					'replace_first_name',
+					'replace_middle_name',
+					'replace_last_name',
+					'replace_license_microsoft',
+					'replace_homeschoolid',
+					'replace_homeschoolname',
+					'replace_staff_status'
+				],
+				canva_dcid: [
+					'canva_dcid',
+					'canva_title',
+					'canva_first_name',
+					'canva_middle_name',
+					'canva_last_name',
+					'canva_homeschoolid',
+					'canva_homeschoolname',
+					'canva_staff_status'
+				],
+				prev_school_number: ['prev_school_number', 'prev_school_name']
+			}
+
+			const clearManualLookupFields = (formPayload, lookupField) => {
+				const fieldNames = manualLookupFields[lookupField] || [lookupField]
+				fieldNames.forEach(fieldName => delete formPayload[fieldName])
+			}
+
+			const focusFormControl = controlId => {
+				if (!controlId) return
+
+				$window.requestAnimationFrame(() => {
+					const formControl = $window.document.getElementById(controlId)
+					if (formControl) formControl.focus()
+				})
+			}
+
+			$scope.startManualLookup = (pageContext, lookupField, focusControlId) => {
+				if (lookupField === 'users_dcid') {
+					// Primary staff selection previously replaced the payload when Other was selected.
+					$scope.submitPayload[pageContext] = { users_dcid: '-1' }
+				} else {
+					const formPayload = $scope.submitPayload[pageContext] || {}
+					clearManualLookupFields(formPayload, lookupField)
+					formPayload[lookupField] = '-1'
+				}
+
+				focusFormControl(focusControlId)
+			}
+
+			$scope.searchLookup = (pageContext, lookupField, selectId) => {
+				const formPayload = $scope.submitPayload[pageContext] || {}
+				clearManualLookupFields(formPayload, lookupField)
+
+				$window.requestAnimationFrame(() => {
+					$window.requestAnimationFrame(() => {
+						const selectElement = $j(`#${selectId}`)
+						if (selectElement.hasClass('select2-hidden-accessible')) selectElement.select2('open')
+						else if (selectElement.length) selectElement[0].focus()
+					})
+				})
 			}
 
 			$scope.newToTransferringIn = identifier => {
