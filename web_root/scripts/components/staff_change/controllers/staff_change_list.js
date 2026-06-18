@@ -24,13 +24,16 @@ define(function (require) {
 			$scope.changeType = ''
 			$scope.booleanMap = { Yes: true, No: false }
 			$scope.titleMap = {}
-			const loadTitleMap = jsonDataService.getData('titleData').then(titleData => {
-				titleData.forEach(title => {
-					$scope.titleMap[title.code] = title.code
+			const loadTitleMap = jsonDataService
+				.getData('titleData')
+				.then(titleData => {
+					titleData.forEach(title => {
+						$scope.titleMap[title.code] = title.code
+					})
 				})
-			}).catch(() => {
-				$scope.titleMap = {}
-			})
+				.catch(() => {
+					$scope.titleMap = {}
+				})
 			$scope.changeMap = {
 				'New Staff': 'newStaff',
 				'Transferring-In Staff': 'transferringStaff',
@@ -40,38 +43,29 @@ define(function (require) {
 				'Exiting Staff': 'exitingStaff'
 			}
 
-			$scope.schoolMap = {
-				'All Saints Catholic School Holdrege': 'All Saints Catholic School Holdrege',
-				'Aquinas Catholic Elementary': 'Aquinas Catholic Elementary',
-				'Aquinas Catholic Middle/High': 'Aquinas Catholic Middle/High',
-				'Bishop Neumann Catholic Jr/Sr High School': 'Bishop Neumann Catholic Jr/Sr High School',
-				'Blessed Sacrament School': 'Blessed Sacrament School',
-				'Cathedral of the Risen Christ School': 'Cathedral of the Risen Christ School',
-				'Diocesan Office': 'Diocesan Office',
-				'Falls City Sacred Heart Elementary': 'Falls City Sacred Heart Elementary',
-				'Falls City Sacred Heart Jr/Sr High School': 'Falls City Sacred Heart Jr/Sr High School',
-				'Lourdes Central Catholic Elementary School': 'Lourdes Central Catholic Elementary School',
-				'Lourdes Central Catholic Middle/High School': 'Lourdes Central Catholic Middle/High School',
-				'North American Martyrs School': 'North American Martyrs School',
-				'Pius X High School': 'Pius X High School',
-				'St. Andrew Tecumseh': 'St. Andrew Tecumseh',
-				'St. Cecilia Middle & High School': 'St. Cecilia Middle & High School',
-				'St. James Crete': 'St. James Crete',
-				'St. John Lincoln': 'St. John Lincoln',
-				'St. John Nepomucene Weston': 'St. John Nepomucene Weston',
-				'St. John the Baptist School': 'St. John the Baptist School',
-				'St. Joseph Beatrice': 'St. Joseph Beatrice',
-				'St. Joseph Lincoln': 'St. Joseph Lincoln',
-				'St. Joseph York': 'St. Joseph York',
-				'St. Michael Hastings': 'St. Michael Hastings',
-				'St. Michael Lincoln': 'St. Michael Lincoln',
-				'St. Patrick Lincoln': 'St. Patrick Lincoln',
-				'St. Patrick McCook': 'St. Patrick McCook',
-				'St. Peter Catholic School': 'St. Peter Catholic School',
-				'St. Teresa Elementary School': 'St. Teresa Elementary School',
-				'St. Vincent de Paul Seward': 'St. Vincent de Paul Seward',
-				'St. Wenceslaus Wahoo': 'St. Wenceslaus Wahoo',
-				'Villa Marie School': 'Villa Marie School'
+			$scope.schoolMap = {}
+			const rebuildSchoolMap = (changeType, staffRecords) => {
+				const schoolNames = {}
+				const records = Array.isArray(staffRecords) ? staffRecords : []
+				const addSchoolName = schoolName => {
+					const normalizedName = typeof schoolName === 'string' ? schoolName.trim() : ''
+					if (normalizedName) schoolNames[normalizedName] = true
+				}
+
+				records.forEach(record => {
+					addSchoolName(record.schname)
+					if (changeType === 'transferringStaff' && record.prev_school_name) {
+						addSchoolName(record.prev_school_name)
+					}
+				})
+
+				// Preserve the object reference used by PowerSchool's grid while replacing its available values.
+				Object.keys($scope.schoolMap).forEach(schoolName => delete $scope.schoolMap[schoolName])
+				Object.keys(schoolNames)
+					.sort((leftName, rightName) => leftName.localeCompare(rightName))
+					.forEach(schoolName => {
+						$scope.schoolMap[schoolName] = schoolName
+					})
 			}
 			$scope.subTypeMap = {
 				FSTS: 'FSTS',
@@ -104,97 +98,102 @@ define(function (require) {
 
 				const loadPromise = $scope.staffList.hasOwnProperty(changeType)
 					? $q.when()
-					: $q.all({
-						titles: loadTitleMap,
-						counts: jsonDataService.getData('staffChangeCountData', {
-							curSchoolID: $scope.curSchoolId,
-							calendarYear: $scope.calendarYear
-						}),
-						staff: jsonDataService.getData('staffChangeData', {
-							curSchoolID: $scope.curSchoolId,
-							calendarYear: $scope.calendarYear,
-							changeType: changeType
-						})
-					}).then(preload => {
-						$scope.staffChangeCounts = preload.counts[0] || {}
-						const staffResults = preload.staff
+					: $q
+							.all({
+								titles: loadTitleMap,
+								counts: jsonDataService.getData('staffChangeCountData', {
+									curSchoolID: $scope.curSchoolId,
+									calendarYear: $scope.calendarYear
+								}),
+								staff: jsonDataService.getData('staffChangeData', {
+									curSchoolID: $scope.curSchoolId,
+									calendarYear: $scope.calendarYear,
+									changeType: changeType
+								})
+							})
+							.then(preload => {
+								$scope.staffChangeCounts = preload.counts[0] || {}
+								const staffResults = preload.staff
 
-						if (!staffResults.length) {
-							$scope.staffList[changeType] = {}
-							return
+								if (!staffResults.length) {
+									$scope.staffList[changeType] = {}
+									return
+								}
+
+								$scope.staffList[changeType] = staffResults
+								const keys = ['ps', 'ad', 'o365', 'lms', 'canva']
+
+								$scope.staffList[changeType].forEach(item => {
+									keys.forEach(key => {
+										item[`${key}_complete`] = item[`${key}_created`] == 1 || item[`${key}_ignored`] == 1
+									})
+
+									if (item.change_type === 'subStaff' && item.sub_type === 'FSTS') {
+										item.ps_complete = true
+										item.lms_complete = true
+									}
+
+									if (item.change_type === 'exitingStaff' || item.change_type === 'jobChange') {
+										item.lms_complete = true
+									}
+
+									if (item.change_type === 'nameChange' && item.canva_transfer === '0') {
+										item.canva_complete = true
+									}
+
+									Object.keys(item).forEach(key => {
+										if (key.endsWith('_date')) {
+											item[key] = item[key] ? new Date(formatService.formatDateFromApi(item[key])) : null
+										}
+									})
+
+									item.completed = !!item.final_completion_date
+
+									if (item.submission_time) {
+										const timeParts = item.submission_time.split(' ')
+										const clockParts = timeParts[0].split(':')
+										const period = timeParts[1]
+										let hours24 = parseInt(clockParts[0], 10)
+
+										if (period === 'PM' && hours24 !== 12) hours24 += 12
+										else if (period === 'AM' && hours24 === 12) hours24 = 0
+
+										const submissionDate = new Date()
+										submissionDate.setHours(hours24)
+										submissionDate.setMinutes(parseInt(clockParts[1], 10))
+										submissionDate.setSeconds(0)
+										item.sort_time = submissionDate
+									}
+								})
+							})
+
+				return loadPromise
+					.then(() => {
+						rebuildSchoolMap(changeType, $scope.staffList[changeType])
+						const baseHeaders = ['School', 'Submitted By', 'Submission Date', 'Deadline']
+						const changeTypeLabel = $filter('changeTypeFilter')($scope.changeType)
+
+						if ($scope.changeType === 'newStaff') {
+							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date'])
+						} else if ($scope.changeType === 'transferringStaff') {
+							$scope.listHeaders = [changeTypeLabel, 'New School', 'Original School'].concat(baseHeaders.slice(1), ['PS Moved', 'AD Moved', 'O365 Moved', 'LMS Moved', 'Canva Moved', 'Completion Date'])
+						} else if ($scope.changeType === 'jobChange') {
+							$scope.listHeaders = ['Staff Name', 'Previous Position/Job', 'New Position/Job'].concat(baseHeaders, ['PS Changed', 'AD Changed', 'Completion Date'])
+						} else if ($scope.changeType === 'subStaff') {
+							$scope.listHeaders = [changeTypeLabel + ' Name', baseHeaders[0], 'Sub Type'].concat(baseHeaders.slice(1), ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Completion Date'])
+						} else if ($scope.changeType === 'nameChange') {
+							$scope.listHeaders = ["Staff's New Name", "Staff's Previous Name"].concat(baseHeaders, ['Canva Transferred', 'PS Changed', 'AD Changed', 'O365 Changed', 'LMS Changed', 'Completion Date'])
+						} else if ($scope.changeType === 'exitingStaff') {
+							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['Canva Transferred', 'PS Deactivated', 'AD Deactivated', 'Completion Date'])
+						} else if ($scope.changeType === 'allStaff') {
+							$scope.listHeaders = ['Staff Name', 'Change Type'].concat(baseHeaders, ['PS Complete', 'AD Complete', 'O365 Complete', 'LMS Complete', 'Canva Complete', 'Completion Date'])
+						} else {
+							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date'])
 						}
 
-						$scope.staffList[changeType] = staffResults
-						const keys = ['ps', 'ad', 'o365', 'lms', 'canva']
-
-						$scope.staffList[changeType].forEach(item => {
-							keys.forEach(key => {
-								item[`${key}_complete`] = item[`${key}_created`] == 1 || item[`${key}_ignored`] == 1
-							})
-
-							if (item.change_type === 'subStaff' && item.sub_type === 'FSTS') {
-								item.ps_complete = true
-								item.lms_complete = true
-							}
-
-							if (item.change_type === 'exitingStaff' || item.change_type === 'jobChange') {
-								item.lms_complete = true
-							}
-
-							if (item.change_type === 'nameChange' && item.canva_transfer === '0') {
-								item.canva_complete = true
-							}
-
-							Object.keys(item).forEach(key => {
-								if (key.endsWith('_date')) {
-									item[key] = item[key] ? new Date(formatService.formatDateFromApi(item[key])) : null
-								}
-							})
-
-							item.completed = !!item.final_completion_date
-
-							if (item.submission_time) {
-								const timeParts = item.submission_time.split(' ')
-								const clockParts = timeParts[0].split(':')
-								const period = timeParts[1]
-								let hours24 = parseInt(clockParts[0], 10)
-
-								if (period === 'PM' && hours24 !== 12) hours24 += 12
-								else if (period === 'AM' && hours24 === 12) hours24 = 0
-
-								const submissionDate = new Date()
-								submissionDate.setHours(hours24)
-								submissionDate.setMinutes(parseInt(clockParts[1], 10))
-								submissionDate.setSeconds(0)
-								item.sort_time = submissionDate
-							}
-						})
+						$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`)
 					})
-
-				return loadPromise.then(() => {
-					const baseHeaders = ['School', 'Submitted By', 'Submission Date', 'Deadline']
-					const changeTypeLabel = $filter('changeTypeFilter')($scope.changeType)
-
-					if ($scope.changeType === 'newStaff') {
-						$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date'])
-					} else if ($scope.changeType === 'transferringStaff') {
-						$scope.listHeaders = [changeTypeLabel, 'New School', 'Original School'].concat(baseHeaders.slice(1), ['PS Moved', 'AD Moved', 'O365 Moved', 'LMS Moved', 'Canva Moved', 'Completion Date'])
-					} else if ($scope.changeType === 'jobChange') {
-						$scope.listHeaders = ['Staff Name', 'Previous Position/Job', 'New Position/Job'].concat(baseHeaders, ['PS Changed', 'AD Changed', 'Completion Date'])
-					} else if ($scope.changeType === 'subStaff') {
-						$scope.listHeaders = [changeTypeLabel + ' Name', baseHeaders[0], 'Sub Type'].concat(baseHeaders.slice(1), ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Completion Date'])
-					} else if ($scope.changeType === 'nameChange') {
-						$scope.listHeaders = ["Staff's New Name", "Staff's Previous Name"].concat(baseHeaders, ['Canva Transferred', 'PS Changed', 'AD Changed', 'O365 Changed', 'LMS Changed', 'Completion Date'])
-					} else if ($scope.changeType === 'exitingStaff') {
-						$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['Canva Transferred', 'PS Deactivated', 'AD Deactivated', 'Completion Date'])
-					} else if ($scope.changeType === 'allStaff') {
-						$scope.listHeaders = ['Staff Name', 'Change Type'].concat(baseHeaders, ['PS Complete', 'AD Complete', 'O365 Complete', 'LMS Complete', 'Canva Complete', 'Completion Date'])
-					} else {
-						$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date'])
-					}
-
-					$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`)
-				}).finally(closeLoading)
+					.finally(closeLoading)
 			}
 
 			// fire the function to load the data
@@ -204,7 +203,6 @@ define(function (require) {
 			$scope.reloadData = () => {
 				$scope.staffChangeCounts = []
 				$scope.staffList = {}
-				// $scope.schoolMap ={}
 				$scope.selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context')
 				$scope.loadData($scope.selectedTab)
 			}
