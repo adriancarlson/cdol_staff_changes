@@ -585,6 +585,7 @@
                                                     name="sub-staff-ipad-radio-group" id="sub-staff-ipad-yes"
                                                     data-ng-model="submitPayload.subStaff.ipad_needed" value="1"
                                                     data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.subStaff.ipad_needed"
+                                                    data-ng-change="resetIpadCompletion('subStaff')"
                                                     tabindex="0">
                                                 <label class="form-check-label" for="sub-staff-ipad-yes">Yes</label>
                                             </div>
@@ -593,6 +594,7 @@
                                                     name="sub-staff-ipad-radio-group" id="sub-staff-ipad-no"
                                                     data-ng-model="submitPayload.subStaff.ipad_needed" value="0"
                                                     data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.subStaff.ipad_needed"
+                                                    data-ng-change="resetIpadCompletion('subStaff')"
                                                     tabindex="0">
                                                 <label class="form-check-label" for="sub-staff-ipad-no">No</label>
                                             </div>

@@ -180,6 +180,39 @@
                         </div>
                     </div>
                 </div>
+                <div class="col"
+                    data-ng-class="userContext.pageContext == 'exitingStaff' ? 'order-last' : 'order-4'"
+                    data-ng-show="submitPayload[userContext.pageContext].ipad_needed == '1' &&
+                        (userContext.pageContext != 'subStaff' || submitPayload[userContext.pageContext].sub_type == 'LTS')">
+                    <div class="card">
+                        <div
+                            class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
+                            <div class="row">
+                                <div class="col-auto me-auto">
+                                    <input class="form-check-input me-1" id="ipad_created" type="checkbox"
+                                        data-ng-model="submitPayload[userContext.pageContext].ipad_created"
+                                        data-ng-disabled="submitPayload[userContext.pageContext].ipad_ignored">
+                                    <label class="form-check-label" for="ipad_created" data-ng-switch
+                                        on="submitPayload[userContext.pageContext].change_type">
+                                        <span data-ng-switch-when="newStaff">Jamf user created and iPad assigned?</span>
+                                        <span data-ng-switch-when="transferringStaff">Jamf user created and iPad assigned?</span>
+                                        <span data-ng-switch-when="jobChange">Jamf user created and iPad assigned?</span>
+                                        <span data-ng-switch-when="subStaff">Jamf user created and iPad assigned?</span>
+                                        <span data-ng-switch-when="nameChange">Jamf user name updated?</span>
+                                        <span data-ng-switch-when="exitingStaff">Jamf user deleted?</span>
+                                    </label>
+                                </div>
+                                <div class="col-auto">
+                                    <input class="form-check-input me-1" id="ipad_ignored" type="checkbox"
+                                        data-ng-model="submitPayload[userContext.pageContext].ipad_ignored"
+                                        data-ng-disabled="submitPayload[userContext.pageContext].ipad_created">
+                                    <label class="form-check-label" for="ipad_ignored"><em>Not
+                                            Applicable</em></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col order-5"
                     data-ng-hide="userContext.pageContext =='jobChange' || userContext.pageContext =='exitingStaff' || (userContext.pageContext =='subStaff' &&  submitPayload[userContext.pageContext].sub_type !=='LTS')">
                     <div class="card">

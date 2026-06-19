@@ -471,6 +471,7 @@
                                                 id="transferring-staff-ipad-yes"
                                                 data-ng-model="submitPayload.transferringStaff.ipad_needed" value="1"
                                                 data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.transferringStaff.ipad_needed"
+                                                data-ng-change="resetIpadCompletion('transferringStaff')"
                                                 tabindex="0">
                                             <label class="form-check-label"
                                                 for="transferring-staff-ipad-yes">Yes</label>
@@ -481,6 +482,7 @@
                                                 id="transferring-staff-ipad-no"
                                                 data-ng-model="submitPayload.transferringStaff.ipad_needed" value="0"
                                                 data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.transferringStaff.ipad_needed"
+                                                data-ng-change="resetIpadCompletion('transferringStaff')"
                                                 tabindex="0">
                                             <label class="form-check-label" for="transferring-staff-ipad-no">No</label>
                                         </div>

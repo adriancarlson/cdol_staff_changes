@@ -166,6 +166,7 @@
                                                 name="job-change-ipad-radio-group" id="job-change-ipad-yes"
                                                 data-ng-model="submitPayload.jobChange.ipad_needed" value="1"
                                                 data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.jobChange.ipad_needed"
+                                                data-ng-change="resetIpadCompletion('jobChange')"
                                                 tabindex="0">
                                             <label class="form-check-label" for="job-change-ipad-yes">Yes</label>
                                         </div>
@@ -174,6 +175,7 @@
                                                 name="job-change-ipad-radio-group" id="job-change-ipad-no"
                                                 data-ng-model="submitPayload.jobChange.ipad_needed" value="0"
                                                 data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.jobChange.ipad_needed"
+                                                data-ng-change="resetIpadCompletion('jobChange')"
                                                 tabindex="0">
                                             <label class="form-check-label" for="job-change-ipad-no">No</label>
                                         </div>

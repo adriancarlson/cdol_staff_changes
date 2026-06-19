@@ -1330,6 +1330,12 @@ define(function (require) {
 				return ipadRequiredChangeTypes.includes(formPayload.change_type) ||
 					(formPayload.change_type === 'subStaff' && formPayload.sub_type === 'LTS')
 			}
+			$scope.resetIpadCompletion = pageContext => {
+				if ($scope.userContext.pageStatus !== 'Edit' || !$scope.submitPayload[pageContext]) return
+
+				$scope.submitPayload[pageContext].ipad_created = false
+				$scope.submitPayload[pageContext].ipad_ignored = false
+			}
 
 			const validateIpadAnswer = formPayload => {
 				if ($scope.userContext.pageStatus !== 'Submit' || !requiresIpadAnswer(formPayload) || hasIpadAnswer(formPayload)) {
