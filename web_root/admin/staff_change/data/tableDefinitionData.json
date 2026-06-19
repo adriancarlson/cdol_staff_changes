@@ -1,0 +1,50 @@
+~[tlist_sql;
+	SELECT
+		COALESCE(
+			JSON_ARRAYAGG(
+				JSON_OBJECT(
+					'field_name' VALUE table_fields.field_name,
+					'data_type' VALUE table_fields.data_type
+					RETURNING CLOB
+				)
+				ORDER BY table_fields.field_name
+				RETURNING CLOB
+			),
+			TO_CLOB('[]')
+		)
+	FROM
+		(
+			SELECT
+				LOWER(extschemadeffield.name) AS field_name,
+				CASE extschemadeffield.type
+					WHEN 'S' THEN 'String'
+					WHEN 'I' THEN 'Integer'
+					WHEN 'D' THEN 'Date'
+					WHEN 'F' THEN 'Double'
+					WHEN 'B' THEN 'Boolean'
+					WHEN 'C' THEN 'CLOB'
+					WHEN 'L' THEN 'BLOB'
+					WHEN 'O' THEN 'Integer'
+					ELSE extschemadeffield.type
+				END AS data_type
+			FROM
+				extschemadeffield
+				JOIN extschemadeftable
+					ON extschemadeftable.id = extschemadeffield.extschematable_id
+			WHERE
+				LOWER(extschemadeftable.dbtablename) = LOWER('~(gpv.tableName;sqlText)')
+
+			UNION
+
+			SELECT
+				CASE
+					WHEN extschemadeftable.coretable IS NULL THEN 'id'
+					ELSE LOWER(extschemadeftable.coretable) || extschemadeftable.coretablepk
+				END AS field_name,
+				'Integer' AS data_type
+			FROM
+				extschemadeftable
+			WHERE
+				LOWER(extschemadeftable.dbtablename) = LOWER('~(gpv.tableName;sqlText)')
+		) table_fields
+;]~(data)[/tlist_sql]

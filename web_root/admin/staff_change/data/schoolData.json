@@ -1,0 +1,19 @@
+~[tlist_sql;
+	SELECT
+		COALESCE(
+			JSON_ARRAYAGG(
+				JSON_OBJECT(
+					'identifier' VALUE TO_CHAR(schools.school_number),
+					'schoolname' VALUE schools.name
+					RETURNING CLOB
+				)
+				ORDER BY schools.name
+				RETURNING CLOB
+			),
+			TO_CLOB('[]')
+		)
+	FROM
+		schools
+	WHERE
+		schools.school_number NOT IN (888888, 999999, 79438)
+;]~(data)[/tlist_sql]

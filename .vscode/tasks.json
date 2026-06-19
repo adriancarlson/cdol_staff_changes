@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "buildplugin",
+			"type": "process",
+			"command": "py",
+			"args": ["-c", "import os, shutil, subprocess, sys, tempfile, xml.etree.ElementTree as ET\nrepo = os.getcwd()\npluginpack = os.path.abspath(os.path.join(repo, '..', '..', 'pluginpack.py'))\npermissions = os.path.join(repo, 'permissions_root')\nif not os.path.isfile(pluginpack):\n    raise SystemExit(f'pluginpack.py was not found: {pluginpack}')\nif not os.path.isdir(permissions):\n    raise SystemExit(f'permissions_root folder does not exist: {permissions}')\nsubprocess.run([sys.executable, pluginpack, '--input', repo, '--with-version', '--mask', r'(^|[\\\\/])permissions_root([\\\\/]|$)'], check=True)\nwith tempfile.TemporaryDirectory(prefix='staff_changes_data_access_') as temp:\n    shutil.copytree(permissions, os.path.join(temp, 'permissions_root'))\n    ET.register_namespace('', 'http://plugin.powerschool.pearson.com')\n    ET.register_namespace('xsi', 'http://www.w3.org/2001/XMLSchema-instance')\n    tree = ET.parse(os.path.join(repo, 'plugin.xml'))\n    root = tree.getroot()\n    root.set('name', root.get('name') + ' - Data Access')\n    root.set('description', 'Data Access for ' + root.get('description'))\n    tree.write(os.path.join(temp, 'plugin.xml'), encoding='UTF-8', xml_declaration=True)\n    subprocess.run([sys.executable, pluginpack, '--input', temp, '--with-version'], check=True)"],
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}

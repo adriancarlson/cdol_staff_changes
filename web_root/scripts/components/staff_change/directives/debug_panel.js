@@ -2,10 +2,10 @@
 define(function (require) {
 	const module = require('components/staff_change/module')
 
-	module.directive('start', [
+	module.directive('debugPanel', [
 		function () {
 			return {
-				templateUrl: '/admin/staff_change/views/forms/start.html'
+				templateUrl: '/admin/staff_change/views/debug_panel.html'
 			}
 		}
 	])

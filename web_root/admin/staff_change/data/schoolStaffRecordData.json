@@ -1,0 +1,49 @@
+~[tlist_sql;
+	SELECT
+		COALESCE(
+			JSON_ARRAYAGG(
+				JSON_OBJECT(
+					'ssdcid' VALUE TO_CHAR(data.dcid),
+					'schoolid' VALUE TO_CHAR(data.schoolid)
+					RETURNING CLOB
+				)
+				ORDER BY data.dcid
+				RETURNING CLOB
+			),
+			TO_CLOB('[]')
+		)
+	FROM (
+		SELECT
+			schoolstaff.dcid,
+			schoolstaff.schoolid
+		FROM
+			schoolstaff
+			INNER JOIN users ON users.dcid = schoolstaff.users_dcid
+		WHERE
+			users.dcid = ~(gpv.userDCID;num)
+			AND schoolstaff.schoolid = ~(gpv.schoolID;num)
+
+		UNION ALL
+
+		SELECT
+			schoolstaff.dcid,
+			schoolstaff.schoolid
+		FROM
+			schoolstaff
+			INNER JOIN users ON users.dcid = schoolstaff.users_dcid
+		WHERE
+			users.dcid = ~(gpv.userDCID;num)
+			AND schoolstaff.dcid = (
+				SELECT MAX(schoolstaff.dcid)
+				FROM schoolstaff
+				WHERE schoolstaff.users_dcid = ~(gpv.userDCID;num)
+			)
+			AND NOT EXISTS (
+				SELECT 1
+				FROM schoolstaff
+				WHERE
+					schoolstaff.users_dcid = ~(gpv.userDCID;num)
+					AND schoolstaff.schoolid = ~(gpv.schoolID;num)
+			)
+	) data
+;]~(data)[/tlist_sql]

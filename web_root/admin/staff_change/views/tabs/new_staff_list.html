@@ -35,38 +35,33 @@
             <tr data-ng-repeat="newStaff in filteredNewStaffList">
                 <td>{{$index +1}}</td>
                 <td class="nowrap staff-name-cell">
-                    <a href="/admin/staff_change/submit.html?status=Edit&id={{newStaff.staffid}}">
-                        {{newStaff.title}} {{newStaff.first_name}} {{newStaff.last_name}}</a>
+                    <a href="/admin/staff_change/submit.html?status=Edit&id={{::newStaff.staffid}}">
+                        {{::newStaff.display_name}}</a>
                     <span class="ms-2 external-link-hover">
-                        <a href="/admin/staff_change/submit.html?status=Edit&id={{newStaff.staffid}}" target="_blank"
+                        <a href="/admin/staff_change/submit.html?status=Edit&id={{::newStaff.staffid}}" target="_blank"
                             title="Open in new tab"><pds-icon name="external"
                                 class="style-scope x-scope pds-icon-0 pds-widget" pds-widget="pds-widget"
                                 style="zoom: 0.55;"></pds-icon>
                         </a>
                     </span>
                 </td>
-                <td class="nowrap">{{newStaff.schname}}</td>
-                <td class="nowrap">{{newStaff.submittedstaff}}</td>
-                <td class="nowrap">{{newStaff.submission_date | date : 'MM/dd/yyyy'}}
-                    {{newStaff.submission_time}}</td>
-                <td data-ng-class="getReqNotationClass(newStaff, curDate)">
-                    {{newStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <td><span
-                        data-ng-class="{'mark-complete': newStaff.ps_complete, 'mark-incomplete': !newStaff.ps_complete}"></span>
+                <td class="nowrap">{{::newStaff.schname}}</td>
+                <td class="nowrap">{{::newStaff.submittedstaff}}</td>
+                <td class="nowrap">{{::newStaff.submission_date | date : 'MM/dd/yyyy'}}
+                    {{::newStaff.submission_time}}</td>
+                <td data-ng-class="::newStaff.deadline_class">
+                    {{::newStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td><span data-ng-class="::newStaff.completion_display.ps.className">{{::newStaff.completion_display.ps.text}}</span>
                 </td>
-                <td><span
-                        data-ng-class="{'mark-complete': newStaff.ad_complete, 'mark-incomplete': !newStaff.ad_complete}"></span>
+                <td><span data-ng-class="::newStaff.completion_display.ad.className">{{::newStaff.completion_display.ad.text}}</span>
                 </td>
-                <td><span
-                        data-ng-class="{'mark-complete': newStaff.o365_complete, 'mark-incomplete': !newStaff.o365_complete}"></span>
+                <td><span data-ng-class="::newStaff.completion_display.o365.className">{{::newStaff.completion_display.o365.text}}</span>
                 </td>
-                <td><span
-                        data-ng-class="{'mark-complete': newStaff.lms_complete, 'mark-incomplete': !newStaff.lms_complete}"></span>
+                <td><span data-ng-class="::newStaff.completion_display.lms.className">{{::newStaff.completion_display.lms.text}}</span>
                 </td>
-                <td><span
-                        data-ng-class="{'mark-complete': newStaff.canva_complete, 'mark-incomplete': !newStaff.canva_complete}"></span>
+                <td><span data-ng-class="::newStaff.completion_display.canva.className">{{::newStaff.completion_display.canva.text}}</span>
                 </td>
-                <td>{{newStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td>{{::newStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
         </tbody>
     </table>

@@ -1,18 +1,21 @@
 'use strict'
 define(function (require) {
-	var module = require('components/staff_change/module')
+	const module = require('components/staff_change/module')
 
+	// The explicit dependency-name array protects AngularJS injection names during minification.
 	module.controller('staffChangeListCtrl', [
 		'$scope',
 		'$attrs',
 		'$filter',
-		'pqService',
+		'$q',
+		'jsonDataService',
 		'formatService',
-		function ($scope, $attrs, $filter, pqService, formatService) {
-			//This is here for troubleshooting purposes.
-			//Allows us to double click anywhere on the page and logs scope to console
+		function ($scope, $attrs, $filter, $q, jsonDataService, formatService) {
+			// Properties on $scope are consumed by the tab directives and PowerSchool grid templates.
+			// Double-clicking the page logs that shared scope for troubleshooting on any server.
 			$j(document).dblclick(() => console.log($scope))
 
+			// PowerSchool supplies the current school, year, and date as attributes on the Angular application element.
 			$scope.staffChangeCounts = []
 			$scope.staffList = {}
 			$scope.curSchoolId = $attrs.ngCurSchoolId
@@ -22,16 +25,18 @@ define(function (require) {
 			$scope.selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context')
 			$scope.changeType = ''
 			$scope.booleanMap = { Yes: true, No: false }
-			$scope.titleMap = {
-				'Mr.': 'Mr.',
-				'Mrs.': 'Mrs.',
-				'Ms.': 'Ms.',
-				'Dr.': 'Dr.',
-				'Fr.': 'Fr.',
-				'Msgr.': 'Msgr.',
-				'Sr.': 'Sr.',
-				'Br.': 'Br.'
-			}
+			$scope.titleMap = {}
+			// Start this stable lookup immediately; loadData includes the promise in $q.all before preparing rows.
+			const loadTitleMap = jsonDataService
+				.getData('titleData')
+				.then(titleData => {
+					titleData.forEach(title => {
+						$scope.titleMap[title.code] = title.code
+					})
+				})
+				.catch(() => {
+					$scope.titleMap = {}
+				})
 			$scope.changeMap = {
 				'New Staff': 'newStaff',
 				'Transferring-In Staff': 'transferringStaff',
@@ -41,186 +46,214 @@ define(function (require) {
 				'Exiting Staff': 'exitingStaff'
 			}
 
-			$scope.schoolMap = {
-				'All Saints Catholic School Holdrege': 'All Saints Catholic School Holdrege',
-				'Aquinas Catholic Elementary': 'Aquinas Catholic Elementary',
-				'Aquinas Catholic Middle/High': 'Aquinas Catholic Middle/High',
-				'Bishop Neumann Catholic Jr/Sr High School': 'Bishop Neumann Catholic Jr/Sr High School',
-				'Blessed Sacrament School': 'Blessed Sacrament School',
-				'Cathedral of the Risen Christ School': 'Cathedral of the Risen Christ School',
-				'Diocesan Office': 'Diocesan Office',
-				'Falls City Sacred Heart Elementary': 'Falls City Sacred Heart Elementary',
-				'Falls City Sacred Heart Jr/Sr High School': 'Falls City Sacred Heart Jr/Sr High School',
-				'Lourdes Central Catholic Elementary School': 'Lourdes Central Catholic Elementary School',
-				'Lourdes Central Catholic Middle/High School': 'Lourdes Central Catholic Middle/High School',
-				'North American Martyrs School': 'North American Martyrs School',
-				'Pius X High School': 'Pius X High School',
-				'St. Andrew Tecumseh': 'St. Andrew Tecumseh',
-				'St. Cecilia Middle & High School': 'St. Cecilia Middle & High School',
-				'St. James Crete': 'St. James Crete',
-				'St. John Lincoln': 'St. John Lincoln',
-				'St. John Nepomucene Weston': 'St. John Nepomucene Weston',
-				'St. John the Baptist School': 'St. John the Baptist School',
-				'St. Joseph Beatrice': 'St. Joseph Beatrice',
-				'St. Joseph Lincoln': 'St. Joseph Lincoln',
-				'St. Joseph York': 'St. Joseph York',
-				'St. Michael Hastings': 'St. Michael Hastings',
-				'St. Michael Lincoln': 'St. Michael Lincoln',
-				'St. Patrick Lincoln': 'St. Patrick Lincoln',
-				'St. Patrick McCook': 'St. Patrick McCook',
-				'St. Peter Catholic School': 'St. Peter Catholic School',
-				'St. Teresa Elementary School': 'St. Teresa Elementary School',
-				'St. Vincent de Paul Seward': 'St. Vincent de Paul Seward',
-				'St. Wenceslaus Wahoo': 'St. Wenceslaus Wahoo',
-				'Villa Marie School': 'Villa Marie School'
+			$scope.schoolMap = {}
+			// Grid filter maps must keep the same object reference after the grid initializes, so update it in place.
+			const rebuildSchoolMap = (changeType, staffRecords) => {
+				const schoolNames = {}
+				const records = Array.isArray(staffRecords) ? staffRecords : []
+				const addSchoolName = schoolName => {
+					const normalizedName = typeof schoolName === 'string' ? schoolName.trim() : ''
+					if (normalizedName) schoolNames[normalizedName] = true
+				}
+
+				records.forEach(record => {
+					addSchoolName(record.schname)
+					if (changeType === 'transferringStaff' && record.prev_school_name) {
+						addSchoolName(record.prev_school_name)
+					}
+				})
+
+				// Preserve the object reference used by PowerSchool's grid while replacing its available values.
+				Object.keys($scope.schoolMap).forEach(schoolName => delete $scope.schoolMap[schoolName])
+				Object.keys(schoolNames)
+					.sort((leftName, rightName) => leftName.localeCompare(rightName))
+					.forEach(schoolName => {
+						$scope.schoolMap[schoolName] = schoolName
+					})
 			}
 			$scope.subTypeMap = {
 				FSTS: 'FSTS',
 				LTS: 'LTS'
 			}
 
-			$scope.getReqNotationClass = (changeType, curDate) => {
-				if (changeType.completion_date >= curDate) return ''
+			const getDeadlineClass = staffRecord => {
+				if (staffRecord.completion_date >= $scope.curDate) return ''
 
-				const needsCanva = changeType.canva_transfer == '1' && !changeType.canva_complete
+				const needsCanva = staffRecord.canva_transfer == '1' && !staffRecord.canva_complete
 
-				if (changeType.sub_type === 'FSTS') {
-					return !changeType.ad_complete || !changeType.o365_complete || needsCanva ? 'req-notation' : ''
+				if (staffRecord.sub_type === 'FSTS') {
+					return !staffRecord.ad_complete || !staffRecord.o365_complete || needsCanva ? 'req-notation' : ''
 				}
 
-				if (changeType.change_type === 'exitingStaff' || changeType.change_type === 'jobChange') {
-					return !changeType.ps_complete || !changeType.ad_complete || needsCanva ? 'req-notation' : ''
+				if (staffRecord.change_type === 'exitingStaff' || staffRecord.change_type === 'jobChange') {
+					return !staffRecord.ps_complete || !staffRecord.ad_complete || needsCanva ? 'req-notation' : ''
 				}
 
-				if (changeType.change_type === 'newStaff' || changeType.change_type === 'transferringStaff') {
-					return !changeType.ps_complete || !changeType.ad_complete || !changeType.o365_complete || !changeType.lms_complete || !changeType.canva_complete ? 'req-notation' : ''
+				if (staffRecord.change_type === 'newStaff' || staffRecord.change_type === 'transferringStaff') {
+					return !staffRecord.ps_complete || !staffRecord.ad_complete || !staffRecord.o365_complete || !staffRecord.lms_complete || !staffRecord.canva_complete ? 'req-notation' : ''
 				}
 
-				return !changeType.ps_complete || !changeType.ad_complete || !changeType.o365_complete || !changeType.lms_complete || needsCanva ? 'req-notation' : ''
+				return !staffRecord.ps_complete || !staffRecord.ad_complete || !staffRecord.o365_complete || !staffRecord.lms_complete || needsCanva ? 'req-notation' : ''
 			}
 
-			$scope.loadData = async changeType => {
-				loadingDialog()
-				$scope.changeType = changeType
-
-				// Only fetch data from API if we haven't already cached it
-				if (!$scope.staffList.hasOwnProperty(changeType)) {
-					const pqData = { curSchoolID: $scope.curSchoolId, calendarYear: $scope.calendarYear }
-
-					// Get staff counts
-					const countRes = await pqService.getPQResults('net.cdolinc.staffChanges.staff.counts', pqData)
-					$scope.staffChangeCounts = countRes[0]
-
-					// Add changeType for PQ call
-					pqData.changeType = changeType
-
-					// Fetch staff list for this changeType
-					const res = await pqService.getPQResults('net.cdolinc.staffChanges.staff.changes', pqData)
-
-					if (res.length > 0) {
-						$scope.staffList[changeType] = res
-
-						const keys = ['ps', 'ad', 'o365', 'lms', 'canva']
-
-						$scope.staffList[changeType].forEach(item => {
-							keys.forEach(key => {
-								item[`${key}_complete`] = item[`${key}_created`] == 1 || item[`${key}_ignored`] == 1
-							})
-
-							if (item.change_type === 'subStaff' && item.sub_type === 'FSTS') {
-								item.ps_complete = true
-								item.lms_complete = true
-							}
-
-							if (item.change_type === 'exitingStaff' || item.change_type === 'jobChange') {
-								item.lms_complete = true
-							}
-
-							if (item.change_type === 'nameChange' && item.canva_transfer === '0') {
-								item.canva_complete = true
-							}
-
-							Object.keys(item).forEach(key => {
-								if (key.endsWith('_date')) {
-									item[key] = new Date(formatService.formatDateFromApi(item[key]))
-								}
-							})
-
-							item.completed = !!item.final_completion_date
-
-							if (item.submission_time) {
-								const [time, period] = item.submission_time.split(' ')
-								const [hours, minutes] = time.split(':')
-								let hours24 = parseInt(hours, 10)
-
-								if (period === 'PM' && hours24 !== 12) hours24 += 12
-								else if (period === 'AM' && hours24 === 12) hours24 = 0
-
-								const submissionDate = new Date()
-								submissionDate.setHours(hours24)
-								submissionDate.setMinutes(parseInt(minutes, 10))
-								submissionDate.setSeconds(0)
-
-								item.sort_time = submissionDate
-							}
-						})
-					} else {
-						$scope.staffList[changeType] = {}
+			const buildCompletionDisplay = (isApplicable, isComplete) => {
+				if (!isApplicable) {
+					return {
+						className: 'text-primary fs-6 fw-medium',
+						text: '- - -'
 					}
 				}
 
-				// ✅ Always update listHeaders, even if data is cached
-				let baseHeaders = ['School', 'Submitted By', 'Submission Date', 'Deadline']
-
-				if ($scope.changeType === 'newStaff') {
-					$scope.listHeaders = [$filter('changeTypeFilter')($scope.changeType), ...baseHeaders, 'PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date']
-				} else if ($scope.changeType === 'transferringStaff') {
-					$scope.listHeaders = [$filter('changeTypeFilter')($scope.changeType), 'New School', 'Original School', ...baseHeaders.slice(1), 'PS Moved', 'AD Moved', 'O365 Moved', 'LMS Moved', 'Canva Moved', 'Completion Date']
-				} else if ($scope.changeType === 'jobChange') {
-					$scope.listHeaders = ['Staff Name', 'Previous Position/Job', 'New Position/Job', ...baseHeaders, 'PS Changed', 'AD Changed', 'Completion Date']
-				} else if ($scope.changeType === 'subStaff') {
-					$scope.listHeaders = [
-						$filter('changeTypeFilter')($scope.changeType) + ' Name',
-						baseHeaders[0], // School
-						'Sub Type',
-						...baseHeaders.slice(1),
-						'PS Created',
-						'AD Created',
-						'O365 Created',
-						'LMS Created',
-						'Completion Date'
-					]
-				} else if ($scope.changeType === 'nameChange') {
-					$scope.listHeaders = ["Staff's New Name", "Staff's Previous Name", ...baseHeaders, 'Canva Transferred', 'PS Changed', 'AD Changed', 'O365 Changed', 'LMS Changed', 'Completion Date']
-				} else if ($scope.changeType === 'exitingStaff') {
-					$scope.listHeaders = [$filter('changeTypeFilter')($scope.changeType), ...baseHeaders, 'Canva Transferred', 'PS Deactivated', 'AD Deactivated', 'Completion Date']
-				} else if ($scope.changeType === 'allStaff') {
-					$scope.listHeaders = ['Staff Name', 'Change Type', ...baseHeaders, 'PS Complete', 'AD Complete', 'O365 Complete', 'LMS Complete', 'Canva Complete', 'Completion Date']
-				} else {
-					// fallback
-					$scope.listHeaders = [$filter('changeTypeFilter')($scope.changeType), ...baseHeaders, 'PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date']
+				return {
+					className: isComplete ? 'mark-complete' : 'mark-incomplete',
+					text: ''
 				}
-
-				$scope.$applyAsync()
-
-				// Update nav count
-				$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`)
-
-				closeLoading()
 			}
 
-			// fire the function to load the data
+			const changeTypeClasses = {
+				newStaff: 'text-success',
+				transferringStaff: 'text-primary',
+				jobChange: 'text-info',
+				subStaff: 'text-indigo',
+				nameChange: 'text-warning',
+				exitingStaff: 'text-secondary'
+			}
+
+			// Normalize each API row once. Templates then bind simple display properties instead of recalculating them
+			// during every Angular digest cycle, including for hidden tabs.
+			const prepareStaffRecord = staffRecord => {
+				const completionKeys = ['ps', 'ad', 'o365', 'lms', 'canva']
+
+				completionKeys.forEach(key => {
+					staffRecord[`${key}_complete`] = staffRecord[`${key}_created`] == 1 || staffRecord[`${key}_ignored`] == 1
+				})
+
+				const isFsts = staffRecord.change_type === 'subStaff' && staffRecord.sub_type === 'FSTS'
+				const excludesOfficeAndLms = staffRecord.change_type === 'exitingStaff' || staffRecord.change_type === 'jobChange'
+
+				if (isFsts) {
+					staffRecord.ps_complete = true
+					staffRecord.lms_complete = true
+				}
+
+				if (excludesOfficeAndLms) staffRecord.lms_complete = true
+				if (staffRecord.change_type === 'nameChange' && staffRecord.canva_transfer === '0') staffRecord.canva_complete = true
+
+				Object.keys(staffRecord).forEach(key => {
+					if (key.endsWith('_date')) {
+						staffRecord[key] = staffRecord[key] ? new Date(formatService.formatDateFromApi(staffRecord[key])) : null
+					}
+				})
+
+				const canvaApplies = staffRecord.change_type === 'newStaff' || staffRecord.change_type === 'transferringStaff' || ((staffRecord.change_type === 'nameChange' || staffRecord.change_type === 'exitingStaff') && staffRecord.canva_transfer == '1')
+
+				// Store settled display values so hidden, cached tabs do not repeatedly evaluate formatting rules.
+				staffRecord.display_name = formatService.formatStaffFullName(staffRecord, { fallbackField: 'old_name_placeholder' })
+				staffRecord.change_type_label = $filter('changeTypeFilter')(staffRecord.change_type) || staffRecord.change_type
+				staffRecord.change_type_class = changeTypeClasses[staffRecord.change_type] || ''
+				staffRecord.sub_type_suffix = staffRecord.change_type === 'subStaff' && staffRecord.sub_type ? ` (${staffRecord.sub_type})` : ''
+				staffRecord.completion_display = {
+					ps: buildCompletionDisplay(!isFsts, staffRecord.ps_complete),
+					ad: buildCompletionDisplay(true, staffRecord.ad_complete),
+					o365: buildCompletionDisplay(!excludesOfficeAndLms, staffRecord.o365_complete),
+					lms: buildCompletionDisplay(!excludesOfficeAndLms && !isFsts, staffRecord.lms_complete),
+					canva: buildCompletionDisplay(canvaApplies, staffRecord.canva_complete)
+				}
+				staffRecord.deadline_class = getDeadlineClass(staffRecord)
+				staffRecord.completed = !!staffRecord.final_completion_date
+
+				if (staffRecord.submission_time) {
+					const timeParts = staffRecord.submission_time.split(' ')
+					const clockParts = timeParts[0].split(':')
+					const period = timeParts[1]
+					let hours24 = parseInt(clockParts[0], 10)
+
+					if (period === 'PM' && hours24 !== 12) hours24 += 12
+					else if (period === 'AM' && hours24 === 12) hours24 = 0
+
+					const submissionDate = new Date()
+					submissionDate.setHours(hours24)
+					submissionDate.setMinutes(parseInt(clockParts[1], 10))
+					submissionDate.setSeconds(0)
+					staffRecord.sort_time = submissionDate
+				}
+			}
+
+			// Each tab is loaded once per year/school view. $q.when represents an already-complete load for cached tabs,
+			// while $q.all loads counts, titles, and records together for a new tab.
+			$scope.loadData = changeType => {
+				loadingDialog()
+				$scope.changeType = changeType
+
+				const loadPromise = $scope.staffList.hasOwnProperty(changeType)
+					? $q.when()
+					: $q
+							.all({
+								titles: loadTitleMap,
+								counts: jsonDataService.getData('staffChangeCountData', {
+									curSchoolID: $scope.curSchoolId,
+									calendarYear: $scope.calendarYear
+								}),
+								staff: jsonDataService.getData('staffChangeData', {
+									curSchoolID: $scope.curSchoolId,
+									calendarYear: $scope.calendarYear,
+									changeType: changeType
+								})
+							})
+							.then(preload => {
+								$scope.staffChangeCounts = preload.counts[0] || {}
+								const staffResults = preload.staff
+
+								if (!staffResults.length) {
+									$scope.staffList[changeType] = {}
+									return
+								}
+
+								$scope.staffList[changeType] = staffResults
+								$scope.staffList[changeType].forEach(prepareStaffRecord)
+							})
+
+				return loadPromise
+					.then(() => {
+						rebuildSchoolMap(changeType, $scope.staffList[changeType])
+						const baseHeaders = ['School', 'Submitted By', 'Submission Date', 'Deadline']
+						const changeTypeLabel = $filter('changeTypeFilter')($scope.changeType)
+
+						if ($scope.changeType === 'newStaff') {
+							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date'])
+						} else if ($scope.changeType === 'transferringStaff') {
+							$scope.listHeaders = [changeTypeLabel, 'New School', 'Original School'].concat(baseHeaders.slice(1), ['PS Moved', 'AD Moved', 'O365 Moved', 'LMS Moved', 'Canva Moved', 'Completion Date'])
+						} else if ($scope.changeType === 'jobChange') {
+							$scope.listHeaders = ['Staff Name', 'Previous Position/Job', 'New Position/Job'].concat(baseHeaders, ['PS Changed', 'AD Changed', 'Completion Date'])
+						} else if ($scope.changeType === 'subStaff') {
+							$scope.listHeaders = [changeTypeLabel + ' Name', baseHeaders[0], 'Sub Type'].concat(baseHeaders.slice(1), ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Completion Date'])
+						} else if ($scope.changeType === 'nameChange') {
+							$scope.listHeaders = ["Staff's New Name", "Staff's Previous Name"].concat(baseHeaders, ['Canva Transferred', 'PS Changed', 'AD Changed', 'O365 Changed', 'LMS Changed', 'Completion Date'])
+						} else if ($scope.changeType === 'exitingStaff') {
+							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['Canva Transferred', 'PS Deactivated', 'AD Deactivated', 'Completion Date'])
+						} else if ($scope.changeType === 'allStaff') {
+							$scope.listHeaders = ['Staff Name', 'Change Type'].concat(baseHeaders, ['PS Complete', 'AD Complete', 'O365 Complete', 'LMS Complete', 'Canva Complete', 'Completion Date'])
+						} else {
+							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date'])
+						}
+
+						$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`)
+					})
+					.finally(closeLoading)
+			}
+
+			// Load the tab selected by PowerSchool when the controller first starts.
 			$scope.loadData($scope.selectedTab)
 
-			// grab selected tab reload data and have the selected tab display data
+			// Reload intentionally clears every tab cache so counts and records are fetched again from the server.
 			$scope.reloadData = () => {
 				$scope.staffChangeCounts = []
 				$scope.staffList = {}
-				// $scope.schoolMap ={}
 				$scope.selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context')
 				$scope.loadData($scope.selectedTab)
 			}
 
+			// Export the grid's filtered collection rather than the full tab cache, matching what the user sees onscreen.
 			$scope.exportGridData = () => {
 				const changeType = $scope.changeType
 				const listName = `filtered${changeType.charAt(0).toUpperCase()}${changeType.slice(1)}List`
@@ -231,25 +264,10 @@ define(function (require) {
 					return
 				}
 
-				// Helper function to format names with title filtering
-				const formatNameWithTitle = (titleField, firstNameField, lastNameField) => {
-					return row => {
-						const title = row[titleField] || ''
-						const firstName = row[firstNameField] || ''
-						const excludedTitlePrefixes = ['Fr.', 'Msgr.', 'Sr.', 'Br.']
-
-						// Check if first name starts with any of the excluded religious titles
-						const hasReligiousPrefix = excludedTitlePrefixes.some(prefix => firstName.startsWith(prefix))
-						const displayTitle = title && !hasReligiousPrefix ? title : ''
-
-						return `${displayTitle} ${firstName} ${row[lastNameField] || ''}`.trim()
-					}
-				}
-
 				let fieldMap = [
 					{
 						label: changeType === 'allStaff' ? 'Staff Name' : $filter('changeTypeFilter')(changeType),
-						key: formatNameWithTitle('title', 'first_name', 'last_name')
+						key: row => formatService.formatStaffFullName(row, { fallbackField: 'old_name_placeholder' })
 					},
 					{ label: 'School', key: 'schname' },
 					{ label: 'Submitted By', key: 'submittedstaff' },
@@ -274,7 +292,7 @@ define(function (require) {
 					{ label: 'Previous Employer', key: 'prev_school_name' },
 					{
 						label: 'Replacing',
-						key: formatNameWithTitle('replace_title', 'replace_first_name', 'replace_last_name')
+						key: row => formatService.formatStaffFullName(row, { prefix: 'replace_' })
 					},
 					{ label: 'Calendar Year', key: 'calendar_year' },
 					{ label: 'Jitbit Ticket ID', key: 'ticket_id' }
@@ -418,6 +436,7 @@ define(function (require) {
 			}
 		}
 	])
+	// These filters translate stored codes into labels used by list templates and exports.
 	module.filter('changeTypeFilter', function () {
 		const reverseMap = {
 			newStaff: 'New Staff',

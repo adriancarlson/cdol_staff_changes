@@ -1,6 +1,6 @@
 'use strict'
 define(function (require) {
-	let module = require('components/staff_change/module')
+	const module = require('components/staff_change/module')
 
 	module.directive('formButtons', [
 		function () {
