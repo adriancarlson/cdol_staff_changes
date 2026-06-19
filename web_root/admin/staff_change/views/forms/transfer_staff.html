@@ -144,57 +144,6 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header fw-semibold ps-1">iPad Information</div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12 col-lg-5">
-                                        <label for="transferring-staff-ipad-yes"
-                                            class="form-label form-label-sm label-reset staff-change-req">Will
-                                            {{submitPayload.transferringStaff.title}}
-                                            {{submitPayload.transferringStaff.first_name}}
-                                            {{submitPayload.transferringStaff.last_name}} be assigned an iPad and need
-                                            a JAMF account created for them?</label><br>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio"
-                                                name="transferring-staff-ipad-radio-group"
-                                                id="transferring-staff-ipad-yes"
-                                                data-ng-model="submitPayload.transferringStaff.ipad_needed" value="1"
-                                                data-ng-required="!submitPayload.transferringStaff.ipad_needed"
-                                                tabindex="0">
-                                            <label class="form-check-label"
-                                                for="transferring-staff-ipad-yes">Yes</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio"
-                                                name="transferring-staff-ipad-radio-group"
-                                                id="transferring-staff-ipad-no"
-                                                data-ng-model="submitPayload.transferringStaff.ipad_needed" value="0"
-                                                data-ng-required="!submitPayload.transferringStaff.ipad_needed"
-                                                tabindex="0">
-                                            <label class="form-check-label" for="transferring-staff-ipad-no">No</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-lg-7 mt-3 mt-lg-0" data-ng-if="userContext.pageStatus =='Submit'">
-                                        <div class="alert alert-primary" role="alert"><i
-                                                class="bi bi-chat-right-text-fill"></i>
-                                            iPads generally stay at the previous school.
-                                            {{submitPayload.transferringStaff.title}}
-                                            {{submitPayload.transferringStaff.first_name}}
-                                            {{submitPayload.transferringStaff.last_name}} should have left their iPad at
-                                            {{submitPayload.transferringStaff.prev_school_name}}. Will your school be
-                                            assigning {{submitPayload.transferringStaff.title}}
-                                            {{submitPayload.transferringStaff.first_name}}
-                                            {{submitPayload.transferringStaff.last_name}} an iPad?
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid">
                     <div class="col-12 col-md-auto">
                         <label class="form-label form-label-sm label-reset staff-change-req">Requested
                             Account Transfer Date</label><br>
@@ -224,7 +173,9 @@
                                 data-ng-if="submitPayload.transferringStaff.deadline == userContext.lastDay">All
                                 Transferring-In
                                 Staff that will start next school year cannot be transferred until June 30<sup>th</sup>
-                                as their previous school will still needs access to their account.<br></span>
+                                as {{submitPayload.transferringStaff.gender | possessivePronoun}} previous school will
+                                still need access to {{submitPayload.transferringStaff.gender | possessivePronoun}}
+                                account.<br></span>
                             Please allow <strong><em>at least</em></strong> 3 business days for account transfer.
                         </div>
                         <div data-ng-if="userContext.invalidDate" class="alert alert-danger" role="alert"><i
@@ -494,6 +445,60 @@
                                                 tabindex="0">
                                             <label class="form-check-label"
                                                 for="transferring-additional-school-radio-no">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.transferringStaff.users_dcid">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header fw-semibold ps-1">iPad Information</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 col-lg-5">
+                                        <label for="transferring-staff-ipad-yes"
+                                            class="form-label form-label-sm label-reset staff-change-req">Will
+                                            {{submitPayload.transferringStaff.title}}
+                                            {{submitPayload.transferringStaff.first_name}}
+                                            {{submitPayload.transferringStaff.last_name}} be assigned an iPad and need
+                                            a Jamf user account created?</label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio"
+                                                name="transferring-staff-ipad-radio-group"
+                                                id="transferring-staff-ipad-yes"
+                                                data-ng-model="submitPayload.transferringStaff.ipad_needed" value="1"
+                                                data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.transferringStaff.ipad_needed"
+                                                tabindex="0">
+                                            <label class="form-check-label"
+                                                for="transferring-staff-ipad-yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio"
+                                                name="transferring-staff-ipad-radio-group"
+                                                id="transferring-staff-ipad-no"
+                                                data-ng-model="submitPayload.transferringStaff.ipad_needed" value="0"
+                                                data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.transferringStaff.ipad_needed"
+                                                tabindex="0">
+                                            <label class="form-check-label" for="transferring-staff-ipad-no">No</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-7 mt-3 mt-lg-0"
+                                        data-ng-if="userContext.pageStatus =='Submit'">
+                                        <div class="alert alert-primary" role="alert"><i
+                                                class="bi bi-chat-right-text-fill"></i>
+                                            iPads generally stay at the previous school.
+                                            {{submitPayload.transferringStaff.title}}
+                                            {{submitPayload.transferringStaff.first_name}}
+                                            {{submitPayload.transferringStaff.last_name}} should have left
+                                            {{submitPayload.transferringStaff.gender | possessivePronoun}} iPad at
+                                            {{submitPayload.transferringStaff.prev_school_name}}.<br> Will
+                                            {{userContext.curSchoolName}} be assigning
+                                            {{submitPayload.transferringStaff.title}}
+                                            {{submitPayload.transferringStaff.first_name}}
+                                            {{submitPayload.transferringStaff.last_name}} an iPad?
                                         </div>
                                     </div>
                                 </div>

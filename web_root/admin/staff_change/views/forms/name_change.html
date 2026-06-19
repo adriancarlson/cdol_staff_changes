@@ -5,11 +5,12 @@
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">
                     <div class="col-auto">
-                        <label for="name-change-user" class="form-label form-label-sm label-reset staff-change-req">Whose name
+                        <label for="name-change-user"
+                            class="form-label form-label-sm label-reset staff-change-req">Whose name
                             is changing?</label>
-                        <select class="form-select form-select-sm" id="name-change-user" aria-label="Whose name is changing?"
-                            data-ng-model="submitPayload.nameChange.users_dcid" data-ng-required="true"
-                            data-ng-disabled="lookupLoading.primaryUsers"
+                        <select class="form-select form-select-sm" id="name-change-user"
+                            aria-label="Whose name is changing?" data-ng-model="submitPayload.nameChange.users_dcid"
+                            data-ng-required="true" data-ng-disabled="lookupLoading.primaryUsers"
                             data-ng-options="user.identifier as user.optionLabel for user in primaryUserOptions"
                             data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.nameChange.users_dcid, 'users_dcid', primaryUserOptions)">
                             <option value=""></option>
@@ -18,7 +19,8 @@
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Edit'">
                     <div class="col-12 col-md-8 col-xl-6">
-                        <label for="name-change-user" class="form-label form-label-sm label-reset staff-change-req">Previous
+                        <label for="name-change-user"
+                            class="form-label form-label-sm label-reset staff-change-req">Previous
                             Name:</label><br />
                         <span class="blockquote ms-2 mt-1">{{submitPayload.nameChange.old_name_placeholder}}</span>
                         <a class="button ms-2 p-1" style="padding: 6px"
@@ -31,76 +33,82 @@
                     <div class="col-12 col-md-4 col-xl-3" data-ng-if="userContext.pageStatus =='Edit'">
                         <label for="name-change-staff-school"
                             class="form-label form-label-sm label-reset">School</label>
-                        <div id="name-change-staff-school" class="input-group">{{submitPayload.nameChange.schoolid | schoolName}}</div>
+                        <div id="name-change-staff-school" class="input-group">{{submitPayload.nameChange.schoolid |
+                            schoolName}}</div>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.users_dcid">
                     <div class="col-12 col-lg-7 col-xl-6">
-                        <label for="name-change-title"
-                            class="form-label form-label-sm  label-reset staff-change-req"
+                        <label for="name-change-title" class="form-label form-label-sm  label-reset staff-change-req"
                             data-ng-if="userContext.pageStatus =='Submit'">Please
                             <mark>change name below</mark> to {{submitPayload.nameChange.old_name_placeholder}}'s new
                             name</label>
-                        <label for="name-change-title"
-                            class="form-label form-label-sm  label-reset staff-change-req"
-                            data-ng-if="userContext.pageStatus =='Edit' && !submitPayload.nameChange.ps_created">New Name:</label>
-                        <label for="name-change-name"
-                            class="form-label form-label-sm  label-reset"
-                            data-ng-if="userContext.pageStatus =='Edit' && submitPayload.nameChange.ps_created">New Name:</label>
-                        <div class="input-group staff-name-input-group" data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.nameChange.ps_created)">
-                            <select id="name-change-title" class="form-select form-select-sm staff-title-select" aria-label="New staff title"
-                                data-ng-model="submitPayload.nameChange.title" data-ng-required="true"
+                        <label for="name-change-title" class="form-label form-label-sm  label-reset staff-change-req"
+                            data-ng-if="userContext.pageStatus =='Edit' && !submitPayload.nameChange.ps_created">New
+                            Name:</label>
+                        <label for="name-change-name" class="form-label form-label-sm  label-reset"
+                            data-ng-if="userContext.pageStatus =='Edit' && submitPayload.nameChange.ps_created">New
+                            Name:</label>
+                        <div class="input-group staff-name-input-group"
+                            data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.nameChange.ps_created)">
+                            <select id="name-change-title" class="form-select form-select-sm staff-title-select"
+                                aria-label="New staff title" data-ng-model="submitPayload.nameChange.title"
+                                data-ng-required="true"
                                 data-ng-options="title.code as title.code for title in titleData">
                                 <option selected></option>
                             </select>
-                            <input type="text" class="form-control form-control-sm staff-name-field" placeholder="First name"
-                                aria-label="First name" data-ng-model="submitPayload.nameChange.first_name"
+                            <input type="text" class="form-control form-control-sm staff-name-field"
+                                placeholder="First name" aria-label="First name"
+                                data-ng-model="submitPayload.nameChange.first_name"
                                 data-ng-blur="submitPayload.nameChange.first_name = (submitPayload.nameChange.first_name | titleCase)"
                                 data-ng-required="true">
-                            <input type="text" class="form-control form-control-sm staff-name-field" placeholder="Middle name"
-                                aria-label="Middle name" data-ng-model="submitPayload.nameChange.middle_name"
+                            <input type="text" class="form-control form-control-sm staff-name-field"
+                                placeholder="Middle name" aria-label="Middle name"
+                                data-ng-model="submitPayload.nameChange.middle_name"
                                 data-ng-blur="submitPayload.nameChange.middle_name = (submitPayload.nameChange.middle_name | titleCase)">
-                            <input type="text" class="form-control form-control-sm staff-name-field" placeholder="Last name"
-                                aria-label="Last name" data-ng-model="submitPayload.nameChange.last_name"
+                            <input type="text" class="form-control form-control-sm staff-name-field"
+                                placeholder="Last name" aria-label="Last name"
+                                data-ng-model="submitPayload.nameChange.last_name"
                                 data-ng-blur="submitPayload.nameChange.last_name = (submitPayload.nameChange.last_name | titleCase);dupeSearch(userContext.pageContext, submitPayload[userContext.formType])"
                                 data-ng-required="true">
                         </div>
                         <div data-ng-if="userContext.pageStatus == 'Edit' && submitPayload.nameChange.ps_created"
-                            id="name-change-name" class="blockquote ms-2 mt-1">{{submitPayload.nameChange | staffFullName}}</div>
+                            id="name-change-name" class="blockquote ms-2 mt-1">{{submitPayload.nameChange |
+                            staffFullName}}</div>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.users_dcid">
                     <div class="col-auto">
                         <label data-ng-if="userContext.pageStatus =='Submit'"
                             class="form-label form-label-sm label-reset staff-change-req">Has
-                            {{submitPayload.nameChange.old_name_placeholder}} used
+                            {{submitPayload.nameChange | staffFullName}} used
                             {{submitPayload.nameChange.email_addr}} for <em>Canva for Education</em> and need
-                            to keep access to their projects?</label>
+                            to keep access to {{submitPayload.nameChange.gender | possessivePronoun}} projects?</label>
                         <label data-ng-if="userContext.pageStatus =='Edit'"
                             class="form-label form-label-sm label-reset staff-change-req">
-                            {{submitPayload.nameChange.old_name_placeholder}} needs
+                            {{submitPayload.nameChange | staffFullName}} needs
                             to keep access to <em>Canva</em> projects?</label><br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="canva-radio-group" id="name-change-canva-radio-yes"
-                                data-ng-model="submitPayload.nameChange.canva_transfer" value="1"
-                                data-ng-required="!submitPayload.nameChange.canva_transfer" tabindex="0">
+                            <input class="form-check-input" type="radio" name="canva-radio-group"
+                                id="name-change-canva-radio-yes" data-ng-model="submitPayload.nameChange.canva_transfer"
+                                value="1" data-ng-required="!submitPayload.nameChange.canva_transfer" tabindex="0">
                             <label class="form-check-label" for="name-change-canva-radio-yes">Yes</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="canva-radio-group" id="name-change-canva-radio-no"
-                                data-ng-model="submitPayload.nameChange.canva_transfer" value="0"
-                                data-ng-required="!submitPayload.nameChange.canva_transfer" tabindex="0">
+                            <input class="form-check-input" type="radio" name="canva-radio-group"
+                                id="name-change-canva-radio-no" data-ng-model="submitPayload.nameChange.canva_transfer"
+                                value="0" data-ng-required="!submitPayload.nameChange.canva_transfer" tabindex="0">
                             <label class="form-check-label" for="name-change-canva-radio-no">No</label>
                         </div>
                         <br>
                         <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary" role="alert">
                             <i class="bi bi-chat-right-text-fill"></i>
                             Please
-                            <strong>Double check with {{submitPayload.nameChange.old_name_placeholder}}</strong> as
-                            we
-                            must submit a form to <em>Canva for Education</em> to change
-                            {{submitPayload.nameChange.old_name_placeholder}}'s name and give them access to their
-                            projects again.
+                            <strong>Double check with {{submitPayload.nameChange | staffFullName}}</strong> as we
+                            must submit a form to <em>Canva for Education</em> to complete the name change for
+                            {{submitPayload.nameChange | staffFullName}} and give
+                            {{submitPayload.nameChange.gender | objectPronoun}} access to
+                            {{submitPayload.nameChange.gender | possessivePronoun}} projects again.
                         </div>
                     </div>
                 </div>
@@ -109,16 +117,17 @@
                         <label class="form-label form-label-sm label-reset staff-change-req">Requested
                             Change Date</label><br>
                         <div class="d-flex align-items-center flex-nowrap">
-                            <input id="nameChange-deadline" title="Requested Name Change Date" type="text" class="psDateWidget"
-                                data-minDate="{{getDeadlineMinDate('nameChange')}}" data-ng-model="submitPayload.nameChange.deadline"
+                            <input id="nameChange-deadline" title="Requested Name Change Date" type="text"
+                                class="psDateWidget" data-minDate="{{getDeadlineMinDate('nameChange')}}"
+                                data-ng-model="submitPayload.nameChange.deadline"
                                 data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.nameChange.deadline = userContext.tempDeadline : submitPayload.nameChange.deadline"
                                 data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
                             <script type="text/javascript">initBehaviors();</script>
-                            <button type="button" class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
+                            <button type="button"
+                                class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
                                 data-ng-class="{'emergency-override-enabled': isEmergencyRequestEnabled('nameChange')}"
                                 data-ng-if="userContext.pageStatus === 'Submit'"
-                                data-ng-click="openEmergencyRequest('nameChange')"
-                                aria-label="Emergency override"
+                                data-ng-click="openEmergencyRequest('nameChange')" aria-label="Emergency override"
                                 data-tooltip="Click here to override the suggested 3 Business days. Only use in urgent situations.">
                                 <i class="bi"
                                     data-ng-class="isEmergencyRequestEnabled('nameChange') ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'"></i>
@@ -130,7 +139,8 @@
                         <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
                             class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> Choose a
                             change date when the staff member can be at {{ userContext.curSchoolName }} and on the
-                            network to ensure they can log into all the various systems after the update.<br>The staff
+                            network to ensure {{submitPayload.nameChange.gender | subjectPronoun}} can log into all the
+                            various systems after the update.<br>The staff
                             member will be instructed to call the Education Technology Office to complete the name
                             change process.<br>
                             Please allow <strong><em>at least</em></strong> 3 business days for name change.
@@ -138,6 +148,40 @@
                         <div data-ng-if="userContext.invalidDate" class="alert alert-danger" role="alert"><i
                                 class="bi bi-exclamation-octagon-fill"></i>
                             {{userContext.invalidDateMessage}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.first_name">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header fw-semibold ps-1">iPad Information</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label for="name-change-ipad-yes"
+                                            class="form-label form-label-sm label-reset staff-change-req">Do you want
+                                            {{submitPayload.nameChange.title}} {{submitPayload.nameChange.first_name}}
+                                            {{submitPayload.nameChange.last_name}}'s Jamf user name changed for
+                                            iPads?</label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio"
+                                                name="name-change-ipad-radio-group" id="name-change-ipad-yes"
+                                                data-ng-model="submitPayload.nameChange.ipad_needed" value="1"
+                                                data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.nameChange.ipad_needed"
+                                                tabindex="0">
+                                            <label class="form-check-label" for="name-change-ipad-yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio"
+                                                name="name-change-ipad-radio-group" id="name-change-ipad-no"
+                                                data-ng-model="submitPayload.nameChange.ipad_needed" value="0"
+                                                data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.nameChange.ipad_needed"
+                                                tabindex="0">
+                                            <label class="form-check-label" for="name-change-ipad-no">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

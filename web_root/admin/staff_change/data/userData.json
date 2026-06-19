@@ -7,6 +7,7 @@
 					'title' VALUE filtered.title,
 					'first_name' VALUE filtered.first_name,
 					'last_name' VALUE filtered.last_name,
+					'gender' VALUE filtered.gender,
 					'email_addr' VALUE filtered.email_addr,
 					'license_microsoft' VALUE filtered.license_microsoft,
 					'homeschoolid' VALUE TO_CHAR(filtered.homeschoolid),
@@ -25,6 +26,7 @@
 			users.title,
 			users.first_name,
 			users.last_name,
+			userscorefields.gender,
 			users.email_addr,
 			u_users_additional_info.license_microsoft,
 			users.homeschoolid,
@@ -42,6 +44,7 @@
 		FROM
 			schoolstaff
 			INNER JOIN users ON users.dcid = schoolstaff.users_dcid
+			LEFT JOIN userscorefields ON users.dcid = userscorefields.usersdcid
 			LEFT JOIN schools ON users.homeschoolid = schools.school_number
 			LEFT JOIN u_users_additional_info ON users.dcid = u_users_additional_info.usersdcid
 		WHERE

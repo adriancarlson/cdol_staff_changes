@@ -599,6 +599,7 @@ define(function (require) {
 					title: 'title',
 					first_name: 'first_name',
 					last_name: 'last_name',
+					gender: 'gender',
 					license_microsoft: 'license_microsoft',
 					staff_status: 'staff_status'
 				})
@@ -1313,7 +1314,7 @@ define(function (require) {
 					const foundStaff = findUserDataByDcid(formPayload.users_dcid)
 					if (!foundStaff) return false
 
-					;['title', 'first_name', 'last_name', 'license_microsoft', 'staff_status'].forEach(key => {
+					;['title', 'first_name', 'last_name', 'gender', 'license_microsoft', 'staff_status'].forEach(key => {
 						formPayload[key] = foundStaff[key]
 					})
 					removeNullableTitleFields(formPayload)
@@ -1323,8 +1324,28 @@ define(function (require) {
 				})
 			}
 
+			const ipadRequiredChangeTypes = ['newStaff', 'transferringStaff', 'jobChange', 'nameChange', 'exitingStaff']
+			const hasIpadAnswer = formPayload => formPayload.ipad_needed === '0' || formPayload.ipad_needed === '1'
+			const requiresIpadAnswer = formPayload => {
+				return ipadRequiredChangeTypes.includes(formPayload.change_type) ||
+					(formPayload.change_type === 'subStaff' && formPayload.sub_type === 'LTS')
+			}
+
+			const validateIpadAnswer = formPayload => {
+				if ($scope.userContext.pageStatus !== 'Submit' || !requiresIpadAnswer(formPayload) || hasIpadAnswer(formPayload)) {
+					return true
+				}
+
+				psAlert({
+					title: 'iPad Information Required',
+					message: 'Please select Yes or No in the iPad Information section before submitting this staff change.'
+				})
+				return false
+			}
+
 			// Validation returns a promise because linked staff hydration may require an asynchronous lookup before saving.
 			$scope.validateStaffChangePayload = formPayload => {
+				if (!validateIpadAnswer(formPayload)) return $q.when(false)
 				if (formPayload.change_type !== 'transferringStaff') return $q.when(true)
 
 				return $scope.hydrateTransferringStaffName(formPayload).then(hydrated => {
@@ -1637,6 +1658,35 @@ define(function (require) {
 			return formatService.formatStaffFullName(staff, options)
 		}
 	}])
+	const normalizeGender = gender => String(gender || '').trim().toUpperCase()
+
+	module.filter('possessivePronoun', function () {
+		return function (gender) {
+			const normalizedGender = normalizeGender(gender)
+
+			if (normalizedGender === 'M' || normalizedGender === 'MALE') return 'his'
+			if (normalizedGender === 'F' || normalizedGender === 'FEMALE') return 'her'
+			return 'their'
+		}
+	})
+	module.filter('subjectPronoun', function () {
+		return function (gender) {
+			const normalizedGender = normalizeGender(gender)
+
+			if (normalizedGender === 'M' || normalizedGender === 'MALE') return 'he'
+			if (normalizedGender === 'F' || normalizedGender === 'FEMALE') return 'she'
+			return 'they'
+		}
+	})
+	module.filter('objectPronoun', function () {
+		return function (gender) {
+			const normalizedGender = normalizeGender(gender)
+
+			if (normalizedGender === 'M' || normalizedGender === 'MALE') return 'him'
+			if (normalizedGender === 'F' || normalizedGender === 'FEMALE') return 'her'
+			return 'them'
+		}
+	})
 	module.filter('changeTypeFilter', function () {
 		const reverseMap = {
 			newStaff: 'New Staff',
