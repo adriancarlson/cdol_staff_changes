@@ -1,28 +1,61 @@
+<style>
+    #creation-checks-container .account-check-grid > .col {
+        display: flex;
+    }
+
+    #creation-checks-container .account-check-grid > .col > .card {
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+    }
+
+    #creation-checks-container .account-check-grid .card-header {
+        padding: 0.5rem;
+    }
+
+    #creation-checks-container .account-check-grid .card-body {
+        font-size: 0.875em;
+    }
+
+    #creation-checks-container .account-check-grid .list-group-item {
+        padding: 0.35rem 0.5rem;
+        overflow-wrap: anywhere;
+    }
+
+    #creation-checks-container .account-check-status {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+</style>
 <div id="creation-checks-container" class="container-fluid p-0">
     <div class="card">
         <div class="card-header bg-primary text-bg-primary text-dark bg-opacity-25 bg-gradient fw-semibold text-center">
             Diocesan Office Account Checks</div>
         <div class="card-body">
-            <!-- Give each account card enough width to keep its checklist readable on smaller screens. -->
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-5 g-3">
+            <!-- Keep all six checks on one row only where the viewport is wide enough to preserve readability. -->
+            <div class="account-check-grid row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-6 g-2">
                 <div class="col order-1" data-ng-hide="userContext.pageContext =='subStaff' &&
                     submitPayload[userContext.pageContext].sub_type !=='LTS'">
                     <div class="card">
                         <div
                             class="card-header bg-primary text-bg-primary text-dark bg-opacity-10 bg-gradient fw-semibold">
-                            <input class="form-check-input me-1" id="ps_created" type="checkbox"
-                                data-ng-model="submitPayload[userContext.pageContext].ps_created">
-                            <label class="form-check-label stretched-link" for="ps_created">PowerSchool
-                                Account
-                                <span data-ng-switch on="submitPayload[userContext.pageContext].change_type">
-                                    <span data-ng-switch-when="newStaff"> Created</span>
-                                    <span data-ng-switch-when="transferringStaff"> Moved</span>
-                                    <span data-ng-switch-when="subStaff"> Created</span>
-                                    <span data-ng-switch-when="jobChange"> Adjusted</span>
-                                    <span data-ng-switch-when="nameChange"> Updated</span>
-                                    <span data-ng-switch-when="exitingStaff"> Deactivated</span>
-                                </span>?
-                            </label>
+                            <div class="account-check-status">
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" id="ps_created" type="checkbox"
+                                        data-ng-model="submitPayload[userContext.pageContext].ps_created">
+                                    <label class="form-check-label stretched-link" for="ps_created">PowerSchool Account
+                                        <span data-ng-switch on="submitPayload[userContext.pageContext].change_type">
+                                            <span data-ng-switch-when="newStaff">Created?</span>
+                                            <span data-ng-switch-when="transferringStaff">Moved?</span>
+                                            <span data-ng-switch-when="subStaff">Created?</span>
+                                            <span data-ng-switch-when="jobChange">Adjusted?</span>
+                                            <span data-ng-switch-when="nameChange">Updated?</span>
+                                            <span data-ng-switch-when="exitingStaff">Deactivated?</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body p-0" data-ng-switch
                             on="submitPayload[userContext.pageContext].change_type">
@@ -65,28 +98,26 @@
                     <div class="card">
                         <div
                             class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
-                            <div class="row">
-                                <div class="col-auto me-auto">
-                                    <input class="form-check-input me-1" id="ad_created" type="checkbox"
+                            <div class="account-check-status">
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" id="ad_created" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].ad_created"
                                         data-ng-disabled="submitPayload[userContext.pageContext].ad_ignored">
-                                    <label class="form-check-label" for="ad_created">AD
-                                        Account<span data-ng-switch
+                                    <label class="form-check-label" for="ad_created">AD Account <span data-ng-switch
                                             on="submitPayload[userContext.pageContext].change_type">
-                                            <span data-ng-switch-when="newStaff"> Created</span>
-                                            <span data-ng-switch-when="transferringStaff"> Moved</span>
-                                            <span data-ng-switch-when="jobChange"> Adjusted</span>
-                                            <span data-ng-switch-when="subStaff"> Created</span>
-                                            <span data-ng-switch-when="nameChange"> Updated</span>
-                                            <span data-ng-switch-when="exitingStaff"> Disabled</span>
-                                        </span>?</label>
+                                            <span data-ng-switch-when="newStaff">Created?</span>
+                                            <span data-ng-switch-when="transferringStaff">Moved?</span>
+                                            <span data-ng-switch-when="jobChange">Adjusted?</span>
+                                            <span data-ng-switch-when="subStaff">Created?</span>
+                                            <span data-ng-switch-when="nameChange">Updated?</span>
+                                            <span data-ng-switch-when="exitingStaff">Disabled?</span>
+                                        </span></label>
                                 </div>
-                                <div class="col-auto">
-                                    <input class="form-check-input me-1" id="ad_ignored" type="checkbox"
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" id="ad_ignored" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].ad_ignored"
                                         data-ng-disabled="submitPayload[userContext.pageContext].ad_created">
-                                    <label class="form-check-label" for="ad_ignored"><em>Not
-                                            Applicable</em></label>
+                                    <label class="form-check-label" for="ad_ignored"><em>Not Applicable</em></label>
                                 </div>
                             </div>
                         </div>
@@ -141,25 +172,23 @@
                     <div class="card">
                         <div
                             class="card-header bg-primary text-bg-primary text-dark bg-opacity-10 bg-gradient fw-semibold">
-                            <div class="row">
-                                <div class="col-auto me-auto">
-                                    <input class="form-check-input me-1" id="o365_created" type="checkbox"
+                            <div class="account-check-status">
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" id="o365_created" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].o365_created"
                                         data-ng-disabled="submitPayload[userContext.pageContext].o365_ignored">
-                                    <label class="form-check-label" for="o365_created">O365
-                                        Account<span data-ng-switch
+                                    <label class="form-check-label" for="o365_created">O365 Account <span data-ng-switch
                                             on="submitPayload[userContext.pageContext].change_type">
-                                            <span data-ng-switch-when="newStaff"> Created</span>
-                                            <span data-ng-switch-when="transferringStaff"> Verified</span>
-                                            <span data-ng-switch-when="nameChange"> Updated</span>
-                                        </span>?</label>
+                                            <span data-ng-switch-when="newStaff">Created?</span>
+                                            <span data-ng-switch-when="transferringStaff">Verified?</span>
+                                            <span data-ng-switch-when="nameChange">Updated?</span>
+                                        </span></label>
                                 </div>
-                                <div class="col-auto">
-                                    <input class="form-check-input me-1" id="o365_ignored" type="checkbox"
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" id="o365_ignored" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].o365_ignored"
                                         data-ng-disabled="submitPayload[userContext.pageContext].o365_created">
-                                    <label class="form-check-label" for="o365_ignored"><em>Not
-                                            Applicable</em></label>
+                                    <label class="form-check-label" for="o365_ignored"><em>Not Applicable</em></label>
                                 </div>
                             </div>
                         </div>
@@ -187,9 +216,9 @@
                     <div class="card">
                         <div
                             class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
-                            <div class="row">
-                                <div class="col-auto me-auto">
-                                    <input class="form-check-input me-1" id="ipad_created" type="checkbox"
+                            <div class="account-check-status">
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" id="ipad_created" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].ipad_created"
                                         data-ng-disabled="submitPayload[userContext.pageContext].ipad_ignored">
                                     <label class="form-check-label" for="ipad_created" data-ng-switch
@@ -202,12 +231,11 @@
                                         <span data-ng-switch-when="exitingStaff">Jamf user deleted?</span>
                                     </label>
                                 </div>
-                                <div class="col-auto">
-                                    <input class="form-check-input me-1" id="ipad_ignored" type="checkbox"
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" id="ipad_ignored" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].ipad_ignored"
                                         data-ng-disabled="submitPayload[userContext.pageContext].ipad_created">
-                                    <label class="form-check-label" for="ipad_ignored"><em>Not
-                                            Applicable</em></label>
+                                    <label class="form-check-label" for="ipad_ignored"><em>Not Applicable</em></label>
                                 </div>
                             </div>
                         </div>
@@ -218,25 +246,23 @@
                     <div class="card">
                         <div
                             class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
-                            <div class="row">
-                                <div class="col-auto me-auto">
-                                    <input class="form-check-input me-1" type="checkbox" id="lms_created"
+                            <div class="account-check-status">
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" type="checkbox" id="lms_created"
                                         data-ng-model="submitPayload[userContext.pageContext].lms_created"
                                         data-ng-disabled="submitPayload[userContext.pageContext].lms_ignored">
-                                    <label class="form-check-label" for="lms_created">LMS
-                                        Account<span data-ng-switch
+                                    <label class="form-check-label" for="lms_created">LMS Account <span data-ng-switch
                                             on="submitPayload[userContext.pageContext].change_type">
-                                            <span data-ng-switch-when="newStaff"> Created</span>
-                                            <span data-ng-switch-when="transferringStaff"> Double Check</span>
-                                            <span data-ng-switch-when="nameChange"> Updated</span>
-                                        </span>?</label>
+                                            <span data-ng-switch-when="newStaff">Created?</span>
+                                            <span data-ng-switch-when="transferringStaff">Double Check?</span>
+                                            <span data-ng-switch-when="nameChange">Updated?</span>
+                                        </span></label>
                                 </div>
-                                <div class="col-auto">
-                                    <input class="form-check-input me-1" id="lms_ignored" type="checkbox"
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" id="lms_ignored" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].lms_ignored"
                                         data-ng-disabled="submitPayload[userContext.pageContext].lms_created">
-                                    <label class="form-check-label" for="lms_ignored"><em>Not
-                                            Applicable</em></label>
+                                    <label class="form-check-label" for="lms_ignored"><em>Not Applicable</em></label>
                                 </div>
                             </div>
                         </div>
@@ -272,25 +298,24 @@
                     <div class="card">
                         <div
                             class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
-                            <div class="row">
-                                <div class="col-auto me-auto">
-                                    <input class="form-check-input me-1" id="canva_created" type="checkbox"
+                            <div class="account-check-status">
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" id="canva_created" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].canva_created"
                                         data-ng-disabled="submitPayload[userContext.pageContext].canva_ignored">
-                                    <label class="form-check-label" for="canva_created">Canva<span data-ng-switch
+                                    <label class="form-check-label" for="canva_created">Canva <span data-ng-switch
                                             on="submitPayload[userContext.pageContext].change_type">
-                                            <span data-ng-switch-when="newStaff"> Created</span>
-                                            <span data-ng-switch-when="transferringStaff"> Moved</span>
-                                            <span data-ng-switch-when="nameChange"> Transferred</span>
-                                            <span data-ng-switch-when="exitingStaff"> Transferred</span>
-                                        </span>?</label>
+                                            <span data-ng-switch-when="newStaff">Created?</span>
+                                            <span data-ng-switch-when="transferringStaff">Moved?</span>
+                                            <span data-ng-switch-when="nameChange">Transferred?</span>
+                                            <span data-ng-switch-when="exitingStaff">Transferred?</span>
+                                        </span></label>
                                 </div>
-                                <div class="col-auto">
-                                    <input class="form-check-input me-1" id="canva_ignored" type="checkbox"
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" id="canva_ignored" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].canva_ignored"
                                         data-ng-disabled="submitPayload[userContext.pageContext].canva_created">
-                                    <label class="form-check-label" for="canva_ignored"><em>Not
-                                            Applicable</em></label>
+                                    <label class="form-check-label" for="canva_ignored"><em>Not Applicable</em></label>
                                 </div>
                             </div>
                         </div>

@@ -1459,72 +1459,55 @@ define(function (require) {
 					return $scope.validateStaffChangePayload(formPayload).then(isValid => {
 						if (!isValid) return $q.reject({ handled: true })
 
-						const commonCondition = payload => payload.final_completion_date === undefined && payload.ps_created && (payload.ad_created || payload.ad_ignored)
-						const o365Condition = payload => payload.o365_created || payload.o365_ignored
-						const lmsCondition = payload => payload.lms_created || payload.lms_ignored
-						const canvaCondition = payload => payload.canva_created || payload.canva_ignored
+						const isResolved = (payload, fieldName) => payload[`${fieldName}_created`] || payload[`${fieldName}_ignored`]
+						const commonChecksComplete = payload => payload.ps_created && isResolved(payload, 'ad')
+						// Only an explicit Yes makes iPad work applicable; No and legacy blanks remain complete without iPad checks.
+						const ipadComplete = payload => payload.ipad_needed != 1 || isResolved(payload, 'ipad')
+						const canvaComplete = payload => payload.canva_transfer !== '1' || isResolved(payload, 'canva')
+						let allApplicableChecksComplete = false
 
 						switch (key) {
 							case 'newStaff':
 							case 'transferringStaff':
-								if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload) && canvaCondition(formPayload)) {
-									formPayload.final_completion_date = $scope.userContext.curDate
-								} else if (formPayload.final_completion_date) {
-									formPayload.final_completion_date = undefined
-								}
+								allApplicableChecksComplete = commonChecksComplete(formPayload) &&
+									isResolved(formPayload, 'o365') &&
+									isResolved(formPayload, 'lms') &&
+									isResolved(formPayload, 'canva') &&
+									ipadComplete(formPayload)
 								break
 
 							case 'nameChange':
-								if (formPayload.canva_transfer === '1') {
-									if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload) && canvaCondition(formPayload)) {
-										formPayload.final_completion_date = $scope.userContext.curDate
-									} else if (formPayload.final_completion_date) {
-										formPayload.final_completion_date = undefined
-									}
-								} else if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload)) {
-									formPayload.final_completion_date = $scope.userContext.curDate
-								} else if (formPayload.final_completion_date) {
-									formPayload.final_completion_date = undefined
-								}
+								allApplicableChecksComplete = commonChecksComplete(formPayload) &&
+									isResolved(formPayload, 'o365') &&
+									isResolved(formPayload, 'lms') &&
+									canvaComplete(formPayload) &&
+									ipadComplete(formPayload)
 								break
 
 							case 'jobChange':
-								if (commonCondition(formPayload)) {
-									formPayload.final_completion_date = $scope.userContext.curDate
-								} else if (formPayload.final_completion_date) {
-									formPayload.final_completion_date = undefined
-								}
+								allApplicableChecksComplete = commonChecksComplete(formPayload) && ipadComplete(formPayload)
 								break
 
 							case 'exitingStaff':
-								if (formPayload.canva_transfer === '1') {
-									if (commonCondition(formPayload) && canvaCondition(formPayload)) {
-										formPayload.final_completion_date = $scope.userContext.curDate
-									} else if (formPayload.final_completion_date) {
-										formPayload.final_completion_date = undefined
-									}
-								} else if (commonCondition(formPayload)) {
-									formPayload.final_completion_date = $scope.userContext.curDate
-								} else if (formPayload.final_completion_date) {
-									formPayload.final_completion_date = undefined
-								}
+								allApplicableChecksComplete = commonChecksComplete(formPayload) && canvaComplete(formPayload) && ipadComplete(formPayload)
 								break
 
 							case 'subStaff':
 								if (formPayload.sub_type === 'FSTS') {
-									if (formPayload.final_completion_date === undefined && o365Condition(formPayload) && (formPayload.ad_created || formPayload.ad_ignored)) {
-										formPayload.final_completion_date = $scope.userContext.curDate
-									} else if (formPayload.final_completion_date && !(o365Condition(formPayload) && (formPayload.ad_created || formPayload.ad_ignored))) {
-										formPayload.final_completion_date = undefined
-									}
+									allApplicableChecksComplete = isResolved(formPayload, 'o365') && isResolved(formPayload, 'ad')
 								} else if (formPayload.sub_type === 'LTS') {
-									if (commonCondition(formPayload) && o365Condition(formPayload) && lmsCondition(formPayload)) {
-										formPayload.final_completion_date = $scope.userContext.curDate
-									} else if (formPayload.final_completion_date) {
-										formPayload.final_completion_date = undefined
-									}
+									allApplicableChecksComplete = commonChecksComplete(formPayload) &&
+										isResolved(formPayload, 'o365') &&
+										isResolved(formPayload, 'lms') &&
+										ipadComplete(formPayload)
 								}
 								break
+						}
+
+						if (allApplicableChecksComplete && !formPayload.final_completion_date) {
+							formPayload.final_completion_date = $scope.userContext.curDate
+						} else if (!allApplicableChecksComplete && formPayload.final_completion_date) {
+							formPayload.final_completion_date = undefined
 						}
 
 						if (!$scope.userContext.staffChangeId) return
