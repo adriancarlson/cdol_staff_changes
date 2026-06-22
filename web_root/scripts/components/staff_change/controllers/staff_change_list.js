@@ -122,7 +122,7 @@ define(function (require) {
 			// Normalize each API row once. Templates then bind simple display properties instead of recalculating them
 			// during every Angular digest cycle, including for hidden tabs.
 			const prepareStaffRecord = staffRecord => {
-				const completionKeys = ['ps', 'ad', 'o365', 'lms', 'canva']
+				const completionKeys = ['ps', 'ad', 'o365', 'lms', 'canva', 'ipad']
 
 				completionKeys.forEach(key => {
 					staffRecord[`${key}_complete`] = staffRecord[`${key}_created`] == 1 || staffRecord[`${key}_ignored`] == 1
@@ -146,6 +146,9 @@ define(function (require) {
 				})
 
 				const canvaApplies = staffRecord.change_type === 'newStaff' || staffRecord.change_type === 'transferringStaff' || ((staffRecord.change_type === 'nameChange' || staffRecord.change_type === 'exitingStaff') && staffRecord.canva_transfer == '1')
+				const ipadApplies = staffRecord.ipad_needed == '1' &&
+					(staffRecord.change_type !== 'subStaff' || staffRecord.sub_type === 'LTS')
+				staffRecord.ipad_applies = ipadApplies
 
 				// Store settled display values so hidden, cached tabs do not repeatedly evaluate formatting rules.
 				staffRecord.display_name = formatService.formatStaffFullName(staffRecord, { fallbackField: 'old_name_placeholder' })
@@ -157,7 +160,8 @@ define(function (require) {
 					ad: buildCompletionDisplay(true, staffRecord.ad_complete),
 					o365: buildCompletionDisplay(!excludesOfficeAndLms, staffRecord.o365_complete),
 					lms: buildCompletionDisplay(!excludesOfficeAndLms && !isFsts, staffRecord.lms_complete),
-					canva: buildCompletionDisplay(canvaApplies, staffRecord.canva_complete)
+					canva: buildCompletionDisplay(canvaApplies, staffRecord.canva_complete),
+					ipad: buildCompletionDisplay(ipadApplies, staffRecord.ipad_complete)
 				}
 				staffRecord.deadline_class = getDeadlineClass(staffRecord)
 				staffRecord.completed = !!staffRecord.final_completion_date
@@ -220,21 +224,21 @@ define(function (require) {
 						const changeTypeLabel = $filter('changeTypeFilter')($scope.changeType)
 
 						if ($scope.changeType === 'newStaff') {
-							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date'])
+							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['PS Created', 'AD Created', 'O365 Created', 'iPad Complete', 'LMS Created', 'Canva Created', 'Completion Date'])
 						} else if ($scope.changeType === 'transferringStaff') {
-							$scope.listHeaders = [changeTypeLabel, 'New School', 'Original School'].concat(baseHeaders.slice(1), ['PS Moved', 'AD Moved', 'O365 Moved', 'LMS Moved', 'Canva Moved', 'Completion Date'])
+							$scope.listHeaders = [changeTypeLabel, 'New School', 'Original School'].concat(baseHeaders.slice(1), ['PS Moved', 'AD Moved', 'O365 Moved', 'iPad Complete', 'LMS Moved', 'Canva Moved', 'Completion Date'])
 						} else if ($scope.changeType === 'jobChange') {
-							$scope.listHeaders = ['Staff Name', 'Previous Position/Job', 'New Position/Job'].concat(baseHeaders, ['PS Changed', 'AD Changed', 'Completion Date'])
+							$scope.listHeaders = ['Staff Name', 'Previous Position/Job', 'New Position/Job'].concat(baseHeaders, ['PS Changed', 'AD Changed', 'iPad Complete', 'Completion Date'])
 						} else if ($scope.changeType === 'subStaff') {
-							$scope.listHeaders = [changeTypeLabel + ' Name', baseHeaders[0], 'Sub Type'].concat(baseHeaders.slice(1), ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Completion Date'])
+							$scope.listHeaders = [changeTypeLabel + ' Name', baseHeaders[0], 'Sub Type'].concat(baseHeaders.slice(1), ['PS Created', 'AD Created', 'O365 Created', 'iPad Complete', 'LMS Created', 'Completion Date'])
 						} else if ($scope.changeType === 'nameChange') {
-							$scope.listHeaders = ["Staff's New Name", "Staff's Previous Name"].concat(baseHeaders, ['Canva Transferred', 'PS Changed', 'AD Changed', 'O365 Changed', 'LMS Changed', 'Completion Date'])
+							$scope.listHeaders = ["Staff's New Name", "Staff's Previous Name"].concat(baseHeaders, ['Canva Transferred', 'PS Changed', 'AD Changed', 'O365 Changed', 'iPad Complete', 'LMS Changed', 'Completion Date'])
 						} else if ($scope.changeType === 'exitingStaff') {
-							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['Canva Transferred', 'PS Deactivated', 'AD Deactivated', 'Completion Date'])
+							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['Canva Transferred', 'PS Deactivated', 'AD Deactivated', 'iPad Complete', 'Completion Date'])
 						} else if ($scope.changeType === 'allStaff') {
-							$scope.listHeaders = ['Staff Name', 'Change Type'].concat(baseHeaders, ['PS Complete', 'AD Complete', 'O365 Complete', 'LMS Complete', 'Canva Complete', 'Completion Date'])
+							$scope.listHeaders = ['Staff Name', 'Change Type'].concat(baseHeaders, ['PS Complete', 'AD Complete', 'O365 Complete', 'iPad Complete', 'LMS Complete', 'Canva Complete', 'Completion Date'])
 						} else {
-							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['PS Created', 'AD Created', 'O365 Created', 'LMS Created', 'Canva Created', 'Completion Date'])
+							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['PS Created', 'AD Created', 'O365 Created', 'iPad Complete', 'LMS Created', 'Canva Created', 'Completion Date'])
 						}
 
 						$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`)
@@ -277,6 +281,7 @@ define(function (require) {
 					{ label: 'PS Created', key: 'ps_complete' },
 					{ label: 'AD Created', key: 'ad_complete' },
 					{ label: 'O365 Created', key: 'o365_complete' },
+					{ label: 'iPad Complete', key: row => row.ipad_applies ? row.ipad_complete : null },
 					{ label: 'LMS Created', key: 'lms_complete' },
 					{ label: 'Canva Created', key: 'canva_complete' },
 					{ label: 'Completion Date', key: 'final_completion_date' },

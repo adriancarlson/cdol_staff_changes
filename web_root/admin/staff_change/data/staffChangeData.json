@@ -89,7 +89,10 @@
 					'canva_title' VALUE u_cdol_staff_changes.canva_title,
 					'canva_first_name' VALUE u_cdol_staff_changes.canva_first_name,
 					'canva_middle_name' VALUE u_cdol_staff_changes.canva_middle_name,
-					'canva_last_name' VALUE u_cdol_staff_changes.canva_last_name
+					'canva_last_name' VALUE u_cdol_staff_changes.canva_last_name,
+					'ipad_needed' VALUE TO_CHAR(u_cdol_staff_changes.ipad_needed),
+					'ipad_created' VALUE TO_CHAR(u_cdol_staff_changes.ipad_created),
+					'ipad_ignored' VALUE TO_CHAR(u_cdol_staff_changes.ipad_ignored)
 					NULL ON NULL
 					RETURNING CLOB
 				)

@@ -26,7 +26,9 @@
                 <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">{{listHeaders[6]}}</th>
                 <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">{{listHeaders[7]}}
                 </th>
-                <th data-pss-sort-fields="final_completion_date|date">{{listHeaders[8]}}</th>
+                <th data-pss-sort-fields="ipad_created, ipad_ignored" data-exclude-from-filter="true">{{listHeaders[8]}}
+                </th>
+                <th data-pss-sort-fields="final_completion_date|date">{{listHeaders[9]}}</th>
             </tr>
         </thead>
         <tbody>
@@ -54,6 +56,8 @@
                 <td><span data-ng-class="::exitingStaff.completion_display.ps.className">{{::exitingStaff.completion_display.ps.text}}</span>
                 </td>
                 <td><span data-ng-class="::exitingStaff.completion_display.ad.className">{{::exitingStaff.completion_display.ad.text}}</span>
+                </td>
+                <td><span data-ng-class="::exitingStaff.completion_display.ipad.className">{{::exitingStaff.completion_display.ipad.text}}</span>
                 </td>
                 <td>{{::exitingStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
