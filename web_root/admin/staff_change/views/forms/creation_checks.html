@@ -1,9 +1,9 @@
 <style>
-    #creation-checks-container .account-check-grid > .col {
+    #creation-checks-container .account-check-grid>.col {
         display: flex;
     }
 
-    #creation-checks-container .account-check-grid > .col > .card {
+    #creation-checks-container .account-check-grid>.col>.card {
         width: 100%;
         height: 100%;
         min-width: 0;
@@ -11,6 +11,7 @@
 
     #creation-checks-container .account-check-grid .card-header {
         padding: 0.5rem;
+        border-bottom: 1.5px solid rgba(73, 80, 87, 0.55);
     }
 
     #creation-checks-container .account-check-grid .card-body {
@@ -25,7 +26,44 @@
     #creation-checks-container .account-check-status {
         display: flex;
         flex-direction: column;
-        gap: 0.25rem;
+        gap: 0;
+    }
+
+    #creation-checks-container .account-check-status>.form-check:first-child {
+        margin: -0.5rem -0.5rem 0 !important;
+        padding: 0.5rem 0.5rem 0.5rem 2rem;
+        border-left: 4px solid rgba(13, 110, 253, 0.8);
+        border-radius: 0;
+        font-weight: 600;
+    }
+
+    #creation-checks-container .account-check-primary-blue {
+        background-color: rgba(13, 110, 253, 0.14);
+    }
+
+    #creation-checks-container .account-check-primary-cool-blue {
+        background-color: rgba(40, 105, 220, 0.12);
+    }
+
+    #creation-checks-container .account-check-status>.form-check:first-child:only-child {
+        margin-bottom: -0.5rem !important;
+    }
+
+    #creation-checks-container .account-check-status>.form-check+.form-check {
+        margin: 0 -0.5rem -0.5rem !important;
+        padding: 0.35rem 0.5rem 0.35rem 1.75rem;
+        border-top: 1px solid rgba(108, 117, 125, 0.45);
+        color: #6c757d;
+        font-size: 0.85em;
+    }
+
+    #creation-checks-container .account-check-status>.form-check:has(.form-check-input:disabled) {
+        opacity: 0.45;
+        filter: grayscale(1);
+    }
+
+    #creation-checks-container .account-check-status .form-check-input:disabled+.form-check-label {
+        cursor: not-allowed;
     }
 </style>
 <div id="creation-checks-container" class="container-fluid p-0">
@@ -38,10 +76,9 @@
                 <div class="col order-1" data-ng-hide="userContext.pageContext =='subStaff' &&
                     submitPayload[userContext.pageContext].sub_type !=='LTS'">
                     <div class="card">
-                        <div
-                            class="card-header bg-primary text-bg-primary text-dark bg-opacity-10 bg-gradient fw-semibold">
+                        <div class="card-header text-dark bg-gradient fw-semibold">
                             <div class="account-check-status">
-                                <div class="form-check m-0">
+                                <div class="form-check m-0" data-ng-class="getAccountCheckPrimaryClass('ps')">
                                     <input class="form-check-input" id="ps_created" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].ps_created">
                                     <label class="form-check-label stretched-link" for="ps_created">PowerSchool Account
@@ -96,10 +133,9 @@
                 </div>
                 <div class="col order-3">
                     <div class="card">
-                        <div
-                            class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
+                        <div class="card-header text-dark bg-gradient fw-semibold">
                             <div class="account-check-status">
-                                <div class="form-check m-0">
+                                <div class="form-check m-0" data-ng-class="getAccountCheckPrimaryClass('ad')">
                                     <input class="form-check-input" id="ad_created" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].ad_created"
                                         data-ng-disabled="submitPayload[userContext.pageContext].ad_ignored">
@@ -170,10 +206,9 @@
                 <div class="col order-4"
                     data-ng-hide="userContext.pageContext =='jobChange' || userContext.pageContext =='exitingStaff'">
                     <div class="card">
-                        <div
-                            class="card-header bg-primary text-bg-primary text-dark bg-opacity-10 bg-gradient fw-semibold">
+                        <div class="card-header text-dark bg-gradient fw-semibold">
                             <div class="account-check-status">
-                                <div class="form-check m-0">
+                                <div class="form-check m-0" data-ng-class="getAccountCheckPrimaryClass('o365')">
                                     <input class="form-check-input" id="o365_created" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].o365_created"
                                         data-ng-disabled="submitPayload[userContext.pageContext].o365_ignored">
@@ -209,26 +244,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="col"
-                    data-ng-class="userContext.pageContext == 'exitingStaff' ? 'order-last' : 'order-4'"
+                <div class="col" data-ng-class="userContext.pageContext == 'exitingStaff' ? 'order-last' : 'order-4'"
                     data-ng-show="submitPayload[userContext.pageContext].ipad_needed == '1' &&
                         (userContext.pageContext != 'subStaff' || submitPayload[userContext.pageContext].sub_type == 'LTS')">
                     <div class="card">
-                        <div
-                            class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
+                        <div class="card-header text-dark bg-gradient fw-semibold">
                             <div class="account-check-status">
-                                <div class="form-check m-0">
+                                <div class="form-check m-0" data-ng-class="getAccountCheckPrimaryClass('ipad')">
                                     <input class="form-check-input" id="ipad_created" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].ipad_created"
                                         data-ng-disabled="submitPayload[userContext.pageContext].ipad_ignored">
                                     <label class="form-check-label" for="ipad_created" data-ng-switch
                                         on="submitPayload[userContext.pageContext].change_type">
-                                        <span data-ng-switch-when="newStaff">Jamf User Account Created</span>
-                                        <span data-ng-switch-when="transferringStaff">Jamf User Account Created</span>
-                                        <span data-ng-switch-when="jobChange">Jamf User Account Created</span>
-                                        <span data-ng-switch-when="subStaff">Jamf User Account Created</span>
-                                        <span data-ng-switch-when="nameChange">Jamf User Account Updated</span>
-                                        <span data-ng-switch-when="exitingStaff">Jamf User Account Deleted</span>
+                                        <span data-ng-switch-when="newStaff">Jamf User Account Created?</span>
+                                        <span data-ng-switch-when="transferringStaff">Jamf User Account Created?</span>
+                                        <span data-ng-switch-when="jobChange">Jamf User Account Created?</span>
+                                        <span data-ng-switch-when="subStaff">Jamf User Account Created?</span>
+                                        <span data-ng-switch-when="nameChange">Jamf User Account Updated?</span>
+                                        <span data-ng-switch-when="exitingStaff">Jamf User Account Deleted?</span>
                                     </label>
                                 </div>
                                 <div class="form-check m-0">
@@ -244,10 +277,9 @@
                 <div class="col order-5"
                     data-ng-hide="userContext.pageContext =='jobChange' || userContext.pageContext =='exitingStaff' || (userContext.pageContext =='subStaff' &&  submitPayload[userContext.pageContext].sub_type !=='LTS')">
                     <div class="card">
-                        <div
-                            class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
+                        <div class="card-header text-dark bg-gradient fw-semibold">
                             <div class="account-check-status">
-                                <div class="form-check m-0">
+                                <div class="form-check m-0" data-ng-class="getAccountCheckPrimaryClass('lms')">
                                     <input class="form-check-input" type="checkbox" id="lms_created"
                                         data-ng-model="submitPayload[userContext.pageContext].lms_created"
                                         data-ng-disabled="submitPayload[userContext.pageContext].lms_ignored">
@@ -296,10 +328,9 @@
                     data-ng-class="{'order-first': (userContext.pageContext == 'exitingStaff' || userContext.pageContext == 'nameChange') && submitPayload[userContext.pageContext].canva_transfer == '1', 'order-last': !((userContext.pageContext == 'exitingStaff' || userContext.pageContext == 'nameChange') && submitPayload[userContext.pageContext].canva_transfer == '1')}"
                     data-ng-show="userContext.pageContext =='newStaff' || userContext.pageContext == 'transferringStaff'|| (userContext.pageContext =='nameChange' &&  submitPayload[userContext.pageContext].canva_transfer == '1') || (userContext.pageContext =='exitingStaff' &&  submitPayload[userContext.pageContext].canva_transfer == '1')">
                     <div class="card">
-                        <div
-                            class="card-header bg-secondary text-bg-secondary text-dark bg-opacity-25 bg-gradient fw-semibold">
+                        <div class="card-header text-dark bg-gradient fw-semibold">
                             <div class="account-check-status">
-                                <div class="form-check m-0">
+                                <div class="form-check m-0" data-ng-class="getAccountCheckPrimaryClass('canva')">
                                     <input class="form-check-input" id="canva_created" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].canva_created"
                                         data-ng-disabled="submitPayload[userContext.pageContext].canva_ignored">

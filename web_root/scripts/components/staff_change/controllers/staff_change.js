@@ -463,6 +463,39 @@ define(function (require) {
 				return staffChange && staffChange.change_type === 'subStaff' && staffChange.sub_type === 'LTS'
 			}
 
+			const getAccountCheckOrder = (pageContext, staffChange) => {
+				const needsIpad = staffChange.ipad_needed == '1'
+				const needsCanva = staffChange.canva_transfer == '1'
+
+				switch (pageContext) {
+					case 'newStaff':
+					case 'transferringStaff':
+						return ['ps', 'ad', 'o365'].concat(needsIpad ? ['ipad'] : [], ['lms', 'canva'])
+					case 'jobChange':
+						return ['ps', 'ad'].concat(needsIpad ? ['ipad'] : [])
+					case 'subStaff':
+						return staffChange.sub_type === 'LTS'
+							? ['ps', 'ad', 'o365'].concat(needsIpad ? ['ipad'] : [], ['lms'])
+							: ['ad', 'o365']
+					case 'nameChange':
+						return (needsCanva ? ['canva'] : []).concat(['ps', 'ad', 'o365'], needsIpad ? ['ipad'] : [], ['lms'])
+					case 'exitingStaff':
+						return (needsCanva ? ['canva'] : []).concat(['ps', 'ad'], needsIpad ? ['ipad'] : [])
+					default:
+						return []
+				}
+			}
+
+			$scope.getAccountCheckPrimaryClass = cardKey => {
+				const pageContext = $scope.userContext.pageContext
+				const staffChange = $scope.submitPayload[pageContext] || {}
+				const cardIndex = getAccountCheckOrder(pageContext, staffChange).indexOf(cardKey)
+
+				return cardIndex % 2 === 0
+					? 'account-check-primary-blue'
+					: 'account-check-primary-cool-blue'
+			}
+
 			const normalizeIdentifier = identifier => {
 				if (identifier === undefined || identifier === null || identifier === '') return identifier
 				return identifier.toString()

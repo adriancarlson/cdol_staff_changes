@@ -220,11 +220,10 @@
                             Deactivation Date</label><br>
                         <div class="d-flex align-items-center flex-nowrap">
                             <input id="exitingStaff-deadline" title="Requested Deactivation Date" type="text"
-                                class="psDateWidget" data-minDate="{{getDeadlineMinDate('exitingStaff')}}"
+                                data-pss-date-widget data-minDate="{{getDeadlineMinDate('exitingStaff')}}"
                                 data-ng-model="submitPayload.exitingStaff.deadline"
                                 data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.exitingStaff.deadline = userContext.tempDeadline : submitPayload.exitingStaff.deadline"
                                 data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
-                            <script type="text/javascript">initBehaviors();</script>
                             <button type="button"
                                 class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
                                 data-ng-class="{'emergency-override-enabled': isEmergencyRequestEnabled('exitingStaff')}"

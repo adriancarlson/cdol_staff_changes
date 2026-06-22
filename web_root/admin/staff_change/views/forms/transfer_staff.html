@@ -149,11 +149,10 @@
                             Account Transfer Date</label><br>
                         <div class="d-flex align-items-center flex-nowrap">
                             <input id="transferringStaff-deadline" title="Requested Account Transfer Date" type="text"
-                                class="psDateWidget" data-minDate="{{getDeadlineMinDate('transferringStaff')}}"
+                                data-pss-date-widget data-minDate="{{getDeadlineMinDate('transferringStaff')}}"
                                 data-ng-model="submitPayload.transferringStaff.deadline"
                                 data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.transferringStaff.deadline = userContext.tempDeadline : submitPayload.transferringStaff.deadline"
                                 data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
-                            <script type="text/javascript">initBehaviors();</script>
                             <button type="button"
                                 class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
                                 data-ng-class="{'emergency-override-enabled': isEmergencyRequestEnabled('transferringStaff')}"

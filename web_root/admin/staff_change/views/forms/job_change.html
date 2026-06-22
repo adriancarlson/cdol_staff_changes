@@ -117,11 +117,10 @@
                             Change Date</label><br>
                         <div class="d-flex align-items-center flex-nowrap">
                             <input id="jobChange-deadline" title="Requested Position or Job Change Date" type="text"
-                                class="psDateWidget" data-minDate="{{getDeadlineMinDate('jobChange')}}"
+                                data-pss-date-widget data-minDate="{{getDeadlineMinDate('jobChange')}}"
                                 data-ng-model="submitPayload.jobChange.deadline"
                                 data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.jobChange.deadline = userContext.tempDeadline : submitPayload.jobChange.deadline"
                                 data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
-                            <script type="text/javascript">initBehaviors();</script>
                             <button type="button"
                                 class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
                                 data-ng-class="{'emergency-override-enabled': isEmergencyRequestEnabled('jobChange')}"

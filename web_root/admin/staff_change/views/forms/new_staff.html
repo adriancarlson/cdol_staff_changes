@@ -146,9 +146,8 @@
                     </div>
                     <div class="col-auto">
                         <label class="form-label form-label-sm label-reset">Date of Birth</label><br>
-                        <input title="Date of Birth" type="text" class="psDateWidget"
+                        <input title="Date of Birth" type="text" data-pss-date-widget
                             data-ng-model="submitPayload.newStaff.dob">
-                        <script type="text/javascript">initBehaviors();</script>
                     </div>
                 </div>
                 <div class="row align-items-center mb-3 gx-3">
@@ -233,11 +232,10 @@
                             Account Creation Date</label><br>
                         <div class="d-flex align-items-center flex-nowrap">
                             <input id="newStaff-deadline" title="Requested Account Creation Date" type="text"
-                                class="psDateWidget" data-minDate="{{getDeadlineMinDate('newStaff')}}"
+                                data-pss-date-widget data-minDate="{{getDeadlineMinDate('newStaff')}}"
                                 data-ng-model="submitPayload.newStaff.deadline"
                                 data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.newStaff.deadline = userContext.tempDeadline : submitPayload.newStaff.deadline"
                                 data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
-                            <script type="text/javascript">initBehaviors();</script>
                             <button type="button"
                                 class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
                                 data-ng-class="{'emergency-override-enabled': isEmergencyRequestEnabled('newStaff')}"
@@ -583,8 +581,7 @@
                                                 name="new-staff-ipad-radio-group" id="new-staff-ipad-yes"
                                                 data-ng-model="submitPayload.newStaff.ipad_needed" value="1"
                                                 data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.newStaff.ipad_needed"
-                                                data-ng-change="resetIpadCompletion('newStaff')"
-                                                tabindex="0">
+                                                data-ng-change="resetIpadCompletion('newStaff')" tabindex="0">
                                             <label class="form-check-label" for="new-staff-ipad-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -592,8 +589,7 @@
                                                 name="new-staff-ipad-radio-group" id="new-staff-ipad-no"
                                                 data-ng-model="submitPayload.newStaff.ipad_needed" value="0"
                                                 data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.newStaff.ipad_needed"
-                                                data-ng-change="resetIpadCompletion('newStaff')"
-                                                tabindex="0">
+                                                data-ng-change="resetIpadCompletion('newStaff')" tabindex="0">
                                             <label class="form-check-label" for="new-staff-ipad-no">No</label>
                                         </div>
                                     </div>

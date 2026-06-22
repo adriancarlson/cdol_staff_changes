@@ -118,11 +118,10 @@
                             Change Date</label><br>
                         <div class="d-flex align-items-center flex-nowrap">
                             <input id="nameChange-deadline" title="Requested Name Change Date" type="text"
-                                class="psDateWidget" data-minDate="{{getDeadlineMinDate('nameChange')}}"
+                                data-pss-date-widget data-minDate="{{getDeadlineMinDate('nameChange')}}"
                                 data-ng-model="submitPayload.nameChange.deadline"
                                 data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.nameChange.deadline = userContext.tempDeadline : submitPayload.nameChange.deadline"
                                 data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
-                            <script type="text/javascript">initBehaviors();</script>
                             <button type="button"
                                 class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
                                 data-ng-class="{'emergency-override-enabled': isEmergencyRequestEnabled('nameChange')}"
