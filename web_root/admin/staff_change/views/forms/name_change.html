@@ -77,41 +77,6 @@
                             staffFullName}}</div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.users_dcid">
-                    <div class="col-auto">
-                        <label data-ng-if="userContext.pageStatus =='Submit'"
-                            class="form-label form-label-sm label-reset staff-change-req">Has
-                            {{submitPayload.nameChange | staffFullName}} used
-                            {{submitPayload.nameChange.email_addr}} for <em>Canva for Education</em> and need
-                            to keep access to {{submitPayload.nameChange.gender | possessivePronoun}} projects?</label>
-                        <label data-ng-if="userContext.pageStatus =='Edit'"
-                            class="form-label form-label-sm label-reset staff-change-req">
-                            {{submitPayload.nameChange | staffFullName}} needs
-                            to keep access to <em>Canva</em> projects?</label><br>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="canva-radio-group"
-                                id="name-change-canva-radio-yes" data-ng-model="submitPayload.nameChange.canva_transfer"
-                                value="1" data-ng-required="!submitPayload.nameChange.canva_transfer" tabindex="0">
-                            <label class="form-check-label" for="name-change-canva-radio-yes">Yes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="canva-radio-group"
-                                id="name-change-canva-radio-no" data-ng-model="submitPayload.nameChange.canva_transfer"
-                                value="0" data-ng-required="!submitPayload.nameChange.canva_transfer" tabindex="0">
-                            <label class="form-check-label" for="name-change-canva-radio-no">No</label>
-                        </div>
-                        <br>
-                        <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary" role="alert">
-                            <i class="bi bi-chat-right-text-fill"></i>
-                            Please
-                            <strong>Double check with {{submitPayload.nameChange | staffFullName}}</strong> as we
-                            must submit a form to <em>Canva for Education</em> to complete the name change for
-                            {{submitPayload.nameChange | staffFullName}} and give
-                            {{submitPayload.nameChange.gender | objectPronoun}} access to
-                            {{submitPayload.nameChange.gender | possessivePronoun}} projects again.
-                        </div>
-                    </div>
-                </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.first_name">
                     <div class="col-12 col-md-auto">
                         <label class="form-label form-label-sm label-reset staff-change-req">Requested
@@ -150,6 +115,59 @@
                         </div>
                     </div>
                 </div>
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.users_dcid">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header fw-semibold ps-1">Canva Information</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label data-ng-if="userContext.pageStatus =='Submit'"
+                                            class="form-label form-label-sm label-reset staff-change-req">Has
+                                            {{submitPayload.nameChange | staffFullName}} used
+                                            {{submitPayload.nameChange.email_addr}} for <em>Canva for Education</em> and
+                                            need to keep access to
+                                            {{submitPayload.nameChange.gender | possessivePronoun}} projects?</label>
+                                        <label data-ng-if="userContext.pageStatus =='Edit'"
+                                            class="form-label form-label-sm label-reset staff-change-req">
+                                            {{submitPayload.nameChange | staffFullName}} needs
+                                            to keep access to <em>Canva</em> projects?</label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="canva-radio-group"
+                                                id="name-change-canva-radio-yes"
+                                                data-ng-model="submitPayload.nameChange.canva_transfer" value="1"
+                                                data-ng-required="!submitPayload.nameChange.canva_transfer"
+                                                tabindex="0">
+                                            <label class="form-check-label"
+                                                for="name-change-canva-radio-yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="canva-radio-group"
+                                                id="name-change-canva-radio-no"
+                                                data-ng-model="submitPayload.nameChange.canva_transfer" value="0"
+                                                data-ng-required="!submitPayload.nameChange.canva_transfer"
+                                                tabindex="0">
+                                            <label class="form-check-label" for="name-change-canva-radio-no">No</label>
+                                        </div>
+                                        <br>
+                                        <div data-ng-if="userContext.pageStatus =='Submit'" class="alert alert-primary"
+                                            role="alert">
+                                            <i class="bi bi-chat-right-text-fill"></i>
+                                            Please
+                                            <strong>Double check with {{submitPayload.nameChange |
+                                                staffFullName}}</strong> as we
+                                            must submit a form to <em>Canva for Education</em> to complete the name
+                                            change for
+                                            {{submitPayload.nameChange | staffFullName}} and give
+                                            {{submitPayload.nameChange.gender | objectPronoun}} access to
+                                            {{submitPayload.nameChange.gender | possessivePronoun}} projects again.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.nameChange.first_name">
                     <div class="col">
                         <div class="card">
@@ -167,8 +185,7 @@
                                                 name="name-change-ipad-radio-group" id="name-change-ipad-yes"
                                                 data-ng-model="submitPayload.nameChange.ipad_needed" value="1"
                                                 data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.nameChange.ipad_needed"
-                                                data-ng-change="resetIpadCompletion('nameChange')"
-                                                tabindex="0">
+                                                data-ng-change="resetIpadCompletion('nameChange')" tabindex="0">
                                             <label class="form-check-label" for="name-change-ipad-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -176,8 +193,7 @@
                                                 name="name-change-ipad-radio-group" id="name-change-ipad-no"
                                                 data-ng-model="submitPayload.nameChange.ipad_needed" value="0"
                                                 data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.nameChange.ipad_needed"
-                                                data-ng-change="resetIpadCompletion('nameChange')"
-                                                tabindex="0">
+                                                data-ng-change="resetIpadCompletion('nameChange')" tabindex="0">
                                             <label class="form-check-label" for="name-change-ipad-no">No</label>
                                         </div>
                                     </div>

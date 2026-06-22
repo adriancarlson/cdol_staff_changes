@@ -86,10 +86,96 @@
                             schoolName}}</div>
                     </div>
                 </div>
+                <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.first_name">
+                    <div class="col-12 col-md-auto">
+                        <label class="form-label form-label-sm label-reset staff-change-req">Requested
+                            Deactivation Date</label><br>
+                        <div class="d-flex align-items-center flex-nowrap">
+                            <input id="exitingStaff-deadline" title="Requested Deactivation Date" type="text"
+                                data-pss-date-widget data-minDate="{{getDeadlineMinDate('exitingStaff')}}"
+                                data-ng-model="submitPayload.exitingStaff.deadline"
+                                data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.exitingStaff.deadline = userContext.tempDeadline : submitPayload.exitingStaff.deadline"
+                                data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
+                            <button type="button"
+                                class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
+                                data-ng-class="{'emergency-override-enabled': isEmergencyRequestEnabled('exitingStaff')}"
+                                data-ng-if="userContext.pageStatus === 'Submit'"
+                                data-ng-click="openEmergencyRequest('exitingStaff')" aria-label="Emergency override"
+                                data-tooltip="Click here to override the suggested 3 Business days. Only use in urgent situations.">
+                                <i class="bi"
+                                    data-ng-class="isEmergencyRequestEnabled('exitingStaff') ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'"></i>
+                                {{isEmergencyRequestEnabled('exitingStaff') ? 'Emergency Enabled' : 'Emergency?'}}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-7 col-xl-4 mt-3 mt-md-0">
+                        <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
+                            class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
+                                data-ng-if="submitPayload.exitingStaff.deadline == userContext.lastDay">We recommend
+                                June
+                                30<sup>th</sup> all staff not returning next school year.<br></span> Please
+                            allow <strong><em>at least</em></strong> 3 business days for account deactivation.
+                        </div>
+                        <div data-ng-if="userContext.invalidDate" class="alert alert-danger" role="alert"><i
+                                class="bi bi-exclamation-octagon-fill"></i>
+                            {{userContext.invalidDateMessage}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center mb-3" data-ng-if="(userContext.pageStatus == 'Submit' && submitPayload.exitingStaff.first_name && isOtherSchool(userContext.curSchoolId)) ||
+                (userContext.pageStatus == 'Edit' && submitPayload.exitingStaff.additional_schoolid)">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-auto">
+                                        <label class="form-label form-label-sm label-reset staff-change-req">
+                                            <span data-ng-if="userContext.pageStatus =='Submit'">Will</span>
+                                            {{submitPayload.exitingStaff.title}}
+                                            {{submitPayload.exitingStaff.first_name}}
+                                            {{submitPayload.exitingStaff.last_name}} need<span
+                                                data-ng-if="userContext.pageStatus =='Edit'">s</span> to be
+                                            deactivated
+                                            at
+                                            {{ userContext.pageStatus == 'Submit'
+                                            ? (userContext.curSchoolId | otherSchoolName)
+                                            : (submitPayload.exitingStaff.additional_schoolid == 0
+                                            ? (submitPayload.exitingStaff.schoolid | otherSchoolName)
+                                            : (submitPayload.exitingStaff.additional_schoolid | schoolName)) }}
+                                            <span data-ng-if="userContext.pageStatus =='Submit'">as well?</span>
+                                        </label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio"
+                                                name="additional-schoolid-radio-group"
+                                                id="exiting-staff-additional-school-radio-yes"
+                                                data-ng-model="submitPayload.exitingStaff.additional_schoolid"
+                                                value="{{ getAdditionalSchoolId(userContext.curSchoolId, userContext.pageContext) }}"
+                                                data-ng-required="!submitPayload.exitingStaff.additional_schoolid"
+                                                tabindex="0">
+                                            <label class="form-check-label"
+                                                for="exiting-staff-additional-school-radio-yes">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio"
+                                                name="additional-schoolid-radio-group"
+                                                id="exiting-staff-additional-school-radio-no"
+                                                data-ng-model="submitPayload.exitingStaff.additional_schoolid" value="0"
+                                                data-ng-required="!submitPayload.exitingStaff.additional_schoolid"
+                                                tabindex="0">
+                                            <label class="form-check-label"
+                                                for="exiting-staff-additional-school-radio-no">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row align-items-center mb-3"
                     data-ng-if="(userContext.pageStatus =='Submit' && submitPayload.exitingStaff.users_dcid) || (userContext.pageStatus =='Edit' && submitPayload.exitingStaff.canva_dcid)">
                     <div class="col">
                         <div class="card">
+                            <div class="card-header fw-semibold ps-1">Canva Information</div>
                             <div class="card-body">
                                 <div class="row align-items-center mb-3">
                                     <div class="col-auto">
@@ -215,91 +301,6 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.first_name">
-                    <div class="col-12 col-md-auto">
-                        <label class="form-label form-label-sm label-reset staff-change-req">Requested
-                            Deactivation Date</label><br>
-                        <div class="d-flex align-items-center flex-nowrap">
-                            <input id="exitingStaff-deadline" title="Requested Deactivation Date" type="text"
-                                data-pss-date-widget data-minDate="{{getDeadlineMinDate('exitingStaff')}}"
-                                data-ng-model="submitPayload.exitingStaff.deadline"
-                                data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.exitingStaff.deadline = userContext.tempDeadline : submitPayload.exitingStaff.deadline"
-                                data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
-                            <button type="button"
-                                class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
-                                data-ng-class="{'emergency-override-enabled': isEmergencyRequestEnabled('exitingStaff')}"
-                                data-ng-if="userContext.pageStatus === 'Submit'"
-                                data-ng-click="openEmergencyRequest('exitingStaff')" aria-label="Emergency override"
-                                data-tooltip="Click here to override the suggested 3 Business days. Only use in urgent situations.">
-                                <i class="bi"
-                                    data-ng-class="isEmergencyRequestEnabled('exitingStaff') ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'"></i>
-                                {{isEmergencyRequestEnabled('exitingStaff') ? 'Emergency Enabled' : 'Emergency?'}}
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-7 col-xl-4 mt-3 mt-md-0">
-                        <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
-                            class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
-                                data-ng-if="submitPayload.exitingStaff.deadline == userContext.lastDay">We recommend
-                                June
-                                30<sup>th</sup> all staff not returning next school year.<br></span> Please
-                            allow <strong><em>at least</em></strong> 3 business days for account deactivation.
-                        </div>
-                        <div data-ng-if="userContext.invalidDate" class="alert alert-danger" role="alert"><i
-                                class="bi bi-exclamation-octagon-fill"></i>
-                            {{userContext.invalidDateMessage}}
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3" data-ng-if="(userContext.pageStatus == 'Submit' && submitPayload.exitingStaff.first_name && isOtherSchool(userContext.curSchoolId)) || 
-                (userContext.pageStatus == 'Edit' && submitPayload.exitingStaff.additional_schoolid)">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-auto">
-                                        <label class="form-label form-label-sm label-reset staff-change-req">
-                                            <span data-ng-if="userContext.pageStatus =='Submit'">Will</span>
-                                            {{submitPayload.exitingStaff.title}}
-                                            {{submitPayload.exitingStaff.first_name}}
-                                            {{submitPayload.exitingStaff.last_name}} need<span
-                                                data-ng-if="userContext.pageStatus =='Edit'">s</span> to be
-                                            deactivated
-                                            at
-                                            {{ userContext.pageStatus == 'Submit'
-                                            ? (userContext.curSchoolId | otherSchoolName)
-                                            : (submitPayload.exitingStaff.additional_schoolid == 0
-                                            ? (submitPayload.exitingStaff.schoolid | otherSchoolName)
-                                            : (submitPayload.exitingStaff.additional_schoolid | schoolName)) }}
-                                            <span data-ng-if="userContext.pageStatus =='Submit'">as well?</span>
-                                        </label><br>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio"
-                                                name="additional-schoolid-radio-group"
-                                                id="exiting-staff-additional-school-radio-yes"
-                                                data-ng-model="submitPayload.exitingStaff.additional_schoolid"
-                                                value="{{ getAdditionalSchoolId(userContext.curSchoolId, userContext.pageContext) }}"
-                                                data-ng-required="!submitPayload.exitingStaff.additional_schoolid"
-                                                tabindex="0">
-                                            <label class="form-check-label"
-                                                for="exiting-staff-additional-school-radio-yes">Yes</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio"
-                                                name="additional-schoolid-radio-group"
-                                                id="exiting-staff-additional-school-radio-no"
-                                                data-ng-model="submitPayload.exitingStaff.additional_schoolid" value="0"
-                                                data-ng-required="!submitPayload.exitingStaff.additional_schoolid"
-                                                tabindex="0">
-                                            <label class="form-check-label"
-                                                for="exiting-staff-additional-school-radio-no">No</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center mb-3" data-ng-if="submitPayload.exitingStaff.first_name">
                     <div class="col">
                         <div class="card">
                             <div class="card-header fw-semibold ps-1">iPad Information</div>
@@ -311,15 +312,15 @@
                                             {{submitPayload.exitingStaff.title}}
                                             {{submitPayload.exitingStaff.first_name}}
                                             {{submitPayload.exitingStaff.last_name}} have an assigned iPad? Will
-                                            {{submitPayload.exitingStaff.gender | possessivePronoun}} Jamf user account need
+                                            {{submitPayload.exitingStaff.gender | possessivePronoun}} Jamf user account
+                                            need
                                             to be deleted?</label><br>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
                                                 name="exiting-staff-ipad-radio-group" id="exiting-staff-ipad-yes"
                                                 data-ng-model="submitPayload.exitingStaff.ipad_needed" value="1"
                                                 data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.exitingStaff.ipad_needed"
-                                                data-ng-change="resetIpadCompletion('exitingStaff')"
-                                                tabindex="0">
+                                                data-ng-change="resetIpadCompletion('exitingStaff')" tabindex="0">
                                             <label class="form-check-label" for="exiting-staff-ipad-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -327,8 +328,7 @@
                                                 name="exiting-staff-ipad-radio-group" id="exiting-staff-ipad-no"
                                                 data-ng-model="submitPayload.exitingStaff.ipad_needed" value="0"
                                                 data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.exitingStaff.ipad_needed"
-                                                data-ng-change="resetIpadCompletion('exitingStaff')"
-                                                tabindex="0">
+                                                data-ng-change="resetIpadCompletion('exitingStaff')" tabindex="0">
                                             <label class="form-check-label" for="exiting-staff-ipad-no">No</label>
                                         </div>
                                     </div>
