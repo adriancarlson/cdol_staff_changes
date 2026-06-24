@@ -37,6 +37,10 @@
         font-weight: 600;
     }
 
+    #creation-checks-container .account-check-status>.form-check:first-child .form-check-label {
+        white-space: nowrap;
+    }
+
     #creation-checks-container .account-check-primary-blue {
         background-color: rgba(13, 110, 253, 0.14);
     }
@@ -139,7 +143,7 @@
                                     <input class="form-check-input" id="ad_created" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].ad_created"
                                         data-ng-disabled="submitPayload[userContext.pageContext].ad_ignored">
-                                    <label class="form-check-label" for="ad_created">AD Account <span data-ng-switch
+                                    <label class="form-check-label" for="ad_created">Active Directory Account <span data-ng-switch
                                             on="submitPayload[userContext.pageContext].change_type">
                                             <span data-ng-switch-when="newStaff">Created?</span>
                                             <span data-ng-switch-when="transferringStaff">Moved?</span>
@@ -212,7 +216,7 @@
                                     <input class="form-check-input" id="o365_created" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].o365_created"
                                         data-ng-disabled="submitPayload[userContext.pageContext].o365_ignored">
-                                    <label class="form-check-label" for="o365_created">O365 Account <span data-ng-switch
+                                    <label class="form-check-label" for="o365_created">Office 365 Account <span data-ng-switch
                                             on="submitPayload[userContext.pageContext].change_type">
                                             <span data-ng-switch-when="newStaff">Created?</span>
                                             <span data-ng-switch-when="transferringStaff">Verified?</span>
@@ -257,7 +261,7 @@
                                     <label class="form-check-label" for="ipad_created" data-ng-switch
                                         on="submitPayload[userContext.pageContext].change_type">
                                         <span data-ng-switch-when="newStaff">Jamf User Account Created?</span>
-                                        <span data-ng-switch-when="transferringStaff">Jamf User Account Created?</span>
+                                        <span data-ng-switch-when="transferringStaff">Jamf User Account Moved?</span>
                                         <span data-ng-switch-when="jobChange">Jamf User Account Created?</span>
                                         <span data-ng-switch-when="subStaff">Jamf User Account Created?</span>
                                         <span data-ng-switch-when="nameChange">Jamf User Account Updated?</span>
@@ -336,10 +340,10 @@
                                         data-ng-disabled="submitPayload[userContext.pageContext].canva_ignored">
                                     <label class="form-check-label" for="canva_created">Canva <span data-ng-switch
                                             on="submitPayload[userContext.pageContext].change_type">
-                                            <span data-ng-switch-when="newStaff">Created?</span>
-                                            <span data-ng-switch-when="transferringStaff">Moved?</span>
-                                            <span data-ng-switch-when="nameChange">Transferred?</span>
-                                            <span data-ng-switch-when="exitingStaff">Transferred?</span>
+                                            <span data-ng-switch-when="newStaff">Account Created?</span>
+                                            <span data-ng-switch-when="transferringStaff">Account Moved?</span>
+                                            <span data-ng-switch-when="nameChange">Account Transferred?</span>
+                                            <span data-ng-switch-when="exitingStaff">Account Transferred?</span>
                                         </span></label>
                                 </div>
                                 <div class="form-check m-0">

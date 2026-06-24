@@ -80,61 +80,61 @@ define(function (require) {
 				ps: { label: 'PowerSchool', owner: 'Adrian' },
 				ad: { label: 'Active Directory', owner: 'Brad' },
 				o365: { label: 'Office 365', owner: 'Brad' },
-				ipad: { label: 'iPad / Jamf user', owner: 'Greg' },
+				ipad: { label: 'iPad/Jamf', owner: 'Greg' },
 				lms: { label: 'LMS', owner: 'Shane' },
 				canva: { label: 'Canva', owner: 'Carrie' }
 			}
 
 			const workflowActionLabels = {
 				default: {
-					ps: 'PowerSchool complete',
-					ad: 'Active Directory complete',
-					o365: 'Office 365 complete',
-					ipad: 'Jamf user account complete',
-					lms: 'LMS complete',
-					canva: 'Canva complete'
+					ps: 'PowerSchool Complete',
+					ad: 'Active Directory Complete',
+					o365: 'Office 365 Complete',
+					ipad: 'Jamf User Account Complete',
+					lms: 'LMS Complete',
+					canva: 'Canva Account Complete'
 				},
 				newStaff: {
-					ps: 'PowerSchool account created',
-					ad: 'Active Directory account created',
-					o365: 'O365 account created',
-					ipad: 'Jamf user account created',
-					lms: 'LMS account created',
-					canva: 'Canva account created'
+					ps: 'PowerSchool Account Created',
+					ad: 'Active Directory Account Created',
+					o365: 'Office 365 Account Created',
+					ipad: 'Jamf User Account Created',
+					lms: 'LMS Account Created',
+					canva: 'Canva Account Created'
 				},
 				transferringStaff: {
-					ps: 'PowerSchool moved',
-					ad: 'Active Directory moved',
-					o365: 'O365 moved',
-					ipad: 'Jamf user account complete',
-					lms: 'LMS moved',
-					canva: 'Canva moved'
+					ps: 'PowerSchool Account Moved',
+					ad: 'Active Directory Account Moved',
+					o365: 'Office 365 Account Verified',
+					ipad: 'Jamf User Account Moved',
+					lms: 'LMS Account Double Check',
+					canva: 'Canva Account Moved'
 				},
 				jobChange: {
-					ps: 'PowerSchool changed',
-					ad: 'Active Directory changed',
-					ipad: 'Jamf user account complete'
+					ps: 'PowerSchool Account Adjusted',
+					ad: 'Active Directory Account Adjusted',
+					ipad: 'Jamf User Account Created'
 				},
 				subStaff: {
-					ps: 'PowerSchool account created',
-					ad: 'Active Directory account created',
-					o365: 'O365 account created',
-					ipad: 'Jamf user account created',
-					lms: 'LMS account created'
+					ps: 'PowerSchool Account Created',
+					ad: 'Active Directory Account Created',
+					o365: 'Office 365 Account Created',
+					ipad: 'Jamf User Account Created',
+					lms: 'LMS Account Created'
 				},
 				nameChange: {
-					canva: 'Canva transferred',
-					ps: 'PowerSchool changed',
-					ad: 'Active Directory changed',
-					o365: 'O365 changed',
-					ipad: 'Jamf user account complete',
-					lms: 'LMS changed'
+					canva: 'Canva Account Transferred',
+					ps: 'PowerSchool Account Updated',
+					ad: 'Active Directory Account Updated',
+					o365: 'Office 365 Account Updated',
+					ipad: 'Jamf User Account Updated',
+					lms: 'LMS Account Updated'
 				},
 				exitingStaff: {
-					canva: 'Canva transferred',
-					ps: 'PowerSchool deactivated',
-					ad: 'Active Directory deactivated',
-					ipad: 'Jamf user account complete'
+					canva: 'Canva Account Transferred',
+					ps: 'PowerSchool Account Deactivated',
+					ad: 'Active Directory Account Disabled',
+					ipad: 'Jamf User Account Deleted'
 				}
 			}
 
@@ -174,8 +174,8 @@ define(function (require) {
 					const isIgnored = !isComplete && staffRecord[`${key}_ignored`] == 1
 					const isResolved = isComplete || isIgnored
 					const isCurrentPending = !isResolved && hasResolvedSteps && index === firstPendingIndex
-					const status = isComplete ? 'Complete' : isIgnored ? 'Not Applicable' : 'Pending'
 					const state = isComplete ? 'complete' : isIgnored ? 'ignored' : isCurrentPending ? 'pending' : 'not-started'
+					const status = isComplete ? 'Complete' : isIgnored ? 'Not Applicable' : isCurrentPending ? 'In Progress' : 'Not Started'
 					const icon = isComplete ? 'checkmark-alt' : isIgnored ? 'minus-alt' : isCurrentPending ? 'inprogress' : 'calendar-custom'
 					const classNames = [`workflow-step-${state}`]
 
@@ -357,8 +357,7 @@ define(function (require) {
 						<div class="workflow-progress-detail">
 							<div class="workflow-progress-system">${escapeHtml(step.system)}</div>
 							<div class="workflow-progress-action">${escapeHtml(step.actionLabel)}</div>
-							<div class="workflow-progress-owner">Owner: ${escapeHtml(step.owner)}</div>
-							<div class="workflow-progress-state">${escapeHtml(step.status)}</div>
+							<div class="workflow-progress-state workflow-progress-state-${escapeHtml(step.state)}">${escapeHtml(step.status)}</div>
 						</div>
 					</li>`
 					)
@@ -366,23 +365,25 @@ define(function (require) {
 
 				psDialog({
 					type: 'dialogM',
-					width: 900,
+					width: 1300,
 					title: 'Workflow Progress',
 					content: `
 						<div class="workflow-progress-dialog">
 							<div class="workflow-progress-dialog-summary">
 								<div>
 									<div class="workflow-progress-dialog-name">${escapeHtml(staffRecord.display_name)}</div>
-									<div class="workflow-progress-dialog-type">${escapeHtml(staffRecord.change_type_label)}${escapeHtml(staffRecord.sub_type_suffix)}</div>
+									<div class="workflow-progress-dialog-type ${escapeHtml(staffRecord.change_type_class)}">${escapeHtml(staffRecord.change_type_label)}${escapeHtml(staffRecord.sub_type_suffix)}</div>
 								</div>
 								<div class="workflow-progress-dialog-count">
 									<strong>${escapeHtml(staffRecord.progress_completed)}/${escapeHtml(staffRecord.progress_total)}</strong>
-									<span>${escapeHtml(staffRecord.progress_status)}</span>
+									<span class="${escapeHtml(staffRecord.progress_status_class)}">${escapeHtml(staffRecord.progress_status)}</span>
 								</div>
 							</div>
-							<ol class="workflow-progress-stepper workflow-progress-stepper-dialog" aria-label="${escapeHtml(staffRecord.progress_aria_label)}">
-								${stepsHtml}
-							</ol>
+							<div class="workflow-progress-stepper-dialog-wrap">
+								<ol class="workflow-progress-stepper workflow-progress-stepper-dialog" aria-label="${escapeHtml(staffRecord.progress_aria_label)}">
+									${stepsHtml}
+								</ol>
+							</div>
 						</div>`,
 					initBehaviors: true,
 					buttons: [

@@ -16,6 +16,11 @@
             /* Keep Chrome's sticky-table seam inside the header so no pixel remains above it after unsticking. */
             #cdol-staff-list-app-div table.grid thead.sticky-header {
                 box-shadow: inset 0 1px 0 #a3bfcc;
+                z-index: 20;
+            }
+
+            #cdol-staff-list-app-div table.grid thead.sticky-header th {
+                z-index: 21;
             }
 
             #cdol-staff-list-app-div table.grid .fit-column {
@@ -58,8 +63,10 @@
                 line-height: 1;
                 min-width: 0;
                 padding: 0 .05rem;
+                position: relative;
                 text-align: left;
                 width: 100%;
+                z-index: 0;
             }
 
             #cdol-staff-list-app-div .workflow-progress-button:focus,
@@ -240,7 +247,7 @@
             }
 
             .workflow-progress-dialog-type {
-                color: #52616f;
+                font-weight: 600;
             }
 
             .workflow-progress-dialog-count {
@@ -252,16 +259,26 @@
                 font-size: 1.25rem;
             }
 
+            .workflow-progress-dialog-count span {
+                font-weight: 600;
+            }
+
+            .workflow-progress-stepper-dialog-wrap {
+                overflow-x: auto;
+                text-align: center;
+                width: 100%;
+            }
+
             .workflow-progress-stepper-dialog {
                 align-items: flex-start;
-                overflow-x: auto;
+                display: inline-flex;
                 padding: .5rem .25rem 1rem;
             }
 
             .workflow-progress-stepper-dialog .workflow-progress-step {
-                flex: 1 1 8.5rem;
+                flex: 0 0 12.75rem;
                 flex-direction: column;
-                min-width: 8.5rem;
+                min-width: 12.75rem;
                 text-align: center;
             }
 
@@ -269,19 +286,30 @@
                 background: #cfd8e3;
                 content: "";
                 height: 3px;
-                left: -50%;
+                left: calc(-50% + .875rem);
                 position: absolute;
-                top: .65rem;
-                width: 100%;
+                right: calc(50% + .875rem);
+                top: .875rem;
+                z-index: 0;
+            }
+
+            .workflow-progress-stepper-dialog .workflow-step-complete:not(:first-child)::before {
+                background: #198754;
+            }
+
+            .workflow-progress-stepper-dialog .workflow-step-current.workflow-step-pending:not(:first-child)::before {
+                background: #2f80c9;
             }
 
             .workflow-progress-stepper-dialog .workflow-progress-marker {
                 height: 1.75rem;
                 width: 1.75rem;
+                z-index: 1;
             }
 
             .workflow-progress-stepper-dialog .workflow-progress-detail {
                 margin-top: .55rem;
+                padding: 0 .5rem;
             }
 
             .workflow-progress-system {
@@ -289,10 +317,30 @@
             }
 
             .workflow-progress-action,
-            .workflow-progress-owner,
             .workflow-progress-state {
                 color: #52616f;
                 font-size: .82rem;
+            }
+
+            .workflow-progress-action {
+                font-size: .78rem;
+                white-space: nowrap;
+            }
+
+            .workflow-progress-state-complete {
+                color: #198754;
+                font-weight: 600;
+            }
+
+            .workflow-progress-state-pending {
+                color: #2f80c9;
+                font-weight: 600;
+            }
+
+            .workflow-progress-state-ignored,
+            .workflow-progress-state-not-started {
+                color: #6c757d;
+                font-weight: 600;
             }
         </style>
     </head>
