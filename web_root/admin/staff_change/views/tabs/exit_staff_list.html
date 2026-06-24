@@ -18,12 +18,14 @@
                 <th data-pss-sort-fields="old_name_placeholder" class="nowrap">{{listHeaders[0]}}</th>
                 <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">{{listHeaders[1]}}
                 </th>
-                <th data-pss-sort-fields="submittedstaff">{{listHeaders[2]}}</th>
-                <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending">
+                <th data-pss-sort-fields="submittedstaff" class="fit-column">{{listHeaders[2]}}</th>
+                <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending"
+                    class="fit-column">
                     {{listHeaders[3]}}</th>
-                <th data-pss-sort-fields="completion_date|date">{{listHeaders[4]}}</th>
-                <th data-pss-sort-fields="progress_percent|number, completion_date|date" data-exclude-from-filter="true">{{listHeaders[5]}}</th>
-                <th data-pss-sort-fields="final_completion_date|date">{{listHeaders[6]}}</th>
+                <th data-pss-sort-fields="completion_date|date" class="fit-column">{{listHeaders[4]}}</th>
+                <th data-pss-sort-fields="progress_percent|number, completion_date|date"
+                    data-exclude-from-filter="true" class="progress-column progress-column-4">{{listHeaders[5]}}</th>
+                <th data-pss-sort-fields="final_completion_date|date" class="fit-column">{{listHeaders[6]}}</th>
             </tr>
         </thead>
         <tbody>
@@ -41,16 +43,16 @@
                     </span>
                 </td>
                 <td class="nowrap">{{::exitingStaff.schname}}</td>
-                <td class="nowrap">{{::exitingStaff.submittedstaff}}</td>
-                <td class="nowrap">{{::exitingStaff.submission_date | date : 'MM/dd/yyyy'}}
+                <td class="fit-column">{{::exitingStaff.submittedstaff}}</td>
+                <td class="fit-column">{{::exitingStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{::exitingStaff.submission_time}}</td>
-                <td data-ng-class="::exitingStaff.deadline_class">
+                <td class="fit-column" data-ng-class="::exitingStaff.deadline_class">
                     {{::exitingStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <td>
+                <td class="progress-column progress-column-4">
                     <staff-workflow-progress staff-record="exitingStaff"
                         open-progress="openWorkflowProgressDialog(staffRecord)"></staff-workflow-progress>
                 </td>
-                <td>{{::exitingStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td class="fit-column">{{::exitingStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
         </tbody>
     </table>

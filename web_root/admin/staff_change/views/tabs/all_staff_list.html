@@ -18,16 +18,18 @@
             <tr>
                 <th></th>
                 <th data-pss-sort-fields="last_name" class="nowrap">{{listHeaders[0]}}</th>
-                <th data-pss-sort-fields="change_type|multiselect" data-filter-info="changeMap" class="nowrap">
+                <th data-pss-sort-fields="change_type|multiselect" data-filter-info="changeMap" class="fit-column">
                     {{listHeaders[1]}}</th>
                 <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">{{listHeaders[2]}}
                 </th>
-                <th data-pss-sort-fields="submittedstaff">{{listHeaders[3]}}</th>
-                <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending">
+                <th data-pss-sort-fields="submittedstaff" class="fit-column">{{listHeaders[3]}}</th>
+                <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending"
+                    class="fit-column">
                     {{listHeaders[4]}}</th>
-                <th data-pss-sort-fields="completion_date|date">{{listHeaders[5]}}</th>
-                <th data-pss-sort-fields="progress_percent|number, completion_date|date" data-exclude-from-filter="true">{{listHeaders[6]}}</th>
-                <th data-pss-sort-fields="final_completion_date|date">{{listHeaders[7]}}</th>
+                <th data-pss-sort-fields="completion_date|date" class="fit-column">{{listHeaders[5]}}</th>
+                <th data-pss-sort-fields="progress_percent|number, completion_date|date"
+                    data-exclude-from-filter="true" class="progress-column progress-column-all">{{listHeaders[6]}}</th>
+                <th data-pss-sort-fields="final_completion_date|date" class="fit-column">{{listHeaders[7]}}</th>
             </tr>
         </thead>
         <tbody>
@@ -44,22 +46,22 @@
                         </a>
                     </span>
                 </td>
-                <td class="nowrap fw-semibold" data-ng-class="::allStaff.change_type_class">
+                <td class="fit-column fw-semibold" data-ng-class="::allStaff.change_type_class">
                     {{::allStaff.change_type_label}}{{::allStaff.sub_type_suffix}}</td>
                 <td class="nowrap">{{::allStaff.schname}}</td>
-                <td class="nowrap">{{::allStaff.submittedstaff}}</td>
-                <td class="nowrap">{{::allStaff.submission_date | date : 'MM/dd/yyyy'}}
+                <td class="fit-column">{{::allStaff.submittedstaff}}</td>
+                <td class="fit-column">{{::allStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{::allStaff.submission_time}}</td>
-                <td>
+                <td class="fit-column">
                     <span data-ng-class="::allStaff.deadline_class">
                         {{::allStaff.completion_date | date : 'MM/dd/yyyy' }}
                     </span>
                 </td>
-                <td>
+                <td class="progress-column progress-column-all">
                     <staff-workflow-progress staff-record="allStaff"
                         open-progress="openWorkflowProgressDialog(staffRecord)"></staff-workflow-progress>
                 </td>
-                <td>{{::allStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td class="fit-column">{{::allStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
         </tbody>
     </table>

@@ -11,6 +11,7 @@ define(function (require) {
 				},
 				template: `
 					<button type="button" class="workflow-progress-button" data-ng-click="openProgress({staffRecord: staffRecord})"
+						data-ng-class="::staffRecord.progress_button_class"
 						data-ng-attr-aria-label="View workflow progress for {{staffRecord.display_name}}">
 						<span class="workflow-progress-stepper workflow-progress-stepper-compact"
 							data-ng-attr-aria-label="{{staffRecord.progress_aria_label}}">
@@ -28,7 +29,6 @@ define(function (require) {
 						<span class="workflow-progress-meta">
 							<span class="workflow-progress-count">{{::staffRecord.progress_completed}}/{{::staffRecord.progress_total}}</span>
 							<span class="workflow-progress-status" data-ng-class="::staffRecord.progress_status_class">{{::staffRecord.progress_status}}</span>
-							<span class="workflow-progress-summary">{{::staffRecord.progress_pending_summary}}</span>
 						</span>
 					</button>`
 			}

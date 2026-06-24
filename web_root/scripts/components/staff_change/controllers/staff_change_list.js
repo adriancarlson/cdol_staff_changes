@@ -167,17 +167,19 @@ define(function (require) {
 
 			const buildWorkflowProgress = (staffRecord, stepKeys) => {
 				const firstPendingIndex = stepKeys.findIndex(key => staffRecord[`${key}_created`] != 1 && staffRecord[`${key}_ignored`] != 1)
+				const hasResolvedSteps = stepKeys.some(key => staffRecord[`${key}_created`] == 1 || staffRecord[`${key}_ignored`] == 1)
 				const steps = stepKeys.map((key, index) => {
 					const system = workflowSystems[key]
 					const isComplete = staffRecord[`${key}_created`] == 1
 					const isIgnored = !isComplete && staffRecord[`${key}_ignored`] == 1
 					const isResolved = isComplete || isIgnored
+					const isCurrentPending = !isResolved && hasResolvedSteps && index === firstPendingIndex
 					const status = isComplete ? 'Complete' : isIgnored ? 'Not Applicable' : 'Pending'
-					const state = isComplete ? 'complete' : isIgnored ? 'ignored' : 'pending'
-					const icon = isComplete ? 'checkmark-alt' : isIgnored ? 'minus-alt' : 'inprogress'
+					const state = isComplete ? 'complete' : isIgnored ? 'ignored' : isCurrentPending ? 'pending' : 'not-started'
+					const icon = isComplete ? 'checkmark-alt' : isIgnored ? 'minus-alt' : isCurrentPending ? 'inprogress' : 'calendar-custom'
 					const classNames = [`workflow-step-${state}`]
 
-					if (!isResolved && index === firstPendingIndex) classNames.push('workflow-step-current')
+					if (isCurrentPending) classNames.push('workflow-step-current')
 
 					return {
 						key: key,
@@ -196,13 +198,19 @@ define(function (require) {
 				const total = steps.length
 				const pendingSteps = steps.filter(step => !step.resolved)
 				const percent = total ? Math.round((completed / total) * 100) : 100
+				const status = completed === 0 && pendingSteps.length ? 'Not Started' : pendingSteps.length ? 'In Progress' : 'Complete'
+				const statusKey = completed === 0 && pendingSteps.length ? 'not-started' : pendingSteps.length ? 'in-progress' : 'complete'
+				const statusIcon = statusKey === 'not-started' ? 'calendar-custom' : statusKey === 'in-progress' ? 'inprogress' : 'checkmark-alt'
 
 				return {
 					steps: steps,
 					completed: completed,
 					total: total,
+					remaining: Math.max(total - completed, 0),
 					percent: percent,
-					status: pendingSteps.length ? 'Pending' : 'Complete',
+					status: status,
+					statusKey: statusKey,
+					statusIcon: statusIcon,
 					pendingCount: pendingSteps.length,
 					pendingSummary: pendingSteps.length ? `Pending: ${pendingSteps.map(step => step.system).join(', ')}` : 'All workflow checks complete',
 					ariaLabel: `${completed} of ${total} workflow checks complete`
@@ -264,8 +272,7 @@ define(function (require) {
 				})
 
 				const canvaApplies = staffRecord.change_type === 'newStaff' || staffRecord.change_type === 'transferringStaff' || ((staffRecord.change_type === 'nameChange' || staffRecord.change_type === 'exitingStaff') && staffRecord.canva_transfer == '1')
-				const ipadApplies = staffRecord.ipad_needed == '1' &&
-					(staffRecord.change_type !== 'subStaff' || staffRecord.sub_type === 'LTS')
+				const ipadApplies = staffRecord.ipad_needed == '1' && (staffRecord.change_type !== 'subStaff' || staffRecord.sub_type === 'LTS')
 				staffRecord.ipad_applies = ipadApplies
 				const workflowStepKeys = getWorkflowStepKeys(staffRecord, {
 					isFsts: isFsts,
@@ -296,9 +303,12 @@ define(function (require) {
 				staffRecord.progress_steps = workflowProgress.steps
 				staffRecord.progress_completed = workflowProgress.completed
 				staffRecord.progress_total = workflowProgress.total
+				staffRecord.progress_remaining = workflowProgress.remaining
 				staffRecord.progress_percent = workflowProgress.percent
 				staffRecord.progress_status = workflowProgress.status
-				staffRecord.progress_status_class = workflowProgress.pendingCount ? 'workflow-progress-status-pending' : 'workflow-progress-status-complete'
+				staffRecord.progress_status_class = `workflow-progress-status-${workflowProgress.statusKey}`
+				staffRecord.progress_status_icon = workflowProgress.statusIcon
+				staffRecord.progress_button_class = `workflow-progress-${workflowProgress.statusKey}`
 				staffRecord.progress_pending_count = workflowProgress.pendingCount
 				staffRecord.progress_pending_summary = workflowProgress.pendingSummary
 				staffRecord.progress_aria_label = workflowProgress.ariaLabel
@@ -322,12 +332,13 @@ define(function (require) {
 				}
 			}
 
-			const escapeHtml = value => String(value ?? '')
-				.replace(/&/g, '&amp;')
-				.replace(/</g, '&lt;')
-				.replace(/>/g, '&gt;')
-				.replace(/"/g, '&quot;')
-				.replace(/'/g, '&#39;')
+			const escapeHtml = value =>
+				String(value ?? '')
+					.replace(/&/g, '&amp;')
+					.replace(/</g, '&lt;')
+					.replace(/>/g, '&gt;')
+					.replace(/"/g, '&quot;')
+					.replace(/'/g, '&#39;')
 
 			const renderPdsIcon = iconName => `
 				<pds-icon name="${escapeHtml(iconName)}" class="workflow-progress-icon x-scope pds-icon-0 pds-widget" pds-widget="pds-widget">
@@ -338,7 +349,9 @@ define(function (require) {
 			$scope.openWorkflowProgressDialog = staffRecord => {
 				if (!staffRecord) return
 
-				const stepsHtml = (staffRecord.progress_steps || []).map(step => `
+				const stepsHtml = (staffRecord.progress_steps || [])
+					.map(
+						step => `
 					<li class="workflow-progress-step ${escapeHtml(step.className)}">
 						<div class="workflow-progress-marker">${renderPdsIcon(step.icon)}</div>
 						<div class="workflow-progress-detail">
@@ -347,7 +360,9 @@ define(function (require) {
 							<div class="workflow-progress-owner">Owner: ${escapeHtml(step.owner)}</div>
 							<div class="workflow-progress-state">${escapeHtml(step.status)}</div>
 						</div>
-					</li>`).join('')
+					</li>`
+					)
+					.join('')
 
 				psDialog({
 					type: 'dialogM',
@@ -481,7 +496,7 @@ define(function (require) {
 					{ label: 'PS Created', key: 'ps_complete' },
 					{ label: 'AD Created', key: 'ad_complete' },
 					{ label: 'O365 Created', key: 'o365_complete' },
-					{ label: 'iPad Complete', key: row => row.ipad_applies ? row.ipad_complete : null },
+					{ label: 'iPad Complete', key: row => (row.ipad_applies ? row.ipad_complete : null) },
 					{ label: 'LMS Created', key: 'lms_complete' },
 					{ label: 'Canva Created', key: 'canva_complete' },
 					{ label: 'Completion Date', key: 'final_completion_date' },

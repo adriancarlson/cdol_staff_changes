@@ -22,12 +22,14 @@
                 </th>
                 <th data-pss-sort-fields="prev_school_name|multiselect-dropdown" data-filter-info="schoolMap">
                     {{listHeaders[2]}}</th>
-                <th data-pss-sort-fields="submittedstaff">{{listHeaders[3]}}</th>
-                <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending">
+                <th data-pss-sort-fields="submittedstaff" class="fit-column">{{listHeaders[3]}}</th>
+                <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending"
+                    class="fit-column">
                     {{listHeaders[4]}}</th>
-                <th data-pss-sort-fields="completion_date|date">{{listHeaders[5]}}</th>
-                <th data-pss-sort-fields="progress_percent|number, completion_date|date" data-exclude-from-filter="true">{{listHeaders[6]}}</th>
-                <th data-pss-sort-fields="final_completion_date|date">{{listHeaders[7]}}</th>
+                <th data-pss-sort-fields="completion_date|date" class="fit-column">{{listHeaders[5]}}</th>
+                <th data-pss-sort-fields="progress_percent|number, completion_date|date"
+                    data-exclude-from-filter="true" class="progress-column progress-column-6">{{listHeaders[6]}}</th>
+                <th data-pss-sort-fields="final_completion_date|date" class="fit-column">{{listHeaders[7]}}</th>
             </tr>
         </thead>
         <tbody>
@@ -46,16 +48,16 @@
                 </td>
                 <td class="nowrap">{{::transferringStaff.schname}}</td>
                 <td class="nowrap">{{::transferringStaff.prev_school_name}}</td>
-                <td class="nowrap">{{::transferringStaff.submittedstaff}}</td>
-                <td class="nowrap">{{::transferringStaff.submission_date | date : 'MM/dd/yyyy'}}
+                <td class="fit-column">{{::transferringStaff.submittedstaff}}</td>
+                <td class="fit-column">{{::transferringStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{::transferringStaff.submission_time}}</td>
-                <td data-ng-class="::transferringStaff.deadline_class">
+                <td class="fit-column" data-ng-class="::transferringStaff.deadline_class">
                     {{::transferringStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <td>
+                <td class="progress-column progress-column-6">
                     <staff-workflow-progress staff-record="transferringStaff"
                         open-progress="openWorkflowProgressDialog(staffRecord)"></staff-workflow-progress>
                 </td>
-                <td>{{::transferringStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
+                <td class="fit-column">{{::transferringStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
         </tbody>
     </table>
