@@ -17,6 +17,212 @@
             #cdol-staff-list-app-div table.grid thead.sticky-header {
                 box-shadow: inset 0 1px 0 #a3bfcc;
             }
+
+            #cdol-staff-list-app-div .workflow-progress-button {
+                align-items: center;
+                background: transparent;
+                border: 0;
+                color: inherit;
+                cursor: pointer;
+                display: flex;
+                gap: .55rem;
+                min-width: 215px;
+                padding: .15rem .1rem;
+                text-align: left;
+                width: 100%;
+            }
+
+            #cdol-staff-list-app-div .workflow-progress-button:focus,
+            #cdol-staff-list-app-div .workflow-progress-button:hover {
+                outline: 2px solid #7aa7d9;
+                outline-offset: 2px;
+            }
+
+            .workflow-progress-stepper {
+                align-items: center;
+                display: flex;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .workflow-progress-step {
+                align-items: center;
+                display: flex;
+                position: relative;
+            }
+
+            .workflow-progress-marker {
+                align-items: center;
+                background: #fff;
+                border: 2px solid #aab7c4;
+                border-radius: 50%;
+                display: inline-flex;
+                flex: 0 0 auto;
+                height: 1.25rem;
+                justify-content: center;
+                position: relative;
+                width: 1.25rem;
+                z-index: 1;
+            }
+
+            .workflow-progress-icon {
+                color: #4f5f6f;
+                fill: #4f5f6f;
+                zoom: .52;
+            }
+
+            .workflow-step-complete .workflow-progress-marker {
+                background: #198754;
+                border-color: #198754;
+            }
+
+            .workflow-step-complete .workflow-progress-icon {
+                color: #fff;
+                fill: #fff;
+            }
+
+            .workflow-step-ignored .workflow-progress-marker {
+                background: #eef1f4;
+                border-color: #9aa7b2;
+            }
+
+            .workflow-step-pending .workflow-progress-marker {
+                background: #fff;
+                border-color: #b8c3cc;
+            }
+
+            .workflow-step-current .workflow-progress-marker {
+                border-color: #0d6efd;
+                box-shadow: 0 0 0 3px rgba(13, 110, 253, .18);
+            }
+
+            .workflow-progress-stepper-compact {
+                flex: 0 0 auto;
+            }
+
+            .workflow-progress-stepper-compact .workflow-progress-step {
+                flex: 0 0 1.7rem;
+                justify-content: center;
+            }
+
+            .workflow-progress-stepper-compact .workflow-progress-step:not(:first-child)::before {
+                background: #cfd8e3;
+                content: "";
+                height: 2px;
+                left: -50%;
+                position: absolute;
+                right: 50%;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .workflow-progress-meta {
+                display: flex;
+                flex-direction: column;
+                line-height: 1.15;
+                min-width: 0;
+            }
+
+            .workflow-progress-count {
+                font-weight: 700;
+            }
+
+            .workflow-progress-status {
+                font-size: .78rem;
+                font-weight: 600;
+            }
+
+            .workflow-progress-status-complete {
+                color: #198754;
+            }
+
+            .workflow-progress-status-pending {
+                color: #b35c00;
+            }
+
+            .workflow-progress-summary {
+                color: #52616f;
+                font-size: .72rem;
+                max-width: 11rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .workflow-progress-dialog {
+                padding: .75rem;
+            }
+
+            .workflow-progress-dialog-summary {
+                align-items: center;
+                border-bottom: 1px solid #d9e0e7;
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 1rem;
+                padding-bottom: .75rem;
+            }
+
+            .workflow-progress-dialog-name {
+                font-size: 1.1rem;
+                font-weight: 700;
+            }
+
+            .workflow-progress-dialog-type {
+                color: #52616f;
+            }
+
+            .workflow-progress-dialog-count {
+                text-align: right;
+            }
+
+            .workflow-progress-dialog-count strong {
+                display: block;
+                font-size: 1.25rem;
+            }
+
+            .workflow-progress-stepper-dialog {
+                align-items: flex-start;
+                overflow-x: auto;
+                padding: .5rem .25rem 1rem;
+            }
+
+            .workflow-progress-stepper-dialog .workflow-progress-step {
+                flex: 1 1 8.5rem;
+                flex-direction: column;
+                min-width: 8.5rem;
+                text-align: center;
+            }
+
+            .workflow-progress-stepper-dialog .workflow-progress-step:not(:first-child)::before {
+                background: #cfd8e3;
+                content: "";
+                height: 3px;
+                left: -50%;
+                position: absolute;
+                top: .65rem;
+                width: 100%;
+            }
+
+            .workflow-progress-stepper-dialog .workflow-progress-marker {
+                height: 1.55rem;
+                width: 1.55rem;
+            }
+
+            .workflow-progress-stepper-dialog .workflow-progress-detail {
+                margin-top: .55rem;
+            }
+
+            .workflow-progress-system {
+                font-weight: 700;
+            }
+
+            .workflow-progress-action,
+            .workflow-progress-owner,
+            .workflow-progress-state {
+                color: #52616f;
+                font-size: .82rem;
+            }
         </style>
     </head>
 

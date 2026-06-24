@@ -2,12 +2,13 @@
     data-filtered-data="filteredNameChangeList" data-client-side-pagination="false">
     <export-button data-ng-if="filteredNameChangeList.length > 0"></export-button>
     <!-- Adding before the table so it will put this filter at the top of the list in the drop down -->
-    <label data-pss-filter-field="canva_complete|multiselect" data-filter-info="booleanMap">Canva Transferred?</label>
-    <label data-pss-filter-field="ps_complete|multiselect" data-filter-info="booleanMap">PowerSchool Complete?</label>
-    <label data-pss-filter-field="ad_complete|multiselect" data-filter-info="booleanMap">Active Directory
+    <label data-pss-filter-field="canva_filter_complete|multiselect" data-filter-info="booleanMap">Canva Transferred?</label>
+    <label data-pss-filter-field="ps_filter_complete|multiselect" data-filter-info="booleanMap">PowerSchool Complete?</label>
+    <label data-pss-filter-field="ad_filter_complete|multiselect" data-filter-info="booleanMap">Active Directory
         Complete?</label>
-    <label data-pss-filter-field="o365_complete|multiselect" data-filter-info="booleanMap">Office 365 Complete?</label>
-    <label data-pss-filter-field="lms_complete|multiselect" data-filter-info="booleanMap">LMS Complete?</label>
+    <label data-pss-filter-field="o365_filter_complete|multiselect" data-filter-info="booleanMap">Office 365 Complete?</label>
+    <label data-pss-filter-field="ipad_filter_complete|multiselect" data-filter-info="booleanMap">iPad Complete?</label>
+    <label data-pss-filter-field="lms_filter_complete|multiselect" data-filter-info="booleanMap">LMS Complete?</label>
     <label data-pss-filter-field="completed|multiselect" data-filter-info="booleanMap">All Completed?</label>
     <label data-pss-filter-field="title|multiselect" data-filter-info="titleMap">Title</label>
     <label data-pss-filter-field="first_name">First Name</label>
@@ -24,18 +25,8 @@
                 <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending">
                     {{listHeaders[4]}}</th>
                 <th data-pss-sort-fields="completion_date|date">{{listHeaders[5]}}</th>
-                <th data-pss-sort-fields="canva_created, canva_ignored" data-exclude-from-filter="true">
-                    {{listHeaders[6]}}</th>
-                <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">{{listHeaders[7]}}</th>
-                <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">{{listHeaders[8]}}
-                </th>
-                <th data-pss-sort-fields="o365_created, o365_ignored" data-exclude-from-filter="true">{{listHeaders[9]}}
-                </th>
-                <th data-pss-sort-fields="ipad_created, ipad_ignored" data-exclude-from-filter="true">{{listHeaders[10]}}
-                </th>
-                <th data-pss-sort-fields="lms_created, lms_ignored" data-exclude-from-filter="true">{{listHeaders[11]}}
-                </th>
-                <th data-pss-sort-fields="final_completion_date|date">{{listHeaders[12]}}</th>
+                <th data-pss-sort-fields="progress_percent|number, completion_date|date" data-exclude-from-filter="true">{{listHeaders[6]}}</th>
+                <th data-pss-sort-fields="final_completion_date|date">{{listHeaders[7]}}</th>
             </tr>
         </thead>
         <tbody>
@@ -59,17 +50,9 @@
                     {{::nameChange.submission_time}}</td>
                 <td data-ng-class="::nameChange.deadline_class">
                     {{::nameChange.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <td><span data-ng-class="::nameChange.completion_display.canva.className">{{::nameChange.completion_display.canva.text}}</span>
-                </td>
-                <td><span data-ng-class="::nameChange.completion_display.ps.className">{{::nameChange.completion_display.ps.text}}</span>
-                </td>
-                <td><span data-ng-class="::nameChange.completion_display.ad.className">{{::nameChange.completion_display.ad.text}}</span>
-                </td>
-                <td><span data-ng-class="::nameChange.completion_display.o365.className">{{::nameChange.completion_display.o365.text}}</span>
-                </td>
-                <td><span data-ng-class="::nameChange.completion_display.ipad.className">{{::nameChange.completion_display.ipad.text}}</span>
-                </td>
-                <td><span data-ng-class="::nameChange.completion_display.lms.className">{{::nameChange.completion_display.lms.text}}</span>
+                <td>
+                    <staff-workflow-progress staff-record="nameChange"
+                        open-progress="openWorkflowProgressDialog(staffRecord)"></staff-workflow-progress>
                 </td>
 
                 <td>{{::nameChange.final_completion_date | date : 'MM/dd/yyyy'}}</td>

@@ -76,24 +76,142 @@ define(function (require) {
 				LTS: 'LTS'
 			}
 
+			const workflowSystems = {
+				ps: { label: 'PowerSchool', owner: 'Adrian' },
+				ad: { label: 'Active Directory', owner: 'Brad' },
+				o365: { label: 'Office 365', owner: 'Brad' },
+				ipad: { label: 'iPad / Jamf user', owner: 'Greg' },
+				lms: { label: 'LMS', owner: 'Shane' },
+				canva: { label: 'Canva', owner: 'Carrie' }
+			}
+
+			const workflowActionLabels = {
+				default: {
+					ps: 'PowerSchool complete',
+					ad: 'Active Directory complete',
+					o365: 'Office 365 complete',
+					ipad: 'Jamf user account complete',
+					lms: 'LMS complete',
+					canva: 'Canva complete'
+				},
+				newStaff: {
+					ps: 'PowerSchool account created',
+					ad: 'Active Directory account created',
+					o365: 'O365 account created',
+					ipad: 'Jamf user account created',
+					lms: 'LMS account created',
+					canva: 'Canva account created'
+				},
+				transferringStaff: {
+					ps: 'PowerSchool moved',
+					ad: 'Active Directory moved',
+					o365: 'O365 moved',
+					ipad: 'Jamf user account complete',
+					lms: 'LMS moved',
+					canva: 'Canva moved'
+				},
+				jobChange: {
+					ps: 'PowerSchool changed',
+					ad: 'Active Directory changed',
+					ipad: 'Jamf user account complete'
+				},
+				subStaff: {
+					ps: 'PowerSchool account created',
+					ad: 'Active Directory account created',
+					o365: 'O365 account created',
+					ipad: 'Jamf user account created',
+					lms: 'LMS account created'
+				},
+				nameChange: {
+					canva: 'Canva transferred',
+					ps: 'PowerSchool changed',
+					ad: 'Active Directory changed',
+					o365: 'O365 changed',
+					ipad: 'Jamf user account complete',
+					lms: 'LMS changed'
+				},
+				exitingStaff: {
+					canva: 'Canva transferred',
+					ps: 'PowerSchool deactivated',
+					ad: 'Active Directory deactivated',
+					ipad: 'Jamf user account complete'
+				}
+			}
+
+			const getWorkflowActionLabel = (staffRecord, key) => {
+				const typeLabels = workflowActionLabels[staffRecord.change_type] || {}
+				return typeLabels[key] || workflowActionLabels.default[key] || workflowSystems[key].label
+			}
+
+			const getWorkflowStepKeys = (staffRecord, context) => {
+				if (context.isFsts) return ['ad', 'o365']
+
+				if (staffRecord.change_type === 'exitingStaff') {
+					return ['canva', 'ps', 'ad', 'ipad'].filter(key => key !== 'canva' || context.canvaApplies).filter(key => key !== 'ipad' || context.ipadApplies)
+				}
+
+				if (staffRecord.change_type === 'jobChange') {
+					return ['ps', 'ad', 'ipad'].filter(key => key !== 'ipad' || context.ipadApplies)
+				}
+
+				if (staffRecord.change_type === 'nameChange') {
+					return ['canva', 'ps', 'ad', 'o365', 'ipad', 'lms'].filter(key => key !== 'canva' || context.canvaApplies).filter(key => key !== 'ipad' || context.ipadApplies)
+				}
+
+				if (staffRecord.change_type === 'subStaff') {
+					return ['ps', 'ad', 'o365', 'ipad', 'lms'].filter(key => key !== 'ipad' || context.ipadApplies)
+				}
+
+				return ['ps', 'ad', 'o365', 'ipad', 'lms', 'canva'].filter(key => key !== 'ipad' || context.ipadApplies)
+			}
+
+			const buildWorkflowProgress = (staffRecord, stepKeys) => {
+				const firstPendingIndex = stepKeys.findIndex(key => staffRecord[`${key}_created`] != 1 && staffRecord[`${key}_ignored`] != 1)
+				const steps = stepKeys.map((key, index) => {
+					const system = workflowSystems[key]
+					const isComplete = staffRecord[`${key}_created`] == 1
+					const isIgnored = !isComplete && staffRecord[`${key}_ignored`] == 1
+					const isResolved = isComplete || isIgnored
+					const status = isComplete ? 'Complete' : isIgnored ? 'Not Applicable' : 'Pending'
+					const state = isComplete ? 'complete' : isIgnored ? 'ignored' : 'pending'
+					const icon = isComplete ? 'checkmark-alt' : isIgnored ? 'minus-alt' : 'inprogress'
+					const classNames = [`workflow-step-${state}`]
+
+					if (!isResolved && index === firstPendingIndex) classNames.push('workflow-step-current')
+
+					return {
+						key: key,
+						system: system.label,
+						owner: system.owner,
+						actionLabel: getWorkflowActionLabel(staffRecord, key),
+						status: status,
+						state: state,
+						icon: icon,
+						resolved: isResolved,
+						className: classNames.join(' '),
+						title: `${system.label}: ${status}`
+					}
+				})
+				const completed = steps.filter(step => step.resolved).length
+				const total = steps.length
+				const pendingSteps = steps.filter(step => !step.resolved)
+				const percent = total ? Math.round((completed / total) * 100) : 100
+
+				return {
+					steps: steps,
+					completed: completed,
+					total: total,
+					percent: percent,
+					status: pendingSteps.length ? 'Pending' : 'Complete',
+					pendingCount: pendingSteps.length,
+					pendingSummary: pendingSteps.length ? `Pending: ${pendingSteps.map(step => step.system).join(', ')}` : 'All workflow checks complete',
+					ariaLabel: `${completed} of ${total} workflow checks complete`
+				}
+			}
+
 			const getDeadlineClass = staffRecord => {
-				if (staffRecord.completion_date >= $scope.curDate) return ''
-
-				const needsCanva = staffRecord.canva_transfer == '1' && !staffRecord.canva_complete
-
-				if (staffRecord.sub_type === 'FSTS') {
-					return !staffRecord.ad_complete || !staffRecord.o365_complete || needsCanva ? 'req-notation' : ''
-				}
-
-				if (staffRecord.change_type === 'exitingStaff' || staffRecord.change_type === 'jobChange') {
-					return !staffRecord.ps_complete || !staffRecord.ad_complete || needsCanva ? 'req-notation' : ''
-				}
-
-				if (staffRecord.change_type === 'newStaff' || staffRecord.change_type === 'transferringStaff') {
-					return !staffRecord.ps_complete || !staffRecord.ad_complete || !staffRecord.o365_complete || !staffRecord.lms_complete || !staffRecord.canva_complete ? 'req-notation' : ''
-				}
-
-				return !staffRecord.ps_complete || !staffRecord.ad_complete || !staffRecord.o365_complete || !staffRecord.lms_complete || needsCanva ? 'req-notation' : ''
+				if (!(staffRecord.completion_date instanceof Date) || staffRecord.completion_date >= $scope.curDate) return ''
+				return staffRecord.progress_pending_count > 0 ? 'req-notation' : ''
 			}
 
 			const buildCompletionDisplay = (isApplicable, isComplete) => {
@@ -149,6 +267,18 @@ define(function (require) {
 				const ipadApplies = staffRecord.ipad_needed == '1' &&
 					(staffRecord.change_type !== 'subStaff' || staffRecord.sub_type === 'LTS')
 				staffRecord.ipad_applies = ipadApplies
+				const workflowStepKeys = getWorkflowStepKeys(staffRecord, {
+					isFsts: isFsts,
+					excludesOfficeAndLms: excludesOfficeAndLms,
+					canvaApplies: canvaApplies,
+					ipadApplies: ipadApplies
+				})
+				const applicableStepKeys = new Set(workflowStepKeys)
+				const workflowProgress = buildWorkflowProgress(staffRecord, workflowStepKeys)
+
+				completionKeys.forEach(key => {
+					staffRecord[`${key}_filter_complete`] = !applicableStepKeys.has(key) || staffRecord[`${key}_complete`]
+				})
 
 				// Store settled display values so hidden, cached tabs do not repeatedly evaluate formatting rules.
 				staffRecord.display_name = formatService.formatStaffFullName(staffRecord, { fallbackField: 'old_name_placeholder' })
@@ -163,6 +293,15 @@ define(function (require) {
 					canva: buildCompletionDisplay(canvaApplies, staffRecord.canva_complete),
 					ipad: buildCompletionDisplay(ipadApplies, staffRecord.ipad_complete)
 				}
+				staffRecord.progress_steps = workflowProgress.steps
+				staffRecord.progress_completed = workflowProgress.completed
+				staffRecord.progress_total = workflowProgress.total
+				staffRecord.progress_percent = workflowProgress.percent
+				staffRecord.progress_status = workflowProgress.status
+				staffRecord.progress_status_class = workflowProgress.pendingCount ? 'workflow-progress-status-pending' : 'workflow-progress-status-complete'
+				staffRecord.progress_pending_count = workflowProgress.pendingCount
+				staffRecord.progress_pending_summary = workflowProgress.pendingSummary
+				staffRecord.progress_aria_label = workflowProgress.ariaLabel
 				staffRecord.deadline_class = getDeadlineClass(staffRecord)
 				staffRecord.completed = !!staffRecord.final_completion_date
 
@@ -181,6 +320,67 @@ define(function (require) {
 					submissionDate.setSeconds(0)
 					staffRecord.sort_time = submissionDate
 				}
+			}
+
+			const escapeHtml = value => String(value ?? '')
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#39;')
+
+			const renderPdsIcon = iconName => `
+				<pds-icon name="${escapeHtml(iconName)}" class="workflow-progress-icon x-scope pds-icon-0 pds-widget" pds-widget="pds-widget">
+					<template is="dom-if" class="style-scope pds-icon"></template>
+					<svg aria-hidden="true" focusable="false" class="pds-icon-svg style-scope pds-icon"></svg>
+				</pds-icon>`
+
+			$scope.openWorkflowProgressDialog = staffRecord => {
+				if (!staffRecord) return
+
+				const stepsHtml = (staffRecord.progress_steps || []).map(step => `
+					<li class="workflow-progress-step ${escapeHtml(step.className)}">
+						<div class="workflow-progress-marker">${renderPdsIcon(step.icon)}</div>
+						<div class="workflow-progress-detail">
+							<div class="workflow-progress-system">${escapeHtml(step.system)}</div>
+							<div class="workflow-progress-action">${escapeHtml(step.actionLabel)}</div>
+							<div class="workflow-progress-owner">Owner: ${escapeHtml(step.owner)}</div>
+							<div class="workflow-progress-state">${escapeHtml(step.status)}</div>
+						</div>
+					</li>`).join('')
+
+				psDialog({
+					type: 'dialogM',
+					width: 900,
+					title: 'Workflow Progress',
+					content: `
+						<div class="workflow-progress-dialog">
+							<div class="workflow-progress-dialog-summary">
+								<div>
+									<div class="workflow-progress-dialog-name">${escapeHtml(staffRecord.display_name)}</div>
+									<div class="workflow-progress-dialog-type">${escapeHtml(staffRecord.change_type_label)}${escapeHtml(staffRecord.sub_type_suffix)}</div>
+								</div>
+								<div class="workflow-progress-dialog-count">
+									<strong>${escapeHtml(staffRecord.progress_completed)}/${escapeHtml(staffRecord.progress_total)}</strong>
+									<span>${escapeHtml(staffRecord.progress_status)}</span>
+								</div>
+							</div>
+							<ol class="workflow-progress-stepper workflow-progress-stepper-dialog" aria-label="${escapeHtml(staffRecord.progress_aria_label)}">
+								${stepsHtml}
+							</ol>
+						</div>`,
+					initBehaviors: true,
+					buttons: [
+						{
+							id: 'closeWorkflowProgressDialogButton',
+							text: 'Close',
+							title: 'Close',
+							click: function () {
+								psDialogClose()
+							}
+						}
+					]
+				})
 			}
 
 			// Each tab is loaded once per year/school view. $q.when represents an already-complete load for cached tabs,
@@ -224,21 +424,21 @@ define(function (require) {
 						const changeTypeLabel = $filter('changeTypeFilter')($scope.changeType)
 
 						if ($scope.changeType === 'newStaff') {
-							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['PS Created', 'AD Created', 'O365 Created', 'iPad Complete', 'LMS Created', 'Canva Created', 'Completion Date'])
+							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['Progress', 'Completion Date'])
 						} else if ($scope.changeType === 'transferringStaff') {
-							$scope.listHeaders = [changeTypeLabel, 'New School', 'Original School'].concat(baseHeaders.slice(1), ['PS Moved', 'AD Moved', 'O365 Moved', 'iPad Complete', 'LMS Moved', 'Canva Moved', 'Completion Date'])
+							$scope.listHeaders = [changeTypeLabel, 'New School', 'Original School'].concat(baseHeaders.slice(1), ['Progress', 'Completion Date'])
 						} else if ($scope.changeType === 'jobChange') {
-							$scope.listHeaders = ['Staff Name', 'Previous Position/Job', 'New Position/Job'].concat(baseHeaders, ['PS Changed', 'AD Changed', 'iPad Complete', 'Completion Date'])
+							$scope.listHeaders = ['Staff Name', 'Previous Position/Job', 'New Position/Job'].concat(baseHeaders, ['Progress', 'Completion Date'])
 						} else if ($scope.changeType === 'subStaff') {
-							$scope.listHeaders = [changeTypeLabel + ' Name', baseHeaders[0], 'Sub Type'].concat(baseHeaders.slice(1), ['PS Created', 'AD Created', 'O365 Created', 'iPad Complete', 'LMS Created', 'Completion Date'])
+							$scope.listHeaders = [changeTypeLabel + ' Name', baseHeaders[0], 'Sub Type'].concat(baseHeaders.slice(1), ['Progress', 'Completion Date'])
 						} else if ($scope.changeType === 'nameChange') {
-							$scope.listHeaders = ["Staff's New Name", "Staff's Previous Name"].concat(baseHeaders, ['Canva Transferred', 'PS Changed', 'AD Changed', 'O365 Changed', 'iPad Complete', 'LMS Changed', 'Completion Date'])
+							$scope.listHeaders = ["Staff's New Name", "Staff's Previous Name"].concat(baseHeaders, ['Progress', 'Completion Date'])
 						} else if ($scope.changeType === 'exitingStaff') {
-							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['Canva Transferred', 'PS Deactivated', 'AD Deactivated', 'iPad Complete', 'Completion Date'])
+							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['Progress', 'Completion Date'])
 						} else if ($scope.changeType === 'allStaff') {
-							$scope.listHeaders = ['Staff Name', 'Change Type'].concat(baseHeaders, ['PS Complete', 'AD Complete', 'O365 Complete', 'iPad Complete', 'LMS Complete', 'Canva Complete', 'Completion Date'])
+							$scope.listHeaders = ['Staff Name', 'Change Type'].concat(baseHeaders, ['Progress', 'Completion Date'])
 						} else {
-							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['PS Created', 'AD Created', 'O365 Created', 'iPad Complete', 'LMS Created', 'Canva Created', 'Completion Date'])
+							$scope.listHeaders = [changeTypeLabel].concat(baseHeaders, ['Progress', 'Completion Date'])
 						}
 
 						$j('#cdol-staff-count').text(`Staff Changes (${$scope.staffChangeCounts.total_remaining})`)

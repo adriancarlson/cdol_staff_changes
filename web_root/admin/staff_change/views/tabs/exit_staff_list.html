@@ -2,10 +2,11 @@
     data-filtered-data="filteredExitingStaffList" data-client-side-pagination="false">
     <export-button data-ng-if="filteredExitingStaffList.length > 0"></export-button>
     <!-- Adding before the table so it will put this filter at the top of the list in the drop down -->
-    <label data-pss-filter-field="canva_complete|multiselect" data-filter-info="booleanMap">Canva Transferred?</label>
-    <label data-pss-filter-field="ps_complete|multiselect" data-filter-info="booleanMap">PowerSchool Complete?</label>
-    <label data-pss-filter-field="ad_complete|multiselect" data-filter-info="booleanMap">Active Directory
+    <label data-pss-filter-field="canva_filter_complete|multiselect" data-filter-info="booleanMap">Canva Transferred?</label>
+    <label data-pss-filter-field="ps_filter_complete|multiselect" data-filter-info="booleanMap">PowerSchool Complete?</label>
+    <label data-pss-filter-field="ad_filter_complete|multiselect" data-filter-info="booleanMap">Active Directory
         Complete?</label>
+    <label data-pss-filter-field="ipad_filter_complete|multiselect" data-filter-info="booleanMap">iPad Complete?</label>
     <label data-pss-filter-field="completed|multiselect" data-filter-info="booleanMap">All Completed?</label>
     <label data-pss-filter-field="title|multiselect" data-filter-info="titleMap">Title</label>
     <label data-pss-filter-field="first_name">First Name</label>
@@ -21,14 +22,8 @@
                 <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending">
                     {{listHeaders[3]}}</th>
                 <th data-pss-sort-fields="completion_date|date">{{listHeaders[4]}}</th>
-                <th data-pss-sort-fields="canva_created, canva_ignored" data-exclude-from-filter="true">
-                    {{listHeaders[5]}}</th>
-                <th data-pss-sort-fields="ps_created" data-exclude-from-filter="true">{{listHeaders[6]}}</th>
-                <th data-pss-sort-fields="ad_created, ad_ignored" data-exclude-from-filter="true">{{listHeaders[7]}}
-                </th>
-                <th data-pss-sort-fields="ipad_created, ipad_ignored" data-exclude-from-filter="true">{{listHeaders[8]}}
-                </th>
-                <th data-pss-sort-fields="final_completion_date|date">{{listHeaders[9]}}</th>
+                <th data-pss-sort-fields="progress_percent|number, completion_date|date" data-exclude-from-filter="true">{{listHeaders[5]}}</th>
+                <th data-pss-sort-fields="final_completion_date|date">{{listHeaders[6]}}</th>
             </tr>
         </thead>
         <tbody>
@@ -51,13 +46,9 @@
                     {{::exitingStaff.submission_time}}</td>
                 <td data-ng-class="::exitingStaff.deadline_class">
                     {{::exitingStaff.completion_date | date : 'MM/dd/yyyy'}}</td>
-                <td><span data-ng-class="::exitingStaff.completion_display.canva.className">{{::exitingStaff.completion_display.canva.text}}</span>
-                </td>
-                <td><span data-ng-class="::exitingStaff.completion_display.ps.className">{{::exitingStaff.completion_display.ps.text}}</span>
-                </td>
-                <td><span data-ng-class="::exitingStaff.completion_display.ad.className">{{::exitingStaff.completion_display.ad.text}}</span>
-                </td>
-                <td><span data-ng-class="::exitingStaff.completion_display.ipad.className">{{::exitingStaff.completion_display.ipad.text}}</span>
+                <td>
+                    <staff-workflow-progress staff-record="exitingStaff"
+                        open-progress="openWorkflowProgressDialog(staffRecord)"></staff-workflow-progress>
                 </td>
                 <td>{{::exitingStaff.final_completion_date | date : 'MM/dd/yyyy'}}</td>
             </tr>
