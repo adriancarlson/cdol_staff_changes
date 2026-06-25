@@ -23,13 +23,13 @@
                                 data-ng-if="!submitPayload.jobChange.users_dcid"
                                 data-ng-click="startManualLookup('jobChange', 'users_dcid', 'job-change-first-name')">Staff
                                 not Listed? Click Here</button>
-                            <a class="button m-0" style="padding: 6px"
+                            <a class="button m-0 staff-change-action-button"
                                 data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && schoolStaffRecordData[0].ssdcid"
                                 data-ng-href="/admin/faculty/editpw.html?frn=005{{schoolStaffRecordData[0].ssdcid}}"
                                 target="_blank">
                                 Open Staff Record
-                                <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
-                                    pds-widget="pds-widget" style="zoom: 0.55; color: white; fill: white;"></pds-icon>
+                                <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget staff-change-action-icon"
+                                    pds-widget="pds-widget"></pds-icon>
                             </a>
                         </div>
                     </div>

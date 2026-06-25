@@ -71,13 +71,13 @@
                             returning?</label><br />
                         <span id="exiting-staff-name"
                             class="blockquote ms-2 mt-1">{{submitPayload.exitingStaff.old_name_placeholder}}</span>
-                        <a class="button ms-2 p-1" style="padding: 6px"
+                        <a class="button ms-2 p-1 staff-change-action-button"
                             data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && schoolStaffRecordData[0].ssdcid"
                             data-ng-href="/admin/faculty/editpw.html?frn=005{{schoolStaffRecordData[0].ssdcid}}"
                             target="_blank">
                             Open Staff Record
-                            <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
-                                pds-widget="pds-widget" style="zoom: 0.55; color: white; fill: white;"></pds-icon>
+                            <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget staff-change-action-icon"
+                                pds-widget="pds-widget"></pds-icon>
                         </a>
                     </div>
                     <div class="col-12 col-md-4 col-xl-3">

@@ -29,9 +29,8 @@
                                         <td class="text-center"><a class="button"
                                                 data-ng-href="/admin/faculty/editpw.html?frn=005{{dupe.ssdcid}}"
                                                 target="_blank">Open Staff Record <pds-icon name="external"
-                                                    class="style-scope x-scope pds-icon-0 pds-widget"
-                                                    pds-widget="pds-widget"
-                                                    style="zoom: 0.55; color: white; fill: white;"></pds-icon></a></td>
+                                                    class="style-scope x-scope pds-icon-0 pds-widget staff-change-action-icon"
+                                                    pds-widget="pds-widget"></pds-icon></a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -188,9 +187,8 @@
                                     data-ng-click="openNewStaffRecord(submitPayload.subStaff)"
                                     data-ng-disabled="userContext.curSchoolId != submitPayload.subStaff.schoolid">New
                                     Staff
-                                    Record <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
-                                        pds-widget="pds-widget"
-                                        style="zoom: 0.55; color: white; fill: white;"></pds-icon>
+                                    Record <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget staff-change-action-icon"
+                                        pds-widget="pds-widget"></pds-icon>
                                 </button>
                             </div>
                             <div data-ng-if="userContext.pageStatus == 'Edit' && submitPayload.subStaff.ps_created"

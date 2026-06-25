@@ -1,5 +1,5 @@
 <!-- create a hidden table with added rows, use jQuery to move the inserted rows to target table -->
-<table id="staffchangeCustomTable" style="display: none;">
+<table id="staffchangeCustomTable" class="staff-change-hidden">
     <tr id="staffIdTr">
         <td><strong>Staff ID</strong></td>
         <td>

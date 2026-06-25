@@ -1,31 +1,3 @@
-<style>
-    #container.new #cdolBtnNotifications #staffCountSpan {
-        margin-inline-start: 20px;
-        padding: 2px 4px;
-    }
-
-    #container-frame.new #cdolBtnNotifications,
-    #container.new #cdolBtnNotifications {
-        display: flex;
-    }
-
-    #staffCountSpan {
-        background-color: #C84C59;
-        line-height: 1em;
-        font-size: 80%;
-        color: #FFFFFF;
-        position: absolute;
-        border-radius: 10px;
-        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
-        padding: 2px 4px;
-    }
-
-    .countMargin {
-        margin-right: 8px;
-    }
-</style>
-
-
 <ul id='staffCount' class='hide'>
     <li id='staffCountLi' class="pds-app-action countMargin">
         <a id="cdolBtnNotifications" class="badge-adjust" href="/admin/staff_change/list.html"

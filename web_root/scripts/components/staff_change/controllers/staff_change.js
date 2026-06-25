@@ -128,6 +128,9 @@ define(function (require) {
 
 			// PowerSchool renders these ng-* attributes on the page before Angular starts the controller.
 			// userContext is shared by all form directives and describes both the session and current workflow step.
+			// Test servers use names like PSTEST2, not only DNS names containing ".test.".
+			const isTestServerName = serverName => (serverName || '').toLowerCase().indexOf('test') !== -1
+			const isTestServer = isTestServerName($attrs.ngServerName)
 			$scope.userContext = {
 				pageStatus: $attrs.ngStatus,
 				curSchoolId: $attrs.ngCurSchoolId,
@@ -145,8 +148,8 @@ define(function (require) {
 				pageContext: 'start',
 				prevContext: undefined,
 				serverName: $attrs.ngServerName,
-				isTestServer: $attrs.ngServerName && $attrs.ngServerName.indexOf('.test.') !== -1,
-				sendJitbit: !($attrs.ngServerName && $attrs.ngServerName.indexOf('.test.') !== -1)
+				isTestServer: isTestServer,
+				sendJitbit: !isTestServer
 			}
 
 			// The test-server checkbox lets a tester explicitly enable or suppress Jitbit integration.
@@ -365,7 +368,7 @@ define(function (require) {
 						<p><strong>Use this override only when immediate action is needed, such as an immediate staff termination, a new staff member starting today, a security concern, or another urgent situation.</strong></p>
 						<p>This high priority request does not guarantee same-day completion, but our staff will do their best to complete it as soon as possible.</p>
 						<div class="form-floating">
-							<textarea id="emergencyRequestReason" class="form-control" maxlength="250" spellcheck="true" wrap="soft" placeholder="${emergencyOverrideLabel}" style="min-height: 100px;"></textarea>
+							<textarea id="emergencyRequestReason" class="form-control staff-change-emergency-reason" maxlength="250" spellcheck="true" wrap="soft" placeholder="${emergencyOverrideLabel}"></textarea>
 							<label for="emergencyRequestReason" class="fw-semibold">Reason for ${emergencyOverrideLabel}</label>
 						</div>
 						<div id="emergencyRequestReasonError" class="text-danger mt-1 hide">Please enter a reason for the ${emergencyOverrideLabel}.</div>
@@ -1477,7 +1480,7 @@ define(function (require) {
 					formPayload.change_type = key
 					removeNullableTitleFields(formPayload)
 					const currentJitbitSnapshot = buildJitbitSnapshot(formPayload)
-					const shouldSyncJitbitTicket = $scope.userContext.pageStatus === 'Edit' && formPayload.ticket_id && hasJitbitSnapshotChanged($scope.originalJitbitSnapshots[$scope.originalChangeType], currentJitbitSnapshot)
+					const shouldSyncJitbitTicket = $scope.userContext.sendJitbit && $scope.userContext.pageStatus === 'Edit' && formPayload.ticket_id && hasJitbitSnapshotChanged($scope.originalJitbitSnapshots[$scope.originalChangeType], currentJitbitSnapshot)
 
 					return $scope.validateStaffChangePayload(formPayload).then(isValid => {
 						if (!isValid) return $q.reject({ handled: true })
@@ -1557,11 +1560,12 @@ define(function (require) {
 			}
 
 			// Close the external ticket before deleting the PowerSchool record; a ticket failure leaves the record intact.
+			// Test servers suppress this unless the debug-panel Send Jitbit Ticket override is explicitly checked.
 			$scope.deleteStaffChange = form => {
 				loadingDialog()
 				const formPayload = $scope.submitPayload[form] || {}
 				const deletePromise = $scope.userContext.staffChangeId
-					? (formPayload.ticket_id ? jitbitService.closeJitbitTicketSilently(formPayload.ticket_id) : $q.when())
+					? ($scope.userContext.sendJitbit && formPayload.ticket_id ? jitbitService.closeJitbitTicketSilently(formPayload.ticket_id) : $q.when())
 							.then(() => {
 								return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, $scope.userContext.staffChangeId)
 							})

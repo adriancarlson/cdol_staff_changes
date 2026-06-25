@@ -23,12 +23,12 @@
                             class="form-label form-label-sm label-reset staff-change-req">Previous
                             Name:</label><br />
                         <span class="blockquote ms-2 mt-1">{{submitPayload.nameChange.old_name_placeholder}}</span>
-                        <a class="button ms-2 p-1" style="padding: 6px"
+                        <a class="button ms-2 p-1 staff-change-action-button"
                             data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && schoolStaffRecordData[0].ssdcid"
                             data-ng-href="/admin/faculty/edit.html?frn=005{{schoolStaffRecordData[0].ssdcid}}"
                             target="_blank">Open Staff
-                            Record <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget"
-                                pds-widget="pds-widget" style="zoom: 0.5; color: white; fill: white;"></pds-icon></a>
+                            Record <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget staff-change-action-icon-sm"
+                                pds-widget="pds-widget"></pds-icon></a>
                     </div>
                     <div class="col-12 col-md-4 col-xl-3" data-ng-if="userContext.pageStatus =='Edit'">
                         <label for="name-change-staff-school"
