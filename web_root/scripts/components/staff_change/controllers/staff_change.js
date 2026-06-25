@@ -274,7 +274,7 @@ define(function (require) {
 				if (notes === emergencyNote) {
 					formPayload.notes = ''
 				} else if (notes.endsWith(`\n\n${emergencyNote}`)) {
-					formPayload.notes = notes.slice(0, -(`\n\n${emergencyNote}`).length).trim()
+					formPayload.notes = notes.slice(0, -`\n\n${emergencyNote}`.length).trim()
 				}
 			}
 
@@ -474,9 +474,7 @@ define(function (require) {
 					case 'jobChange':
 						return ['ps', 'ad'].concat(needsIpad ? ['ipad'] : [])
 					case 'subStaff':
-						return staffChange.sub_type === 'LTS'
-							? ['ps', 'ad', 'o365'].concat(needsIpad ? ['ipad'] : [], ['lms'])
-							: ['ad', 'o365']
+						return staffChange.sub_type === 'LTS' ? ['ps', 'ad', 'o365'].concat(needsIpad ? ['ipad'] : [], ['lms']) : ['ad', 'o365']
 					case 'nameChange':
 						return (needsCanva ? ['canva'] : []).concat(['ps', 'ad', 'o365'], needsIpad ? ['ipad'] : [], ['lms'])
 					case 'exitingStaff':
@@ -491,9 +489,7 @@ define(function (require) {
 				const staffChange = $scope.submitPayload[pageContext] || {}
 				const cardIndex = getAccountCheckOrder(pageContext, staffChange).indexOf(cardKey)
 
-				return cardIndex % 2 === 0
-					? 'account-check-primary-blue'
-					: 'account-check-primary-cool-blue'
+				return cardIndex % 2 === 0 ? 'account-check-primary-blue' : 'account-check-primary-cool-blue'
 			}
 
 			const normalizeIdentifier = identifier => {
@@ -547,51 +543,69 @@ define(function (require) {
 
 				if (needsPrimaryUsers && pageContext === 'transferringStaff') {
 					$scope.lookupLoading.primaryUsers = true
-					preload.primaryUsers = jsonDataService.getData('userData', {
-						curSchoolID: '0',
-						staffStatus: '1,2'
-					}).then(records => {
-						$scope.primaryUserOptions = buildUserOptions(records, true)
-					}, () => {
-						$scope.primaryUserOptions = buildUserOptions([], true)
-					}).finally(() => {
-						$scope.lookupLoading.primaryUsers = false
-					})
+					preload.primaryUsers = jsonDataService
+						.getData('userData', {
+							curSchoolID: '0',
+							staffStatus: '1,2'
+						})
+						.then(
+							records => {
+								$scope.primaryUserOptions = buildUserOptions(records, true)
+							},
+							() => {
+								$scope.primaryUserOptions = buildUserOptions([], true)
+							}
+						)
+						.finally(() => {
+							$scope.lookupLoading.primaryUsers = false
+						})
 				}
 
 				if ((needsPrimaryUsers && pageContext !== 'transferringStaff') || needsRelatedUsers) {
 					if (needsPrimaryUsers && pageContext !== 'transferringStaff') $scope.lookupLoading.primaryUsers = true
 					if (needsRelatedUsers) $scope.lookupLoading.relatedUsers = true
 
-					preload.activeUsers = jsonDataService.getData('userData', {
-						curSchoolID: $scope.userContext.curSchoolId,
-						staffStatus: '1'
-					}).then(records => {
-						if (needsPrimaryUsers && pageContext !== 'transferringStaff') {
-							$scope.primaryUserOptions = buildUserOptions(records, false)
-						}
-						if (needsRelatedUsers) $scope.relatedUserOptions = buildUserOptions(records, false)
-					}, () => {
-						if (needsPrimaryUsers && pageContext !== 'transferringStaff') {
-							$scope.primaryUserOptions = buildUserOptions([], false)
-						}
-						if (needsRelatedUsers) $scope.relatedUserOptions = buildUserOptions([], false)
-					}).finally(() => {
-						if (needsPrimaryUsers && pageContext !== 'transferringStaff') $scope.lookupLoading.primaryUsers = false
-						if (needsRelatedUsers) $scope.lookupLoading.relatedUsers = false
-					})
+					preload.activeUsers = jsonDataService
+						.getData('userData', {
+							curSchoolID: $scope.userContext.curSchoolId,
+							staffStatus: '1'
+						})
+						.then(
+							records => {
+								if (needsPrimaryUsers && pageContext !== 'transferringStaff') {
+									$scope.primaryUserOptions = buildUserOptions(records, false)
+								}
+								if (needsRelatedUsers) $scope.relatedUserOptions = buildUserOptions(records, false)
+							},
+							() => {
+								if (needsPrimaryUsers && pageContext !== 'transferringStaff') {
+									$scope.primaryUserOptions = buildUserOptions([], false)
+								}
+								if (needsRelatedUsers) $scope.relatedUserOptions = buildUserOptions([], false)
+							}
+						)
+						.finally(() => {
+							if (needsPrimaryUsers && pageContext !== 'transferringStaff') $scope.lookupLoading.primaryUsers = false
+							if (needsRelatedUsers) $scope.lookupLoading.relatedUsers = false
+						})
 				}
 
 				if (needsSchools) {
 					$scope.lookupLoading.schools = true
-					preload.schools = jsonDataService.getData('schoolData').then(records => {
-						$scope.schoolData = records
-						$scope.schoolOptions = buildSchoolOptions(records)
-					}, () => {
-						$scope.schoolOptions = buildSchoolOptions([])
-					}).finally(() => {
-						$scope.lookupLoading.schools = false
-					})
+					preload.schools = jsonDataService
+						.getData('schoolData')
+						.then(
+							records => {
+								$scope.schoolData = records
+								$scope.schoolOptions = buildSchoolOptions(records)
+							},
+							() => {
+								$scope.schoolOptions = buildSchoolOptions([])
+							}
+						)
+						.finally(() => {
+							$scope.lookupLoading.schools = false
+						})
 				}
 
 				return $q.all(preload)
@@ -685,22 +699,8 @@ define(function (require) {
 			const removeLookupOnlyFields = (target, prefix) => {
 				if (!target) return
 
-				const baseLookupOnlyFields = [
-					'identifier',
-					'email_addr',
-					'homeschoolid',
-					'homeschoolname',
-					'ssdcid',
-					'status',
-					'schoolstaff_dcid'
-				]
-				const prefixedLookupOnlyFields = [
-					'identifier',
-					'email_addr',
-					'ssdcid',
-					'status',
-					'schoolstaff_dcid'
-				]
+				const baseLookupOnlyFields = ['identifier', 'email_addr', 'homeschoolid', 'homeschoolname', 'ssdcid', 'status', 'schoolstaff_dcid']
+				const prefixedLookupOnlyFields = ['identifier', 'email_addr', 'ssdcid', 'status', 'schoolstaff_dcid']
 				const fieldNames = prefix ? prefixedLookupOnlyFields : baseLookupOnlyFields
 
 				// Lookup data can be broad for future use, but the form payload should keep only intentional fields.
@@ -713,10 +713,12 @@ define(function (require) {
 				if (!staffRecord || !staffRecord.ssdcid) return
 
 				// Keep the Open Staff Record button ready as soon as an existing PS staff record is selected.
-				$scope.substituteSchoolStaffRecordData = [{
-					ssdcid: staffRecord.ssdcid,
-					schoolid: staffRecord.prev_school_number || staffRecord.homeschoolid || staffRecord.schoolid || ''
-				}]
+				$scope.substituteSchoolStaffRecordData = [
+					{
+						ssdcid: staffRecord.ssdcid,
+						schoolid: staffRecord.prev_school_number || staffRecord.homeschoolid || staffRecord.schoolid || ''
+					}
+				]
 			}
 
 			const hydrateSubstituteFromStaffRecord = staffRecord => {
@@ -761,34 +763,36 @@ define(function (require) {
 						})
 					}
 
-					return $scope.getJSONData('userData', {
-						curSchoolID: '0',
-						staffStatus: '1,2'
-					}).then(userRecords => {
-						const linkedUser = userRecords.find(userRecord => sameIdentifier(userRecord.identifier, subStaff.users_dcid))
-
-						if (linkedUser) {
-							if (!subStaff.title) subStaff.title = linkedUser.title
-							if (!subStaff.first_name) subStaff.first_name = linkedUser.first_name
-							if (!subStaff.last_name) subStaff.last_name = linkedUser.last_name
-							if (!subStaff.license_microsoft) subStaff.license_microsoft = linkedUser.license_microsoft
-							if (!subStaff.prev_school_number) subStaff.prev_school_number = linkedUser.homeschoolid
-							if (!subStaff.prev_school_name) subStaff.prev_school_name = linkedUser.homeschoolname
-						}
-
-						fillPreviousSchoolNameFromSchoolData(subStaff)
-
-						const schoolStaffParams = {
-							userDCID: subStaff.users_dcid,
-							schoolID: subStaff.prev_school_number || subStaff.schoolid || $scope.userContext.curSchoolId
-						}
-
-						return $scope.getJSONData('schoolStaffRecordData', schoolStaffParams).then(schoolStaffRecords => {
-							if (schoolStaffRecords && schoolStaffRecords.length) {
-								$scope.substituteSchoolStaffRecordData = schoolStaffRecords
-							}
+					return $scope
+						.getJSONData('userData', {
+							curSchoolID: '0',
+							staffStatus: '1,2'
 						})
-					})
+						.then(userRecords => {
+							const linkedUser = userRecords.find(userRecord => sameIdentifier(userRecord.identifier, subStaff.users_dcid))
+
+							if (linkedUser) {
+								if (!subStaff.title) subStaff.title = linkedUser.title
+								if (!subStaff.first_name) subStaff.first_name = linkedUser.first_name
+								if (!subStaff.last_name) subStaff.last_name = linkedUser.last_name
+								if (!subStaff.license_microsoft) subStaff.license_microsoft = linkedUser.license_microsoft
+								if (!subStaff.prev_school_number) subStaff.prev_school_number = linkedUser.homeschoolid
+								if (!subStaff.prev_school_name) subStaff.prev_school_name = linkedUser.homeschoolname
+							}
+
+							fillPreviousSchoolNameFromSchoolData(subStaff)
+
+							const schoolStaffParams = {
+								userDCID: subStaff.users_dcid,
+								schoolID: subStaff.prev_school_number || subStaff.schoolid || $scope.userContext.curSchoolId
+							}
+
+							return $scope.getJSONData('schoolStaffRecordData', schoolStaffParams).then(schoolStaffRecords => {
+								if (schoolStaffRecords && schoolStaffRecords.length) {
+									$scope.substituteSchoolStaffRecordData = schoolStaffRecords
+								}
+							})
+						})
 				})
 			}
 
@@ -801,38 +805,41 @@ define(function (require) {
 					return $q.when()
 				}
 
-				return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'GET', {}, staffChangeId).then(res => {
-					normalizePayloadLookupIdentifiers(res)
-					$scope.submitPayload[res.change_type] = res
-					$scope.userContext.pageContext = res.change_type
-					$scope.originalChangeType = res.change_type
-					$scope.originalStaffChangePayloads[res.change_type] = copyPayload(res)
-					$scope.originalJitbitSnapshots[res.change_type] = buildJitbitSnapshot(res)
-					const preload = {}
-					preload.formLookups = $scope.loadFormLookups(res.change_type)
+				return psApiService
+					.psApiCall('U_CDOL_STAFF_CHANGES', 'GET', {}, staffChangeId)
+					.then(res => {
+						normalizePayloadLookupIdentifiers(res)
+						$scope.submitPayload[res.change_type] = res
+						$scope.userContext.pageContext = res.change_type
+						$scope.originalChangeType = res.change_type
+						$scope.originalStaffChangePayloads[res.change_type] = copyPayload(res)
+						$scope.originalJitbitSnapshots[res.change_type] = buildJitbitSnapshot(res)
+						const preload = {}
+						preload.formLookups = $scope.loadFormLookups(res.change_type)
 
-					if ($scope.userContext.pageContext === 'newStaff' || $scope.userContext.pageContext === 'subStaff') {
-						preload.duplicates = $scope.checkDupesOnEdit(res)
-					}
-					if ($scope.userContext.pageContext === 'transferringStaff' || $scope.userContext.pageContext === 'jobChange' || $scope.userContext.pageContext === 'nameChange' || $scope.userContext.pageContext === 'exitingStaff') {
-						const schoolStaffParams = {
-							userDCID: $scope.submitPayload[res.change_type].users_dcid,
-							schoolID: $scope.userContext.pageContext === 'transferringStaff' ? $scope.submitPayload[res.change_type].prev_school_number : $scope.submitPayload[res.change_type].schoolid
+						if ($scope.userContext.pageContext === 'newStaff' || $scope.userContext.pageContext === 'subStaff') {
+							preload.duplicates = $scope.checkDupesOnEdit(res)
 						}
-						preload.schoolStaff = $scope.getJSONData('schoolStaffRecordData', schoolStaffParams)
-					}
-					if (isLongTermSubstitute(res)) {
-						preload.longTermSubstitute = hydrateLongTermSubstituteOnEdit($scope.submitPayload.subStaff)
-					} else if ($scope.userContext.pageContext === 'subStaff' && $scope.submitPayload[res.change_type].prev_school_number) {
-						const subPrevStaffParams = {
-							first_name: $scope.submitPayload[res.change_type].first_name,
-							last_name: $scope.submitPayload[res.change_type].last_name
+						if ($scope.userContext.pageContext === 'transferringStaff' || $scope.userContext.pageContext === 'jobChange' || $scope.userContext.pageContext === 'nameChange' || $scope.userContext.pageContext === 'exitingStaff') {
+							const schoolStaffParams = {
+								userDCID: $scope.submitPayload[res.change_type].users_dcid,
+								schoolID: $scope.userContext.pageContext === 'transferringStaff' ? $scope.submitPayload[res.change_type].prev_school_number : $scope.submitPayload[res.change_type].schoolid
+							}
+							preload.schoolStaff = $scope.getJSONData('schoolStaffRecordData', schoolStaffParams)
 						}
-						preload.previousSubstitute = $scope.getJSONData('substituteSchoolStaffRecordData', subPrevStaffParams)
-					}
+						if (isLongTermSubstitute(res)) {
+							preload.longTermSubstitute = hydrateLongTermSubstituteOnEdit($scope.submitPayload.subStaff)
+						} else if ($scope.userContext.pageContext === 'subStaff' && $scope.submitPayload[res.change_type].prev_school_number) {
+							const subPrevStaffParams = {
+								first_name: $scope.submitPayload[res.change_type].first_name,
+								last_name: $scope.submitPayload[res.change_type].last_name
+							}
+							preload.previousSubstitute = $scope.getJSONData('substituteSchoolStaffRecordData', subPrevStaffParams)
+						}
 
-					return $q.all(preload)
-				}).finally(closeLoading)
+						return $q.all(preload)
+					})
+					.finally(closeLoading)
 			}
 			// A staffChangeId is supplied only for Edit mode; Submit mode starts with an empty payload.
 			if ($scope.userContext.staffChangeId) {
@@ -1036,39 +1043,9 @@ define(function (require) {
 
 			// These groups define which lookup-derived values must be cleared when toggling between select and manual modes.
 			const manualLookupFields = {
-				users_dcid: [
-					'users_dcid',
-					'title',
-					'first_name',
-					'middle_name',
-					'last_name',
-					'license_microsoft',
-					'staff_status',
-					'prev_school_number',
-					'prev_school_name',
-					'old_name_placeholder'
-				],
-				replace_dcid: [
-					'replace_dcid',
-					'replace_title',
-					'replace_first_name',
-					'replace_middle_name',
-					'replace_last_name',
-					'replace_license_microsoft',
-					'replace_homeschoolid',
-					'replace_homeschoolname',
-					'replace_staff_status'
-				],
-				canva_dcid: [
-					'canva_dcid',
-					'canva_title',
-					'canva_first_name',
-					'canva_middle_name',
-					'canva_last_name',
-					'canva_homeschoolid',
-					'canva_homeschoolname',
-					'canva_staff_status'
-				],
+				users_dcid: ['users_dcid', 'title', 'first_name', 'middle_name', 'last_name', 'license_microsoft', 'staff_status', 'prev_school_number', 'prev_school_name', 'old_name_placeholder'],
+				replace_dcid: ['replace_dcid', 'replace_title', 'replace_first_name', 'replace_middle_name', 'replace_last_name', 'replace_license_microsoft', 'replace_homeschoolid', 'replace_homeschoolname', 'replace_staff_status'],
+				canva_dcid: ['canva_dcid', 'canva_title', 'canva_first_name', 'canva_middle_name', 'canva_last_name', 'canva_homeschoolid', 'canva_homeschoolname', 'canva_staff_status'],
 				prev_school_number: ['prev_school_number', 'prev_school_name']
 			}
 
@@ -1150,9 +1127,7 @@ define(function (require) {
 
 			// Replacement answers can create a second related change; start it with submission metadata shared by all records.
 			const createAdditionalPayload = () => {
-				return $scope.userContext.pageStatus === 'Submit'
-					? { deadline: $scope.userContext.tempDeadline }
-					: {}
+				return $scope.userContext.pageStatus === 'Submit' ? { deadline: $scope.userContext.tempDeadline } : {}
 			}
 
 			$scope.updateAdditionalPayload = pageContext => {
@@ -1241,7 +1216,7 @@ define(function (require) {
 					subject: ticketPayload.subject,
 					body: ticketPayload.body.replace(/Submission from[\s\S]*$/, '').trim(),
 					customFields: ticketPayload.customFields,
-					deadline: normalizeDeadlineForComparison(jitbitPayload.deadline),
+					deadline: normalizeDeadlineForComparison(jitbitPayload.deadline)
 				}
 			}
 
@@ -1340,28 +1315,28 @@ define(function (require) {
 					return $q.when(true)
 				}
 
-				return $scope.getJSONData('userData', {
-					curSchoolID: '0',
-					staffStatus: '1,2'
-				}).then(() => {
-					const foundStaff = findUserDataByDcid(formPayload.users_dcid)
-					if (!foundStaff) return false
-
-					;['title', 'first_name', 'last_name', 'gender', 'license_microsoft', 'staff_status'].forEach(key => {
-						formPayload[key] = foundStaff[key]
+				return $scope
+					.getJSONData('userData', {
+						curSchoolID: '0',
+						staffStatus: '1,2'
 					})
-					removeNullableTitleFields(formPayload)
-					formPayload.prev_school_number = formPayload.prev_school_number || foundStaff.homeschoolid
-					formPayload.prev_school_name = formPayload.prev_school_name || foundStaff.homeschoolname
-					return !isMissingStaffName(formPayload)
-				})
+					.then(() => {
+						const foundStaff = findUserDataByDcid(formPayload.users_dcid)
+						if (!foundStaff) return false
+						;['title', 'first_name', 'last_name', 'gender', 'license_microsoft', 'staff_status'].forEach(key => {
+							formPayload[key] = foundStaff[key]
+						})
+						removeNullableTitleFields(formPayload)
+						formPayload.prev_school_number = formPayload.prev_school_number || foundStaff.homeschoolid
+						formPayload.prev_school_name = formPayload.prev_school_name || foundStaff.homeschoolname
+						return !isMissingStaffName(formPayload)
+					})
 			}
 
 			const ipadRequiredChangeTypes = ['newStaff', 'transferringStaff', 'jobChange', 'nameChange', 'exitingStaff']
 			const hasIpadAnswer = formPayload => formPayload.ipad_needed === '0' || formPayload.ipad_needed === '1'
 			const requiresIpadAnswer = formPayload => {
-				return ipadRequiredChangeTypes.includes(formPayload.change_type) ||
-					(formPayload.change_type === 'subStaff' && formPayload.sub_type === 'LTS')
+				return ipadRequiredChangeTypes.includes(formPayload.change_type) || (formPayload.change_type === 'subStaff' && formPayload.sub_type === 'LTS')
 			}
 			$scope.resetIpadCompletion = pageContext => {
 				if ($scope.userContext.pageStatus !== 'Edit' || !$scope.submitPayload[pageContext]) return
@@ -1419,58 +1394,76 @@ define(function (require) {
 						return $q.reject({ handled: true })
 					}
 
-					return $scope.validateStaffChangePayload(formPayload).then(isValid => {
-						if (!isValid) return $q.reject({ handled: true })
+					return $scope
+						.validateStaffChangePayload(formPayload)
+						.then(isValid => {
+							if (!isValid) return $q.reject({ handled: true })
 
-						appendEmergencyReasonToNotes(formPayload, key)
+							appendEmergencyReasonToNotes(formPayload, key)
 
-						if (formPayload.change_type == 'exitingStaff') {
-							formPayload.old_name_placeholder = formatService.formatStaffFullName(formPayload)
-						}
-						if (formPayload.change_type == 'subStaff') {
-							formPayload.staff_type = '4'
-							if (formPayload.sub_type == 'FSTS') {
-								formPayload.license_microsoft = 'A1'
+							if (formPayload.change_type == 'exitingStaff') {
+								formPayload.old_name_placeholder = formatService.formatStaffFullName(formPayload)
 							}
-							formPayload.position = formPayload.sub_type
-						}
+							if (formPayload.change_type == 'subStaff') {
+								formPayload.staff_type = '4'
+								if (formPayload.sub_type == 'FSTS') {
+									formPayload.license_microsoft = 'A1'
+								}
+								formPayload.position = formPayload.sub_type
+							}
 
-						angular.extend(formPayload, commonPayload)
-						return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
-					}).then(staffChangeId => {
-						formPayload.staffChangeId = staffChangeId
-						if (!$scope.userContext.sendJitbit) return
-
-						let jitbitTicketId
-						return jitbitService.createJitbitTicket(buildJitbitPayload(formPayload)).then(ticketId => {
-							jitbitTicketId = ticketId
-							return jitbitService.updateJitbitTicket({
-								id: jitbitTicketId,
-								dueDate: formatJitbitDueDate(formPayload.deadline)
-							}, { errorStage: 'dueDateUpdate' })
-						}).then(() => {
-							return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
-						}).then(() => {
-							formPayload.ticket_id = jitbitTicketId
-						}).catch(error => {
-							return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, staffChangeId).then(() => {
-								showJitbitSupportError('Jitbit Ticket Error', getCreateJitbitErrorMessage(error), error)
-								return $q.reject({ handled: true })
-							}, rollbackError => {
-								showJitbitSupportError('Manual Cleanup Needed', 'The Jitbit ticket update failed, and the staff change may have been partially saved in PowerSchool.', { error: error, rollbackError: rollbackError })
-								return $q.reject({ handled: true })
-							})
+							angular.extend(formPayload, commonPayload)
+							return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
 						})
-					})
+						.then(staffChangeId => {
+							formPayload.staffChangeId = staffChangeId
+							if (!$scope.userContext.sendJitbit) return
+
+							let jitbitTicketId
+							return jitbitService
+								.createJitbitTicket(buildJitbitPayload(formPayload))
+								.then(ticketId => {
+									jitbitTicketId = ticketId
+									return jitbitService.updateJitbitTicket(
+										{
+											id: jitbitTicketId,
+											dueDate: formatJitbitDueDate(formPayload.deadline)
+										},
+										{ errorStage: 'dueDateUpdate' }
+									)
+								})
+								.then(() => {
+									return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
+								})
+								.then(() => {
+									formPayload.ticket_id = jitbitTicketId
+								})
+								.catch(error => {
+									return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, staffChangeId).then(
+										() => {
+											showJitbitSupportError('Jitbit Ticket Error', getCreateJitbitErrorMessage(error), error)
+											return $q.reject({ handled: true })
+										},
+										rollbackError => {
+											showJitbitSupportError('Manual Cleanup Needed', 'The Jitbit ticket update failed, and the staff change may have been partially saved in PowerSchool.', { error: error, rollbackError: rollbackError })
+											return $q.reject({ handled: true })
+										}
+									)
+								})
+						})
 				}
 
-				return payloadKeys.reduce((promise, key) => {
-					return promise.then(() => processPayload(key))
-				}, $q.when()).then(() => {
-					return $scope.formDisplay('confirm', $scope.userContext.pageContext)
-				}).catch(error => {
-					if (!error || !error.handled) console.error('Staff change submission failed.', error)
-				}).finally(closeLoading)
+				return payloadKeys
+					.reduce((promise, key) => {
+						return promise.then(() => processPayload(key))
+					}, $q.when())
+					.then(() => {
+						return $scope.formDisplay('confirm', $scope.userContext.pageContext)
+					})
+					.catch(error => {
+						if (!error || !error.handled) console.error('Staff change submission failed.', error)
+					})
+					.finally(closeLoading)
 			}
 
 			// Edit saves also calculate completion state and synchronize Jitbit. If Jitbit fails, PowerSchool is restored
@@ -1484,10 +1477,7 @@ define(function (require) {
 					formPayload.change_type = key
 					removeNullableTitleFields(formPayload)
 					const currentJitbitSnapshot = buildJitbitSnapshot(formPayload)
-					const shouldSyncJitbitTicket =
-						$scope.userContext.pageStatus === 'Edit' &&
-						formPayload.ticket_id &&
-						hasJitbitSnapshotChanged($scope.originalJitbitSnapshots[$scope.originalChangeType], currentJitbitSnapshot)
+					const shouldSyncJitbitTicket = $scope.userContext.pageStatus === 'Edit' && formPayload.ticket_id && hasJitbitSnapshotChanged($scope.originalJitbitSnapshots[$scope.originalChangeType], currentJitbitSnapshot)
 
 					return $scope.validateStaffChangePayload(formPayload).then(isValid => {
 						if (!isValid) return $q.reject({ handled: true })
@@ -1502,19 +1492,11 @@ define(function (require) {
 						switch (key) {
 							case 'newStaff':
 							case 'transferringStaff':
-								allApplicableChecksComplete = commonChecksComplete(formPayload) &&
-									isResolved(formPayload, 'o365') &&
-									isResolved(formPayload, 'lms') &&
-									isResolved(formPayload, 'canva') &&
-									ipadComplete(formPayload)
+								allApplicableChecksComplete = commonChecksComplete(formPayload) && isResolved(formPayload, 'o365') && isResolved(formPayload, 'lms') && isResolved(formPayload, 'canva') && ipadComplete(formPayload)
 								break
 
 							case 'nameChange':
-								allApplicableChecksComplete = commonChecksComplete(formPayload) &&
-									isResolved(formPayload, 'o365') &&
-									isResolved(formPayload, 'lms') &&
-									canvaComplete(formPayload) &&
-									ipadComplete(formPayload)
+								allApplicableChecksComplete = commonChecksComplete(formPayload) && isResolved(formPayload, 'o365') && isResolved(formPayload, 'lms') && canvaComplete(formPayload) && ipadComplete(formPayload)
 								break
 
 							case 'jobChange':
@@ -1529,10 +1511,7 @@ define(function (require) {
 								if (formPayload.sub_type === 'FSTS') {
 									allApplicableChecksComplete = isResolved(formPayload, 'o365') && isResolved(formPayload, 'ad')
 								} else if (formPayload.sub_type === 'LTS') {
-									allApplicableChecksComplete = commonChecksComplete(formPayload) &&
-										isResolved(formPayload, 'o365') &&
-										isResolved(formPayload, 'lms') &&
-										ipadComplete(formPayload)
+									allApplicableChecksComplete = commonChecksComplete(formPayload) && isResolved(formPayload, 'o365') && isResolved(formPayload, 'lms') && ipadComplete(formPayload)
 								}
 								break
 						}
@@ -1548,30 +1527,33 @@ define(function (require) {
 						return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', formPayload, $scope.userContext.staffChangeId).then(() => {
 							if (!shouldSyncJitbitTicket) return
 
-							return jitbitService.syncJitbitTicketFromStaffChange(
-								formPayload.ticket_id,
-								buildJitbitPayload(formPayload),
-								formatJitbitDueDate(formPayload.deadline)
-							).catch(error => {
-								return restorePowerSchoolPayload().then(() => {
-									showJitbitSupportError('Jitbit Ticket Error', getEditJitbitErrorMessage(error), error)
-									return $q.reject({ handled: true })
-								}, restoreError => {
-									showJitbitSupportError('Manual Cleanup Needed', 'The Jitbit ticket update failed, and PowerSchool may not match the Jitbit ticket.', { error: error, restoreError: restoreError })
-									return $q.reject({ handled: true })
-								})
+							return jitbitService.syncJitbitTicketFromStaffChange(formPayload.ticket_id, buildJitbitPayload(formPayload), formatJitbitDueDate(formPayload.deadline)).catch(error => {
+								return restorePowerSchoolPayload().then(
+									() => {
+										showJitbitSupportError('Jitbit Ticket Error', getEditJitbitErrorMessage(error), error)
+										return $q.reject({ handled: true })
+									},
+									restoreError => {
+										showJitbitSupportError('Manual Cleanup Needed', 'The Jitbit ticket update failed, and PowerSchool may not match the Jitbit ticket.', { error: error, restoreError: restoreError })
+										return $q.reject({ handled: true })
+									}
+								)
 							})
 						})
 					})
 				}
 
-				return payloadKeys.reduce((promise, key) => {
-					return promise.then(() => processPayload(key))
-				}, $q.when()).then(() => {
-					$scope.toListRedirect(form)
-				}).catch(error => {
-					if (!error || !error.handled) console.error('Staff change update failed.', error)
-				}).finally(closeLoading)
+				return payloadKeys
+					.reduce((promise, key) => {
+						return promise.then(() => processPayload(key))
+					}, $q.when())
+					.then(() => {
+						$scope.toListRedirect(form)
+					})
+					.catch(error => {
+						if (!error || !error.handled) console.error('Staff change update failed.', error)
+					})
+					.finally(closeLoading)
 			}
 
 			// Close the external ticket before deleting the PowerSchool record; a ticket failure leaves the record intact.
@@ -1579,25 +1561,26 @@ define(function (require) {
 				loadingDialog()
 				const formPayload = $scope.submitPayload[form] || {}
 				const deletePromise = $scope.userContext.staffChangeId
-					? (formPayload.ticket_id
-						? jitbitService.closeJitbitTicketSilently(formPayload.ticket_id)
-						: $q.when()
-					).then(() => {
-						return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, $scope.userContext.staffChangeId)
-					}).then(() => {
-						$scope.toListRedirect(form)
-					})
+					? (formPayload.ticket_id ? jitbitService.closeJitbitTicketSilently(formPayload.ticket_id) : $q.when())
+							.then(() => {
+								return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, $scope.userContext.staffChangeId)
+							})
+							.then(() => {
+								$scope.toListRedirect(form)
+							})
 					: $q.when()
 
-				return deletePromise.catch(error => {
-					console.error('Staff change deletion failed.', error)
-					if (formPayload.ticket_id) {
-						psAlert({
-							title: 'Jitbit Ticket Error',
-							message: getDeleteJitbitErrorMessage(error)
-						})
-					}
-				}).finally(closeLoading)
+				return deletePromise
+					.catch(error => {
+						console.error('Staff change deletion failed.', error)
+						if (formPayload.ticket_id) {
+							psAlert({
+								title: 'Jitbit Ticket Error',
+								message: getDeleteJitbitErrorMessage(error)
+							})
+						}
+					})
+					.finally(closeLoading)
 			}
 
 			$scope.openNewStaffRecord = newStaff => {
@@ -1641,14 +1624,49 @@ define(function (require) {
 	module.filter('titleCase', function () {
 		return function (input) {
 			if (!input) return ''
+
+			const capitalizeToken = function (token) {
+				if (!token) return token
+
+				const apostropheSeparator = /(['’])/g
+				const apostropheOnly = /^['’]$/
+				const segments = token.split(apostropheSeparator)
+				let hasCapitalizedRoot = false
+
+				for (let segmentIndex = 0; segmentIndex < segments.length; segmentIndex++) {
+					const segment = segments[segmentIndex]
+					if (!segment || apostropheOnly.test(segment)) continue
+
+					const previousSegment = segments[segmentIndex - 1]
+					const followsApostrophe = previousSegment && apostropheOnly.test(previousSegment)
+
+					if (!followsApostrophe && !hasCapitalizedRoot) {
+						segments[segmentIndex] = segment.charAt(0).toUpperCase() + segment.slice(1)
+						hasCapitalizedRoot = true
+						continue
+					}
+
+					if (followsApostrophe) {
+						const isTrailingPossessive = /^[sS]$/.test(segment) && segmentIndex === segments.length - 1
+						if (isTrailingPossessive) {
+							segments[segmentIndex] = 's'
+						} else {
+							segments[segmentIndex] = segment.charAt(0).toUpperCase() + segment.slice(1)
+						}
+					}
+				}
+
+				return segments.join('')
+			}
+
 			return (
 				input
-					// Split by spaces, hyphens, or apostrophes
-					.split(/([ \-\–'])/g)
+					// Split by spaces and hyphens, then handle apostrophes per token.
+					.split(/([ \-\–])/g)
 					.map(function (word, index, array) {
-						// Capitalize the first letter if it's the first word or follows a delimiter
+						// Capitalize each token that starts a segment after a delimiter.
 						if (index === 0 || array[index - 1].match(/[ \-\–']/)) {
-							return word.charAt(0).toUpperCase() + word.slice(1)
+							return capitalizeToken(word)
 						}
 						return word
 					})
@@ -1675,12 +1693,18 @@ define(function (require) {
 				.join('. ')
 		}
 	})
-	module.filter('staffFullName', ['formatService', function (formatService) {
-		return function (staff, options) {
-			return formatService.formatStaffFullName(staff, options)
+	module.filter('staffFullName', [
+		'formatService',
+		function (formatService) {
+			return function (staff, options) {
+				return formatService.formatStaffFullName(staff, options)
+			}
 		}
-	}])
-	const normalizeGender = gender => String(gender || '').trim().toUpperCase()
+	])
+	const normalizeGender = gender =>
+		String(gender || '')
+			.trim()
+			.toUpperCase()
 
 	module.filter('possessivePronoun', function () {
 		return function (gender) {
