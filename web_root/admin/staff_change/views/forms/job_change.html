@@ -157,16 +157,14 @@
                                         <label for="job-change-ipad-yes"
                                             class="form-label form-label-sm label-reset staff-change-req">Will
                                             {{submitPayload.jobChange.title}} {{submitPayload.jobChange.first_name}}
-                                            {{submitPayload.jobChange.last_name}} need a new iPad and Jamf user account
-                                            created for {{submitPayload.jobChange.gender | possessivePronoun}} new
-                                            position?</label><br>
+                                            {{submitPayload.jobChange.last_name}} keep or be assigned an
+                                            iPad?</label><br>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
                                                 name="job-change-ipad-radio-group" id="job-change-ipad-yes"
                                                 data-ng-model="submitPayload.jobChange.ipad_needed" value="1"
                                                 data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.jobChange.ipad_needed"
-                                                data-ng-change="resetIpadCompletion('jobChange')"
-                                                tabindex="0">
+                                                data-ng-change="resetIpadCompletion('jobChange')" tabindex="0">
                                             <label class="form-check-label" for="job-change-ipad-yes">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -174,8 +172,7 @@
                                                 name="job-change-ipad-radio-group" id="job-change-ipad-no"
                                                 data-ng-model="submitPayload.jobChange.ipad_needed" value="0"
                                                 data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.jobChange.ipad_needed"
-                                                data-ng-change="resetIpadCompletion('jobChange')"
-                                                tabindex="0">
+                                                data-ng-change="resetIpadCompletion('jobChange')" tabindex="0">
                                             <label class="form-check-label" for="job-change-ipad-no">No</label>
                                         </div>
                                     </div>

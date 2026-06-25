@@ -143,8 +143,8 @@
                                     <input class="form-check-input" id="ad_created" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].ad_created"
                                         data-ng-disabled="submitPayload[userContext.pageContext].ad_ignored">
-                                    <label class="form-check-label" for="ad_created">Active Directory Account <span data-ng-switch
-                                            on="submitPayload[userContext.pageContext].change_type">
+                                    <label class="form-check-label" for="ad_created">Active Directory Account <span
+                                            data-ng-switch on="submitPayload[userContext.pageContext].change_type">
                                             <span data-ng-switch-when="newStaff">Created?</span>
                                             <span data-ng-switch-when="transferringStaff">Moved?</span>
                                             <span data-ng-switch-when="jobChange">Adjusted?</span>
@@ -216,8 +216,8 @@
                                     <input class="form-check-input" id="o365_created" type="checkbox"
                                         data-ng-model="submitPayload[userContext.pageContext].o365_created"
                                         data-ng-disabled="submitPayload[userContext.pageContext].o365_ignored">
-                                    <label class="form-check-label" for="o365_created">Office 365 Account <span data-ng-switch
-                                            on="submitPayload[userContext.pageContext].change_type">
+                                    <label class="form-check-label" for="o365_created">Office 365 Account <span
+                                            data-ng-switch on="submitPayload[userContext.pageContext].change_type">
                                             <span data-ng-switch-when="newStaff">Created?</span>
                                             <span data-ng-switch-when="transferringStaff">Verified?</span>
                                             <span data-ng-switch-when="nameChange">Updated?</span>
@@ -265,7 +265,7 @@
                                         <span data-ng-switch-when="jobChange">Jamf User Account Created?</span>
                                         <span data-ng-switch-when="subStaff">Jamf User Account Created?</span>
                                         <span data-ng-switch-when="nameChange">Jamf User Account Updated?</span>
-                                        <span data-ng-switch-when="exitingStaff">Jamf User Account Deleted?</span>
+                                        <span data-ng-switch-when="exitingStaff">Jamf User Account Deactivated?</span>
                                     </label>
                                 </div>
                                 <div class="form-check m-0">
@@ -275,6 +275,31 @@
                                     <label class="form-check-label" for="ipad_ignored"><em>Not Applicable</em></label>
                                 </div>
                             </div>
+                        </div>
+                        <div class="card-body p-0" data-ng-switch
+                            on="submitPayload[userContext.pageContext].change_type">
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="newStaff">
+                                <li class="list-group-item">Verify Jamf account created.</li>
+                                <li class="list-group-item">Verify tech liaison has an available iPad.</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="transferringStaff">
+                                <li class="list-group-item">Is staff a religious?</li>
+                                <li class="list-group-item">Will iPad transfer also?</li>
+                                <li class="list-group-item">Verify tech liaison has an available iPad.</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="jobChange">
+                                <li class="list-group-item">Jamf user account created?</li>
+                                <li class="list-group-item">Verify tech liaison has an available iPad.</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="subStaff">
+                                <li class="list-group-item">Verify Jamf account created.</li>
+                                <li class="list-group-item">Verify tech liaison has an available iPad.</li>
+                            </ul>
+                            <ul class="list-group list-group-flush m-0" data-ng-switch-when="exitingStaff">
+                                <li class="list-group-item">Verify staff not transferring to another school.</li>
+                                <li class="list-group-item">Verify iPad has been turned in.</li>
+                                <li class="list-group-item">Look at ASM for account deactivation.</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
