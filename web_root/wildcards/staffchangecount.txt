@@ -1,6 +1,6 @@
 <ul id='staffCount' class='hide'>
     <li id='staffCountLi' class="pds-app-action countMargin">
-        <a id="cdolBtnNotifications" class="badge-adjust" href="/admin/staff_change/list.html"
+        <a id="cdolStaffChangeNotifications" class="badge-adjust" href="/admin/staff_change/list.html"
             title="Staff Changes">
             <pds-icon name="rolodex" class="style-scope x-scope pds-icon-0 pds-widget"
                 pds-widget="pds-widget"></pds-icon>
@@ -59,7 +59,6 @@
             }
 
             $j('[id="staffCountLi"]').filter(outsideTemplate).remove()
-            $j('[id="cdolBtnNotifications"]').filter(outsideTemplate).closest('li').remove()
         }
 
         staffChangeCount.removeTemplate = () => {
