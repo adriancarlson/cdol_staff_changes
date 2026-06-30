@@ -176,8 +176,8 @@ define(function (require) {
 					const isCurrentPending = !isResolved && hasResolvedSteps && index === firstPendingIndex
 					const state = isComplete ? 'complete' : isIgnored ? 'ignored' : isCurrentPending ? 'pending' : 'not-started'
 					const status = isComplete ? 'Complete' : isIgnored ? 'Not Applicable' : isCurrentPending ? 'In Progress' : 'Not Started'
-					const icon = isComplete ? 'checkmark-alt' : isIgnored ? 'minus-alt' : isCurrentPending ? 'inprogress' : 'calendar-custom'
-					const classNames = [`workflow-step-${state}`]
+					const icon = isResolved ? 'checkmark-alt' : isCurrentPending ? 'inprogress' : 'calendar-custom'
+					const classNames = [isResolved ? 'workflow-step-complete' : `workflow-step-${state}`]
 
 					if (isCurrentPending) classNames.push('workflow-step-current')
 
