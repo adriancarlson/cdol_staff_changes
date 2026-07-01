@@ -16,7 +16,8 @@
             <tr>
                 <th></th>
                 <th data-pss-sort-fields="old_name_placeholder" class="nowrap">{{listHeaders[0]}}</th>
-                <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">{{listHeaders[1]}}
+				<th data-ng-if="showSchoolColumns" data-pss-sort-fields="school_list_display|multiselect-dropdown"
+					data-filter-info="schoolMap">{{listHeaders[1]}}
                 </th>
                 <th data-pss-sort-fields="submittedstaff" class="fit-column">{{listHeaders[2]}}</th>
                 <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending"
@@ -41,7 +42,7 @@
                         </a>
                     </span>
                 </td>
-                <td class="nowrap">{{::exitingStaff.schname}}</td>
+				<td data-ng-if="showSchoolColumns" class="nowrap">{{::exitingStaff.school_list_display}}</td>
                 <td class="fit-column">{{::exitingStaff.submittedstaff}}</td>
                 <td class="fit-column">{{::exitingStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{::exitingStaff.submission_time}}</td>

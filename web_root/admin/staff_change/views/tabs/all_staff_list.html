@@ -4,11 +4,14 @@
     <!-- Adding before the table so it will put this filter at the top of the list in the drop down -->
     <label data-pss-filter-field="ad_filter_complete|multiselect" data-filter-info="booleanMap">Active Directory
         Complete?</label>
-    <label data-pss-filter-field="ps_filter_complete|multiselect" data-filter-info="booleanMap">PowerSchool Complete?</label>
-    <label data-pss-filter-field="o365_filter_complete|multiselect" data-filter-info="booleanMap">Office 365 Complete?</label>
+    <label data-pss-filter-field="ps_filter_complete|multiselect" data-filter-info="booleanMap">PowerSchool
+        Complete?</label>
+    <label data-pss-filter-field="o365_filter_complete|multiselect" data-filter-info="booleanMap">Office 365
+        Complete?</label>
     <label data-pss-filter-field="ipad_filter_complete|multiselect" data-filter-info="booleanMap">iPad Complete?</label>
     <label data-pss-filter-field="lms_filter_complete|multiselect" data-filter-info="booleanMap">LMS Complete?</label>
-    <label data-pss-filter-field="canva_filter_complete|multiselect" data-filter-info="booleanMap">Canva Complete?</label>
+    <label data-pss-filter-field="canva_filter_complete|multiselect" data-filter-info="booleanMap">Canva
+        Complete?</label>
     <label data-pss-filter-field="completed|multiselect" data-filter-info="booleanMap">All Completed?</label>
     <label data-pss-filter-field="title|multiselect" data-filter-info="titleMap">Title</label>
     <label data-pss-filter-field="first_name">First Name</label>
@@ -20,15 +23,16 @@
                 <th data-pss-sort-fields="last_name" class="nowrap">{{listHeaders[0]}}</th>
                 <th data-pss-sort-fields="change_type|multiselect" data-filter-info="changeMap" class="fit-column">
                     {{listHeaders[1]}}</th>
-                <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">{{listHeaders[2]}}
+				<th data-ng-if="showSchoolColumns" data-pss-sort-fields="school_list_display|multiselect-dropdown"
+					data-filter-info="schoolMap">{{listHeaders[2]}}
                 </th>
                 <th data-pss-sort-fields="submittedstaff" class="fit-column">{{listHeaders[3]}}</th>
                 <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending"
                     class="fit-column">
                     {{listHeaders[4]}}</th>
                 <th data-pss-sort-fields="completion_date|date" class="fit-column">{{listHeaders[5]}}</th>
-                <th data-pss-sort-fields="progress_percent|number, completion_date|date"
-                    data-exclude-from-filter="true" class="progress-column progress-column-all">{{listHeaders[6]}}</th>
+                <th data-pss-sort-fields="progress_percent|number, completion_date|date" data-exclude-from-filter="true"
+                    class="progress-column progress-column-all">{{listHeaders[6]}}</th>
                 <th data-pss-sort-fields="final_completion_date|date" class="fit-column">{{listHeaders[7]}}</th>
             </tr>
         </thead>
@@ -41,13 +45,14 @@
                     <span class="ms-2 external-link-hover">
                         <a href="/admin/staff_change/submit.html?status=Edit&id={{::allStaff.staffid}}" target="_blank"
                             title="Open in new tab"><pds-icon name="external"
-                                class="style-scope x-scope pds-icon-0 pds-widget staff-change-external-link-icon" pds-widget="pds-widget"></pds-icon>
+                                class="style-scope x-scope pds-icon-0 pds-widget staff-change-external-link-icon"
+                                pds-widget="pds-widget"></pds-icon>
                         </a>
                     </span>
                 </td>
-                <td class="fit-column fw-semibold" data-ng-class="::allStaff.change_type_class">
-                    {{::allStaff.change_type_label}}{{::allStaff.sub_type_suffix}}</td>
-                <td class="nowrap">{{::allStaff.schname}}</td>
+				<td class="fit-column fw-semibold" data-ng-class="::allStaff.change_type_class">
+					{{::allStaff.change_type_list_label}}{{::allStaff.sub_type_suffix}}</td>
+				<td data-ng-if="showSchoolColumns" class="nowrap">{{::allStaff.school_list_display}}</td>
                 <td class="fit-column">{{::allStaff.submittedstaff}}</td>
                 <td class="fit-column">{{::allStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{::allStaff.submission_time}}</td>

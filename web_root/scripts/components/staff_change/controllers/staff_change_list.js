@@ -19,6 +19,7 @@ define(function (require) {
 			$scope.staffChangeCounts = []
 			$scope.staffList = {}
 			$scope.curSchoolId = $attrs.ngCurSchoolId
+			$scope.showSchoolColumns = String($scope.curSchoolId) === '0'
 			$scope.curYearId = $attrs.ngCurYearId
 			$scope.curDate = new Date($attrs.ngCurDate)
 			$scope.calendarYear = new Date().getFullYear()
@@ -37,13 +38,39 @@ define(function (require) {
 				.catch(() => {
 					$scope.titleMap = {}
 				})
+			const schoolAbbreviations = {}
+			const loadSchoolAbbreviations = $scope.showSchoolColumns
+				? jsonDataService
+						.getData('schoolData')
+						.then(schoolData => {
+							schoolData.forEach(school => {
+								if (school.identifier != null && school.abbreviation) {
+									schoolAbbreviations[String(school.identifier)] = school.abbreviation
+								}
+							})
+						})
+						.catch(() => {})
+				: $q.when()
+
+			const getSchoolListDisplay = (schoolId, fallbackName) => {
+				if (schoolId != null && schoolAbbreviations[String(schoolId)]) {
+					return schoolAbbreviations[String(schoolId)]
+				}
+
+				return fallbackName || ''
+			}
+
+			const prepareSchoolListDisplay = staffRecord => {
+				staffRecord.school_list_display = getSchoolListDisplay(staffRecord.schoolid, staffRecord.schname)
+				staffRecord.previous_school_list_display = getSchoolListDisplay(staffRecord.prev_school_number, staffRecord.prev_school_name)
+			}
 			$scope.changeMap = {
-				'New Staff': 'newStaff',
-				'Transferring-In Staff': 'transferringStaff',
+				New: 'newStaff',
+				'Transferring-In': 'transferringStaff',
 				'Job Change': 'jobChange',
 				Substitute: 'subStaff',
 				'Name Change': 'nameChange',
-				'Exiting Staff': 'exitingStaff'
+				Exiting: 'exitingStaff'
 			}
 
 			$scope.schoolMap = {}
@@ -57,9 +84,9 @@ define(function (require) {
 				}
 
 				records.forEach(record => {
-					addSchoolName(record.schname)
-					if (changeType === 'transferringStaff' && record.prev_school_name) {
-						addSchoolName(record.prev_school_name)
+					addSchoolName(record.school_list_display)
+					if (changeType === 'transferringStaff' && record.previous_school_list_display) {
+						addSchoolName(record.previous_school_list_display)
 					}
 				})
 
@@ -290,6 +317,7 @@ define(function (require) {
 				// Store settled display values so hidden, cached tabs do not repeatedly evaluate formatting rules.
 				staffRecord.display_name = formatService.formatStaffFullName(staffRecord, { fallbackField: 'old_name_placeholder' })
 				staffRecord.change_type_label = $filter('changeTypeFilter')(staffRecord.change_type) || staffRecord.change_type
+				staffRecord.change_type_list_label = staffRecord.change_type_label.replace(/\s+Staff\b/g, '')
 				staffRecord.change_type_class = changeTypeClasses[staffRecord.change_type] || ''
 				staffRecord.sub_type_suffix = staffRecord.change_type === 'subStaff' && staffRecord.sub_type ? ` (${staffRecord.sub_type})` : ''
 				staffRecord.completion_display = {
@@ -410,6 +438,7 @@ define(function (require) {
 					: $q
 							.all({
 								titles: loadTitleMap,
+								schools: loadSchoolAbbreviations,
 								counts: jsonDataService.getData('staffChangeCountData', {
 									curSchoolID: $scope.curSchoolId,
 									calendarYear: $scope.calendarYear
@@ -430,7 +459,10 @@ define(function (require) {
 								}
 
 								$scope.staffList[changeType] = staffResults
-								$scope.staffList[changeType].forEach(prepareStaffRecord)
+								$scope.staffList[changeType].forEach(staffRecord => {
+									prepareSchoolListDisplay(staffRecord)
+									prepareStaffRecord(staffRecord)
+								})
 							})
 
 				return loadPromise

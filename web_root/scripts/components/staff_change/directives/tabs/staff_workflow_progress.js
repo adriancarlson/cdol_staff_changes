@@ -26,10 +26,6 @@ define(function (require) {
 								</span>
 							</span>
 						</span>
-						<span class="workflow-progress-meta">
-							<span class="workflow-progress-count">{{::staffRecord.progress_completed}}/{{::staffRecord.progress_total}}</span>
-							<span class="workflow-progress-status" data-ng-class="::staffRecord.progress_status_class">{{::staffRecord.progress_status}}</span>
-						</span>
 					</button>`
 			}
 		}

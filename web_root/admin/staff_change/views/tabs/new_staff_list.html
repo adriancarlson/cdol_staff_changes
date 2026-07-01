@@ -18,7 +18,8 @@
             <tr>
                 <th></th>
                 <th data-pss-sort-fields="last_name" class="nowrap">New Staff</th>
-                <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">School</th>
+				<th data-ng-if="showSchoolColumns" data-pss-sort-fields="school_list_display|multiselect-dropdown"
+					data-filter-info="schoolMap">School</th>
                 <th data-pss-sort-fields="submittedstaff" class="fit-column">Submitted By</th>
                 <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending"
                     class="fit-column">
@@ -42,7 +43,7 @@
                         </a>
                     </span>
                 </td>
-                <td class="nowrap">{{::newStaff.schname}}</td>
+				<td data-ng-if="showSchoolColumns" class="nowrap">{{::newStaff.school_list_display}}</td>
                 <td class="fit-column">{{::newStaff.submittedstaff}}</td>
                 <td class="fit-column">{{::newStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{::newStaff.submission_time}}</td>

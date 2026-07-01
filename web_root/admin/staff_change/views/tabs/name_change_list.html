@@ -19,7 +19,8 @@
                 <th></th>
                 <th data-pss-sort-fields="last_name" class="nowrap">{{listHeaders[0]}}</th>
                 <th data-pss-sort-fields="old_name_placeholder" class="nowrap">{{listHeaders[1]}}</th>
-                <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap">{{listHeaders[2]}}
+				<th data-ng-if="showSchoolColumns" data-pss-sort-fields="school_list_display|multiselect-dropdown"
+					data-filter-info="schoolMap">{{listHeaders[2]}}
                 </th>
                 <th data-pss-sort-fields="submittedstaff" class="fit-column">{{listHeaders[3]}}</th>
                 <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending"
@@ -45,7 +46,7 @@
                     </span>
                 </td>
                 <td class="nowrap">{{::nameChange.old_name_placeholder}}</td>
-                <td class="nowrap">{{::nameChange.schname}}</td>
+				<td data-ng-if="showSchoolColumns" class="nowrap">{{::nameChange.school_list_display}}</td>
                 <td class="fit-column">{{::nameChange.submittedstaff}}</td>
                 <td class="fit-column">{{::nameChange.submission_date | date : 'MM/dd/yyyy'}}
                     {{::nameChange.submission_time}}</td>

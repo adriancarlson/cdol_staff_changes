@@ -18,11 +18,11 @@
             <tr>
                 <th></th>
                 <th data-pss-sort-fields="last_name" class="nowrap">{{listHeaders[0]}}</th>
-                <th data-pss-sort-fields="schname|multiselect-dropdown" data-filter-info="schoolMap"
-                    class="transfer-school-column">{{listHeaders[1]}}
-                </th>
-                <th data-pss-sort-fields="prev_school_name|multiselect-dropdown" data-filter-info="schoolMap"
-                    class="transfer-school-column transfer-original-school-column">
+				<th data-ng-if="showSchoolColumns" data-pss-sort-fields="school_list_display|multiselect-dropdown" data-filter-info="schoolMap"
+					class="transfer-school-column">{{listHeaders[1]}}
+				</th>
+				<th data-ng-if="showSchoolColumns" data-pss-sort-fields="previous_school_list_display|multiselect-dropdown" data-filter-info="schoolMap"
+					class="transfer-school-column transfer-original-school-column">
                     {{listHeaders[2]}}</th>
                 <th data-pss-sort-fields="submittedstaff" class="fit-column">{{listHeaders[3]}}</th>
                 <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending"
@@ -47,8 +47,8 @@
                         </a>
                     </span>
                 </td>
-                <td class="transfer-school-column">{{::transferringStaff.schname}}</td>
-                <td class="transfer-school-column transfer-original-school-column">{{::transferringStaff.prev_school_name}}</td>
+				<td data-ng-if="showSchoolColumns" class="transfer-school-column">{{::transferringStaff.school_list_display}}</td>
+				<td data-ng-if="showSchoolColumns" class="transfer-school-column transfer-original-school-column">{{::transferringStaff.previous_school_list_display}}</td>
                 <td class="fit-column">{{::transferringStaff.submittedstaff}}</td>
                 <td class="fit-column">{{::transferringStaff.submission_date | date : 'MM/dd/yyyy'}}
                     {{::transferringStaff.submission_time}}</td>
