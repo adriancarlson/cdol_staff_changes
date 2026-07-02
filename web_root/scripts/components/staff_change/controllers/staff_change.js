@@ -513,6 +513,27 @@ define(function (require) {
 				return options
 			}
 
+			const includeSavedReplacementOption = (pageContext, options) => {
+				const staffChange = $scope.submitPayload[pageContext]
+				if ($scope.userContext.pageStatus !== 'Edit' || !staffChange || !staffChange.replace_dcid || staffChange.replace_dcid == -1) return options
+				if (options.some(option => sameIdentifier(option.identifier, staffChange.replace_dcid))) return options
+
+				// New submissions remain active-only. On edit, preserve the one historical selection even if that staff
+				// member has since been inactivated or moved and no longer appears in the current-school lookup.
+				const savedReplacement = {
+					identifier: staffChange.replace_dcid,
+					title: staffChange.replace_title,
+					first_name: staffChange.replace_first_name,
+					middle_name: staffChange.replace_middle_name,
+					last_name: staffChange.replace_last_name,
+					license_microsoft: staffChange.replace_license_microsoft,
+					staff_status: staffChange.replace_staff_status
+				}
+				const hasSavedStatus = savedReplacement.staff_status !== undefined && savedReplacement.staff_status !== null && savedReplacement.staff_status !== ''
+
+				return options.concat(buildUserOptions([savedReplacement], hasSavedStatus))
+			}
+
 			const buildSchoolOptions = records => {
 				const options = (records || []).map(record => {
 					const option = angular.copy(record)
@@ -578,13 +599,17 @@ define(function (require) {
 								if (needsPrimaryUsers && pageContext !== 'transferringStaff') {
 									$scope.primaryUserOptions = buildUserOptions(records, false)
 								}
-								if (needsRelatedUsers) $scope.relatedUserOptions = buildUserOptions(records, false)
+								if (needsRelatedUsers) {
+									$scope.relatedUserOptions = includeSavedReplacementOption(pageContext, buildUserOptions(records, false))
+								}
 							},
 							() => {
 								if (needsPrimaryUsers && pageContext !== 'transferringStaff') {
 									$scope.primaryUserOptions = buildUserOptions([], false)
 								}
-								if (needsRelatedUsers) $scope.relatedUserOptions = buildUserOptions([], false)
+								if (needsRelatedUsers) {
+									$scope.relatedUserOptions = includeSavedReplacementOption(pageContext, [])
+								}
 							}
 						)
 						.finally(() => {
