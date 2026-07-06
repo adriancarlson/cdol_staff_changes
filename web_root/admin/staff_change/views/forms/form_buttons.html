@@ -46,7 +46,7 @@
     <div class="row" data-ng-if="userContext.pageStatus =='Edit'">
         <div class="col-auto me-auto">
             <div id="edit-back-button-group">
-                <button title="Back to Staff Change List" id="edit-back-button" type="button" class="m-0 p-2 ps-1" data-ng-show="!delUpdate"
+                <button title="Back to Staff Change List" id="edit-back-button" type="button" class="m-0 p-2 ps-1"
                     data-ng-click="toListRedirect(userContext.pageContext)"><i class="bi bi-chevron-left fw-bold"></i>
                     Back</button>
             </div>
@@ -54,15 +54,12 @@
         <div class="col-auto" id="edit-button-group">
             <span class="req-notation" data-ng-show="staffChangeForm.$invalid && staffChangeForm.$dirty">Please
                 fill all required fields prior to submitting.</span>
-            <button id="cancel-delete-button" class="ms-2 p-2" type="button" data-ng-show="delUpdate"
-                data-ng-click="delUpdate = false">Cancel</button>
-            <button id="confirm-delete-button" class="ms-2 p-2 dark-orange" type="button" data-ng-show="delUpdate"
-                data-ng-click="deleteStaffChange(userContext.pageContext)">Confirm Deletion</button>
-            <button id="show-delete-confirmation-button" class="ms-2 p-2" type="button" data-ng-show="!delUpdate"
-                data-ng-click="delUpdate = true">Delete
+            <button id="show-delete-confirmation-button"
+                class="btn btn-outline-danger ms-2 me-4 p-2 text-nowrap" type="button"
+                data-ng-click="openDeleteConfirmation(userContext.pageContext)">Delete
                 Submission</button>
             <button id="submit-update-button" class="ms-2 p-2" type="button"
-                data-ng-disabled="staffChangeForm.$invalid || userContext.invalidDate" data-ng-show="!delUpdate"
+                data-ng-disabled="staffChangeForm.$invalid || userContext.invalidDate"
                 data-ng-click="updateStaffChange(userContext.pageContext)">Submit
                 Update</button>
         </div>

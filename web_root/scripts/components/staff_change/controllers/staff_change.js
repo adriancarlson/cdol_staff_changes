@@ -266,6 +266,10 @@ define(function (require) {
 			}
 			const getEmergencyOverrideLabel = pageContext => emergencyOverrideLabels[pageContext] || 'Emergency Date Override'
 			const getEmergencyNote = (pageContext, reason) => `${getEmergencyOverrideLabel(pageContext)}: ${reason}`
+			const appendNote = (notes, note) => {
+				const existingNotes = (notes || '').trim()
+				return existingNotes ? `${existingNotes}\n\n${note}` : note
+			}
 
 			const removeEmergencyReasonFromNotes = (pageContext, emergencyRequest = getEmergencyRequest(pageContext)) => {
 				const formPayload = $scope.submitPayload[pageContext]
@@ -289,7 +293,7 @@ define(function (require) {
 				const notes = (formPayload.notes || '').trim()
 				if (notes.endsWith(emergencyNote)) return
 
-				formPayload.notes = notes ? `${notes}\n\n${emergencyNote}` : emergencyNote
+				formPayload.notes = appendNote(notes, emergencyNote)
 			}
 
 			const updateDeadlinePickerMinimum = (pageContext, minimumDate) => {
@@ -419,6 +423,61 @@ define(function (require) {
 					$j('#emergencyRequestReason').val(existingRequest.reason)
 				}
 				$j('#emergencyRequestReason').trigger('focus')
+			}
+
+			// Deletion uses the same focused, required-reason interaction as an emergency date override.
+			$scope.openDeleteConfirmation = pageContext => {
+				const createsAutomaticExit = requiresAutomaticExit(pageContext, $scope.submitPayload[pageContext] || {})
+				const automaticExitMessage = createsAutomaticExit
+					? '<p>A high-priority Exiting Staff submission will also be created because account work has already been recorded.</p>'
+					: ''
+				const dialogContent = `
+					<div class="p-2">
+						<p><strong>This permanently deletes the staff change submission from PowerSchool.</strong></p>
+						<p>Its Jitbit ticket will remain open, be marked DELETED, and include the reason entered below.</p>
+						${automaticExitMessage}
+						<div class="form-floating">
+							<textarea id="deleteSubmissionReason" class="form-control staff-change-emergency-reason" maxlength="250" spellcheck="true" wrap="soft" placeholder="Reason for deletion"></textarea>
+							<label for="deleteSubmissionReason" class="fw-semibold">Reason for deletion</label>
+						</div>
+						<div id="deleteSubmissionReasonError" class="text-danger mt-1 hide">Please enter a reason for deleting this submission.</div>
+					</div>`
+
+				psDialog({
+					type: 'dialogM',
+					width: 600,
+					title: 'Delete Staff Change Submission?',
+					content: dialogContent,
+					initBehaviors: true,
+					buttons: [
+						{
+							id: 'cancelDeleteSubmissionButton',
+							text: 'Cancel',
+							title: 'Cancel',
+							click: function () {
+								psDialogClose()
+							}
+						},
+						{
+							id: 'deleteSubmissionButton',
+							text: 'Delete Submission',
+							title: 'Delete Submission',
+							click: function () {
+								const reason = ($j('#deleteSubmissionReason').val() || '').trim()
+								if (!reason) {
+									$j('#deleteSubmissionReasonError').removeClass('hide')
+									$j('#deleteSubmissionReason').trigger('focus')
+									return
+								}
+
+								psDialogClose()
+								$scope.$applyAsync(() => $scope.deleteStaffChange(pageContext, reason))
+							}
+						}
+					]
+				})
+
+				$j('#deleteSubmissionReason').trigger('focus')
 			}
 
 			$scope.isOtherSchool = schoolId => [130, 131, 160, 189, 210, 211, 264, 437].includes(Number(schoolId))
@@ -1222,7 +1281,7 @@ define(function (require) {
 
 			const getReadableChangeType = formPayload => (formPayload.change_type === 'subStaff' ? `${formatService.changeMap(formPayload.change_type)} (${formPayload.sub_type})` : `${formatService.changeMap(formPayload.change_type)}`)
 
-			const buildJitbitPayload = formPayload => {
+			const buildJitbitPayload = (formPayload, options = {}) => {
 				const jitbitPayload = angular.copy(formPayload)
 				return angular.extend(jitbitPayload, {
 					curUserName: $scope.userContext.curUserName,
@@ -1231,7 +1290,7 @@ define(function (require) {
 					curTime: $scope.userContext.curTime,
 					userEmail: $scope.userContext.curUserEmail,
 					isTestServer: $scope.userContext.isTestServer,
-					emergencyRequest: $scope.userContext.pageStatus === 'Submit' && $scope.isEmergencyRequestEnabled(formPayload.change_type),
+					emergencyRequest: options.emergencyRequest === true || ($scope.userContext.pageStatus === 'Submit' && $scope.isEmergencyRequestEnabled(formPayload.change_type)),
 					readableChangeType: getReadableChangeType(formPayload)
 				})
 			}
@@ -1309,10 +1368,14 @@ define(function (require) {
 
 			const getDeleteJitbitErrorMessage = error => {
 				switch (error && error.jitbitStage) {
-					case 'ticketClose':
-						return 'The staff change was not deleted because the Jitbit ticket could not be closed silently.'
+					case 'ticketFetch':
+						return 'The staff change was not deleted because the existing Jitbit ticket could not be loaded.'
+					case 'ticketDeleteUpdate':
+						return 'The staff change was not deleted because the Jitbit ticket could not be marked deleted.'
+					case 'ticketRestore':
+						return 'The staff change was retained, but the original Jitbit ticket could not be restored.'
 					default:
-						return 'The staff change was not deleted because the Jitbit ticket cleanup failed.'
+						return 'The staff change was not deleted because the Jitbit update failed.'
 				}
 			}
 
@@ -1401,6 +1464,64 @@ define(function (require) {
 				})
 			}
 
+			// Both ordinary submissions and deletion-generated exit records use the same PowerSchool/Jitbit creation unit.
+			const createStaffChangeRecord = (formPayload, options = {}) => {
+				let staffChangeId
+				let jitbitTicketId
+
+				return psApiService
+					.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
+					.then(createdStaffChangeId => {
+						staffChangeId = createdStaffChangeId
+						formPayload.staffChangeId = staffChangeId
+						if (!$scope.userContext.sendJitbit) return { staffChangeId: staffChangeId }
+
+						return jitbitService
+							.createJitbitTicket(buildJitbitPayload(formPayload, options))
+							.then(ticketId => {
+								jitbitTicketId = ticketId
+								return jitbitService.updateJitbitTicket(
+									{
+										id: jitbitTicketId,
+										dueDate: formatJitbitDueDate(formPayload.deadline)
+									},
+									{ errorStage: 'dueDateUpdate' }
+								)
+							})
+							.then(() => {
+								return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
+							})
+							.then(() => {
+								formPayload.ticket_id = jitbitTicketId
+								return { staffChangeId: staffChangeId, ticketId: jitbitTicketId }
+							})
+							.catch(error => {
+								const cleanupPromises = [psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, staffChangeId)]
+								if (jitbitTicketId) {
+									cleanupPromises.push(jitbitService.closeJitbitTicketSilently(jitbitTicketId, { errorStage: 'ticketRollback' }))
+								}
+
+								return $q.all(cleanupPromises).then(
+									() => $q.reject(error),
+									cleanupError => {
+										error.cleanupError = cleanupError
+										return $q.reject(error)
+									}
+								)
+							})
+					})
+			}
+
+			const rollbackCreatedStaffChange = createdStaffChange => {
+				if (!createdStaffChange || !createdStaffChange.staffChangeId) return $q.when()
+
+				const rollbackPromises = [psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, createdStaffChange.staffChangeId)]
+				if ($scope.userContext.sendJitbit && createdStaffChange.ticketId) {
+					rollbackPromises.push(jitbitService.closeJitbitTicketSilently(createdStaffChange.ticketId, { errorStage: 'ticketRollback' }))
+				}
+				return $q.all(rollbackPromises)
+			}
+
 			// Create each payload sequentially so a related record failure is reported before navigation leaves the page.
 			$scope.createStaffChange = () => {
 				loadingDialog()
@@ -1441,43 +1562,16 @@ define(function (require) {
 							}
 
 							angular.extend(formPayload, commonPayload)
-							return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'POST', formPayload)
-						})
-						.then(staffChangeId => {
-							formPayload.staffChangeId = staffChangeId
-							if (!$scope.userContext.sendJitbit) return
+							return createStaffChangeRecord(formPayload).catch(error => {
+								if (!error || !error.jitbitStage) return $q.reject(error)
 
-							let jitbitTicketId
-							return jitbitService
-								.createJitbitTicket(buildJitbitPayload(formPayload))
-								.then(ticketId => {
-									jitbitTicketId = ticketId
-									return jitbitService.updateJitbitTicket(
-										{
-											id: jitbitTicketId,
-											dueDate: formatJitbitDueDate(formPayload.deadline)
-										},
-										{ errorStage: 'dueDateUpdate' }
-									)
-								})
-								.then(() => {
-									return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'PUT', { ticket_id: jitbitTicketId }, staffChangeId)
-								})
-								.then(() => {
-									formPayload.ticket_id = jitbitTicketId
-								})
-								.catch(error => {
-									return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, staffChangeId).then(
-										() => {
-											showJitbitSupportError('Jitbit Ticket Error', getCreateJitbitErrorMessage(error), error)
-											return $q.reject({ handled: true })
-										},
-										rollbackError => {
-											showJitbitSupportError('Manual Cleanup Needed', 'The Jitbit ticket update failed, and the staff change may have been partially saved in PowerSchool.', { error: error, rollbackError: rollbackError })
-											return $q.reject({ handled: true })
-										}
-									)
-								})
+								if (error.cleanupError) {
+									showJitbitSupportError('Manual Cleanup Needed', 'The Jitbit ticket update failed, and the staff change may have been partially saved in PowerSchool.', error)
+								} else {
+									showJitbitSupportError('Jitbit Ticket Error', getCreateJitbitErrorMessage(error), error)
+								}
+								return $q.reject({ handled: true })
+							})
 						})
 				}
 
@@ -1584,30 +1678,143 @@ define(function (require) {
 					.finally(closeLoading)
 			}
 
-			// Close the external ticket before deleting the PowerSchool record; a ticket failure leaves the record intact.
-			// Test servers suppress this unless the debug-panel Send Jitbit Ticket override is explicitly checked.
-			$scope.deleteStaffChange = form => {
+			const accountCheckFields = [
+				'ps_created',
+				'ad_created',
+				'ad_ignored',
+				'o365_created',
+				'o365_ignored',
+				'lms_created',
+				'lms_ignored',
+				'canva_created',
+				'canva_ignored',
+				'ipad_created',
+				'ipad_ignored'
+			]
+			const isChecked = value => value === true || value === 1 || value === '1'
+			const hasCompletedAccountCheck = formPayload => accountCheckFields.some(fieldName => isChecked(formPayload[fieldName]))
+			const requiresAutomaticExit = (changeType, formPayload) => {
+				return (changeType === 'newStaff' || changeType === 'transferringStaff') && hasCompletedAccountCheck(formPayload)
+			}
+			const getDeletionAuditNote = reason => {
+				const schoolLabel = $scope.userContext.curUserSchoolAbbr || $scope.userContext.curSchoolName
+				return `Deletion requested by ${$scope.userContext.curUserName} (${schoolLabel}) on ${$scope.userContext.curDate} at ${$scope.userContext.curTime}: ${reason}`
+			}
+			const buildAutomaticExitPayload = (sourcePayload, deletionAuditNote) => {
+				const exitPayload = {}
+				const copyFields = [
+					'schoolid',
+					'users_dcid',
+					'title',
+					'first_name',
+					'middle_name',
+					'last_name',
+					'gender',
+					'position',
+					'license_microsoft',
+					'staff_status'
+				]
+				copyFields.forEach(fieldName => {
+					if (sourcePayload[fieldName] !== undefined && sourcePayload[fieldName] !== null) {
+						exitPayload[fieldName] = sourcePayload[fieldName]
+					}
+				})
+
+				exitPayload.users_dcid = exitPayload.users_dcid || '-1'
+				exitPayload.old_name_placeholder = formatService.formatStaffFullName(sourcePayload, { fallbackField: 'old_name_placeholder' })
+				exitPayload.deadline = $scope.userContext.today
+				exitPayload.canva_transfer = '0'
+				exitPayload.ipad_needed = sourcePayload.ipad_needed == 1 ? '1' : '0'
+				exitPayload.additional_schoolid = sourcePayload.additional_schoolid ? sourcePayload.additional_schoolid : '0'
+				exitPayload.notes = appendNote(sourcePayload.notes, deletionAuditNote)
+				exitPayload.change_type = 'exitingStaff'
+				exitPayload.calendar_year = new Date().getFullYear().toString()
+				exitPayload.submission_date = $scope.userContext.curDate
+				exitPayload.submission_time = $scope.userContext.curTime
+				exitPayload.who_submitted = $scope.userContext.curUserDcid
+				return exitPayload
+			}
+			const showDeleteWorkflowError = error => {
+				console.error('Staff change deletion failed.', error)
+
+				if (error && error.jitbitStage) {
+					showJitbitSupportError('Staff Change Deletion Failed', getDeleteJitbitErrorMessage(error), error)
+					return
+				}
+
+				const message = error && error.deleteStage === 'automaticExitCreate'
+					? 'The original staff change was retained because the automatic Exiting Staff submission could not be created.'
+					: 'The staff change could not be deleted. The original submission was retained.'
+				psAlert({ title: 'Deletion Not Completed', message: message })
+			}
+
+			// Mark Jitbit first, create any required offboarding record, and delete the original record only after both succeed.
+			$scope.deleteStaffChange = (form, reason) => {
 				loadingDialog()
-				const formPayload = $scope.submitPayload[form] || {}
-				const deletePromise = $scope.userContext.staffChangeId
-					? ($scope.userContext.sendJitbit && formPayload.ticket_id ? jitbitService.closeJitbitTicketSilently(formPayload.ticket_id) : $q.when())
-							.then(() => {
-								return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, $scope.userContext.staffChangeId)
-							})
-							.then(() => {
-								$scope.toListRedirect(form)
+				const livePayload = $scope.submitPayload[form] || {}
+				const sourcePayload = copyPayload($scope.originalStaffChangePayloads[form] || livePayload)
+				const deletionAuditNote = getDeletionAuditNote(reason)
+				const deletionTicketPayload = copyPayload(sourcePayload)
+				const ticketId = sourcePayload.ticket_id
+				const shouldCreateExit = requiresAutomaticExit(form, livePayload)
+				let originalTicket
+				let createdExit
+
+				deletionTicketPayload.notes = appendNote(sourcePayload.notes, deletionAuditNote)
+
+				const markTicketDeleted = $scope.userContext.sendJitbit && ticketId
+					? jitbitService
+							.markJitbitTicketDeleted(ticketId, buildJitbitPayload(deletionTicketPayload), formatJitbitDueDate(sourcePayload.deadline))
+							.then(ticket => {
+								originalTicket = ticket
 							})
 					: $q.when()
 
-				return deletePromise
-					.catch(error => {
-						console.error('Staff change deletion failed.', error)
-						if (formPayload.ticket_id) {
-							psAlert({
-								title: 'Jitbit Ticket Error',
-								message: getDeleteJitbitErrorMessage(error)
+				return markTicketDeleted
+					.then(() => {
+						if (!shouldCreateExit) return
+
+						const exitPayload = buildAutomaticExitPayload(sourcePayload, deletionAuditNote)
+						return createStaffChangeRecord(exitPayload, { emergencyRequest: true })
+							.then(result => {
+								createdExit = result
 							})
+							.catch(error => {
+								error.deleteStage = 'automaticExitCreate'
+								return $q.reject(error)
+							})
+					})
+					.then(() => {
+						if (!$scope.userContext.staffChangeId) return
+
+						return psApiService.psApiCall('U_CDOL_STAFF_CHANGES', 'DELETE', {}, $scope.userContext.staffChangeId).catch(error => {
+							error.deleteStage = 'recordDelete'
+							return $q.reject(error)
+						})
+					})
+					.then(() => {
+						$scope.toListRedirect(form)
+					})
+					.catch(error => {
+						const ticketToRestore = originalTicket || (error && error.originalTicket)
+						const rollbackPromises = []
+						if (createdExit) rollbackPromises.push(rollbackCreatedStaffChange(createdExit))
+						if ($scope.userContext.sendJitbit && ticketId && ticketToRestore) {
+							rollbackPromises.push(jitbitService.restoreJitbitTicket(ticketId, ticketToRestore))
 						}
+
+						return $q.all(rollbackPromises).then(
+							() => {
+								if (error && error.cleanupError) {
+									showJitbitSupportError('Manual Cleanup Needed', 'The deletion workflow failed and its generated Exiting Staff artifacts may require manual cleanup.', error)
+								} else {
+									showDeleteWorkflowError(error)
+								}
+							},
+							rollbackError => {
+								showJitbitSupportError('Manual Cleanup Needed', 'The deletion workflow failed and could not fully restore the original state.', { error: error, rollbackError: rollbackError })
+							}
+						)
 					})
 					.finally(closeLoading)
 			}

@@ -96,6 +96,13 @@ define(function (require) {
 			}
 
 			const formatBodyForUpdate = body => (body || '').replace(/\r\n|\n|\r/g, '<br>')
+			const removeDeletedSubjectPrefix = subject => (subject || '').replace(/^(?:DELETED:\s*)+/i, '')
+			const getTicketValue = (ticket, fieldNames) => {
+				for (let index = 0; index < fieldNames.length; index++) {
+					const value = ticket && ticket[fieldNames[index]]
+					if (value !== undefined && value !== null) return value
+				}
+			}
 
 			const buildSyncPayload = (ticketId, formPayload, dueDate, ticket) => {
 				const submissionLine = extractSubmissionLine(ticket.Body) || getSubmissionLine(formPayload)
@@ -170,6 +177,35 @@ define(function (require) {
 					}, res => {
 						return $q.reject(createJitbitError(options.errorStage || 'ticketUpdate', res))
 					})
+				},
+				// Keep deleted tickets open, but make their state and urgency unmistakable to the technical team.
+				markJitbitTicketDeleted: function (ticketId, formPayload, dueDate) {
+					const service = this
+					return service.getJitbitTicket(ticketId, { errorStage: 'ticketFetch' }).then(ticket => {
+						const updatePayload = buildSyncPayload(ticketId, formPayload, dueDate, ticket)
+						updatePayload.subject = `DELETED: ${removeDeletedSubjectPrefix(updatePayload.subject)}`
+						updatePayload.priority = 1
+
+						return service.updateJitbitTicket(updatePayload, { errorStage: 'ticketDeleteUpdate' }).then(
+							() => ticket,
+							error => {
+								error.originalTicket = ticket
+								return $q.reject(error)
+							}
+						)
+					})
+				},
+				// A failed PowerSchool delete restores the exact ticket content and priority fetched before the workflow began.
+				restoreJitbitTicket: function (ticketId, ticket) {
+					const restorePayload = {
+						id: ticketId,
+						subject: getTicketValue(ticket, ['Subject', 'subject']),
+						body: getTicketValue(ticket, ['Body', 'body'])
+					}
+					const priority = getTicketValue(ticket, ['Priority', 'priority', 'PriorityID', 'PriorityId', 'priorityId'])
+					if (priority !== undefined) restorePayload.priority = priority
+
+					return this.updateJitbitTicket(restorePayload, { errorStage: 'ticketRestore' })
 				},
 				// suppressNotification prevents deletion cleanup from emailing the requester.
 				closeJitbitTicketSilently: function (ticketId, options = {}) {
