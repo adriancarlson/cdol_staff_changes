@@ -1,4 +1,4 @@
-<div id="sub-staff-grid" data-pss-grid-widget data-data="staffList.subStaff" data-filtered-data="filteredSubStaffList"
+<div id="sub-staff-grid" data-ng-if="!showSchoolColumns || schoolMapReady.subStaff" data-pss-grid-widget data-data="staffList.subStaff" data-filtered-data="$parent.filteredSubStaffList"
     data-client-side-pagination="false">
     <export-button data-ng-if="filteredSubStaffList.length > 0"></export-button>
     <!-- Adding before the table so it will put this filter at the top of the list in the drop down -->
@@ -18,8 +18,8 @@
             <tr>
                 <th></th>
                 <th data-pss-sort-fields="last_name" class="nowrap">{{listHeaders[0]}}</th>
-				<th data-ng-if="showSchoolColumns" data-pss-sort-fields="school_list_display|multiselect-dropdown"
-					data-filter-info="schoolMap">{{listHeaders[1]}}
+				<th data-ng-if="showSchoolColumns" data-pss-sort-fields="schoolid|multiselect-dropdown"
+					data-filter-info="schoolMaps.subStaff">{{listHeaders[1]}}
                 </th>
                 <th data-pss-sort-fields="sub_type|multiselect" data-filter-info="subTypeMap" class="fit-column">
                     {{listHeaders[2]}}</th>

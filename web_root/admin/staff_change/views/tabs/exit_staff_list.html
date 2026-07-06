@@ -1,5 +1,5 @@
-<div id="exit-staff-grid" data-pss-grid-widget data-data="staffList.exitingStaff"
-    data-filtered-data="filteredExitingStaffList" data-client-side-pagination="false">
+<div id="exit-staff-grid" data-ng-if="!showSchoolColumns || schoolMapReady.exitingStaff" data-pss-grid-widget data-data="staffList.exitingStaff"
+    data-filtered-data="$parent.filteredExitingStaffList" data-client-side-pagination="false">
     <export-button data-ng-if="filteredExitingStaffList.length > 0"></export-button>
     <!-- Adding before the table so it will put this filter at the top of the list in the drop down -->
     <label data-pss-filter-field="canva_filter_complete|multiselect" data-filter-info="booleanMap">Canva Transferred?</label>
@@ -16,8 +16,8 @@
             <tr>
                 <th></th>
                 <th data-pss-sort-fields="old_name_placeholder" class="nowrap">{{listHeaders[0]}}</th>
-				<th data-ng-if="showSchoolColumns" data-pss-sort-fields="school_list_display|multiselect-dropdown"
-					data-filter-info="schoolMap">{{listHeaders[1]}}
+				<th data-ng-if="showSchoolColumns" data-pss-sort-fields="schoolid|multiselect-dropdown"
+					data-filter-info="schoolMaps.exitingStaff">{{listHeaders[1]}}
                 </th>
                 <th data-pss-sort-fields="submittedstaff" class="fit-column">{{listHeaders[2]}}</th>
                 <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending"

@@ -27,6 +27,16 @@ define(function (require) {
 			$scope.changeType = ''
 			$scope.booleanMap = { Yes: true, No: false }
 			$scope.titleMap = {}
+			$scope.schoolMaps = {
+				newStaff: {},
+				transferringStaff: {},
+				jobChange: {},
+				subStaff: {},
+				nameChange: {},
+				exitingStaff: {},
+				allStaff: {}
+			}
+			$scope.schoolMapReady = {}
 			// Start this stable lookup immediately; loadData includes the promise in $q.all before preparing rows.
 			const loadTitleMap = jsonDataService
 				.getData('titleData')
@@ -73,30 +83,31 @@ define(function (require) {
 				Exiting: 'exitingStaff'
 			}
 
-			$scope.schoolMap = {}
-			// Grid filter maps must keep the same object reference after the grid initializes, so update it in place.
+			// Each grid gets only the schools represented by records in its own tab.
 			const rebuildSchoolMap = (changeType, staffRecords) => {
-				const schoolNames = {}
+				const schools = {}
 				const records = Array.isArray(staffRecords) ? staffRecords : []
-				const addSchoolName = schoolName => {
+				const addSchool = (schoolName, schoolCode) => {
 					const normalizedName = typeof schoolName === 'string' ? schoolName.trim() : ''
-					if (normalizedName) schoolNames[normalizedName] = true
+					const normalizedCode = schoolCode == null ? '' : String(schoolCode).trim()
+					if (normalizedName && normalizedCode) schools[normalizedName] = normalizedCode
 				}
 
 				records.forEach(record => {
-					addSchoolName(record.school_list_display)
-					if (changeType === 'transferringStaff' && record.previous_school_list_display) {
-						addSchoolName(record.previous_school_list_display)
+					addSchool(record.schname, record.schoolid)
+					if (changeType === 'transferringStaff') {
+						addSchool(record.prev_school_name, record.prev_school_number)
 					}
 				})
 
-				// Preserve the object reference used by PowerSchool's grid while replacing its available values.
-				Object.keys($scope.schoolMap).forEach(schoolName => delete $scope.schoolMap[schoolName])
-				Object.keys(schoolNames)
+				const schoolMap = $scope.schoolMaps[changeType]
+				Object.keys(schoolMap).forEach(schoolName => delete schoolMap[schoolName])
+				Object.keys(schools)
 					.sort((leftName, rightName) => leftName.localeCompare(rightName))
 					.forEach(schoolName => {
-						$scope.schoolMap[schoolName] = schoolName
+						schoolMap[schoolName] = schools[schoolName]
 					})
+				$scope.schoolMapReady[changeType] = true
 			}
 			$scope.subTypeMap = {
 				FSTS: 'FSTS',
@@ -501,6 +512,7 @@ define(function (require) {
 			$scope.reloadData = () => {
 				$scope.staffChangeCounts = []
 				$scope.staffList = {}
+				$scope.schoolMapReady = {}
 				$scope.selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context')
 				$scope.loadData($scope.selectedTab)
 			}

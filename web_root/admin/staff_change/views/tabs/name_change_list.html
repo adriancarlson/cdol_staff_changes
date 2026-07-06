@@ -1,5 +1,5 @@
-<div id="name-change-grid" data-pss-grid-widget data-data="staffList.nameChange"
-    data-filtered-data="filteredNameChangeList" data-client-side-pagination="false">
+<div id="name-change-grid" data-ng-if="!showSchoolColumns || schoolMapReady.nameChange" data-pss-grid-widget data-data="staffList.nameChange"
+    data-filtered-data="$parent.filteredNameChangeList" data-client-side-pagination="false">
     <export-button data-ng-if="filteredNameChangeList.length > 0"></export-button>
     <!-- Adding before the table so it will put this filter at the top of the list in the drop down -->
     <label data-pss-filter-field="canva_filter_complete|multiselect" data-filter-info="booleanMap">Canva Transferred?</label>
@@ -19,8 +19,8 @@
                 <th></th>
                 <th data-pss-sort-fields="last_name" class="nowrap">{{listHeaders[0]}}</th>
                 <th data-pss-sort-fields="old_name_placeholder" class="nowrap">{{listHeaders[1]}}</th>
-				<th data-ng-if="showSchoolColumns" data-pss-sort-fields="school_list_display|multiselect-dropdown"
-					data-filter-info="schoolMap">{{listHeaders[2]}}
+				<th data-ng-if="showSchoolColumns" data-pss-sort-fields="schoolid|multiselect-dropdown"
+					data-filter-info="schoolMaps.nameChange">{{listHeaders[2]}}
                 </th>
                 <th data-pss-sort-fields="submittedstaff" class="fit-column">{{listHeaders[3]}}</th>
                 <th data-pss-sort-fields="submission_date|date, sort_time" data-primary-sort="descending"
