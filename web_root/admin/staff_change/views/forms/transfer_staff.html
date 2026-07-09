@@ -50,6 +50,7 @@
                         !submitPayload.transferringStaff.first_name.startsWith('Msgr.') &&
                         !submitPayload.transferringStaff.first_name.startsWith('Sr.') &&
                         !submitPayload.transferringStaff.first_name.startsWith('Br.')))"
+                                data-ng-change="syncGeneratedDeadlineForTitle('transferringStaff')"
                                 data-ng-options="title.code as title.code for title in titleData">
                                 <option selected></option>
                             </select>
@@ -151,7 +152,7 @@
                             <input id="transferringStaff-deadline" title="Requested Account Transfer Date" type="text"
                                 data-pss-date-widget data-minDate="{{getDeadlineMinDate('transferringStaff')}}"
                                 data-ng-model="submitPayload.transferringStaff.deadline"
-                                data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.transferringStaff.deadline = userContext.tempDeadline : submitPayload.transferringStaff.deadline"
+                                data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.transferringStaff.deadline = getGeneratedDeadline('transferringStaff') : submitPayload.transferringStaff.deadline"
                                 data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
                             <button type="button"
                                 class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
@@ -169,9 +170,9 @@
                     <div class="col-12 col-md mt-3 mt-md-0">
                         <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
                             class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
-                                data-ng-if="submitPayload.transferringStaff.deadline == userContext.lastDay">All
+                                data-ng-if="isGeneratedSchoolYearDeadline('transferringStaff')">All
                                 Transferring-In
-                                Staff that will start next school year cannot be transferred until June 30<sup>th</sup>
+                                Staff that will start next school year cannot be transferred until {{getGeneratedSchoolYearDeadlineLabel('transferringStaff')}}<sup>th</sup>
                                 as {{submitPayload.transferringStaff.gender | possessivePronoun}} previous school will
                                 still need access to {{submitPayload.transferringStaff.gender | possessivePronoun}}
                                 account.<br></span>
@@ -298,6 +299,7 @@
                                                 class="form-select form-select-sm staff-title-select"
                                                 aria-label="Replacement staff title"
                                                 data-ng-model="submitPayload.transferringStaff.replace_title"
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
                                                 data-ng-options="title.code as title.code for title in titleData">
                                                 <option selected></option>
                                             </select>

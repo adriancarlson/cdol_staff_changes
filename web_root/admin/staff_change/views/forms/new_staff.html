@@ -64,6 +64,7 @@
                             data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.newStaff.ps_created)">
                             <select id="new-staff-title" class="form-select form-select-sm staff-title-select"
                                 aria-label="New staff title" data-ng-model="submitPayload.newStaff.title"
+                                data-ng-change="syncGeneratedDeadlineForTitle('newStaff')"
                                 data-ng-options="title.code as title.code for title in titleData">
                                 <option selected></option>
                             </select>
@@ -234,7 +235,7 @@
                             <input id="newStaff-deadline" title="Requested Account Creation Date" type="text"
                                 data-pss-date-widget data-minDate="{{getDeadlineMinDate('newStaff')}}"
                                 data-ng-model="submitPayload.newStaff.deadline"
-                                data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.newStaff.deadline = userContext.tempDeadline : submitPayload.newStaff.deadline"
+                                data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.newStaff.deadline = getGeneratedDeadline('newStaff') : submitPayload.newStaff.deadline"
                                 data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
                             <button type="button"
                                 class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
@@ -251,8 +252,8 @@
                     <div class="col-12 col-md-7 col-xl-4 mt-3 mt-md-0">
                         <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
                             class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
-                                data-ng-if="submitPayload.newStaff.deadline == userContext.lastDay">We recommend June
-                                30<sup>th</sup> for all new staff that will start next school year.<br></span> Please
+                                data-ng-if="isGeneratedSchoolYearDeadline('newStaff')">We recommend
+                                {{getGeneratedSchoolYearDeadlineLabel('newStaff')}}<sup>th</sup> for all new staff that will start next school year.<br></span> Please
                             allow <strong><em>at least</em></strong> 3 business days for account creation.
                         </div>
                         <div data-ng-if="userContext.invalidDate" class="alert alert-danger" role="alert"><i
@@ -415,6 +416,7 @@
                                                 class="form-select form-select-sm staff-title-select"
                                                 aria-label="Replacement staff title"
                                                 data-ng-model="submitPayload.newStaff.replace_title"
+                                                data-ng-change="updateAdditionalPayload(userContext.pageContext)"
                                                 data-ng-options="title.code as title.code for title in titleData">
                                                 <option selected></option>
                                             </select>

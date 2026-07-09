@@ -161,6 +161,8 @@ define(function (require) {
 			const curYear = new Date().getFullYear()
 			const firstDay = new Date(`01/01/${curYear}`)
 			const lastDay = new Date(`06/30/${curYear}`)
+			const priestDeadline = new Date(`06/15/${curYear}`)
+			const priestDeadlineTitles = ['Fr.', 'Msgr.']
 			const today = new Date()
 			today.setHours(0, 0, 0, 0)
 
@@ -253,12 +255,47 @@ define(function (require) {
 			$scope.userContext.minDate = formatDate(addBusinessDays(today, 3))
 			$scope.userContext.today = formatDate(today)
 			$scope.userContext.lastDay = formatDate(lastDay)
+			$scope.userContext.priestDeadline = formatDate(priestDeadline)
 			$scope.userContext.emergencyRequests = {}
 
 			if (today >= firstDay && today < lastDay) {
 				$scope.userContext.tempDeadline = $scope.userContext.lastDay
 			} else {
 				$scope.userContext.tempDeadline = $scope.userContext.minDate
+			}
+
+			const isPriestDeadlineTitle = title => priestDeadlineTitles.includes(title)
+			const getGeneratedDeadlineForTitle = title => {
+				if ($scope.userContext.tempDeadline !== $scope.userContext.lastDay) return $scope.userContext.tempDeadline
+				return isPriestDeadlineTitle(title) ? $scope.userContext.priestDeadline : $scope.userContext.lastDay
+			}
+			const isGeneratedDeadlineValue = deadline => {
+				return deadline === $scope.userContext.lastDay || deadline === $scope.userContext.priestDeadline
+			}
+
+			$scope.getGeneratedDeadline = pageContext => {
+				const formPayload = $scope.submitPayload[pageContext] || {}
+				return getGeneratedDeadlineForTitle(formPayload.title)
+			}
+
+			$scope.syncGeneratedDeadlineForTitle = pageContext => {
+				const formPayload = $scope.submitPayload[pageContext]
+				if ($scope.userContext.pageStatus !== 'Submit' || !formPayload) return
+				if (formPayload.deadline && !isGeneratedDeadlineValue(formPayload.deadline)) return
+
+				formPayload.deadline = getGeneratedDeadlineForTitle(formPayload.title)
+				$scope.checkIfBusinessDay(pageContext)
+			}
+
+			$scope.isGeneratedSchoolYearDeadline = pageContext => {
+				const formPayload = $scope.submitPayload[pageContext]
+				if ($scope.userContext.tempDeadline !== $scope.userContext.lastDay || !formPayload) return false
+				return formPayload.deadline === getGeneratedDeadlineForTitle(formPayload.title)
+			}
+
+			$scope.getGeneratedSchoolYearDeadlineLabel = pageContext => {
+				const formPayload = $scope.submitPayload[pageContext] || {}
+				return isPriestDeadlineTitle(formPayload.title) ? 'June 15' : 'June 30'
 			}
 
 			// Emergency overrides are tracked per form so switching between form directives does not mix their reasons.
@@ -1124,6 +1161,7 @@ define(function (require) {
 								$scope.submitPayload[pageContext].old_name_placeholder = formatService.formatStaffFullName($scope.submitPayload[pageContext])
 							}
 							removeLookupOnlyFields($scope.submitPayload[pageContext])
+							$scope.syncGeneratedDeadlineForTitle(pageContext)
 						}
 						// Dynamically handle both replace_ and canva_ prefixes
 						if (field === 'replace_dcid' || field === 'canva_dcid') {
@@ -1228,13 +1266,13 @@ define(function (require) {
 			}
 
 			// Replacement answers can create a second related change; start it with submission metadata shared by all records.
-			const createAdditionalPayload = () => {
-				return $scope.userContext.pageStatus === 'Submit' ? { deadline: $scope.userContext.tempDeadline } : {}
+			const createAdditionalPayload = title => {
+				return $scope.userContext.pageStatus === 'Submit' ? { deadline: getGeneratedDeadlineForTitle(title) } : {}
 			}
 
 			$scope.updateAdditionalPayload = pageContext => {
 				if ($scope.submitPayload[pageContext].leaving_radio == 1) {
-					$scope.submitPayload.exitingStaff = createAdditionalPayload()
+					$scope.submitPayload.exitingStaff = createAdditionalPayload($scope.submitPayload[pageContext].replace_title)
 					$scope.submitPayload.exitingStaff.users_dcid = $scope.submitPayload[pageContext].replace_dcid
 					$scope.submitPayload.exitingStaff.title = $scope.submitPayload[pageContext].replace_title
 					$scope.submitPayload.exitingStaff.first_name = $scope.submitPayload[pageContext].replace_first_name
@@ -1251,7 +1289,7 @@ define(function (require) {
 					delete $scope.submitPayload.exitingStaff
 				}
 				if ($scope.submitPayload[pageContext].position_radio == 1) {
-					$scope.submitPayload.jobChange = createAdditionalPayload()
+					$scope.submitPayload.jobChange = createAdditionalPayload($scope.submitPayload[pageContext].replace_title)
 					$scope.submitPayload.jobChange.users_dcid = $scope.submitPayload[pageContext].replace_dcid
 					$scope.submitPayload.jobChange.title = $scope.submitPayload[pageContext].replace_title
 					$scope.submitPayload.jobChange.first_name = $scope.submitPayload[pageContext].replace_first_name

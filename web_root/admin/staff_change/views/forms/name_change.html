@@ -53,6 +53,7 @@
                             data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.nameChange.ps_created)">
                             <select id="name-change-title" class="form-select form-select-sm staff-title-select"
                                 aria-label="New staff title" data-ng-model="submitPayload.nameChange.title"
+                                data-ng-change="syncGeneratedDeadlineForTitle('nameChange')"
                                 data-ng-required="true"
                                 data-ng-options="title.code as title.code for title in titleData">
                                 <option selected></option>
@@ -85,7 +86,7 @@
                             <input id="nameChange-deadline" title="Requested Name Change Date" type="text"
                                 data-pss-date-widget data-minDate="{{getDeadlineMinDate('nameChange')}}"
                                 data-ng-model="submitPayload.nameChange.deadline"
-                                data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.nameChange.deadline = userContext.tempDeadline : submitPayload.nameChange.deadline"
+                                data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.nameChange.deadline = getGeneratedDeadline('nameChange') : submitPayload.nameChange.deadline"
                                 data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
                             <button type="button"
                                 class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"

@@ -51,6 +51,7 @@
                             data-ng-if="!(userContext.pageStatus == 'Edit' && submitPayload.jobChange.ps_created)">
                             <select id="job-change-title" class="form-select form-select-sm staff-title-select"
                                 aria-label="Job change staff title" data-ng-model="submitPayload.jobChange.title"
+                                data-ng-change="syncGeneratedDeadlineForTitle('jobChange')"
                                 data-ng-options="title.code as title.code for title in titleData">
                                 <option selected></option>
                             </select>
@@ -119,7 +120,7 @@
                             <input id="jobChange-deadline" title="Requested Position or Job Change Date" type="text"
                                 data-pss-date-widget data-minDate="{{getDeadlineMinDate('jobChange')}}"
                                 data-ng-model="submitPayload.jobChange.deadline"
-                                data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.jobChange.deadline = userContext.tempDeadline : submitPayload.jobChange.deadline"
+                                data-ng-init="userContext.pageStatus === 'Submit' ? submitPayload.jobChange.deadline = getGeneratedDeadline('jobChange') : submitPayload.jobChange.deadline"
                                 data-ng-change="checkIfBusinessDay(userContext.pageContext)" data-ng-required="true">
                             <button type="button"
                                 class="btn btn-outline-danger ms-1 py-0 px-1 text-nowrap emergency-override-button"
@@ -136,8 +137,8 @@
                     <div class="col-12 col-md mt-3 mt-md-0">
                         <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
                             class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
-                                data-ng-if="submitPayload.jobChange.deadline == userContext.lastDay">We recommend June
-                                30<sup>th</sup> for all position/job changes that will start next school
+                                data-ng-if="isGeneratedSchoolYearDeadline('jobChange')">We recommend
+                                {{getGeneratedSchoolYearDeadlineLabel('jobChange')}}<sup>th</sup> for all position/job changes that will start next school
                                 year.<br></span> Please
                             allow <strong><em>at least</em></strong> 3 business days for position/job Changes.
                         </div>
