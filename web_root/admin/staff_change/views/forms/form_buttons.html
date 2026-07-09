@@ -1,3 +1,29 @@
+<style>
+    #show-delete-confirmation-button {
+        align-items: center !important;
+        border-radius: 4px !important;
+        box-sizing: border-box !important;
+        display: inline-flex !important;
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        height: 34px !important;
+        justify-content: center !important;
+        line-height: normal !important;
+        padding: 8px 7px 8px 8px !important;
+        vertical-align: middle !important;
+    }
+
+    #show-delete-confirmation-button .bi {
+        margin-left: -2px !important;
+        margin-right: 5px !important;
+    }
+
+    #show-delete-confirmation-button::before,
+    #show-delete-confirmation-button::after {
+        content: none !important;
+        display: none !important;
+    }
+</style>
 <div id='form-button-card-footer' class="card-footer">
     <div class="row" data-ng-if="userContext.pageStatus =='Submit'">
         <div class="col-auto me-auto">
@@ -55,9 +81,9 @@
             <span class="req-notation" data-ng-show="staffChangeForm.$invalid && staffChangeForm.$dirty">Please
                 fill all required fields prior to submitting.</span>
             <button id="show-delete-confirmation-button"
-                class="btn btn-outline-danger ms-2 me-4 p-2 text-nowrap" type="button"
-                data-ng-click="openDeleteConfirmation(userContext.pageContext)">Delete
-                Submission</button>
+                class="btn btn-outline-danger ms-2 me-4 text-nowrap emergency-override-button" type="button"
+                data-ng-click="openDeleteConfirmation(userContext.pageContext)"><i
+                    class="bi bi-exclamation-triangle-fill"></i>Delete Submission</button>
             <button id="submit-update-button" class="ms-2 p-2" type="button"
                 data-ng-disabled="staffChangeForm.$invalid || userContext.invalidDate"
                 data-ng-click="updateStaffChange(userContext.pageContext)">Submit
@@ -80,7 +106,8 @@
         'text-warning': staffChangeDupe.change_type  === 'nameChange',
         'text-secondary': staffChangeDupe.change_type  === 'exitingStaff'
     }"><strong>{{ staffChangeDupe.change_type | changeTypeFilter }}</strong></span></em> request for
-                    <strong>{{(staffChangeDupe | staffFullName) || staffChangeDupe.old_name_placeholder}}</strong> on {{staffChangeDupe.submission_date|date}}
+                    <strong>{{(staffChangeDupe | staffFullName) || staffChangeDupe.old_name_placeholder}}</strong> on
+                    {{staffChangeDupe.submission_date|date}}
                     {{staffChangeDupe.submission_time}}.<br>
                     <span data-ng-if="!submitPayload[userContext.pageContext].replace_first_name">To review this
                         previous submission click the <strong>Go to this Submission</strong> button. <br></span>
@@ -119,8 +146,10 @@
                     <em>{{staffDupe.status}}</em> at <strong> {{staffDupe.prev_school_name}}</strong><br>
                     <span data-ng-if="userContext.pageContext === 'newStaff'">If this is the same person, click the
                         <strong>Convert to Transferring-In Staff Submission</strong> button below.</span>
-                    <span data-ng-if="userContext.pageStatus == 'Submit' && userContext.pageContext === 'subStaff' && submitPayload.subStaff.sub_type === 'LTS'">If
-                        this is the same person, click the <strong>Use Existing Staff Record</strong> button below.</span><br>
+                    <span
+                        data-ng-if="userContext.pageStatus == 'Submit' && userContext.pageContext === 'subStaff' && submitPayload.subStaff.sub_type === 'LTS'">If
+                        this is the same person, click the <strong>Use Existing Staff Record</strong> button
+                        below.</span><br>
                     If this is <strong><u>NOT</u></strong> same person, click the <strong>Proceed</strong> button below
                     to continue with your submission.
                 </div>
