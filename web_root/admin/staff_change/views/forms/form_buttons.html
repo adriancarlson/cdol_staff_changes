@@ -58,7 +58,7 @@
         <div class="col-auto" id="submit-button-group"
             data-ng-if="(submitPayload[userContext.pageContext].leaving_radio != 1 && submitPayload[userContext.pageContext].position_radio != 1)">
             <span class="req-notation me-2"
-                data-ng-if="(staffChangeForm.$invalid && staffChangeForm.$dirty) || !submitPayload[userContext.formType].users_dcid">Please
+                data-ng-if="(staffChangeForm.$invalid || userContext.invalidDate || userContext.subTypeHover == 'STS') && ((staffChangeForm.$invalid && staffChangeForm.$dirty) || !submitPayload[userContext.formType].users_dcid)">Please
                 fill all required fields prior to submitting.</span>
             <button type="button" id="show-submit-confirmation-button" class="m-0 p-2"
                 data-ng-disabled="staffChangeForm.$invalid || userContext.invalidDate || userContext.subTypeHover == 'STS'"

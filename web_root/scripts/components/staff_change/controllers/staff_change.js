@@ -203,6 +203,13 @@ define(function (require) {
 				const year = date.getFullYear()
 				return `${month}/${day}/${year}`
 			}
+			const formatTime = date => {
+				let hours = date.getHours()
+				const minutes = ('0' + date.getMinutes()).slice(-2)
+				const period = hours >= 12 ? 'PM' : 'AM'
+				hours = hours % 12 || 12
+				return `${hours}:${minutes} ${period}`
+			}
 
 			const parseDate = dateString => {
 				if (!dateString) return null
@@ -477,6 +484,14 @@ define(function (require) {
 					]
 				})
 
+				const toggleDeleteSubmissionButton = () => {
+					const hasReason = Boolean(($j('#deleteSubmissionReason').val() || '').trim())
+					$j('#deleteSubmissionButton').prop('disabled', !hasReason)
+					$j('#deleteSubmissionReasonError').toggleClass('hide', hasReason)
+				}
+
+				$j('#deleteSubmissionButton').prop('disabled', true)
+				$j('#deleteSubmissionReason').on('input keyup change', toggleDeleteSubmissionButton)
 				$j('#deleteSubmissionReason').trigger('focus')
 			}
 
@@ -1696,11 +1711,17 @@ define(function (require) {
 			const requiresAutomaticExit = (changeType, formPayload) => {
 				return (changeType === 'newStaff' || changeType === 'transferringStaff') && hasCompletedAccountCheck(formPayload)
 			}
-			const getDeletionAuditNote = reason => {
+			const getDeletionAuditNote = (reason, deletionSubmittedDate, deletionSubmittedTime) => {
 				const schoolLabel = $scope.userContext.curUserSchoolAbbr || $scope.userContext.curSchoolName
-				return `Deletion requested by ${$scope.userContext.curUserName} (${schoolLabel}) on ${$scope.userContext.curDate} at ${$scope.userContext.curTime}: ${reason}`
+				return `Deletion requested by ${$scope.userContext.curUserName} (${schoolLabel}) on ${deletionSubmittedDate} at ${deletionSubmittedTime}: ${reason}`
 			}
-			const buildAutomaticExitPayload = (sourcePayload, deletionAuditNote) => {
+			const getDeletionDueDate = deletionSubmittedDate => formatJitbitDueDate(deletionSubmittedDate)
+			const getDeletionTicketBody = (deletionAuditNote, exitTicketId) => {
+				const bodySegments = [deletionAuditNote]
+				if (exitTicketId) bodySegments.push(`Exiting Staff Jitbit Ticket: ${jitbitService.getJitbitTicketUrl(exitTicketId)}`)
+				return bodySegments.join('\n\n')
+			}
+			const buildAutomaticExitPayload = (sourcePayload, deletionAuditNote, deletionSubmittedDate, deletionSubmittedTime) => {
 				const exitPayload = {}
 				const copyFields = [
 					'schoolid',
@@ -1722,15 +1743,15 @@ define(function (require) {
 
 				exitPayload.users_dcid = exitPayload.users_dcid || '-1'
 				exitPayload.old_name_placeholder = formatService.formatStaffFullName(sourcePayload, { fallbackField: 'old_name_placeholder' })
-				exitPayload.deadline = $scope.userContext.today
+				exitPayload.deadline = deletionSubmittedDate
 				exitPayload.canva_transfer = '0'
 				exitPayload.ipad_needed = sourcePayload.ipad_needed == 1 ? '1' : '0'
 				exitPayload.additional_schoolid = sourcePayload.additional_schoolid ? sourcePayload.additional_schoolid : '0'
 				exitPayload.notes = appendNote(sourcePayload.notes, deletionAuditNote)
 				exitPayload.change_type = 'exitingStaff'
 				exitPayload.calendar_year = new Date().getFullYear().toString()
-				exitPayload.submission_date = $scope.userContext.curDate
-				exitPayload.submission_time = $scope.userContext.curTime
+				exitPayload.submission_date = deletionSubmittedDate
+				exitPayload.submission_time = deletionSubmittedTime
 				exitPayload.who_submitted = $scope.userContext.curUserDcid
 				return exitPayload
 			}
@@ -1748,12 +1769,15 @@ define(function (require) {
 				psAlert({ title: 'Deletion Not Completed', message: message })
 			}
 
-			// Mark Jitbit first, create any required offboarding record, and delete the original record only after both succeed.
+			// Create any required offboarding record, mark the original Jitbit ticket with that link, and delete the original record last.
 			$scope.deleteStaffChange = (form, reason) => {
 				loadingDialog()
 				const livePayload = $scope.submitPayload[form] || {}
 				const sourcePayload = copyPayload($scope.originalStaffChangePayloads[form] || livePayload)
-				const deletionAuditNote = getDeletionAuditNote(reason)
+				const deletionSubmittedAt = new Date()
+				const deletionSubmittedDate = formatDate(deletionSubmittedAt)
+				const deletionSubmittedTime = formatTime(deletionSubmittedAt)
+				const deletionAuditNote = getDeletionAuditNote(reason, deletionSubmittedDate, deletionSubmittedTime)
 				const deletionTicketPayload = copyPayload(sourcePayload)
 				const ticketId = sourcePayload.ticket_id
 				const shouldCreateExit = requiresAutomaticExit(form, livePayload)
@@ -1761,20 +1785,14 @@ define(function (require) {
 				let createdExit
 
 				deletionTicketPayload.notes = appendNote(sourcePayload.notes, deletionAuditNote)
+				deletionTicketPayload.deadline = deletionSubmittedDate
 
-				const markTicketDeleted = $scope.userContext.sendJitbit && ticketId
-					? jitbitService
-							.markJitbitTicketDeleted(ticketId, buildJitbitPayload(deletionTicketPayload), formatJitbitDueDate(sourcePayload.deadline))
-							.then(ticket => {
-								originalTicket = ticket
-							})
-					: $q.when()
-
-				return markTicketDeleted
+				return $q
+					.when()
 					.then(() => {
 						if (!shouldCreateExit) return
 
-						const exitPayload = buildAutomaticExitPayload(sourcePayload, deletionAuditNote)
+						const exitPayload = buildAutomaticExitPayload(sourcePayload, deletionAuditNote, deletionSubmittedDate, deletionSubmittedTime)
 						return createStaffChangeRecord(exitPayload, { emergencyRequest: true })
 							.then(result => {
 								createdExit = result
@@ -1782,6 +1800,16 @@ define(function (require) {
 							.catch(error => {
 								error.deleteStage = 'automaticExitCreate'
 								return $q.reject(error)
+							})
+					})
+					.then(() => {
+						if (!$scope.userContext.sendJitbit || !ticketId) return
+
+						const deletionTicketBody = getDeletionTicketBody(deletionAuditNote, createdExit && createdExit.ticketId)
+						return jitbitService
+							.markJitbitTicketDeleted(ticketId, buildJitbitPayload(deletionTicketPayload), getDeletionDueDate(deletionSubmittedDate), { body: deletionTicketBody })
+							.then(ticket => {
+								originalTicket = ticket
 							})
 					})
 					.then(() => {
@@ -1793,7 +1821,7 @@ define(function (require) {
 						})
 					})
 					.then(() => {
-						$scope.toListRedirect(form)
+						$scope.toListRedirect(createdExit ? 'exitingStaff' : form)
 					})
 					.catch(error => {
 						const ticketToRestore = originalTicket || (error && error.originalTicket)

@@ -115,6 +115,7 @@ define(function (require) {
 					body: formatBodyForUpdate(ticketPayload.body)
 				}
 			}
+			const getJitbitTicketUrl = ticketId => `https://cdol.jitbit.com/Ticket/${ticketId}`
 
 			return {
 				buildTicketPayload: buildTicketPayload,
@@ -179,11 +180,12 @@ define(function (require) {
 					})
 				},
 				// Keep deleted tickets open, but make their state and urgency unmistakable to the technical team.
-				markJitbitTicketDeleted: function (ticketId, formPayload, dueDate) {
+				markJitbitTicketDeleted: function (ticketId, formPayload, dueDate, options = {}) {
 					const service = this
 					return service.getJitbitTicket(ticketId, { errorStage: 'ticketFetch' }).then(ticket => {
 						const updatePayload = buildSyncPayload(ticketId, formPayload, dueDate, ticket)
 						updatePayload.subject = `DELETED: ${removeDeletedSubjectPrefix(updatePayload.subject)}`
+						if (typeof options.body !== 'undefined') updatePayload.body = formatBodyForUpdate(options.body)
 						updatePayload.priority = 1
 
 						return service.updateJitbitTicket(updatePayload, { errorStage: 'ticketDeleteUpdate' }).then(
@@ -204,6 +206,8 @@ define(function (require) {
 					}
 					const priority = getTicketValue(ticket, ['Priority', 'priority', 'PriorityID', 'PriorityId', 'priorityId'])
 					if (priority !== undefined) restorePayload.priority = priority
+					const dueDate = getTicketValue(ticket, ['DueDate', 'dueDate', 'DueDateUtc', 'dueDateUtc'])
+					if (dueDate !== undefined) restorePayload.dueDate = dueDate
 
 					return this.updateJitbitTicket(restorePayload, { errorStage: 'ticketRestore' })
 				},
@@ -249,7 +253,8 @@ define(function (require) {
 					}).then(() => {
 						return service.setJitbitCustomField(ticketId, 59314, getStaffChangeName(formPayload), { errorStage: 'ticketUpdate' })
 					})
-				}
+				},
+				getJitbitTicketUrl: getJitbitTicketUrl
 			}
 		}
 	])
