@@ -77,7 +77,8 @@
                             data-ng-href="/admin/faculty/editpw.html?frn=005{{schoolStaffRecordData[0].ssdcid}}"
                             target="_blank">
                             Open Staff Record
-                            <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget staff-change-action-icon"
+                            <pds-icon name="external"
+                                class="style-scope x-scope pds-icon-0 pds-widget staff-change-action-icon"
                                 pds-widget="pds-widget"></pds-icon>
                         </a>
                     </div>
@@ -113,7 +114,8 @@
                         <div data-ng-if="userContext.pageStatus =='Submit' && !userContext.invalidDate"
                             class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
                                 data-ng-if="isGeneratedSchoolYearDeadline('exitingStaff')">We recommend
-                                {{getGeneratedSchoolYearDeadlineLabel('exitingStaff')}}<sup>th</sup> all staff not returning next school year.<br></span> Please
+                                {{getGeneratedSchoolYearDeadlineLabel('exitingStaff')}}<sup>th</sup> all staff not
+                                returning next school year.<br></span> Please
                             allow <strong><em>at least</em></strong> 3 business days for account deactivation.
                         </div>
                         <div data-ng-if="userContext.invalidDate" class="alert alert-danger" role="alert"><i
@@ -313,8 +315,7 @@
                                             {{submitPayload.exitingStaff.first_name}}
                                             {{submitPayload.exitingStaff.last_name}} have an assigned iPad? Will
                                             {{submitPayload.exitingStaff.gender | possessivePronoun}} Jamf user account
-                                            need
-                                            to be deleted?</label><br>
+                                            need to be deactivated?</label><br>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
                                                 name="exiting-staff-ipad-radio-group" id="exiting-staff-ipad-yes"

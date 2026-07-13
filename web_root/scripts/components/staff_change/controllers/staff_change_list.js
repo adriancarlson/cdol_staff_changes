@@ -512,7 +512,6 @@ define(function (require) {
 			$scope.reloadData = () => {
 				$scope.staffChangeCounts = []
 				$scope.staffList = {}
-				$scope.schoolMapReady = {}
 				$scope.selectedTab = document.querySelector('[aria-selected="true"]').getAttribute('data-context')
 				$scope.loadData($scope.selectedTab)
 			}

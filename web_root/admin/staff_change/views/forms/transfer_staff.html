@@ -92,7 +92,8 @@
                             data-ng-if="userContext.pageStatus =='Edit' && userContext.districtUser && schoolStaffRecordData[0].ssdcid"
                             data-ng-href="/admin/faculty/edit.html?frn=005{{schoolStaffRecordData[0].ssdcid}}"
                             target="_blank">Open Staff
-                            Record <pds-icon name="external" class="style-scope x-scope pds-icon-0 pds-widget staff-change-action-icon-sm"
+                            Record <pds-icon name="external"
+                                class="style-scope x-scope pds-icon-0 pds-widget staff-change-action-icon-sm"
                                 pds-widget="pds-widget"></pds-icon></a>
                     </div>
                     <div class="col-6 col-md-3">
@@ -172,7 +173,8 @@
                             class="alert alert-primary" role="alert"><i class="bi bi-chat-right-text-fill"></i> <span
                                 data-ng-if="isGeneratedSchoolYearDeadline('transferringStaff')">All
                                 Transferring-In
-                                Staff that will start next school year cannot be transferred until {{getGeneratedSchoolYearDeadlineLabel('transferringStaff')}}<sup>th</sup>
+                                Staff that will start next school year cannot be transferred until
+                                {{getGeneratedSchoolYearDeadlineLabel('transferringStaff')}}<sup>th</sup>
                                 as {{submitPayload.transferringStaff.gender | possessivePronoun}} previous school will
                                 still need access to {{submitPayload.transferringStaff.gender | possessivePronoun}}
                                 account.<br></span>
@@ -464,16 +466,15 @@
                                             class="form-label form-label-sm label-reset staff-change-req">Will
                                             {{submitPayload.transferringStaff.title}}
                                             {{submitPayload.transferringStaff.first_name}}
-                                            {{submitPayload.transferringStaff.last_name}} be assigned an iPad and need
-                                            a Jamf user account created?</label><br>
+                                            {{submitPayload.transferringStaff.last_name}} be assigned an iPad and
+                                            require a Jamf user account to be transferred or created?</label><br>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio"
                                                 name="transferring-staff-ipad-radio-group"
                                                 id="transferring-staff-ipad-yes"
                                                 data-ng-model="submitPayload.transferringStaff.ipad_needed" value="1"
                                                 data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.transferringStaff.ipad_needed"
-                                                data-ng-change="resetIpadCompletion('transferringStaff')"
-                                                tabindex="0">
+                                                data-ng-change="resetIpadCompletion('transferringStaff')" tabindex="0">
                                             <label class="form-check-label"
                                                 for="transferring-staff-ipad-yes">Yes</label>
                                         </div>
@@ -483,8 +484,7 @@
                                                 id="transferring-staff-ipad-no"
                                                 data-ng-model="submitPayload.transferringStaff.ipad_needed" value="0"
                                                 data-ng-required="userContext.pageStatus === 'Submit' && !submitPayload.transferringStaff.ipad_needed"
-                                                data-ng-change="resetIpadCompletion('transferringStaff')"
-                                                tabindex="0">
+                                                data-ng-change="resetIpadCompletion('transferringStaff')" tabindex="0">
                                             <label class="form-check-label" for="transferring-staff-ipad-no">No</label>
                                         </div>
                                     </div>
