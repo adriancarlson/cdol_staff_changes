@@ -584,7 +584,10 @@
                                         <div class="col-12 col-lg-5">
                                             <label for="sub-staff-ipad-yes"
                                                 class="form-label form-label-sm label-reset staff-change-req">Will
-                                                {{submitPayload.subStaff.title}} {{submitPayload.subStaff.first_name}}
+                                                <span data-ng-show="submitPayload.subStaff.users_dcid == -1 ||
+                                                    (submitPayload.subStaff.title !== 'Fr.' && submitPayload.subStaff.title !== 'Msgr.' && submitPayload.subStaff.title !== 'Sr.' && submitPayload.subStaff.title !== 'Br.')">
+                                                    {{submitPayload.subStaff.title}}</span>
+                                                {{submitPayload.subStaff.first_name}}
                                                 {{submitPayload.subStaff.last_name}} be assigned an iPad and need a Jamf
                                                 user account created?</label><br>
                                             <div class="form-check form-check-inline">

@@ -167,7 +167,10 @@
                                     <div class="col-12 col-lg-5">
                                         <label for="job-change-ipad-yes"
                                             class="form-label form-label-sm label-reset staff-change-req">Will
-                                            {{submitPayload.jobChange.title}} {{submitPayload.jobChange.first_name}}
+                                            <span data-ng-show="submitPayload.jobChange.users_dcid == -1 ||
+                                                (submitPayload.jobChange.title !== 'Fr.' && submitPayload.jobChange.title !== 'Msgr.' && submitPayload.jobChange.title !== 'Sr.' && submitPayload.jobChange.title !== 'Br.')">
+                                                {{submitPayload.jobChange.title}}</span>
+                                            {{submitPayload.jobChange.first_name}}
                                             {{submitPayload.jobChange.last_name}} keep or be assigned an
                                             iPad?</label><br>
                                         <div class="form-check form-check-inline">

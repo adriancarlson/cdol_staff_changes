@@ -188,7 +188,10 @@
                                     <div class="col-12">
                                         <label for="name-change-ipad-yes"
                                             class="form-label form-label-sm label-reset staff-change-req">Do you want
-                                            {{submitPayload.nameChange.title}} {{submitPayload.nameChange.first_name}}
+                                            <span data-ng-show="submitPayload.nameChange.users_dcid == -1 ||
+                                                (submitPayload.nameChange.title !== 'Fr.' && submitPayload.nameChange.title !== 'Msgr.' && submitPayload.nameChange.title !== 'Sr.' && submitPayload.nameChange.title !== 'Br.')">
+                                                {{submitPayload.nameChange.title}}</span>
+                                            {{submitPayload.nameChange.first_name}}
                                             {{submitPayload.nameChange.last_name}}'s Jamf user name changed for
                                             iPads?</label><br>
                                         <div class="form-check form-check-inline">

@@ -14,7 +14,7 @@
         <div class="card-body">
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3"
-                    data-ng-if="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && userContext.changeTypeConverted && !submitPayload.transferringStaff.users_dcid)">
+                    data-ng-show="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && userContext.changeTypeConverted && !submitPayload.transferringStaff.users_dcid)">
                     <div class="col-12 col-md-8 col-xl-6" data-ng-if="submitPayload.transferringStaff.users_dcid != -1">
                         <label for="transferring-staff-user"
                             class="form-label form-label-sm label-reset staff-change-req">Who is
@@ -476,7 +476,10 @@
                                     <div class="col-12 col-lg-5">
                                         <label for="transferring-staff-ipad-yes"
                                             class="form-label form-label-sm label-reset staff-change-req">Will
-                                            {{submitPayload.transferringStaff.title}}
+                                            <span
+                                                data-ng-show="submitPayload.transferringStaff.users_dcid == -1 ||
+                                                    (submitPayload.transferringStaff.title !== 'Fr.' && submitPayload.transferringStaff.title !== 'Msgr.' && submitPayload.transferringStaff.title !== 'Sr.' && submitPayload.transferringStaff.title !== 'Br.')">
+                                                {{submitPayload.transferringStaff.title}}</span>
                                             {{submitPayload.transferringStaff.first_name}}
                                             {{submitPayload.transferringStaff.last_name}} be assigned an iPad and
                                             require a Jamf user account to be transferred or created?</label><br>
