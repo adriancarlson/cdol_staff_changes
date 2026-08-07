@@ -42,7 +42,17 @@
     </div>
     [/if#distCheck]
     <div class="card">
-        <div class="card-header bg-indigo text-bg-indigo bg-gradient fs-6 fw-semibold">Substitute Staff:</div>
+        <div class="card-header bg-indigo text-bg-indigo bg-gradient fs-6 fw-semibold d-flex align-items-center justify-content-between">
+            <span>Substitute Staff:</span>
+            <button type="button"
+                class="btn btn-sm btn-link text-reset text-decoration-none opacity-75 border-0 py-0 px-1 ms-3"
+                data-ng-if="userContext.pageStatus == 'Edit' && userContext.districtUser && !userContext.showChangeTypeConverter"
+                data-ng-click="openEditChangeTypeConverter()" aria-expanded="false">
+                <i class="bi bi-arrow-left-right"></i>
+                Convert Change Type
+            </button>
+        </div>
+        <div data-ng-include="'/admin/staff_change/views/forms/change_type_converter.html'"></div>
         <div class="card-body">
             <div class="alert alert-warning" role="alert" data-ng-if="userContext.pageStatus =='Submit'"><i
                     class="bi bi-exclamation-triangle-fill"></i> Descriptions and distinctions of each <strong>Substutue

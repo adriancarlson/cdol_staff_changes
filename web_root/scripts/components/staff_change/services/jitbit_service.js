@@ -61,9 +61,15 @@ define(function (require) {
 				if (formPayload.change_type === 'nameChange' && formPayload.old_name_placeholder) {
 					bodySegments.push(`Previous Name: ${formPayload.old_name_placeholder}`)
 				}
-				if (formPayload.position) bodySegments.push(`Position: ${formPayload.position}`)
-				if (formPayload.previous_position) bodySegments.push(`Previous Position: ${formPayload.previous_position}`)
-				if (formPayload.new_position) bodySegments.push(`New Position: ${formPayload.new_position}`)
+				if (['newStaff', 'transferringStaff', 'subStaff'].includes(formPayload.change_type) && formPayload.position) {
+					bodySegments.push(`Position: ${formPayload.position}`)
+				}
+				if (formPayload.change_type === 'jobChange' && formPayload.previous_position) {
+					bodySegments.push(`Previous Position: ${formPayload.previous_position}`)
+				}
+				if (formPayload.change_type === 'jobChange' && formPayload.new_position) {
+					bodySegments.push(`New Position: ${formPayload.new_position}`)
+				}
 				bodySegments.push(`Due Date: ${formPayload.deadline}`)
 				if (typeof formPayload.ipad_needed !== 'undefined') bodySegments.push(`iPad Needed: ${formPayload.ipad_needed === '1' ? 'Yes' : 'No'}`)
 				if (typeof formPayload.license_microsoft !== 'undefined') bodySegments.push(`Microsoft License: ${formPayload.license_microsoft}`)

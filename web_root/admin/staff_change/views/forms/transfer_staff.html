@@ -1,9 +1,20 @@
 <div id="transferring-form-container" class="container-fluid">
     <div class="card">
-        <div class="card-header bg-primary text-bg-primary bg-gradient fs-6 fw-semibold">Transferring-In Staff:</div>
+        <div class="card-header bg-primary text-bg-primary bg-gradient fs-6 fw-semibold d-flex align-items-center justify-content-between">
+            <span>Transferring-In Staff:</span>
+            <button type="button"
+                class="btn btn-sm btn-link text-reset text-decoration-none opacity-75 border-0 py-0 px-1 ms-3"
+                data-ng-if="userContext.pageStatus == 'Edit' && userContext.districtUser && !userContext.showChangeTypeConverter"
+                data-ng-click="openEditChangeTypeConverter()" aria-expanded="false">
+                <i class="bi bi-arrow-left-right"></i>
+                Convert Change Type
+            </button>
+        </div>
+        <div data-ng-include="'/admin/staff_change/views/forms/change_type_converter.html'"></div>
         <div class="card-body">
             <form name="staffChangeForm" method="POST" novalidate>
-                <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">
+                <div class="row align-items-center mb-3"
+                    data-ng-if="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && userContext.changeTypeConverted && !submitPayload.transferringStaff.users_dcid)">
                     <div class="col-12 col-md-8 col-xl-6" data-ng-if="submitPayload.transferringStaff.users_dcid != -1">
                         <label for="transferring-staff-user"
                             class="form-label form-label-sm label-reset staff-change-req">Who is
@@ -18,7 +29,7 @@
                                 data-ng-model="submitPayload.transferringStaff.users_dcid" data-ng-required="true"
                                 data-ng-disabled="lookupLoading.primaryUsers" data-staff-select="primaryUserOptions"
                                 data-ng-options="user.identifier as user.optionLabel for user in primaryUserOptions"
-                                data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.transferringStaff.users_dcid, 'users_dcid', primaryUserOptions)">
+                                data-ng-change="updateScopeFromDropdown(userContext.pageContext, 'userData', submitPayload.transferringStaff.users_dcid, 'users_dcid', primaryUserOptions);checkTransferringSchoolForJobChange()">
                                 <option value=""></option>
                             </select>
                             <button type="button" class="button m-0 p-2 ps-1"
@@ -38,7 +49,7 @@
                     </div>
                 </div>
                 <div class="row align-items-center mb-3"
-                    data-ng-if="submitPayload.transferringStaff.users_dcid == -1 && userContext.pageStatus =='Submit'">
+                    data-ng-if="submitPayload.transferringStaff.users_dcid == -1 && (userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && userContext.changeTypeConverted))">
                     <div class="col-12 col-lg-10 col-xl-8">
                         <label for="transferring-staff-title"
                             class="form-label form-label-sm  label-reset staff-change-req">Transferring-In Staff
@@ -70,13 +81,14 @@
                                 data-ng-required="true">
                             <button type="button" class="staff-name-action button m-0 p-2 ps-1"
                                 title="Return to the existing staff selector"
-                                data-ng-if="userContext.pageStatus =='Submit'"
+                                data-ng-if="userContext.pageStatus =='Submit' || (userContext.pageStatus =='Edit' && userContext.changeTypeConverted)"
                                 data-ng-click="searchLookup('transferringStaff', 'users_dcid', 'transferring-staff-user')">Return
                                 to Staff Select</button>
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Edit'">
+                <div class="row align-items-center mb-3"
+                    data-ng-if="userContext.pageStatus =='Edit' && !(userContext.changeTypeConverted && !submitPayload.transferringStaff.users_dcid)">
                     <div class="col-12 col-md-6">
                         <label for="transferring-staff-name"
                             class="form-label form-label-sm  label-reset">Transferring-In Staff
@@ -202,7 +214,7 @@
                                 data-ng-model="submitPayload.transferringStaff.prev_school_number"
                                 data-ng-required="true" data-ng-disabled="lookupLoading.schools"
                                 data-ng-options="school.identifier as school.schoolname for school in schoolOptions"
-                                data-ng-change="updateScopeFromDropdown(userContext.pageContext,'schoolData',submitPayload.transferringStaff.prev_school_number, undefined, schoolOptions)">
+                                data-ng-change="updateScopeFromDropdown(userContext.pageContext,'schoolData',submitPayload.transferringStaff.prev_school_number, undefined, schoolOptions);checkTransferringSchoolForJobChange()">
                                 <option value=""></option>
                             </select>
                             <button type="button" class="button m-0 p-2 ps-1"

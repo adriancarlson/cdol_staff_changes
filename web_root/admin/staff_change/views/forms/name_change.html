@@ -1,6 +1,16 @@
 <div id="name-change-form-container" class="container-fluid">
     <div class="card">
-        <div class="card-header bg-warning text-bg-warning bg-gradient fs-6 fw-semibold">Name Change:</div>
+        <div class="card-header bg-warning text-bg-warning bg-gradient fs-6 fw-semibold d-flex align-items-center justify-content-between">
+            <span>Name Change:</span>
+            <button type="button"
+                class="btn btn-sm btn-link text-reset text-decoration-none opacity-75 border-0 py-0 px-1 ms-3"
+                data-ng-if="userContext.pageStatus == 'Edit' && userContext.districtUser && !userContext.showChangeTypeConverter"
+                data-ng-click="openEditChangeTypeConverter()" aria-expanded="false">
+                <i class="bi bi-arrow-left-right"></i>
+                Convert Change Type
+            </button>
+        </div>
+        <div data-ng-include="'/admin/staff_change/views/forms/change_type_converter.html'"></div>
         <div class="card-body">
             <form name="staffChangeForm" method="POST" novalidate>
                 <div class="row align-items-center mb-3" data-ng-if="userContext.pageStatus =='Submit'">

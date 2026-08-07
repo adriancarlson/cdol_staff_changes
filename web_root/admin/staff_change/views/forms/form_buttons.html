@@ -178,3 +178,23 @@
         </div>
     </div>
 </div>
+<div class="hide" id="transferJobChangeDialogContainer">
+    <div id="transferJobChangeDiv" class="container-fluid">
+        <div class="card-body p-0">
+            <div class="p-2">
+                <strong>{{submitPayload.transferringStaff | staffFullName}}</strong> is active at
+                <strong>{{userContext.curSchoolName}}</strong>. An active staff member changing positions or jobs at
+                their current school should use the <span class="text-info"><strong>Position/Job Change</strong></span>
+                form. Click <strong>Convert to Position/Job Change Submission</strong> below to change this entry, or
+                click <strong>Exit</strong> to return to the Staff Change List.
+            </div>
+            <div class="card-footer">
+                <div class="button-row">
+                    <button type="button" class="button mt-1 mb-0"
+                        data-ng-click="closeDialog(userContext.formType, userContext.pageContext,'transferJobChange');convertTransferringToJobChange()">Convert
+                        to Position/Job Change Submission</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

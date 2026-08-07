@@ -1,0 +1,29 @@
+<div class="border-bottom bg-light p-3"
+    data-ng-if="userContext.pageStatus == 'Edit' && userContext.districtUser && userContext.showChangeTypeConverter">
+    <div class="row align-items-end">
+        <div class="col-12 col-md-5 col-xl-4">
+            <label for="edit-change-type" class="form-label form-label-sm label-reset fw-semibold">Convert Submission
+                To</label>
+            <div class="input-group flex-nowrap">
+                <select id="edit-change-type" class="form-select form-select-sm flex-grow-1"
+                    data-ng-model="userContext.selectedChangeType"
+                    data-ng-options="option.value as option.label for option in changeTypeOptions"
+                    data-ng-change="convertEditChangeType(userContext.selectedChangeType)">
+                </select>
+                <button type="button" class="staff-name-action button m-0 p-2 ps-1"
+                    data-ng-click="cancelEditChangeTypeConversion()">Cancel</button>
+            </div>
+        </div>
+        <div class="col-12 col-md mt-2 mt-md-0">
+            <div class="alert alert-warning py-2 mb-0" role="alert" data-ng-if="userContext.changeTypeConverted">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                The submission type has not been saved yet. Review the new form's required fields, then click
+                <strong>Submit Update</strong>.
+            </div>
+            <div class="text-muted" data-ng-if="!userContext.changeTypeConverted">
+                Select a different type to load its form. Nothing is saved until you click <strong>Submit
+                    Update</strong>.
+            </div>
+        </div>
+    </div>
+</div>

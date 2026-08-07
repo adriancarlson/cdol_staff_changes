@@ -93,6 +93,19 @@ define(function (require) {
 							}
 						}
 					]
+				} else if (type === 'transferJobChange') {
+					dialogMessage = 'Convert to Position/Job Change?'
+					dialogButtons = [
+						{
+							id: 'exitDialogButton',
+							text: 'Exit',
+							title: 'Exit',
+							click: function () {
+								psDialogClose()
+								$scope.toListRedirect('transferringStaff')
+							}
+						}
+					]
 				}
 
 				psDialog({
@@ -559,6 +572,14 @@ define(function (require) {
 			$scope.originalStaffChangePayloads = {}
 			$scope.originalJitbitSnapshots = {}
 			$scope.originalChangeType = undefined
+			$scope.changeTypeOptions = [
+				{ value: 'newStaff', label: 'New Staff' },
+				{ value: 'transferringStaff', label: 'Transferring-In Staff' },
+				{ value: 'jobChange', label: 'Position/Job Change' },
+				{ value: 'subStaff', label: 'Substitute' },
+				{ value: 'nameChange', label: 'Name Change' },
+				{ value: 'exitingStaff', label: 'Exiting Staff' }
+			]
 			$scope.titleData = []
 			$scope.primaryUserOptions = []
 			$scope.relatedUserOptions = []
@@ -645,6 +666,25 @@ define(function (require) {
 				return options.concat(buildUserOptions([savedReplacement], hasSavedStatus))
 			}
 
+			const includeSavedPrimaryOption = (pageContext, options) => {
+				const staffChange = $scope.submitPayload[pageContext]
+				if ($scope.userContext.pageStatus !== 'Edit' || !staffChange || !staffChange.users_dcid || staffChange.users_dcid == -1) return options
+				if (options.some(option => sameIdentifier(option.identifier, staffChange.users_dcid))) return options
+
+				const savedStaff = {
+					identifier: staffChange.users_dcid,
+					title: staffChange.title,
+					first_name: staffChange.first_name,
+					middle_name: staffChange.middle_name,
+					last_name: staffChange.last_name,
+					license_microsoft: staffChange.license_microsoft,
+					staff_status: staffChange.staff_status
+				}
+				const hasSavedStatus = savedStaff.staff_status !== undefined && savedStaff.staff_status !== null && savedStaff.staff_status !== ''
+
+				return options.concat(buildUserOptions([savedStaff], hasSavedStatus))
+			}
+
 			const buildSchoolOptions = records => {
 				const options = (records || []).map(record => {
 					const option = angular.copy(record)
@@ -685,10 +725,10 @@ define(function (require) {
 						})
 						.then(
 							records => {
-								$scope.primaryUserOptions = buildUserOptions(records, true)
+								$scope.primaryUserOptions = includeSavedPrimaryOption(pageContext, buildUserOptions(records, true))
 							},
 							() => {
-								$scope.primaryUserOptions = buildUserOptions([], true)
+								$scope.primaryUserOptions = includeSavedPrimaryOption(pageContext, buildUserOptions([], true))
 							}
 						)
 						.finally(() => {
@@ -708,7 +748,7 @@ define(function (require) {
 						.then(
 							records => {
 								if (needsPrimaryUsers && pageContext !== 'transferringStaff') {
-									$scope.primaryUserOptions = buildUserOptions(records, false)
+									$scope.primaryUserOptions = includeSavedPrimaryOption(pageContext, buildUserOptions(records, false))
 								}
 								if (needsRelatedUsers) {
 									$scope.relatedUserOptions = includeSavedReplacementOption(pageContext, buildUserOptions(records, false))
@@ -716,7 +756,7 @@ define(function (require) {
 							},
 							() => {
 								if (needsPrimaryUsers && pageContext !== 'transferringStaff') {
-									$scope.primaryUserOptions = buildUserOptions([], false)
+									$scope.primaryUserOptions = includeSavedPrimaryOption(pageContext, buildUserOptions([], false))
 								}
 								if (needsRelatedUsers) {
 									$scope.relatedUserOptions = includeSavedReplacementOption(pageContext, [])
@@ -950,6 +990,9 @@ define(function (require) {
 						normalizePayloadLookupIdentifiers(res)
 						$scope.submitPayload[res.change_type] = res
 						$scope.userContext.pageContext = res.change_type
+						$scope.userContext.formType = res.change_type
+						$scope.userContext.selectedChangeType = res.change_type
+						$scope.userContext.changeTypeConverted = false
 						$scope.originalChangeType = res.change_type
 						$scope.originalStaffChangePayloads[res.change_type] = copyPayload(res)
 						$scope.originalJitbitSnapshots[res.change_type] = buildJitbitSnapshot(res)
@@ -999,6 +1042,161 @@ define(function (require) {
 					$scope[resource] = records
 					return $scope[resource]
 				})
+			}
+
+			const editSchoolStaffChangeTypes = ['transferringStaff', 'jobChange', 'nameChange', 'exitingStaff']
+
+			// Refresh the linked PowerSchool staff row after a type conversion or an edit-time staff selection.
+			$scope.loadEditSchoolStaffRecord = pageContext => {
+				const formPayload = $scope.submitPayload[pageContext]
+				delete $scope.schoolStaffRecordData
+
+				if (!formPayload || !editSchoolStaffChangeTypes.includes(pageContext) || !formPayload.users_dcid || formPayload.users_dcid == -1) {
+					return $q.when()
+				}
+
+				return $scope.getJSONData('schoolStaffRecordData', {
+					userDCID: formPayload.users_dcid,
+					schoolID: pageContext === 'transferringStaff' ? formPayload.prev_school_number : formPayload.schoolid
+				})
+			}
+
+			const getChangeTypeLabel = changeType => {
+				const changeTypeOption = $scope.changeTypeOptions.find(option => option.value === changeType)
+				return changeTypeOption ? changeTypeOption.label : (formatService.changeMap(changeType) || changeType)
+			}
+
+			const removeConversionNote = notes => {
+				return (notes || '').replace(/^Converted from:[^\r\n]*(?:\r?\n(?:\r?\n)?)?/, '')
+			}
+
+			const updateConversionNote = (notes, targetChangeType) => {
+				const originalChangeType = $scope.originalChangeType
+				const originalNotes = removeConversionNote(notes)
+				if (!originalChangeType || targetChangeType === originalChangeType) return originalNotes
+
+				const conversionNote = `Converted from: ${getChangeTypeLabel(originalChangeType)} to ${getChangeTypeLabel(targetChangeType)}`
+				return originalNotes ? `${conversionNote}\n\n${originalNotes}` : conversionNote
+			}
+
+			$scope.openEditChangeTypeConverter = () => {
+				const changeType = $scope.userContext.pageContext
+				const formPayload = $scope.submitPayload[changeType]
+				if ($scope.userContext.pageStatus !== 'Edit' || !$scope.userContext.districtUser || !formPayload) return
+
+				$scope.userContext.changeTypeConverterSnapshot = {
+					changeType: changeType,
+					payload: angular.copy(formPayload)
+				}
+				$scope.userContext.selectedChangeType = changeType
+				$scope.userContext.showChangeTypeConverter = true
+			}
+
+			// Cancel restores the exact edit state captured when the converter was opened.
+			$scope.cancelEditChangeTypeConversion = () => {
+				const snapshot = $scope.userContext.changeTypeConverterSnapshot
+				const currentChangeType = $scope.userContext.pageContext
+				$scope.userContext.showChangeTypeConverter = false
+
+				if (!snapshot) return $q.when()
+				delete $scope.userContext.changeTypeConverterSnapshot
+
+				if (currentChangeType === snapshot.changeType) {
+					$scope.userContext.selectedChangeType = currentChangeType
+					return $q.when()
+				}
+
+				loadingDialog()
+				delete $scope.submitPayload[currentChangeType]
+				$scope.submitPayload[snapshot.changeType] = angular.copy(snapshot.payload)
+				delete $scope.duplicatePowerSchoolStaffData
+				delete $scope.duplicateStaffChangeData
+				$scope.userContext.pageContext = snapshot.changeType
+				$scope.userContext.formType = snapshot.changeType
+				$scope.userContext.formTypeHover = snapshot.changeType
+				$scope.userContext.selectedChangeType = snapshot.changeType
+				$scope.userContext.changeTypeConverted = snapshot.changeType !== $scope.originalChangeType
+
+				const restoredPayload = $scope.submitPayload[snapshot.changeType]
+				const preload = {
+					formLookups: $scope.loadFormLookups(snapshot.changeType),
+					schoolStaff: $scope.loadEditSchoolStaffRecord(snapshot.changeType).catch(() => [])
+				}
+
+				if ((snapshot.changeType === 'newStaff' || snapshot.changeType === 'subStaff') && restoredPayload.first_name && restoredPayload.last_name) {
+					preload.duplicates = $scope.checkDupesOnEdit(restoredPayload)
+				}
+
+				if (isLongTermSubstitute(restoredPayload)) {
+					preload.longTermSubstitute = hydrateLongTermSubstituteOnEdit(restoredPayload)
+				}
+
+				return $q
+					.all(preload)
+					.then(() => {
+						$scope.checkIfBusinessDay(snapshot.changeType)
+						scrollToFormTop()
+					})
+					.finally(closeLoading)
+			}
+
+			// District users can correct a submitted record's type without creating a new row or Jitbit ticket.
+			$scope.convertEditChangeType = targetChangeType => {
+				const sourceChangeType = $scope.userContext.pageContext
+				if ($scope.userContext.pageStatus !== 'Edit' || !$scope.userContext.districtUser || !targetChangeType || targetChangeType === sourceChangeType) {
+					return $q.when()
+				}
+
+				const sourcePayload = $scope.submitPayload[sourceChangeType]
+				if (!sourcePayload) {
+					$scope.userContext.selectedChangeType = sourceChangeType
+					return $q.when()
+				}
+
+				loadingDialog()
+				const convertedPayload = angular.copy(sourcePayload)
+				convertedPayload.change_type = targetChangeType
+				convertedPayload.final_completion_date = undefined
+				convertedPayload.notes = updateConversionNote(convertedPayload.notes, targetChangeType)
+
+				// A transfer/new-staff position is the best available starting point for the target job-change form.
+				if (targetChangeType === 'jobChange' && !convertedPayload.new_position && convertedPayload.position) {
+					convertedPayload.new_position = convertedPayload.position
+				}
+
+				if ((targetChangeType === 'nameChange' || targetChangeType === 'exitingStaff') && !convertedPayload.old_name_placeholder) {
+					convertedPayload.old_name_placeholder = formatService.formatStaffFullName(convertedPayload)
+				}
+
+				$scope.submitPayload[targetChangeType] = convertedPayload
+				delete $scope.submitPayload[sourceChangeType]
+				delete $scope.duplicatePowerSchoolStaffData
+				delete $scope.duplicateStaffChangeData
+				$scope.userContext.pageContext = targetChangeType
+				$scope.userContext.formType = targetChangeType
+				$scope.userContext.formTypeHover = targetChangeType
+				$scope.userContext.changeTypeConverted = targetChangeType !== $scope.originalChangeType
+
+				const preload = {
+					formLookups: $scope.loadFormLookups(targetChangeType),
+					schoolStaff: $scope.loadEditSchoolStaffRecord(targetChangeType).catch(() => [])
+				}
+
+				if ((targetChangeType === 'newStaff' || targetChangeType === 'subStaff') && convertedPayload.first_name && convertedPayload.last_name) {
+					preload.duplicates = $scope.checkDupesOnEdit(convertedPayload)
+				}
+
+				if (isLongTermSubstitute(convertedPayload)) {
+					preload.longTermSubstitute = hydrateLongTermSubstituteOnEdit(convertedPayload)
+				}
+
+				return $q
+					.all(preload)
+					.then(() => {
+						$scope.checkIfBusinessDay(targetChangeType)
+						scrollToFormTop()
+					})
+					.finally(closeLoading)
 			}
 			$scope.getJSONData('titleData').catch(() => {
 				$scope.titleData = []
@@ -1108,7 +1306,14 @@ define(function (require) {
 				if (resource === 'userData') {
 					//if the field is the users_dcid find all the fields related to that user and set them in the submit payload
 					if (field === 'users_dcid') {
-						$scope.submitPayload[pageContext] = { [field]: identifier }
+						if ($scope.userContext.pageStatus === 'Edit') {
+							const preservedPayload = angular.copy($scope.submitPayload[pageContext] || {})
+							clearManualLookupFields(preservedPayload, field)
+							preservedPayload[field] = identifier
+							$scope.submitPayload[pageContext] = preservedPayload
+						} else {
+							$scope.submitPayload[pageContext] = { [field]: identifier }
+						}
 					}
 				}
 				//if dropdown source is school data
@@ -1177,6 +1382,10 @@ define(function (require) {
 						if (pageContext === 'subStaff') {
 							$scope.submitPayload[pageContext].license_microsoft = $scope.submitPayload[pageContext].replace_license_microsoft
 						}
+
+						if ($scope.userContext.pageStatus === 'Edit' && field === 'users_dcid') {
+							$scope.loadEditSchoolStaffRecord(pageContext).catch(error => console.warn('Unable to load the selected staff record.', error))
+						}
 					}
 				}
 			}
@@ -1206,8 +1415,14 @@ define(function (require) {
 			// The sentinel value -1 tells templates to hide a select and reveal its manual-entry controls.
 			$scope.startManualLookup = (pageContext, lookupField, focusControlId) => {
 				if (lookupField === 'users_dcid') {
-					// Primary staff selection previously replaced the payload when Other was selected.
-					$scope.submitPayload[pageContext] = { users_dcid: '-1' }
+					if ($scope.userContext.pageStatus === 'Edit') {
+						const preservedPayload = angular.copy($scope.submitPayload[pageContext] || {})
+						clearManualLookupFields(preservedPayload, lookupField)
+						preservedPayload[lookupField] = '-1'
+						$scope.submitPayload[pageContext] = preservedPayload
+					} else {
+						$scope.submitPayload[pageContext] = { users_dcid: '-1' }
+					}
 				} else {
 					const formPayload = $scope.submitPayload[pageContext] || {}
 					clearManualLookupFields(formPayload, lookupField)
@@ -1238,14 +1453,21 @@ define(function (require) {
 				$scope.submitPayload.transferringStaff.users_dcid = identifier
 
 				// Step 2: Find the matching item
-				let foundItem = $scope.duplicatePowerSchoolStaffData && $scope.duplicatePowerSchoolStaffData.length && $scope.duplicatePowerSchoolStaffData.find(item => item.identifier === identifier)
+				let foundItem = $scope.duplicatePowerSchoolStaffData && $scope.duplicatePowerSchoolStaffData.length && $scope.duplicatePowerSchoolStaffData.find(item => sameIdentifier(item.identifier, identifier))
 
 				// Step 3: Override only intended PowerSchool identity fields from foundItem
 				copyTransferringStaffFromDuplicate($scope.submitPayload.transferringStaff, foundItem)
 				// Step 4: Remove newStaff
 				delete $scope.submitPayload.newStaff
+				$scope.submitPayload.transferringStaff.change_type = 'transferringStaff'
+				$scope.userContext.pageContext = 'transferringStaff'
 				$scope.userContext.formType = 'transferringStaff'
 				$scope.userContext.formTypeHover = 'transferringStaff'
+				if ($scope.userContext.pageStatus === 'Edit') {
+					$scope.submitPayload.transferringStaff.notes = updateConversionNote($scope.submitPayload.transferringStaff.notes, 'transferringStaff')
+					$scope.userContext.selectedChangeType = 'transferringStaff'
+					$scope.userContext.changeTypeConverted = $scope.originalChangeType !== 'transferringStaff'
+				}
 			}
 
 			$scope.useExistingSubstituteStaff = identifier => {
@@ -1257,6 +1479,29 @@ define(function (require) {
 				if (staffType === '4') {
 					$scope.openDialog('subChange')
 				}
+			}
+
+			$scope.checkTransferringSchoolForJobChange = () => {
+				const transferringStaff = $scope.submitPayload.transferringStaff
+				if ($scope.userContext.pageStatus !== 'Submit' || !transferringStaff) return
+
+				const isActiveStaff = transferringStaff.staff_status == 1
+				const isCurrentSchool = sameIdentifier(transferringStaff.prev_school_number, $scope.userContext.curSchoolId)
+				if (isActiveStaff && isCurrentSchool) $scope.openDialog('transferJobChange')
+			}
+
+			$scope.convertTransferringToJobChange = () => {
+				const transferringStaff = $scope.submitPayload.transferringStaff
+				if (!transferringStaff) return $q.when()
+
+				if (!transferringStaff.new_position && transferringStaff.position) {
+					transferringStaff.new_position = transferringStaff.position
+				}
+
+				return $scope.formDisplay('jobChange', 'transferringStaff', 'convert').then(() => {
+					$scope.userContext.formType = 'jobChange'
+					$scope.userContext.formTypeHover = 'jobChange'
+				})
 			}
 
 			$scope.copyNames = pageContext => {
