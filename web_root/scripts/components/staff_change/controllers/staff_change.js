@@ -1218,6 +1218,13 @@ define(function (require) {
 					delete $scope.duplicateStaffChangeData
 				}
 
+				// Existing submissions may still need the PowerSchool staff lookup shown on New Staff and LTS edit forms,
+				// but they should never be compared with other staff-change submissions or open the duplicate-request dialog.
+				if ($scope.userContext.pageStatus !== 'Submit') {
+					const shouldRefreshPowerSchoolStaff = pageContext === 'newStaff' || (pageContext === 'subStaff' && formPayload.sub_type === 'LTS')
+					return shouldRefreshPowerSchoolStaff ? $scope.checkDupesOnEdit(formPayload) : $q.when()
+				}
+
 				const searchSubmittedStaff = pageContext === 'subStaff' || !formPayload.replace_first_name
 
 				let staffChangeDupeParams = {
